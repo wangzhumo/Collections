@@ -78,6 +78,8 @@ public abstract class BaseActivity extends SupportActivity {
         //在BaseActivity里初始化
         ImmersionBar.with(this)
                 .transparentStatusBar()
+                .statusBarDarkFont(true)   //状态栏字体是深色，不写默认为亮色
+                .navigationBarDarkIcon(true) //导航栏图标是深色，不写默认为亮色
                 .init();
     }
 
