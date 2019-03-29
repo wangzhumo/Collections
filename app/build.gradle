@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    defaultConfig {
+        applicationId "com.wangzhumo.app"
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode gitCommitCount()
+        versionName VERSION_NAME
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+static def gitCommitCount() {
+    def cmd = 'git rev-list HEAD --count'
+    cmd.execute().text.trim().toInteger()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.stdlib
+    implementation deps.androidx.appCompat
+    implementation deps.androidx.coreKtx
+    implementation deps.constraint
+    testImplementation 'junit:junit:4.12'
+}
