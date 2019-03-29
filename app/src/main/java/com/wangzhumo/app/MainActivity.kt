@@ -1,12 +1,12 @@
 package com.wangzhumo.app
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.wangzhumo.app.origin.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+
+    override fun getLayoutId(): Int = R.layout.activity_main
+
+
+
 }

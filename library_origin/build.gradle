@@ -1,17 +1,13 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.library'
+
 
 android {
-
     compileSdkVersion COMPILE_SDK_VERSION as int
 
     defaultConfig {
-        applicationId "com.wangzhumo.app"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode gitCommitCount()
+        versionCode 1
         versionName VERSION_NAME
     }
 
@@ -28,21 +24,18 @@ android {
     }
 }
 
-static def gitCommitCount() {
-    def cmd = 'git rev-list HEAD --count'
-    cmd.execute().text.trim().toInteger()
-}
 
-kapt {
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.getName())
-    }
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":library_origin")
-    implementation deps.stdlib
-    kapt deps.arouter.compiler
-    testImplementation 'junit:junit:4.12'
+    api deps.androidx.appCompat
+    api deps.androidx.coreKtx
+
+    api deps.constraint
+    api deps.immersionbar
+    api deps.fragmentation
+
+    api deps.arouter.arouterApi
+    api deps.rxLibs.rxJava
 }
+
