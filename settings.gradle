@@ -1,1 +1,1 @@
-include ':app', ':library_origin'
+include ':app', ':library_origin', ':module_jni'
