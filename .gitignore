@@ -57,5 +57,5 @@ captures/
 
 
 
-/androidTest
-/test
+/src/androidTest
+/src/test
