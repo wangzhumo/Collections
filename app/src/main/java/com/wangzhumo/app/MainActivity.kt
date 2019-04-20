@@ -1,20 +1,23 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
+import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.origin.BaseActivity
-import com.wangzhumo.app.utils.SoundPoolUtils
 
+
+@Route(path = IRoute.APP_MAIN)
 class MainActivity : BaseActivity() {
 
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
-
-    override fun initData(savedInstanceState: Bundle?) {
-        super.initData(savedInstanceState)
-        SoundPoolUtils.get().play(this)
+    override fun initViews(savedInstanceState: Bundle?) {
+        super.initViews(savedInstanceState)
+        ARouter.getInstance()
+            .build(IRoute.WEBRTC_MAIN)
+            .navigation()
     }
-
-
 
 }

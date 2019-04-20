@@ -1,2 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.wangzhumo.app.webrtc"/>
+          package="com.wangzhumo.app.webrtc">
+
+    <application>
+        <activity android:name=".RtcCallActivity">
+        </activity>
+        <activity android:name=".WebRtcActivity">
+        </activity>
+    </application>
+
+</manifest>

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -28,14 +30,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.androidx.appCompat
-    api deps.androidx.coreKtx
-
-    api deps.constraint
-    api deps.immersionbar
-    api deps.fragmentation
-
-    api deps.arouter.arouterApi
-    api deps.rxLibs.rxJava
+    api project(":library_origin")
 }
 

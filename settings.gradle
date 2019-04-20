@@ -1,1 +1,1 @@
-include ':app', ':library_origin', ':module_jni', ':module_webrtc'
+include ':app', ':library_origin', ':module_jni', ':module_webrtc', ':module_base'
