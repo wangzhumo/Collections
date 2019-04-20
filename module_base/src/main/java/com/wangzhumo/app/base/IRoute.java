@@ -9,13 +9,13 @@ package com.wangzhumo.app.base;
  */
 public interface IRoute {
 
-    String WEBRTC_MAIN = "webrtc/activity/main";
+    String WEBRTC_MAIN = "/webrtc/activity/main";
 
-    String WEBRTC_CALL = "webrtc/activity/call";
+    String WEBRTC_CALL = "/webrtc/activity/call";
 
-    String APP_MAIN = "main/activity/main";
+    String APP_MAIN = "/main/activity/main";
 
-    String JNI_CPP = "jni/activity/cpp";
+    String JNI_CPP = "/jni/activity/cpp";
 
 
 }

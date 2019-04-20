@@ -7,4 +7,23 @@
         android:layout_height="match_parent"
         tools:context=".RtcCallActivity">
 
+    <Button
+            android:text="Join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_join"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/button_leave" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="341dp" android:layout_marginBottom="342dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Leave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_leave"
+            app:layout_constraintStart_toEndOf="@+id/button_join"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

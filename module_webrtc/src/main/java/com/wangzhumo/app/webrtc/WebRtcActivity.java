@@ -2,18 +2,19 @@ package com.wangzhumo.app.webrtc;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-
 
 
 /**
@@ -61,14 +62,34 @@ public class WebRtcActivity extends BaseActivity implements View.OnClickListener
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        if (aBoolean){
+                        if (aBoolean) {
                             //如果有的话,就开始跳转
-
-                        }else{
+                            verifyAndJumpCall();
+                        } else {
                             Toast.makeText(mContext, "请授予必须的权限", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
         addDisposable(disposable);
+    }
+
+    /**
+     * 跳转至Call
+     */
+    private void verifyAndJumpCall() {
+        String address = mWebrtcAddress.getText().toString();
+        String roomName = mWebrtcRoomName.getText().toString();
+
+        if (TextUtils.isEmpty(address) || TextUtils.isEmpty(roomName)) {
+            Toast.makeText(mContext, "请完成信息录入", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //跳转
+        ARouter.getInstance()
+                .build(IRoute.WEBRTC_CALL)
+                .withString("address", address)
+                .withString("roomName", roomName)
+                .navigation();
     }
 }
