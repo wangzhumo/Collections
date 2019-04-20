@@ -22,9 +22,24 @@ public interface Action {
      * 已经加入
      */
     String RECEIVE_JOINED = "joined";
+    String RECEIVE_OTHER_JOIN = "otherjoin";
 
     /**
      * 已经离开
      */
     String RECEIVE_LEAVED = "leaved";
+    String RECEIVE_OTHER_LEAVE = "bye";
+
+
+    /**
+     * 房间满
+     */
+    String RECEIVE_FULL = "full";
+
+    /**
+     * 收到消息
+     */
+    String RECEIVE_MESSAGE = "message";
+
+
 }

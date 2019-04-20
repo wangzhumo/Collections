@@ -1,4 +1,4 @@
-package com.wangzhumo.app.webrtc.func;
+package com.wangzhumo.app.webrtc.signal;
 
 import org.json.JSONObject;
 
@@ -9,7 +9,7 @@ import org.json.JSONObject;
  *
  * 信令服务器的一系列回调
  */
-public interface onSignalEventListener {
+public interface SignalEventListener {
 
     void onConnected(); //链接成功
     void onConnecting(); //连接中
@@ -19,4 +19,5 @@ public interface onSignalEventListener {
     void onRemoteUserJoin(String room,String uid);  //远端用户加入
     void onRemoteUserLeave(String room,String uid);  //远端用户离开
     void onMessage(JSONObject message);   //发送来消息
+    void onJoinError(String room,String uid);   //房间加入失败
 }
