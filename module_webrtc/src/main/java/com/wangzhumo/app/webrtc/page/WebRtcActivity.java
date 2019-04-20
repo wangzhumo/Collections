@@ -1,4 +1,4 @@
-package com.wangzhumo.app.webrtc;
+package com.wangzhumo.app.webrtc.page;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.webrtc.R;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -40,11 +41,9 @@ public class WebRtcActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {
-        super.initViews(savedInstanceState);
         mWebrtcAddress = findViewById(R.id.webrtc_address);
         mWebrtcRoomName = findViewById(R.id.webrtc_room_name);
         mButtonJoin = findViewById(R.id.button_join);
-
         mButtonJoin.setOnClickListener(this);
     }
 

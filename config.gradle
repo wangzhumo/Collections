@@ -110,7 +110,7 @@ def support = [:]
 
 def androidx = [:]
     androidx.appCompat = "androidx.appcompat:appcompat:1.0.0"
-    androidx.coreKtx = "androidx.core:core-ktx:1.0.0"
+    androidx.coreKtx = 'androidx.core:core-ktx:1.0.0'
     deps.androidx = androidx
 
 def glide = [:]

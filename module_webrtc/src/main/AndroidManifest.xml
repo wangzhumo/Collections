@@ -3,9 +3,9 @@
           package="com.wangzhumo.app.webrtc">
 
     <application>
-        <activity android:name=".RtcCallActivity">
+        <activity android:name=".page.RtcCallActivity">
         </activity>
-        <activity android:name=".WebRtcActivity">
+        <activity android:name=".page.WebRtcActivity">
         </activity>
     </application>
 
