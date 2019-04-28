@@ -245,7 +245,7 @@ def objectbox = [:]
 
 
 def buildVersions = [:]
-    buildVersions.minSDK = 22
+    buildVersions.minSDK = 18
     buildVersions.targetSDK = 26
     buildVersions.compileSDK = 28
     buildVersions.buildTools = "28.0.3"
