@@ -32,7 +32,7 @@ def versions = [:]
     versions.gson = "2.8.5"
 
     //classpath
-    versions.gradle = '3.4.0'
+    versions.gradle = '3.0.1'
 
     versions.objectbox = "1.4.1"
     versions.butterknife = "9.0.0"
@@ -110,7 +110,7 @@ def support = [:]
 
 def androidx = [:]
     androidx.appCompat = "androidx.appcompat:appcompat:1.0.0"
-    androidx.coreKtx = 'androidx.core:core-ktx:1.0.0'
+    androidx.coreKtx = "androidx.core:core-ktx:1.0.0"
     deps.androidx = androidx
 
 def glide = [:]
@@ -247,19 +247,15 @@ def objectbox = [:]
 def buildVersions = [:]
     buildVersions.minSDK = 18
     buildVersions.targetSDK = 26
-    buildVersions.compileSDK = 27
-    buildVersions.buildTools = "27.0.3"
+    buildVersions.compileSDK = 28
+    buildVersions.buildTools = "28.0.3"
     ext.buildVersion = buildVersions
 
 static def addRepos(RepositoryHandler handler) {
     handler.google()
+    handler.maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     handler.mavenCentral()
-    handler.maven { url 'http://172.30.20.99:8081/repository/maven-public/' }
     handler.jcenter()
-    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    handler.maven { url 'https://jitpack.io' }
-    handler.maven { url 'https://dl.bintray.com/zouyuhan/maven' }
-    handler.maven { url "https://dl.bintray.com/thelasterstar/maven/" }
 }
 
 ext.addRepos = this.&addRepos
