@@ -186,9 +186,9 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private PeerConnection createPeerConnection(VideoTrack videoTrack,AudioTrack audioTrack) {
         //准备ICE - Server
         LinkedList<PeerConnection.IceServer> iceServers = new LinkedList<>();
-        PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder("turn:stun.al.learningrtc.cn:3478")
-                .setUsername("")
-                .setPassword("")
+        PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
+                .setUsername("wangzhumo")
+                .setPassword("phyooos")
                 .createIceServer();
 
         iceServers.add(myIceServer);

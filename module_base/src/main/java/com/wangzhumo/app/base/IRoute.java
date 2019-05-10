@@ -17,5 +17,7 @@ public interface IRoute {
 
     String JNI_CPP = "/jni/activity/cpp";
 
+    String FRAME_ACTIVITY = "/activity/framelayout";
+
 
 }
