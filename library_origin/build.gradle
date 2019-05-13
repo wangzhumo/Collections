@@ -28,9 +28,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.androidx.appCompat
-    api deps.androidx.coreKtx
-
+    api deps.support.appCompat
+    api deps.support.recyclerview
     api deps.constraint
     api deps.immersionbar
     api deps.fragmentation

@@ -1,6 +1,6 @@
 package com.wangzhumo.app.module.jni;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Route;
 

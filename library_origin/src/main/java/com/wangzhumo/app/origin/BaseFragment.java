@@ -1,11 +1,11 @@
 package com.wangzhumo.app.origin;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -55,47 +55,47 @@ public abstract class BaseFragment extends SupportFragment {
         initData();
     }
 
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (!isShowed) {
-            //第一次可见
-            onFirstVisible();
-            isShowed = true;
-        } else {
-            //每次可见
-            onFragmentVisible();
-        }
-    }
+//    @Override
+//    public void onSupportVisible() {
+//        super.onSupportVisible();
+//        if (!isShowed) {
+//            //第一次可见
+//            onFirstVisible();
+//            isShowed = true;
+//        } else {
+//            //每次可见
+//            onFragmentVisible();
+//        }
+//    }
 
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        onFragmentInvisible();
-    }
+//    @Override
+//    public void onSupportInvisible() {
+//        super.onSupportInvisible();
+//        onFragmentInvisible();
+//    }
 
-    /**
-     * Fragment不可见
-     */
-    protected void onFragmentInvisible() {
+//    /**
+//     * Fragment不可见
+//     */
+//    protected void onFragmentInvisible() {
+//
+//    }
 
-    }
-
-
-    /**
-     * Fragment可见 (当onFirstVisible()调用时,不会调用)
-     */
-    protected void onFragmentVisible() {
-
-    }
-
-    /**
-     * Fragment不可见
-     */
-    protected void onFirstVisible() {
-
-    }
-
+//
+//    /**
+//     * Fragment可见 (当onFirstVisible()调用时,不会调用)
+//     */
+//    protected void onFragmentVisible() {
+//
+//    }
+//
+//    /**
+//     * Fragment不可见
+//     */
+//    protected void onFirstVisible() {
+//
+//    }
+//
 
     /**
      * 设置View资源

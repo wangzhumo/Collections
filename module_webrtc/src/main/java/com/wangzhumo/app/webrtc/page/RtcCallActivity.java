@@ -1,10 +1,11 @@
 package com.wangzhumo.app.webrtc.page;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.TextView;
-import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -17,7 +18,6 @@ import com.wangzhumo.app.webrtc.func.CallState;
 import com.wangzhumo.app.webrtc.func.VideoFormat;
 import com.wangzhumo.app.webrtc.signal.SignalEventListener;
 import com.wangzhumo.app.webrtc.signal.Signaling;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.webrtc.*;
 
@@ -298,7 +298,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
     @Override
-    public void onUserJoined(@NotNull String room, @NotNull String uid) {
+    public void onUserJoined(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onUserJoined : 加入了房间 %s",room));
         //修改状态
         mState = CallState.JOINED;
@@ -307,27 +307,27 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
     @Override
-    public void onUserLeaved(@NotNull String room, @NotNull String uid) {
+    public void onUserLeaved(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onUserLeaved : 离开房间 %s",room));
     }
 
     @Override
-    public void onRemoteUserJoin(@NotNull String room, @NotNull String uid) {
+    public void onRemoteUserJoin(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onRemoteUserJoin : %s 离开了房间 %s",uid,room));
     }
 
     @Override
-    public void onRemoteUserLeave(@NotNull String room, @NotNull String uid) {
+    public void onRemoteUserLeave(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onRemoteUserLeave : %s 加入了房间 %s",uid,room));
     }
 
     @Override
-    public void onMessage(@NotNull JSONObject message) {
+    public void onMessage(@NonNull JSONObject message) {
         addLocalLogCat(String.format("onMessage : %s",message.toString()));
     }
 
     @Override
-    public void onJoinError(@NotNull String room, @NotNull String uid) {
+    public void onJoinError(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败",uid,room));
     }
 }

@@ -10,14 +10,12 @@ import com.wangzhumo.app.origin.BaseActivity
 @Route(path = IRoute.APP_MAIN)
 class MainActivity : BaseActivity() {
 
-
     override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         ARouter.getInstance()
-            .build(IRoute.FRAME_ACTIVITY)
+            .build(IRoute.WEBRTC_MAIN)
             .navigation()
     }
-
 }

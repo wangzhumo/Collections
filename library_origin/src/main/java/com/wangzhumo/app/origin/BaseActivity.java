@@ -2,8 +2,8 @@ package com.wangzhumo.app.origin;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import com.gyf.barlibrary.ImmersionBar;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -69,7 +69,8 @@ public abstract class BaseActivity extends SupportActivity {
      *
      * @return layoutID
      */
-    protected abstract @LayoutRes int getLayoutId();
+    protected abstract @LayoutRes
+    int getLayoutId();
 
     /**
      * setContentView 之前

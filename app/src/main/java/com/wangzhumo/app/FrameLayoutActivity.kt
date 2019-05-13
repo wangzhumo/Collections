@@ -14,7 +14,6 @@ class FrameLayoutActivity : BaseActivity() {
         super.initViews(savedInstanceState)
 
         val fragment = BlankFragment()
-
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frameLayout,fragment)
