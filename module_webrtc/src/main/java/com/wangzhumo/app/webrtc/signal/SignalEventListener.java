@@ -20,4 +20,5 @@ public interface SignalEventListener {
     void onRemoteUserLeave(String room,String uid);  //远端用户离开
     void onMessage(JSONObject message);   //发送来消息
     void onJoinError(String room,String uid);   //房间加入失败
+    void onError(Exception e);   //建立连接失败
 }

@@ -3,6 +3,7 @@ package com.wangzhumo.app.webrtc.page;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -40,10 +41,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     //Views
     public TextView mLocalName;
-    public SurfaceView mLocalSurface;
     public TextView mRemoteName;
-    public SurfaceView mRemoteSurface;
-    public TextView mLogTextview;
+    public TextView mLogTextView;
 
 
     //filed
@@ -86,11 +85,11 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     protected void initViews(@Nullable Bundle savedInstanceState) {
         ARouter.getInstance().inject(RtcCallActivity.this);
         mLocalName = findViewById(R.id.local_name);
-        mLocalSurface = findViewById(R.id.local_surface);
+        mLocalSurfaceRenderer = findViewById(R.id.local_surface);
         mRemoteName = findViewById(R.id.remote_name);
-        mRemoteSurface = findViewById(R.id.remote_surface);
-        mLogTextview = findViewById(R.id.log_textview);
-
+        mRemoteSurfaceRenderer = findViewById(R.id.remote_surface);
+        mLogTextView = findViewById(R.id.log_textview);
+        mLogTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
         //初始化一些变量
         mRootEglBase = EglBase.create();
 
@@ -188,7 +187,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         LinkedList<PeerConnection.IceServer> iceServers = new LinkedList<>();
         PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
                 .setUsername("wangzhumo")
-                .setPassword("phyooos")
+                .setPassword("wangzhumo")
                 .createIceServer();
 
         iceServers.add(myIceServer);
@@ -222,7 +221,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             stringBuffer = new StringBuffer();
         }
         stringBuffer.append(message).append("\n");
-        mLogTextview.setText(stringBuffer.toString());
+        mLogTextView.setText(stringBuffer.toString());
     }
 
     private PeerConnection.Observer mPeerObserver = new PeerConnection.Observer() {
@@ -329,5 +328,10 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Override
     public void onJoinError(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败",uid,room));
+    }
+
+    @Override
+    public void onError(Exception e) {
+        addLocalLogCat(String.format("onError :  %s 连接失败",e.getMessage()));
     }
 }

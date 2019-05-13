@@ -88,6 +88,15 @@ public class Signaling {
         socket.on(Socket.EVENT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                if (mSignalListener != null && !mSignalListener.isEmpty()) {
+                    for (SignalEventListener signalEventListener : mSignalListener) {
+                        if (args != null && args.length > 0){
+                            signalEventListener.onError(new RuntimeException(args[0].toString()));
+                        }else{
+                            signalEventListener.onError(new RuntimeException("Create Connection Error"));
+                        }
+                    }
+                }
                 Log.e(TAG, "onError: " + args);
             }
         });
