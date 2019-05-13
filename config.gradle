@@ -253,7 +253,6 @@ def buildVersions = [:]
 
 static def addRepos(RepositoryHandler handler) {
     handler.google()
-    handler.maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     handler.mavenCentral()
     handler.jcenter()
 }
