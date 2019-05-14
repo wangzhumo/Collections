@@ -1,17 +1,21 @@
 package com.wangzhumo.app.webrtc.func;
 
 import org.webrtc.SdpObserver;
+import org.webrtc.SessionDescription;
 
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
- * @author 王诛魔 2019-04-20  15:43
+ * @author 王诛魔 2019年05月14日22:58:58
  *
- * 视屏参数
  */
-public abstract class SdpObserverAdapter implements SdpObserver {
+public class SdpObserverAdapter implements SdpObserver {
 
+    @Override
+    public void onCreateSuccess(SessionDescription sessionDescription) {
+
+    }
 
     @Override
     public void onSetSuccess() {

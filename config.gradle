@@ -232,7 +232,7 @@ def pay = [:]
     deps.huawei_verifier = 'com.llew.huawei:verifier:1.1.1'
     deps.marqueeview = 'com.sunfusheng:marqueeview:1.3.3'
     deps.LikeButton = 'com.github.jd-alexander:LikeButton:0.2.3'
-
+    deps.logger = 'com.orhanobut:logger:2.2.0'
 
 ext.deps = deps
 

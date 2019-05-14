@@ -33,7 +33,7 @@ dependencies {
     api deps.constraint
     api deps.immersionbar
     api deps.fragmentation
-
+    api deps.logger
     api deps.arouter.arouterApi
     api deps.rxLibs.rxJava
 }

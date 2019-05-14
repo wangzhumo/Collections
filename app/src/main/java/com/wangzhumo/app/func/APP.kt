@@ -3,6 +3,15 @@ package com.wangzhumo.app.func
 import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 import com.wangzhumo.app.BuildConfig
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.Logger.addLogAdapter
+import com.orhanobut.logger.PrettyFormatStrategy
+import com.orhanobut.logger.FormatStrategy
+
+
+
+
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -18,6 +27,16 @@ class APP : Application() {
     override fun onCreate() {
         super.onCreate()
         initARouter()
+        initLogger()
+    }
+
+    private fun initLogger() {
+        val formatStrategy = PrettyFormatStrategy.newBuilder()
+            .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+            .methodCount(2)         // (Optional) How many method line to show. Default 2
+            .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
+            .build()
+        Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
     }
 
 

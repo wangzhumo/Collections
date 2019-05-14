@@ -10,12 +10,14 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.orhanobut.logger.Logger;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
 import com.wangzhumo.app.webrtc.R;
 import com.wangzhumo.app.webrtc.func.*;
 import com.wangzhumo.app.webrtc.func.CameraVideoCapturer;
 import com.wangzhumo.app.webrtc.signal.SignalEventListener;
+import com.wangzhumo.app.webrtc.signal.SignalType;
 import com.wangzhumo.app.webrtc.signal.Signaling;
 import org.json.JSONObject;
 import org.webrtc.*;
@@ -218,33 +220,41 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      */
     private void doStartCallRemote() {
         addLocalLogCat("doStartCallRemote 开始与远端建立连接");
-        if (mPeerConnect == null){
+        if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         //建立一个媒体约束,进行媒体协商
         MediaConstraints mediaConstraints = createMediaConstraints();
         //创建一个Offer
-        createLocalOffer(mPeerConnect,mediaConstraints);
+        createLocalOffer(mPeerConnect, mediaConstraints);
     }
 
     /**
      * 创建本地的Offer
      */
     private void createLocalOffer(PeerConnection peerConnection, MediaConstraints mediaConstraints) {
-        peerConnection.createOffer(observerAdapter,mediaConstraints);
+        peerConnection.createOffer(new SdpObserverAdapter() {
+            @Override
+            public void onCreateSuccess(SessionDescription sessionDescription) {
+                mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
+                //创建完毕后传递给远端
+                Signaling.getInstance().sendMessage("type", SignalType.OFFER, "sdp", sessionDescription.description);
+            }
+        }, mediaConstraints);
     }
 
     /**
      * 创建媒体协商的约束
+     *
      * @return MediaConstraints
      */
     private MediaConstraints createMediaConstraints() {
         MediaConstraints mediaConstraints = new MediaConstraints();
         //接收音频/视频
-        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveAudio","true"));
-        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveVideo","true"));
+        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
+        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
         //打开Dtls
-        mediaConstraints.optional.add(new MediaConstraints.KeyValuePair("DtlsSrtpKeyAgreement","true"));
+        mediaConstraints.optional.add(new MediaConstraints.KeyValuePair("DtlsSrtpKeyAgreement", "true"));
         return mediaConstraints;
     }
 
@@ -268,64 +278,73 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private PeerConnection.Observer mPeerObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
-
+            Logger.d("onSignalingChange",signalingState);
         }
 
         @Override
         public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
-
+            Logger.d("onIceConnectionChange",iceConnectionState);
         }
 
         @Override
         public void onIceConnectionReceivingChange(boolean b) {
-
+            Logger.d("onIceConnectionReceivingChange");
         }
 
         @Override
         public void onIceGatheringChange(PeerConnection.IceGatheringState iceGatheringState) {
-
+            Logger.d("onIceGatheringChange",iceGatheringState);
         }
 
         @Override
         public void onIceCandidate(IceCandidate iceCandidate) {
-
+            Logger.d(iceCandidate);
+            //当获取到iceCandidate就发送给对端
+            Signaling.getInstance().sendMessage("type", SignalType.CANDIDATE,
+                    "label", String.valueOf(iceCandidate.sdpMLineIndex),
+                    "id", iceCandidate.sdpMid,
+                    "candidate", iceCandidate.sdp);
         }
 
         @Override
         public void onIceCandidatesRemoved(IceCandidate[] iceCandidates) {
-
+            Logger.d(iceCandidates);
+            mPeerConnect.removeIceCandidates(iceCandidates);
         }
 
         @Override
         public void onAddStream(MediaStream mediaStream) {
-
+            Logger.d(mediaStream);
         }
 
         @Override
         public void onRemoveStream(MediaStream mediaStream) {
-
+            Logger.d(mediaStream);
         }
 
         @Override
         public void onDataChannel(DataChannel dataChannel) {
-
+            Logger.d(dataChannel);
         }
 
         @Override
         public void onRenegotiationNeeded() {
-
+            Logger.d("onRenegotiationNeeded");
         }
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-
-        }
-    };
-
-    private SdpObserverAdapter observerAdapter = new SdpObserverAdapter() {
-        @Override
-        public void onCreateSuccess(SessionDescription sessionDescription) {
-
+            Logger.d("onAddTrack %s",rtpReceiver);
+            for (MediaStream mediaStream : mediaStreams) {
+                Logger.d("onAddTrack MediaStream ID = &s",mediaStream.getId());
+            }
+            //加入轨道
+            MediaStreamTrack track = rtpReceiver.track();
+            if (track instanceof VideoTrack){
+                VideoTrack remoteVideoTrack = (VideoTrack) track;
+                remoteVideoTrack.setEnabled(true);
+                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
+            }
         }
     };
 
@@ -359,20 +378,25 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Override
     public void onUserLeaved(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onUserLeaved : 离开房间 %s", room));
+        mState = CallState.JOINED_UNBIND;
+        //删除
+        if (mPeerConnect != null){
+            mPeerConnect.close();
+            mPeerConnect = null;
+        }
     }
 
     @Override
     public void onRemoteUserJoin(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onRemoteUserJoin : %s 加入了房间 %s", uid, room));
-        if (TextUtils.equals(mState,CallState.JOINED_UNBIND)){
-            if (mPeerConnect == null){
+        if (TextUtils.equals(mState, CallState.JOINED_UNBIND)) {
+            if (mPeerConnect == null) {
                 createPeerConnection(mVideoTrack, mAudioTrack);
             }
             doStartCallRemote();
         }
         mState = CallState.JOINED_CONN;
     }
-
 
 
     @Override
@@ -383,15 +407,101 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Override
     public void onMessage(@NonNull JSONObject message) {
         addLocalLogCat(String.format("onMessage : %s", message.toString()));
+        //与JavaScript一样,针对不同的类型进行处理即可
+        if (message.has("type")){
+            switch (message.optString("type")){
+                case SignalType.ANSWER:
+                    onAnswerReceived(message);
+                    break;
+                case SignalType.OFFER:
+                    onOfferReceived(message);
+                    break;
+                case SignalType.CANDIDATE:
+                    onCandidateReceived(message);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 收到远端candidate
+     * @param message data
+     */
+    private void onCandidateReceived(JSONObject message) {
+        Logger.d("onCandidateReceived");
+        Logger.json(message.toString());
+        IceCandidate candidate = new IceCandidate(
+                message.optString("id"),
+                message.optInt("label"),
+                message.optString("candidate"));
+        mPeerConnect.addIceCandidate(candidate);
+    }
+
+    /**
+     * 收到远端Offer
+     * @param message data
+     */
+    private void onOfferReceived(JSONObject message) {
+        Logger.d("onOfferReceived");
+        Logger.json(message.toString());
+        if (mPeerConnect == null){
+            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        }
+        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER,message.optString("sdp"));
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+
+        //对面传递了一个Offer,那我我们应该回应
+    }
+
+    /**
+     * 收到远端answer
+     * @param message data
+     */
+    private void onAnswerReceived(JSONObject message) {
+        Logger.d("onAnswerReceived");
+        Logger.json(message.toString());
+        SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER,message.optString("sdp"));
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
     }
 
     @Override
     public void onJoinError(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败", uid, room));
+        mState = CallState.LEAVED;
+        //释放两个SurfaceView
+        if (mLocalSurfaceRenderer != null){
+            mLocalSurfaceRenderer.release();
+            mLocalSurfaceRenderer = null;
+        }
+        if (mRemoteSurfaceRenderer != null) {
+            mRemoteSurfaceRenderer.release();
+            mRemoteSurfaceRenderer = null;
+        }
+        //停止摄像头采集
+        if (mVideoCapturer != null){
+            mVideoCapturer.dispose();
+            mVideoCapturer = null;
+        }
+        //销毁帮助类
+        if (mSurfacetureHelper != null) {
+            mSurfacetureHelper.dispose();
+            mSurfacetureHelper = null;
+        }
+        //释放工厂类
+        PeerConnectionFactory.stopInternalTracingCapture();
+        PeerConnectionFactory.shutdownInternalTracer();
+        if (mPeerFactory != null) {
+            mPeerConnect.dispose();
+            mPeerConnect = null;
+        }
+        //退出这个房间
+        RtcCallActivity.this.finish();
     }
 
     @Override
     public void onError(Exception e) {
         addLocalLogCat(String.format("onError :  %s 连接失败", e.getMessage()));
     }
+
+
 }
