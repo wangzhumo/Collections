@@ -179,7 +179,7 @@ def pay = [:]
     //view
     deps.magicIndicator = "com.github.hackware1993:MagicIndicator:$versions.indicator"
     deps.multiType = "me.drakeet.multitype:multitype:$versions.multiType"
-    deps.constraint = "androidx.constraintlayout:constraintlayout:$versions.constraint"
+    deps.constraint = "com.android.support.constraint:constraint-layout:$versions.constraint"
     deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
     deps.kprogress = "com.kaopiz:kprogresshud:$versions.kprogress"
     deps.banner = "com.youth.banner:banner:$versions.banner"

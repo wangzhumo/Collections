@@ -3,9 +3,13 @@ package com.wangzhumo.app.webrtc.page;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +23,11 @@ import com.wangzhumo.app.webrtc.func.CameraVideoCapturer;
 import com.wangzhumo.app.webrtc.signal.SignalEventListener;
 import com.wangzhumo.app.webrtc.signal.SignalType;
 import com.wangzhumo.app.webrtc.signal.Signaling;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import org.json.JSONObject;
 import org.webrtc.*;
 
@@ -43,10 +52,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     public TextView mLocalName;
     public TextView mRemoteName;
     public TextView mLogTextView;
-
+    public ImageButton mBtHangup;
+    private SurfaceViewRenderer mLocalSurfaceRenderer;
+    private SurfaceViewRenderer mRemoteSurfaceRenderer;
 
     //filed
     private VideoFormat mVideoConfig = StreamFormatConfig.VIDEO_NORMAL;
+    private CompositeDisposable mDisposable;
 
     private static final String VIDEO_TRACK_ID = "ARDAMSv0";
     private static final String AUDIO_TRACK_ID = "ARDAMSa0";
@@ -62,8 +74,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private EglBase mRootEglBase;
     //渲染
     private SurfaceTextureHelper mSurfacetureHelper;
-    private SurfaceViewRenderer mLocalSurfaceRenderer;
-    private SurfaceViewRenderer mRemoteSurfaceRenderer;
     //轨道
     private AudioTrack mAudioTrack;
     private VideoTrack mVideoTrack;
@@ -90,6 +100,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mRemoteSurfaceRenderer = findViewById(R.id.remote_surface);
         mLogTextView = findViewById(R.id.log_textview);
         mLogTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mBtHangup = findViewById(R.id.bt_hangup);
+        mBtHangup.setOnClickListener(v -> onClickHangup());
         //初始化一些变量
         mRootEglBase = EglBase.create();
 
@@ -109,6 +121,41 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         Signaling.getInstance().joinRoom(roomAddress, roomName);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mVideoCapturer != null){
+            mVideoCapturer.startCapture(mVideoConfig.getWidth(),mVideoConfig.getHeight(),mVideoConfig.getFps());
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            if (mVideoCapturer != null){
+                mVideoCapturer.stopCapture();
+            }
+        } catch (InterruptedException e) {
+            Logger.e(e,"VideoCapturer#stopCapture");
+        }
+    }
+
+
+    /**
+     * 退出房间
+     */
+    private void onClickHangup() {
+        addLocalLogCat("Hangup Call");
+        if (mPeerConnect == null) {
+            return;
+        }
+        mPeerConnect.close();
+        mPeerConnect = null;
+        addLocalLogCat("Hangup Done");
+        updateCallState(false);
+    }
 
     /**
      * 创建Renderer
@@ -238,13 +285,33 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         }
         //建立一个媒体约束,进行媒体协商
         MediaConstraints mediaConstraints = createMediaConstraints();
-        mPeerConnect.createAnswer(new SdpObserverAdapter(){
+        mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
                 Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
             }
-        },mediaConstraints);
+        }, mediaConstraints);
+
+        updateCallState(true);
+    }
+
+
+    /**
+     * 远端是否可已使用 (一些机型,如果SurfaceView可见且不设置一个Render,会报错崩溃)
+     *
+     * @param enable
+     */
+    private void updateCallState(boolean enable) {
+        Disposable disposable = Observable.just(enable)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        mRemoteSurfaceRenderer.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
+                    }
+                });
+        addDisposable(disposable);
     }
 
     /**
@@ -296,12 +363,12 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private PeerConnection.Observer mPeerObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
-            Logger.d("onSignalingChange",signalingState);
+            Logger.d("onSignalingChange", signalingState);
         }
 
         @Override
         public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
-            Logger.d("onIceConnectionChange",iceConnectionState);
+            Logger.d("onIceConnectionChange", iceConnectionState);
         }
 
         @Override
@@ -311,7 +378,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         @Override
         public void onIceGatheringChange(PeerConnection.IceGatheringState iceGatheringState) {
-            Logger.d("onIceGatheringChange",iceGatheringState);
+            Logger.d("onIceGatheringChange", iceGatheringState);
         }
 
         @Override
@@ -352,13 +419,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-            Logger.d("onAddTrack %s",rtpReceiver);
+            Logger.d("onAddTrack %s", rtpReceiver);
             for (MediaStream mediaStream : mediaStreams) {
-                Logger.d("onAddTrack MediaStream ID = &s",mediaStream.getId());
+                Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
             }
             //加入轨道
             MediaStreamTrack track = rtpReceiver.track();
-            if (track instanceof VideoTrack){
+            if (track instanceof VideoTrack) {
                 VideoTrack remoteVideoTrack = (VideoTrack) track;
                 remoteVideoTrack.setEnabled(true);
                 remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
@@ -398,7 +465,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         addLocalLogCat(String.format("onUserLeaved : 离开房间 %s", room));
         mState = CallState.JOINED_UNBIND;
         //删除
-        if (mPeerConnect != null){
+        if (mPeerConnect != null) {
             mPeerConnect.close();
             mPeerConnect = null;
         }
@@ -426,8 +493,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     public void onMessage(@NonNull JSONObject message) {
         addLocalLogCat(String.format("onMessage : %s", message.toString()));
         //与JavaScript一样,针对不同的类型进行处理即可
-        if (message.has("type")){
-            switch (message.optString("type")){
+        if (message.has("type")) {
+            switch (message.optString("type")) {
                 case SignalType.ANSWER:
                     onAnswerReceived(message);
                     break;
@@ -437,12 +504,18 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 case SignalType.CANDIDATE:
                     onCandidateReceived(message);
                     break;
+                default:
+                    Logger.json(message.toString());
+                    break;
             }
+        } else {
+            Logger.json(message.toString());
         }
     }
 
     /**
      * 收到远端candidate
+     *
      * @param message data
      */
     private void onCandidateReceived(JSONObject message) {
@@ -457,15 +530,16 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     /**
      * 收到远端Offer
+     *
      * @param message data
      */
     private void onOfferReceived(JSONObject message) {
         Logger.d("onOfferReceived");
         Logger.json(message.toString());
-        if (mPeerConnect == null){
+        if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
-        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER,message.optString("sdp"));
+        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
 
         //对面传递了一个Offer,那我我们应该回应
@@ -473,25 +547,50 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
 
-
-
     /**
      * 收到远端answer
+     *
      * @param message data
      */
     private void onAnswerReceived(JSONObject message) {
         Logger.d("onAnswerReceived");
         Logger.json(message.toString());
-        SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER,message.optString("sdp"));
+        SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+
+        //更新状态
+        updateCallState(true);
     }
+
 
     @Override
     public void onJoinError(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败", uid, room));
         mState = CallState.LEAVED;
+        //退出这个房间,onDestroy 会销毁资源
+        RtcCallActivity.this.finish();
+    }
+
+    @Override
+    public void onError(Exception e) {
+        addLocalLogCat(String.format("onError :  %s 连接失败", e.getMessage()));
+    }
+
+    public void addDisposable(Disposable disposable) {
+        if (mDisposable == null) {
+            mDisposable = new CompositeDisposable();
+        }
+        mDisposable.add(disposable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         //释放两个SurfaceView
-        if (mLocalSurfaceRenderer != null){
+        if (mLocalSurfaceRenderer != null) {
             mLocalSurfaceRenderer.release();
             mLocalSurfaceRenderer = null;
         }
@@ -500,7 +599,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             mRemoteSurfaceRenderer = null;
         }
         //停止摄像头采集
-        if (mVideoCapturer != null){
+        if (mVideoCapturer != null) {
             mVideoCapturer.dispose();
             mVideoCapturer = null;
         }
@@ -516,14 +615,5 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             mPeerConnect.dispose();
             mPeerConnect = null;
         }
-        //退出这个房间
-        RtcCallActivity.this.finish();
     }
-
-    @Override
-    public void onError(Exception e) {
-        addLocalLogCat(String.format("onError :  %s 连接失败", e.getMessage()));
-    }
-
-
 }

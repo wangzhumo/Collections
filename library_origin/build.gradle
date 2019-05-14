@@ -30,11 +30,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api deps.support.appCompat
     api deps.support.recyclerview
+    api deps.support.design
     api deps.constraint
     api deps.immersionbar
     api deps.fragmentation
     api deps.logger
     api deps.arouter.arouterApi
     api deps.rxLibs.rxJava
+    api deps.rxLibs.rxAndroid
 }
 
