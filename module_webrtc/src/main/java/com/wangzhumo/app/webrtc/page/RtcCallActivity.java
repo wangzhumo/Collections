@@ -3,12 +3,10 @@ package com.wangzhumo.app.webrtc.page;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -358,6 +356,55 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
     /**
+     * 收到远端candidate
+     *
+     * @param message data
+     */
+    private void onCandidateReceived(JSONObject message) {
+        Logger.d("onCandidateReceived");
+        Logger.json(message.toString());
+        IceCandidate candidate = new IceCandidate(
+                message.optString("id"),
+                message.optInt("label"),
+                message.optString("candidate"));
+        mPeerConnect.addIceCandidate(candidate);
+    }
+
+    /**
+     * 收到远端Offer
+     *
+     * @param message data
+     */
+    private void onOfferReceived(JSONObject message) {
+        Logger.d("onOfferReceived");
+        Logger.json(message.toString());
+        if (mPeerConnect == null) {
+            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        }
+        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+
+        //对面传递了一个Offer,那我我们应该回应
+        doOnRemoteOfferReceived();
+    }
+
+
+    /**
+     * 收到远端answer
+     *
+     * @param message data
+     */
+    private void onAnswerReceived(JSONObject message) {
+        Logger.d("onAnswerReceived");
+        Logger.json(message.toString());
+        SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+
+        //更新状态
+        updateCallState(true);
+    }
+
+    /**
      * PeerConnection的监听
      */
     private PeerConnection.Observer mPeerObserver = new PeerConnection.Observer() {
@@ -385,7 +432,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         public void onIceCandidate(IceCandidate iceCandidate) {
             Logger.d(iceCandidate);
             //当获取到iceCandidate就发送给对端
-            Signaling.getInstance().sendMessage("type", SignalType.CANDIDATE,
+            Signaling.getInstance().sendMessage(
+                    "type", SignalType.CANDIDATE,
                     "label", String.valueOf(iceCandidate.sdpMLineIndex),
                     "id", iceCandidate.sdpMid,
                     "candidate", iceCandidate.sdp);
@@ -455,20 +503,17 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     public void onUserJoined(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onUserJoined : 加入了房间 %s", room));
         //修改状态
-        mState = CallState.JOINED_UNBIND;
+        mState = CallState.JOINED;
         //创建PeerConnecting
-        mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        if (mPeerConnect == null){
+            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        }
     }
 
     @Override
     public void onUserLeaved(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onUserLeaved : 离开房间 %s", room));
-        mState = CallState.JOINED_UNBIND;
-        //删除
-        if (mPeerConnect != null) {
-            mPeerConnect.close();
-            mPeerConnect = null;
-        }
+        mState = CallState.LEAVED;
     }
 
     @Override
@@ -478,15 +523,21 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             if (mPeerConnect == null) {
                 createPeerConnection(mVideoTrack, mAudioTrack);
             }
-            doStartCallRemote();
         }
         mState = CallState.JOINED_CONN;
+        //开始媒体协商
+        doStartCallRemote();
     }
 
 
     @Override
     public void onRemoteUserLeave(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onRemoteUserLeave : %s 离开了房间 %s", uid, room));
+        mState = CallState.JOINED_UNBIND;
+        if (mPeerConnect != null){
+            mPeerConnect.close();
+            mPeerConnect = null;
+        }
     }
 
     @Override
@@ -511,55 +562,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         } else {
             Logger.json(message.toString());
         }
-    }
-
-    /**
-     * 收到远端candidate
-     *
-     * @param message data
-     */
-    private void onCandidateReceived(JSONObject message) {
-        Logger.d("onCandidateReceived");
-        Logger.json(message.toString());
-        IceCandidate candidate = new IceCandidate(
-                message.optString("id"),
-                message.optInt("label"),
-                message.optString("candidate"));
-        mPeerConnect.addIceCandidate(candidate);
-    }
-
-    /**
-     * 收到远端Offer
-     *
-     * @param message data
-     */
-    private void onOfferReceived(JSONObject message) {
-        Logger.d("onOfferReceived");
-        Logger.json(message.toString());
-        if (mPeerConnect == null) {
-            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
-        }
-        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
-
-        //对面传递了一个Offer,那我我们应该回应
-        doOnRemoteOfferReceived();
-    }
-
-
-    /**
-     * 收到远端answer
-     *
-     * @param message data
-     */
-    private void onAnswerReceived(JSONObject message) {
-        Logger.d("onAnswerReceived");
-        Logger.json(message.toString());
-        SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
-
-        //更新状态
-        updateCallState(true);
     }
 
 
@@ -612,8 +614,10 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         PeerConnectionFactory.stopInternalTracingCapture();
         PeerConnectionFactory.shutdownInternalTracer();
         if (mPeerFactory != null) {
-            mPeerConnect.dispose();
-            mPeerConnect = null;
+            mPeerFactory.dispose();
+            mPeerFactory = null;
         }
+        Signaling.getInstance().leaveRoom();
+        Signaling.getInstance().onDestroy();
     }
 }

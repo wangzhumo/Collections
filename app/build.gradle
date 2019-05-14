@@ -81,6 +81,7 @@ dependencies {
     implementation project(":module_jni")
     implementation project(":module_webrtc")
     implementation deps.stdlib
+    implementation deps.constraint
     implementation deps.support.appCompat
     kapt deps.arouter.compiler
     testImplementation 'junit:junit:4.12'
