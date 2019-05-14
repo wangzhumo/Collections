@@ -78,7 +78,7 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":module_base")
-    implementation project(":module_jni")
+    //implementation project(":module_jni")
     implementation project(":module_webrtc")
     implementation deps.stdlib
     implementation deps.constraint

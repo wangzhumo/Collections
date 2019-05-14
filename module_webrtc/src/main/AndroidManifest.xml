@@ -3,9 +3,13 @@
           package="com.wangzhumo.app.webrtc">
 
     <application>
-        <activity android:name=".page.RtcCallActivity">
+        <activity
+                android:launchMode="singleTask"
+                android:name=".page.RtcCallActivity">
         </activity>
-        <activity android:name=".page.WebRtcActivity">
+        <activity
+                android:launchMode="singleTop"
+                android:name=".page.WebRtcActivity">
         </activity>
     </application>
 
