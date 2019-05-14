@@ -3,9 +3,9 @@ package com.wangzhumo.app.webrtc.page;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -13,10 +13,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
 import com.wangzhumo.app.webrtc.R;
+import com.wangzhumo.app.webrtc.func.*;
 import com.wangzhumo.app.webrtc.func.CameraVideoCapturer;
-import com.wangzhumo.app.webrtc.func.StreamFormatConfig;
-import com.wangzhumo.app.webrtc.func.CallState;
-import com.wangzhumo.app.webrtc.func.VideoFormat;
 import com.wangzhumo.app.webrtc.signal.SignalEventListener;
 import com.wangzhumo.app.webrtc.signal.Signaling;
 import org.json.JSONObject;
@@ -61,7 +59,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     //OpenGL ES
     private EglBase mRootEglBase;
     //渲染
-    private SurfaceTextureHelper mSurfaceTureHelper;
+    private SurfaceTextureHelper mSurfacetureHelper;
     private SurfaceViewRenderer mLocalSurfaceRenderer;
     private SurfaceViewRenderer mRemoteSurfaceRenderer;
     //轨道
@@ -112,6 +110,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     /**
      * 创建Renderer
+     *
      * @param mRootEglBase EglBase
      */
     private void initStreamRenderer(EglBase mRootEglBase) {
@@ -135,6 +134,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     /**
      * 创建视屏/音频轨道
+     *
      * @param peerConnectionFactory peerConnectionFactory
      */
     private void initStreamTracks(PeerConnectionFactory peerConnectionFactory) {
@@ -142,11 +142,12 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mVideoCapturer = CameraVideoCapturer.createCapturer(RtcCallActivity.this);
 
         //创建视屏源
-        mSurfaceTureHelper = SurfaceTextureHelper.create("CaptureThread", mRootEglBase.getEglBaseContext());
+        mSurfacetureHelper = SurfaceTextureHelper.create("CaptureThread", mRootEglBase.getEglBaseContext());
 
+        //isScreencast 是否屏幕
         VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
         //初始化捕捉
-        mVideoCapturer.initialize(mSurfaceTureHelper, getApplicationContext(), videoSource.getCapturerObserver());
+        mVideoCapturer.initialize(mSurfacetureHelper, getApplicationContext(), videoSource.getCapturerObserver());
 
         /*创建Tracks*/
         mVideoTrack = peerConnectionFactory.createVideoTrack(VIDEO_TRACK_ID, videoSource);
@@ -161,10 +162,11 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     /**
      * 创建一个PeerConnectionFactory
+     *
      * @param context ctx
      * @return PeerConnectionFactory
      */
-    private PeerConnectionFactory createPeerFactory(EglBase context){
+    private PeerConnectionFactory createPeerFactory(EglBase context) {
         PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(getApplicationContext())
                 .setEnableInternalTracer(true).createInitializationOptions());
         VideoDecoderFactory videoDecoderFactory = new DefaultVideoDecoderFactory(context.getEglBaseContext());
@@ -182,7 +184,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     /**
      * 创建PeerConnection
      */
-    private PeerConnection createPeerConnection(VideoTrack videoTrack,AudioTrack audioTrack) {
+    private PeerConnection createPeerConnection(VideoTrack videoTrack, AudioTrack audioTrack) {
         //准备ICE - Server
         LinkedList<PeerConnection.IceServer> iceServers = new LinkedList<>();
         PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
@@ -199,7 +201,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         //创建PeerConnection
         PeerConnection peerConnect = mPeerFactory.createPeerConnection(rtcConfiguration, mPeerObserver);
-        if (peerConnect == null ){
+        if (peerConnect == null) {
             Log.e(TAG, "createPeerConnection: 创建失败");
             return null;
         }
@@ -211,12 +213,48 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
 
+    /**
+     * 开始于远端建立连接,推送数据
+     */
+    private void doStartCallRemote() {
+        addLocalLogCat("doStartCallRemote 开始与远端建立连接");
+        if (mPeerConnect == null){
+            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        }
+        //建立一个媒体约束,进行媒体协商
+        MediaConstraints mediaConstraints = createMediaConstraints();
+        //创建一个Offer
+        createLocalOffer(mPeerConnect,mediaConstraints);
+    }
+
+    /**
+     * 创建本地的Offer
+     */
+    private void createLocalOffer(PeerConnection peerConnection, MediaConstraints mediaConstraints) {
+        peerConnection.createOffer(observerAdapter,mediaConstraints);
+    }
+
+    /**
+     * 创建媒体协商的约束
+     * @return MediaConstraints
+     */
+    private MediaConstraints createMediaConstraints() {
+        MediaConstraints mediaConstraints = new MediaConstraints();
+        //接收音频/视频
+        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveAudio","true"));
+        mediaConstraints.mandatory.add(new MediaConstraints.KeyValuePair("OfferToReceiveVideo","true"));
+        //打开Dtls
+        mediaConstraints.optional.add(new MediaConstraints.KeyValuePair("DtlsSrtpKeyAgreement","true"));
+        return mediaConstraints;
+    }
+
+
     private StringBuffer stringBuffer;
 
     /**
      * 把Log显示到桌面上
      */
-    private void addLocalLogCat(String message){
+    private void addLocalLogCat(String message) {
         if (stringBuffer == null) {
             stringBuffer = new StringBuffer();
         }
@@ -224,6 +262,9 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mLogTextView.setText(stringBuffer.toString());
     }
 
+    /**
+     * PeerConnection的监听
+     */
     private PeerConnection.Observer mPeerObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
@@ -281,6 +322,16 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         }
     };
 
+    private SdpObserverAdapter observerAdapter = new SdpObserverAdapter() {
+        @Override
+        public void onCreateSuccess(SessionDescription sessionDescription) {
+
+        }
+    };
+
+
+    //--------------信令服务器------------------
+
     @Override
     public void onConnected() {
         addLocalLogCat("onConnected");
@@ -298,40 +349,49 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     @Override
     public void onUserJoined(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onUserJoined : 加入了房间 %s",room));
+        addLocalLogCat(String.format("onUserJoined : 加入了房间 %s", room));
         //修改状态
-        mState = CallState.JOINED;
+        mState = CallState.JOINED_UNBIND;
         //创建PeerConnecting
-        mPeerConnect =  createPeerConnection(mVideoTrack,mAudioTrack);
+        mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
     }
 
     @Override
     public void onUserLeaved(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onUserLeaved : 离开房间 %s",room));
+        addLocalLogCat(String.format("onUserLeaved : 离开房间 %s", room));
     }
 
     @Override
     public void onRemoteUserJoin(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onRemoteUserJoin : %s 离开了房间 %s",uid,room));
+        addLocalLogCat(String.format("onRemoteUserJoin : %s 加入了房间 %s", uid, room));
+        if (TextUtils.equals(mState,CallState.JOINED_UNBIND)){
+            if (mPeerConnect == null){
+                createPeerConnection(mVideoTrack, mAudioTrack);
+            }
+            doStartCallRemote();
+        }
+        mState = CallState.JOINED_CONN;
     }
+
+
 
     @Override
     public void onRemoteUserLeave(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onRemoteUserLeave : %s 加入了房间 %s",uid,room));
+        addLocalLogCat(String.format("onRemoteUserLeave : %s 离开了房间 %s", uid, room));
     }
 
     @Override
     public void onMessage(@NonNull JSONObject message) {
-        addLocalLogCat(String.format("onMessage : %s",message.toString()));
+        addLocalLogCat(String.format("onMessage : %s", message.toString()));
     }
 
     @Override
     public void onJoinError(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败",uid,room));
+        addLocalLogCat(String.format("onJoinError : %s 加入房间 %s 失败", uid, room));
     }
 
     @Override
     public void onError(Exception e) {
-        addLocalLogCat(String.format("onError :  %s 连接失败",e.getMessage()));
+        addLocalLogCat(String.format("onError :  %s 连接失败", e.getMessage()));
     }
 }
