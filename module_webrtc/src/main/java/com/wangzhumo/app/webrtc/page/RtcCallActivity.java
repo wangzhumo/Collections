@@ -230,6 +230,24 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     }
 
     /**
+     * 收到了远端的Offer,应该回应一个answer
+     */
+    private void doOnRemoteOfferReceived() {
+        if (mPeerConnect != null) {
+            mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
+        }
+        //建立一个媒体约束,进行媒体协商
+        MediaConstraints mediaConstraints = createMediaConstraints();
+        mPeerConnect.createAnswer(new SdpObserverAdapter(){
+            @Override
+            public void onCreateSuccess(SessionDescription sessionDescription) {
+                mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
+                Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
+            }
+        },mediaConstraints);
+    }
+
+    /**
      * 创建本地的Offer
      */
     private void createLocalOffer(PeerConnection peerConnection, MediaConstraints mediaConstraints) {
@@ -451,7 +469,11 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
 
         //对面传递了一个Offer,那我我们应该回应
+        doOnRemoteOfferReceived();
     }
+
+
+
 
     /**
      * 收到远端answer
