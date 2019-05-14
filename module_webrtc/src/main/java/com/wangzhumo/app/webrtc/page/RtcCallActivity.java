@@ -242,7 +242,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
-                Logger.d(sessionDescription);
                 Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
             }
         },mediaConstraints);
