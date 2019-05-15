@@ -535,7 +535,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     @Override
     public void onRemoteUserJoin(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onRemoteUserJoin : %s 加入了房间 %s", uid, room));
         if (TextUtils.equals(mState, CallState.JOINED_UNBIND)) {
             if (mPeerConnect == null) {
                 createPeerConnection(mVideoTrack, mAudioTrack);
