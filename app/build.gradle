@@ -61,6 +61,13 @@ android {
         exclude 'META-INF/androidx.core_core.version'
     }
 
+    android {
+        sourceSets {
+            main.jniLibs.srcDirs = ['libs']
+        }
+    }
+
+
     compileOptions {
         sourceCompatibility = JDK_VERSION
         targetCompatibility = JDK_VERSION

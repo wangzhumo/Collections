@@ -95,6 +95,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mLocalSurfaceRenderer = findViewById(R.id.local_surface);
         mRemoteName = findViewById(R.id.remote_name);
         mRemoteSurfaceRenderer = findViewById(R.id.remote_surface);
+        mRemoteSurfaceRenderer.setVisibility(View.GONE);
+
         mLogTextView = findViewById(R.id.log_textview);
         mLogTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
         mBtHangup = findViewById(R.id.bt_hangup);
@@ -281,7 +283,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         //建立一个媒体约束,进行媒体协商
-        MediaConstraints mediaConstraints = createMediaConstraints();
+        MediaConstraints mediaConstraints = new MediaConstraints();
         mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -291,6 +293,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 Logger.d("创建Answer成功,发送到对面去");
                 addLocalLogCat("创建Answer成功,发送到对面去");
                 Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
+            }
+
+            @Override
+            public void onCreateFailure(String s) {
+                super.onCreateFailure(s);
+                Logger.d("创建Answer失败" + s);
+                addLocalLogCat("创建Answer失败" + s);
             }
         }, mediaConstraints);
 
@@ -330,6 +339,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 Logger.d("创建一个Offer成功,发送Offer给对方.");
                 addLocalLogCat("创建一个Offer成功,发送Offer给对方");
                 Signaling.getInstance().sendMessage("type", SignalType.OFFER, "sdp", sessionDescription.description);
+            }
+
+            @Override
+            public void onCreateFailure(String s) {
+                super.onCreateFailure(s);
+                addLocalLogCat("创建一个Offer失败" + s);
+                Logger.d("创建一个Offer失败" + s);
             }
         }, mediaConstraints);
     }
@@ -392,7 +408,21 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         Logger.d("收到对方的Offer,首先 setRemoteDescription");
         addLocalLogCat("收到对方的Offer,首先 setRemoteDescription");
         SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(){
+            @Override
+            public void onSetFailure(String s) {
+                super.onSetFailure(s);
+                addLocalLogCat("设置setRemoteDescription失败"+s);
+                Logger.e("设置setRemoteDescription失败"+s);
+            }
+
+            @Override
+            public void onSetSuccess() {
+                super.onSetSuccess();
+                addLocalLogCat("设置setRemoteDescription成功");
+                Logger.e("设置setRemoteDescription成功");
+            }
+        }, description);
 
         //对面传递了一个Offer,那我我们应该回应
         Logger.d("收到对方的Offer,创建一个Answer给对方");
@@ -410,7 +440,21 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         addLocalLogCat("收到对面的Answer,加入到 setRemoteDescription");
         Logger.json(message.toString());
         SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(){
+            @Override
+            public void onSetSuccess() {
+                super.onSetSuccess();
+                Logger.e("设置setRemoteDescription成功");
+                addLocalLogCat("设置setRemoteDescription成功");
+            }
+
+            @Override
+            public void onSetFailure(String s) {
+                super.onSetFailure(s);
+                Logger.e("设置setRemoteDescription失败"+s);
+                addLocalLogCat("设置setRemoteDescription失败" + s);
+            }
+        }, description);
 
         //更新状态
         updateCallState(true);
@@ -454,7 +498,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         @Override
         public void onIceCandidatesRemoved(IceCandidate[] iceCandidates) {
-            Logger.d(iceCandidates);
+            Logger.e("onIceCandidatesRemoved");
+            addLocalLogCat("onIceCandidatesRemoved");
             mPeerConnect.removeIceCandidates(iceCandidates);
         }
 
@@ -476,23 +521,26 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         @Override
         public void onRenegotiationNeeded() {
             Logger.d("onRenegotiationNeeded");
+            addLocalLogCat("onRenegotiationNeeded");
         }
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
             Logger.d("收到对端的Track数据");
-            for (MediaStream mediaStream : mediaStreams) {
-                Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
-            }
-            //加入轨道
-            MediaStreamTrack track = rtpReceiver.track();
-            if (track instanceof VideoTrack) {
-                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
-                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
-                VideoTrack remoteVideoTrack = (VideoTrack) track;
-                remoteVideoTrack.setEnabled(true);
-                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
-            }
+            addLocalLogCat("收到对端的Track数据");
+
+//            for (MediaStream mediaStream : mediaStreams) {
+//                Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
+//            }
+//            //加入轨道
+//            MediaStreamTrack track = rtpReceiver.track();
+//            if (track instanceof VideoTrack) {
+//                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
+//                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
+//                VideoTrack remoteVideoTrack = (VideoTrack) track;
+//                remoteVideoTrack.setEnabled(true);
+//                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
+//            }
         }
     };
 
