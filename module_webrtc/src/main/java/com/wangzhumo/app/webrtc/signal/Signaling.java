@@ -1,11 +1,8 @@
 package com.wangzhumo.app.webrtc.signal;
 
-import android.util.Log;
-import com.orhanobut.logger.Logger;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -18,8 +15,6 @@ import java.util.List;
  * @author 王诛魔 2019-04-20  13:37
  */
 public class Signaling {
-
-    private static final String TAG = "Signaling";
 
     private Socket mSocket;
     private String mRoomName;
@@ -50,7 +45,6 @@ public class Signaling {
      * @param room    房间名字
      */
     public boolean joinRoom(String address, String room) {
-        Log.d(TAG, "joinRoom() called with: address = [" + address + "], room = [" + room + "]");
         mState = SignalState.CONNECT;
         //开始链接
         try {
@@ -58,7 +52,6 @@ public class Signaling {
             mSocket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            Log.e(TAG, "joinRoom: connect", e);
             mState = SignalState.IDLE;
             return false;
         }
@@ -85,7 +78,11 @@ public class Signaling {
         socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.e(TAG, "onConnectError: " + args);
+                if (mSignalListener != null && !mSignalListener.isEmpty()) {
+                    for (SignalEventListener signalEventListener : mSignalListener) {
+                        signalEventListener.onError(new RuntimeException("Connect Error."));
+                    }
+                }
             }
         });
 
@@ -101,21 +98,17 @@ public class Signaling {
                         }
                     }
                 }
-                Log.e(TAG, "onError: " + args);
             }
         });
 
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                String sessionId = socket.id();
-
                 if (mSignalListener != null && !mSignalListener.isEmpty()) {
                     for (SignalEventListener signalEventListener : mSignalListener) {
                         signalEventListener.onConnected();
                     }
                 }
-                Log.i(TAG, "onConnected  sessionId = " + sessionId);
             }
         });
 
@@ -127,7 +120,6 @@ public class Signaling {
                         signalEventListener.onConnecting();
                     }
                 }
-                Log.e(TAG, "onConnecting");
             }
         });
 
@@ -139,7 +131,6 @@ public class Signaling {
                         signalEventListener.onDisconnect();
                     }
                 }
-                Log.e(TAG, "onDisconnected");
             }
         });
 
@@ -153,7 +144,6 @@ public class Signaling {
                         signalEventListener.onUserJoined(room_name, user_id);
                     }
                 }
-                Log.d(TAG, "RECEIVE_JOINED: roomName = [" + room_name + "]   userId = [" + user_id + "]");
             }
         });
 
@@ -167,7 +157,6 @@ public class Signaling {
                         signalEventListener.onUserLeaved(room_name, user_id);
                     }
                 }
-                Log.d(TAG, "RECEIVE_LEAVED: roomName = [" + room_name + "]   userId = [" + user_id + "]");
                 onDestroy();
             }
         });
@@ -183,7 +172,6 @@ public class Signaling {
                         signalEventListener.onRemoteUserJoin(roomName, userId);
                     }
                 }
-                Log.e(TAG, "onRemoteUserJoined, room:" + roomName + "uid:" + userId);
             }
         });
 
@@ -197,7 +185,6 @@ public class Signaling {
                         signalEventListener.onRemoteUserLeave(roomName, userId);
                     }
                 }
-                Log.e(TAG, "onRemoteUserLeaved, room:" + roomName + "uid:" + userId);
 
             }
         });
@@ -215,7 +202,6 @@ public class Signaling {
                         signalEventListener.onJoinError(roomName, userId);
                     }
                 }
-                Log.e(TAG, "onRoomFull, room:" + roomName + "uid:" + userId);
             }
         });
 
@@ -229,7 +215,6 @@ public class Signaling {
                         signalEventListener.onMessage(msg);
                     }
                 }
-                Log.e(TAG, "onMessage, room:" + roomName + "data:" + msg);
 
             }
         });
@@ -248,7 +233,6 @@ public class Signaling {
                 }
                 if (mSocket != null){
                     mSocket.send(jsonObject);
-                    Logger.json(jsonObject.toString());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -268,7 +252,6 @@ public class Signaling {
      */
     public boolean leaveRoom() {
         if (mSocket == null) {
-            Log.e(TAG, "leaveRoom: Socket is Null");
             mState = SignalState.ERROR;
             return false;
         }
