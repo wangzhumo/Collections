@@ -386,7 +386,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * @param message data
      */
     private void onOfferReceived(JSONObject message) {
-
         Logger.json(message.toString());
         if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
