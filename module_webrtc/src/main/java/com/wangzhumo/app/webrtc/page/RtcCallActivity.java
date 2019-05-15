@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -249,7 +248,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         //创建PeerConnection
         PeerConnection peerConnect = mPeerFactory.createPeerConnection(rtcConfiguration, mPeerObserver);
         if (peerConnect == null) {
-            Log.e(TAG, "createPeerConnection: 创建失败");
+            Logger.e("createPeerConnection: 创建失败");
             return null;
         }
 
@@ -264,8 +263,9 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * 开始于远端建立连接,推送数据
      */
     private void doStartCallRemote() {
-        addLocalLogCat("doStartCallRemote 开始与远端建立连接");
+        addLocalLogCat("对方加入,开始媒体协商,创建 Offer");
         if (mPeerConnect == null) {
+            Logger.e("如果mPeerConnect为Null,则创建PeerConnection");
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         //建立一个媒体约束,进行媒体协商
@@ -286,7 +286,9 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
+                Logger.d("创建Answer成功,设置到setLocalDescription");
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
+                Logger.d("创建Answer成功,发送到对面去");
                 Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
             }
         }, mediaConstraints);
@@ -316,11 +318,14 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * 创建本地的Offer
      */
     private void createLocalOffer(PeerConnection peerConnection, MediaConstraints mediaConstraints) {
+        Logger.d("收到对端加入频道后,创建一个Offer给对方.");
         peerConnection.createOffer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
+                Logger.d("创建一个Offer成功,并且 setLocalDescription");
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
                 //创建完毕后传递给远端
+                Logger.d("创建一个Offer成功,发送Offer给对方.");
                 Signaling.getInstance().sendMessage("type", SignalType.OFFER, "sdp", sessionDescription.description);
             }
         }, mediaConstraints);
@@ -361,7 +366,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * @param message data
      */
     private void onCandidateReceived(JSONObject message) {
-        Logger.d("onCandidateReceived");
+        Logger.d("收到对面的Candidate,加入到 addIceCandidate");
         Logger.json(message.toString());
         IceCandidate candidate = new IceCandidate(
                 message.optString("id"),
@@ -376,15 +381,17 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * @param message data
      */
     private void onOfferReceived(JSONObject message) {
-        Logger.d("onOfferReceived");
+
         Logger.json(message.toString());
         if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
+        Logger.d("收到对方的Offer,首先 setRemoteDescription");
         SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
 
         //对面传递了一个Offer,那我我们应该回应
+        Logger.d("收到对方的Offer,创建一个Answer给对方");
         doOnRemoteOfferReceived();
     }
 
@@ -395,7 +402,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * @param message data
      */
     private void onAnswerReceived(JSONObject message) {
-        Logger.d("onAnswerReceived");
+        Logger.d("收到对面的Answer,加入到 setRemoteDescription");
         Logger.json(message.toString());
         SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(), description);
@@ -430,7 +437,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         @Override
         public void onIceCandidate(IceCandidate iceCandidate) {
-            Logger.d(iceCandidate);
+            Logger.d("本地的IceCandidate获取,发送给对端.");
             //当获取到iceCandidate就发送给对端
             Signaling.getInstance().sendMessage(
                     "type", SignalType.CANDIDATE,
@@ -467,13 +474,14 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-            Logger.d("onAddTrack %s", rtpReceiver);
+            Logger.d("收到对端的Track数据");
             for (MediaStream mediaStream : mediaStreams) {
                 Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
             }
             //加入轨道
             MediaStreamTrack track = rtpReceiver.track();
             if (track instanceof VideoTrack) {
+                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
                 VideoTrack remoteVideoTrack = (VideoTrack) track;
                 remoteVideoTrack.setEnabled(true);
                 remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
@@ -506,6 +514,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mState = CallState.JOINED;
         //创建PeerConnecting
         if (mPeerConnect == null){
+            Logger.d("本地加入频道成,生成一个PeerConnection");
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
     }
@@ -526,6 +535,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         }
         mState = CallState.JOINED_CONN;
         //开始媒体协商
+        Logger.d("对端有人加入,可以开始媒体协商");
         doStartCallRemote();
     }
 
@@ -542,7 +552,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     @Override
     public void onMessage(@NonNull JSONObject message) {
-        addLocalLogCat(String.format("onMessage : %s", message.toString()));
         //与JavaScript一样,针对不同的类型进行处理即可
         if (message.has("type")) {
             switch (message.optString("type")) {
