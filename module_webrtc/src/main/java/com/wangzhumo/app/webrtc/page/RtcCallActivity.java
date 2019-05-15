@@ -445,6 +445,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         @Override
         public void onIceCandidate(IceCandidate iceCandidate) {
             Logger.d("本地的IceCandidate获取,发送给对端.");
+            addLocalLogCat("本地的IceCandidate获取,发送给对端");
             //当获取到iceCandidate就发送给对端
             Signaling.getInstance().sendMessage(
                     "type", SignalType.CANDIDATE,
