@@ -236,7 +236,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 .setUsername("wangzhumo")
                 .setPassword("wangzhumo")
                 .createIceServer();
-
         iceServers.add(myIceServer);
         //增加了一种candidate
         PeerConnection.RTCConfiguration rtcConfiguration = new PeerConnection.RTCConfiguration(iceServers);
