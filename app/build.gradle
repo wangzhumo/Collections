@@ -13,6 +13,10 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode gitCommitCount()
         versionName VERSION_NAME
+
+        ndk{
+            abiFilters  "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -86,3 +90,4 @@ dependencies {
     kapt deps.arouter.compiler
     testImplementation 'junit:junit:4.12'
 }
+
