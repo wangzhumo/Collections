@@ -517,12 +517,12 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
     @Override
     public void onUserJoined(@NonNull String room, @NonNull String uid) {
-        addLocalLogCat(String.format("onUserJoined : 加入了房间 %s", room));
         //修改状态
         mState = CallState.JOINED;
         //创建PeerConnecting
         if (mPeerConnect == null){
             Logger.d("加入频道成,生成一个PeerConnection");
+            addLocalLogCat("加入频道成,生成一个PeerConnection");
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
     }
