@@ -1,5 +1,6 @@
 package com.wangzhumo.app.webrtc.signal;
 
+import com.orhanobut.logger.Logger;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -64,6 +65,52 @@ public class Signaling {
 
         //发送进入房间的请求
         mSocket.emit(Action.REQUEST_JOIN, mRoomName);
+        //注册监听
+        return true;
+    }
+
+    /**
+     * 发送消息
+     * @param args  key-value
+     */
+    public void sendMessage(String ...args) {
+        if (args != null && args.length > 0){
+            try {
+                JSONObject jsonObject = new JSONObject();
+                for (int i = 0; i < args.length; i+=2) {
+                    jsonObject.put(args[i],args[i+1]);
+                }
+                Logger.json(jsonObject.toString());
+                if (mSocket != null){
+                    mSocket.emit(Action.RECEIVE_MESSAGE,mRoomName,jsonObject);
+                    if (mSignalListener != null && !mSignalListener.isEmpty()) {
+                        for (SignalEventListener signalEventListener : mSignalListener) {
+                            signalEventListener.onSend(jsonObject.optString("type","Normal Message."));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (mSignalListener != null && !mSignalListener.isEmpty()) {
+                    for (SignalEventListener signalEventListener : mSignalListener) {
+                        signalEventListener.onError(e);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 离开房间
+     */
+    public boolean leaveRoom() {
+        if (mSocket == null) {
+            mState = SignalState.ERROR;
+            return false;
+        }
+
+        //发送退出房间的请求
+        mSocket.emit(Action.REQUEST_EXIT, mRoomName);
         //注册监听
         return true;
     }
@@ -157,7 +204,6 @@ public class Signaling {
                         signalEventListener.onUserLeaved(room_name, user_id);
                     }
                 }
-                onDestroy();
             }
         });
 
@@ -194,7 +240,6 @@ public class Signaling {
             public void call(Object... args) {
                 //释放资源
                 onDestroy();
-
                 String roomName = (String) args[0];
                 String userId = (String) args[1];
                 if (mSignalListener != null && !mSignalListener.isEmpty()) {
@@ -220,53 +265,14 @@ public class Signaling {
         });
     }
 
-    /**
-     * 发送消息
-     * @param args  key-value
-     */
-    public void sendMessage(String ...args) {
-        if (args != null && args.length > 0){
-            try {
-                JSONObject jsonObject = new JSONObject();
-                for (int i = 0; i < args.length; i+=2) {
-                    jsonObject.put(args[i],args[i+1]);
-                }
-                if (mSocket != null){
-                    mSocket.send(jsonObject);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (mSignalListener != null && !mSignalListener.isEmpty()) {
-                    for (SignalEventListener signalEventListener : mSignalListener) {
-                        signalEventListener.onError(e);
-                    }
-                }
-            }
 
-
-        }
-    }
-
-    /**
-     * 离开房间
-     */
-    public boolean leaveRoom() {
-        if (mSocket == null) {
-            mState = SignalState.ERROR;
-            return false;
-        }
-
-        //发送退出房间的请求
-        mSocket.emit(Action.REQUEST_EXIT, mRoomName);
-        //注册监听
-        return true;
-    }
 
 
     /**
      * 注销
      */
     public void onDestroy() {
+        Logger.e("Signaling Destroy.");
         if (mSocket != null) {
             mSocket.disconnect();
             mSocket.close();

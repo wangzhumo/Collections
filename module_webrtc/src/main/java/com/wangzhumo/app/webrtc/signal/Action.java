@@ -15,7 +15,7 @@ public interface Action {
     /**
      * 请求退出
      */
-    String REQUEST_EXIT = "exit";
+    String REQUEST_EXIT = "leave";
 
 
     /**

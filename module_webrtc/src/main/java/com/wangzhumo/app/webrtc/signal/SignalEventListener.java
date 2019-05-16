@@ -21,4 +21,5 @@ public interface SignalEventListener {
     void onMessage(JSONObject message);   //发送来消息
     void onJoinError(String room,String uid);   //房间加入失败
     void onError(Exception e);   //建立连接失败
+    void onSend(String type); //发送消息
 }

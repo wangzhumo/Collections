@@ -529,18 +529,18 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             Logger.d("收到对端的Track数据");
             addLocalLogCat("收到对端的Track数据");
 
-//            for (MediaStream mediaStream : mediaStreams) {
-//                Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
-//            }
-//            //加入轨道
-//            MediaStreamTrack track = rtpReceiver.track();
-//            if (track instanceof VideoTrack) {
-//                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
-//                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
-//                VideoTrack remoteVideoTrack = (VideoTrack) track;
-//                remoteVideoTrack.setEnabled(true);
-//                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
-//            }
+            for (MediaStream mediaStream : mediaStreams) {
+                Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
+            }
+            //加入轨道
+            MediaStreamTrack track = rtpReceiver.track();
+            if (track instanceof VideoTrack) {
+                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
+                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
+                VideoTrack remoteVideoTrack = (VideoTrack) track;
+                remoteVideoTrack.setEnabled(true);
+                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
+            }
         }
     };
 
@@ -640,6 +640,11 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Override
     public void onError(Exception e) {
         addLocalLogCat(String.format("onError :  %s 连接失败", e.getMessage()));
+    }
+
+    @Override
+    public void onSend(String type) {
+        addLocalLogCat(String.format("Send Message : %s",type));
     }
 
     public void addDisposable(Disposable disposable) {
