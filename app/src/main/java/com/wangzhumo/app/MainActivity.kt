@@ -15,7 +15,7 @@ class MainActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         ARouter.getInstance()
-            .build(IRoute.WEBRTC_MAIN)
+            .build(IRoute.FRAME_ACTIVITY)
             .navigation()
     }
 }

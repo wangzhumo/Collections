@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/image_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="30dp"
+        android:src="@mipmap/killer_ic_battle_succeed_blue" />
+
+
+    <FrameLayout
+        android:id="@+id/image_red_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:src="@mipmap/killer_ic_battle_succeed_red" />
+
+        <ImageView
+            android:id="@+id/iv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/killer_ic_battle_succeed_text" />
+    </FrameLayout>
+
+</FrameLayout>

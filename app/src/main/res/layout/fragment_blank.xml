@@ -1,16 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/black_30"
-             tools:context=".BlankFragment">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="225dp">
 
-    <TextView android:layout_width="wrap_content"
-              android:text="@string/app_name"
-              android:textSize="26sp"
-              android:layout_gravity="center"
-              android:textColor="@color/colorAccent"
-              android:layout_height="wrap_content"/>
+        <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/killer_ic_all_fail_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
+        <ImageView
+                android:id="@+id/iv_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:src="@mipmap/killer_ic_all_fail_text"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="40dp"
+                  android:layout_gravity="bottom"
+                  android:layout_marginBottom="150dp">
+        <TextView
+                android:id="@+id/tv_stiffness"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"/>
+
+        <TextView
+                android:id="@+id/tv_damping"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"/>
+
+        <Button
+                android:id="@+id/bt_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"/>
+    </LinearLayout>
+    <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/stiffness"
+            android:max="10000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="45dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/damping_ratio"
+            android:max="10"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="105dp"/>
 </FrameLayout>
