@@ -13,10 +13,6 @@ class FrameLayoutActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
 
-        val fragment = BlankFragment()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.frameLayout,fragment)
-            .commit()
+        BattleSucceedDialog().show(supportFragmentManager, R.id.frameLayout)
     }
 }

@@ -2,7 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <ImageView
         android:id="@+id/image_blue"
         android:layout_width="match_parent"
@@ -30,4 +30,44 @@
             android:src="@mipmap/killer_ic_battle_succeed_text" />
     </FrameLayout>
 
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="40dp"
+                  android:layout_gravity="bottom"
+                  android:layout_marginBottom="150dp">
+        <TextView
+                android:id="@+id/tv_stiffness"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"/>
+
+        <TextView
+                android:id="@+id/tv_damping"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"/>
+
+        <Button
+                android:id="@+id/bt_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"/>
+    </LinearLayout>
+    <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/stiffness"
+            android:max="10000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="45dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/damping_ratio"
+            android:max="10"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="105dp"/>
 </FrameLayout>
