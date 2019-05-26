@@ -13,6 +13,6 @@ class FrameLayoutActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
 
-        BattleSucceedDialog().show(supportFragmentManager, R.id.frameLayout)
+        AllSingFailDialog().show(supportFragmentManager, R.id.frameLayout)
     }
 }

@@ -1,34 +1,26 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
-import android.support.animation.FloatValueHolder
 import android.support.animation.SpringAnimation
 import android.support.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import com.wangzhumo.app.base.DensityUtils
-import kotlinx.android.synthetic.main.fragment_blank.*
-import kotlinx.android.synthetic.main.fragment_blank.bt_start
-import kotlinx.android.synthetic.main.fragment_blank.damping_ratio
-import kotlinx.android.synthetic.main.fragment_blank.stiffness
-import kotlinx.android.synthetic.main.fragment_blank.tv_damping
-import kotlinx.android.synthetic.main.fragment_blank.tv_stiffness
-import kotlinx.android.synthetic.main.killer_dialog_battle_succeed.*
+import kotlinx.android.synthetic.main.killer_view_area_success.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
- * @author 王诛魔 2019-05-24  21:28
+ * @author 王诛魔 2019-05-26  11:31
  */
+class AllSingFailDialog : BaseAnimFragment(){
 
-class BattleSucceedDialog : BaseAnimFragment(){
-
-    var dampingProgress: Float = SpringForce.DAMPING_RATIO_HIGH_BOUNCY
-    var stiffnessProgress: Float = SpringForce.STIFFNESS_MEDIUM
+    var dampingProgress: Float = 0.4F
+    var stiffnessProgress: Float = 600F
 
 
-    override fun getLayoutId(): Int = R.layout.killer_dialog_battle_succeed
+    override fun getLayoutId(): Int = R.layout.killer_view_area_success
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,19 +58,22 @@ class BattleSucceedDialog : BaseAnimFragment(){
         })
     }
 
-
     private fun startAnim(damping: Float, stiffness: Float) {
         val force = SpringForce(0f)
+            .setDampingRatio(0.4F)
+            .setStiffness(600F)
+
+        val force2 = SpringForce(0f)
             .setDampingRatio(damping)
             .setStiffness(stiffness)
 
-        val animationRed = SpringAnimation(image_blue,SpringAnimation.TRANSLATION_X)
-            .setSpring(force)
-            .setStartValue(-DensityUtils.dp2px(context, 225F).toFloat())
-        val animationBlue = SpringAnimation(image_red_layout,SpringAnimation.TRANSLATION_X)
+        val animationBg = SpringAnimation(killer_bg, SpringAnimation.TRANSLATION_X)
             .setSpring(force)
             .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
-        animationRed.start()
-        animationBlue.start()
+        val animationText= SpringAnimation(killer_text, SpringAnimation.TRANSLATION_X)
+            .setSpring(force2)
+            .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
+        animationBg.start()
+        animationText.start()
     }
 }

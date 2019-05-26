@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="100dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_marginStart="@dimen/margin_15"
+             android:layout_marginEnd="@dimen/margin_15"
+             android:paddingTop="100dp"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
     <ImageView
-            android:id="@+id/image_blue"
-            android:layout_width="match_parent"
+            android:id="@+id/killer_bg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="30dp"
-            android:src="@mipmap/killer_ic_battle_succeed_blue"/>
+            android:background="@mipmap/killer_ic_sing_succeed_bg"
+            android:layout_gravity="center_horizontal"/>
 
-
-    <FrameLayout
-            android:id="@+id/image_red_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <ImageView
-                android:id="@+id/imageRed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="30dp"
-                android:src="@mipmap/killer_ic_battle_succeed_red"/>
-
-        <ImageView
-                android:id="@+id/iv_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@mipmap/killer_ic_battle_succeed_text"/>
-    </FrameLayout>
+    <ImageView
+            android:id="@+id/killer_text"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/killer_ic_sing_succeed_text"
+            android:layout_gravity="center_horizontal"/>
 
 
     <LinearLayout android:layout_width="match_parent"
