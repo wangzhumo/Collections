@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion COMPILE_SDK_VERSION as int
 
     defaultConfig {
-        minSdkVersion 22
-        targetSdkVersion 28
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        versionName VERSION_NAME
     }
 
     buildTypes {
@@ -21,13 +21,27 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JDK_VERSION
+        targetCompatibility = JDK_VERSION
+    }
+}
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "com.android.support:support-dynamic-animation:28.0.0"
     testImplementation 'junit:junit:4.12'
+    implementation deps.stdlib
+    implementation deps.constraint
+    implementation deps.support.appCompat
+    implementation project(":module_base")
+    kapt deps.arouter.compiler
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

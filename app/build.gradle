@@ -91,6 +91,7 @@ dependencies {
     implementation project(":module_base")
     //implementation project(":module_jni")
     implementation project(":module_webrtc")
+    implementation project(":module_playground")
     implementation deps.stdlib
     implementation deps.constraint
     implementation deps.support.appCompat

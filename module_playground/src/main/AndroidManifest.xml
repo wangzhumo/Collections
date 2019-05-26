@@ -1,2 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.wangzhumo.app.playground"/>
+          package="com.wangzhumo.app.playground">
+
+
+
+
+
+    <application>
+        <activity
+                android:name="com.wangzhumo.app.FrameLayoutActivity"
+                android:label="@string/title_activity_fream_layout"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+    </application>
+</manifest>
+
+

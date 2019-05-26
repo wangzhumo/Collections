@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import com.wangzhumo.app.base.DensityUtils
+import com.wangzhumo.app.playground.R
 import kotlinx.android.synthetic.main.fragment_blank.*
 import kotlinx.android.synthetic.main.fragment_blank.bt_start
 import kotlinx.android.synthetic.main.fragment_blank.damping_ratio

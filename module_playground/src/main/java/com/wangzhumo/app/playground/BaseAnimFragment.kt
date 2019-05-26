@@ -2,6 +2,7 @@ package com.wangzhumo.app
 
 import android.support.v4.app.FragmentManager
 import com.wangzhumo.app.origin.BaseFragment
+import com.wangzhumo.app.playground.R
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -42,11 +43,11 @@ abstract class BaseAnimFragment : BaseFragment() {
 
 
     private fun enterAnim(): Int {
-        return R.anim.dialog_slide_in_from_left
+        return R.anim.killer_slide_in_from_left
     }
 
     private fun exitAnim(): Int {
-        return R.anim.dialog_slide_out_to_right
+        return R.anim.killer_slide_out_to_right
     }
 
 }

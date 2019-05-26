@@ -1,7 +1,8 @@
-package com.wangzhumo.app
+package com.wangzhumo.app.playground
 
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.wangzhumo.app.AllSingFailDialog
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.origin.BaseActivity
 

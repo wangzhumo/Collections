@@ -3,27 +3,32 @@ package com.wangzhumo.app
 import android.os.Bundle
 import android.support.animation.SpringAnimation
 import android.support.animation.SpringForce
+import android.support.v4.app.FragmentManager
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import com.wangzhumo.app.base.DensityUtils
-import kotlinx.android.synthetic.main.killer_view_area_success.*
+import com.wangzhumo.app.origin.BaseFragment
+import com.wangzhumo.app.playground.R
+import kotlinx.android.synthetic.main.fragment_blank.*
+import kotlin.math.log
+
 
 /**
- * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
+ * A simple [Fragment] subclass.
  *
- * @author 王诛魔 2019-05-26  11:31
  */
-class AllSingFailDialog : BaseAnimFragment(){
+class BlankFragment : BaseAnimFragment() {
 
-    var dampingProgress: Float = 0.4F
-    var stiffnessProgress: Float = 600F
+    var dampingProgress: Float = SpringForce.DAMPING_RATIO_NO_BOUNCY
+    var stiffnessProgress: Float = SpringForce.STIFFNESS_VERY_LOW
 
+    override fun getLayoutId(): Int = R.layout.fragment_blank
 
-    override fun getLayoutId(): Int = R.layout.killer_view_area_success
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        startAnim(dampingProgress, stiffnessProgress)
         bt_start.setOnClickListener {
             startAnim(dampingProgress, stiffnessProgress)
         }
@@ -58,22 +63,16 @@ class AllSingFailDialog : BaseAnimFragment(){
         })
     }
 
+
     private fun startAnim(damping: Float, stiffness: Float) {
         val force = SpringForce(0f)
-            .setDampingRatio(0.4F)
-            .setStiffness(600F)
-
-        val force2 = SpringForce(0f)
             .setDampingRatio(damping)
             .setStiffness(stiffness)
 
-        val animationBg = SpringAnimation(killer_bg, SpringAnimation.TRANSLATION_X)
+        val animation = SpringAnimation(root_layout, SpringAnimation.TRANSLATION_X)
             .setSpring(force)
             .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
-        val animationText= SpringAnimation(killer_text, SpringAnimation.TRANSLATION_X)
-            .setSpring(force2)
-            .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
-        animationBg.start()
-        animationText.start()
+        animation.start()
+        //animation.addEndListener { dynamicAnimation, b, v, v1 -> dismiss() }
     }
 }

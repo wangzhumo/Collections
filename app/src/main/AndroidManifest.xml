@@ -47,11 +47,6 @@
                 android:name="BUGLY_ENABLE_DEBUG"
                 android:value="true" />
 
-        <activity
-                android:name=".FrameLayoutActivity"
-                android:label="@string/title_activity_fream_layout"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
         <meta-data
                 android:name="android.max_aspect"
