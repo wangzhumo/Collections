@@ -1,1 +1,1 @@
-include ':app', ':library_origin', ':module_jni', ':module_webrtc', ':module_base', ':module_playground'
+include ':app', ':library_origin', ':module_media', ':module_webrtc', ':module_base', ':module_playground'

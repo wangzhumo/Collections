@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.jni;
+package com.wangzhumo.app.module.media;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
