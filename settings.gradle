@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':inyu_xlog'
 include ':library_origin'
 include ':module_media',
         ':module_webrtc',

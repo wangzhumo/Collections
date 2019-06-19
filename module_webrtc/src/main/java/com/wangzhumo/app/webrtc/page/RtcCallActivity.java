@@ -234,7 +234,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private PeerConnection createPeerConnection(VideoTrack videoTrack, AudioTrack audioTrack) {
         //准备ICE - Server
         LinkedList<PeerConnection.IceServer> iceServers = new LinkedList<>();
-        PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
+        PeerConnection.IceServer myIceServer = PeerConnection.IceServer.builder(
+                "turn:stun.wangzhumo.com:3478")
                 .setUsername("wangzhumo")
                 .setPassword("wangzhumo")
                 .createIceServer();
@@ -533,14 +534,14 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
             }
             //加入轨道
-            MediaStreamTrack track = rtpReceiver.track();
-            if (track instanceof VideoTrack) {
-                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
-                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
-                VideoTrack remoteVideoTrack = (VideoTrack) track;
-                remoteVideoTrack.setEnabled(true);
-                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
-            }
+//            MediaStreamTrack track = rtpReceiver.track();
+//            if (track instanceof VideoTrack) {
+//                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
+//                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
+//                VideoTrack remoteVideoTrack = (VideoTrack) track;
+//                remoteVideoTrack.setEnabled(true);
+//                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
+//            }
         }
     };
 
@@ -568,8 +569,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mState = CallState.JOINED;
         //创建PeerConnecting
         if (mPeerConnect == null){
-            Logger.d("加入频道成,生成一个PeerConnection");
-            addLocalLogCat("加入频道成,生成一个PeerConnection");
+            Logger.d("加入频道成功,生成一个PeerConnection");
+            addLocalLogCat("加入频道成功,生成一个PeerConnection");
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
     }
