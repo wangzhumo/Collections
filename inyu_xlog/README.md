@@ -19,6 +19,9 @@ save private key
 
 appender_open's parameter:
 1152b1620b4fe6457a7ddabcf514987b3ba44e3d6c7554fbbf22767bba4b98b3c0b071de670676292a18f53d552da64d5820eb9a7992c97d4ee691189
+
+def main(args):
+5d49f224f1
 ```
 
 
