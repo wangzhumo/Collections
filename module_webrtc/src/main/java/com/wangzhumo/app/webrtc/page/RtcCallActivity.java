@@ -285,11 +285,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         }
         //建立一个媒体约束,进行媒体协商
         MediaConstraints mediaConstraints = new MediaConstraints();
+
         mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
                 Logger.d("创建Answer成功,设置到setLocalDescription");
                 addLocalLogCat("创建Answer成功,设置到setLocalDescription");
+                addLocalLogCat("创建Answer成功 signalingState = " + mPeerConnect.signalingState().name());
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
                 Logger.d("创建Answer成功,发送到对面去");
                 addLocalLogCat("创建Answer成功,发送到对面去");
@@ -301,6 +303,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 super.onCreateFailure(s);
                 Logger.d("创建Answer失败" + s);
                 addLocalLogCat("创建Answer失败" + s);
+                addLocalLogCat("创建Answer失败 signalingState = " + mPeerConnect.signalingState().name());
             }
         }, mediaConstraints);
 
@@ -468,6 +471,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
             Logger.d("onSignalingChange", signalingState);
+            addLocalLogCat("onSignalingChange 修改为 : "  + signalingState.name());
         }
 
         @Override
