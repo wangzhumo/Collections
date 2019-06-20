@@ -5,7 +5,7 @@ package com.tencent.mars.xlog;
  *
  * @author 王诛魔 2019-06-20  17:33
  */
-public class InyuLog extends Log{
+public class InyuLog{
 
 
     /**
@@ -49,5 +49,23 @@ public class InyuLog extends Log{
     public static void printErrStackTrace(String tag, Throwable tr, final String fileName, final String methodName, int line,final String msg, final Object... obj){
         Log.printErrStackTrace(tag, tr, fileName, methodName, line, msg, obj);
     }
+
+
+    /**
+     * close log
+     */
+    public static void close(){
+        Log.appenderClose();
+    }
+
+
+    /**
+     *
+     * @param aysn 是否异步
+     */
+    public static void flush(boolean aysn){
+        Log.appenderFlush(aysn);
+    }
+
 
 }

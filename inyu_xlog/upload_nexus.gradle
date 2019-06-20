@@ -18,7 +18,7 @@ afterEvaluate { project ->
             mavenDeployer {
                 pom.groupId = GROUP
                 pom.artifactId = "xlog"
-                pom.version = "1.0.0"
+                pom.version = "1.0.2"
                 repository(url: getRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
                 }
