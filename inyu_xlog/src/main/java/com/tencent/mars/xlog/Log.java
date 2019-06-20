@@ -235,6 +235,16 @@ public class Log {
         }
     }
 
+    protected static void e(String tag,final String fileName, final String methodName,final int line, final String format, final Object... obj) {
+        if (logImp != null) {
+            String log = obj == null ? format : String.format(format, obj);
+            if (log == null) {
+                log = "";
+            }
+            logImp.logE(tag, fileName, methodName, line, Process.myPid(), Process.myTid(), Looper.getMainLooper().getThread().getId(), log);
+        }
+    }
+
     public static void w(String tag, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
@@ -255,6 +265,16 @@ public class Log {
         }
     }
 
+    protected static void i(String tag,final String fileName, final String methodName, int line, final String format, final Object... obj) {
+        if (logImp != null) {
+            String log = obj == null ? format : String.format(format, obj);
+            if (log == null) {
+                log = "";
+            }
+            logImp.logI(tag, "", "", 0, Process.myPid(), Process.myTid(), Looper.getMainLooper().getThread().getId(), log);
+        }
+    }
+
     public static void d(String tag, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
@@ -265,7 +285,7 @@ public class Log {
         }
     }
 
-    public static void d(String tag, final String fileName, final String methodName, int line, final String format, final Object... obj) {
+    protected static void d(String tag, final String fileName, final String methodName, int line, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
             if (log == null) {
@@ -293,6 +313,17 @@ public class Log {
             }
             log += "  " + android.util.Log.getStackTraceString(tr);
             logImp.logE(tag, "", "", 0, Process.myPid(), Process.myTid(), Looper.getMainLooper().getThread().getId(), log);
+        }
+    }
+
+    protected static void printErrStackTrace(String tag, Throwable tr, final String fileName, final String methodName, int line,final String format, final Object... obj) {
+        if (logImp != null) {
+            String log = obj == null ? format : String.format(format, obj);
+            if (log == null) {
+                log = "";
+            }
+            log += "  " + android.util.Log.getStackTraceString(tr);
+            logImp.logE(tag, fileName, methodName, line, Process.myPid(), Process.myTid(), Looper.getMainLooper().getThread().getId(), log);
         }
     }
 

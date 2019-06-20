@@ -3,6 +3,7 @@ package com.wangzhumo.app
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.tencent.mars.xlog.InyuLog
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
 import com.wangzhumo.app.base.IRoute
@@ -27,10 +28,10 @@ class MainActivity : BaseActivity() {
 //            .navigation()
 
 
-
-        val disposable = Flowable.intervalRange(0,100,0,100,TimeUnit.MILLISECONDS)
+        val disposable = Flowable.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
             .subscribe(Consumer {
-               Log.d(TAG,"com.wangzhumo.app.MainActivity","initViews",33,"日志 - $it")
+                Log.d(TAG, "com.wangzhumo.app.MainActivity", "initViews", 33, "日志 - $it")
+                InyuLog.e(TAG, "com.wangzhumo.app.MainActivity", "initViews", 33, "日志 - $it")
             })
         addDisposable(disposable)
     }
