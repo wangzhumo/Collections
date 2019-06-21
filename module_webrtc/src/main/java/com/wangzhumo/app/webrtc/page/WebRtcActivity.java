@@ -90,5 +90,7 @@ public class WebRtcActivity extends BaseActivity implements View.OnClickListener
                 .withString("address", address)
                 .withString("roomName", roomName)
                 .navigation();
+
+        finish();
     }
 }

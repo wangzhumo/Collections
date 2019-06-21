@@ -235,7 +235,7 @@ public class Log {
         }
     }
 
-    protected static void e(String tag,final String fileName, final String methodName,final int line, final String format, final Object... obj) {
+    public static void e(String tag,final String fileName, final String methodName,final int line, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
             if (log == null) {
@@ -265,7 +265,7 @@ public class Log {
         }
     }
 
-    protected static void i(String tag,final String fileName, final String methodName, int line, final String format, final Object... obj) {
+    public static void i(String tag,final String fileName, final String methodName, int line, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
             if (log == null) {
@@ -285,7 +285,7 @@ public class Log {
         }
     }
 
-    protected static void d(String tag, final String fileName, final String methodName, int line, final String format, final Object... obj) {
+    public static void d(String tag, final String fileName, final String methodName, int line, final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
             if (log == null) {
@@ -316,7 +316,7 @@ public class Log {
         }
     }
 
-    protected static void printErrStackTrace(String tag, Throwable tr, final String fileName, final String methodName, int line,final String format, final Object... obj) {
+    public static void printErrStackTrace(String tag, Throwable tr, final String fileName, final String methodName, int line,final String format, final Object... obj) {
         if (logImp != null) {
             String log = obj == null ? format : String.format(format, obj);
             if (log == null) {

@@ -46,8 +46,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     private static final String TAG = "RtcCall";
 
     //Views
-    public TextView mLocalName;
-    public TextView mRemoteName;
     public TextView mLogTextView;
     public ImageButton mBtHangup;
     private SurfaceViewRenderer mLocalSurfaceRenderer;
@@ -91,9 +89,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {
         ARouter.getInstance().inject(RtcCallActivity.this);
-        mLocalName = findViewById(R.id.local_name);
         mLocalSurfaceRenderer = findViewById(R.id.local_surface);
-        mRemoteName = findViewById(R.id.remote_name);
         mRemoteSurfaceRenderer = findViewById(R.id.remote_surface);
         mRemoteSurfaceRenderer.setVisibility(View.GONE);
 
@@ -168,14 +164,15 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         //*镜像翻转
         mLocalSurfaceRenderer.setMirror(true);
         //*缩放时是否使用硬件加速
-        mLocalSurfaceRenderer.setEnableHardwareScaler(false);
+        mLocalSurfaceRenderer.setEnableHardwareScaler(true);
+        mLocalSurfaceRenderer.setZOrderMediaOverlay(true);
 
         /*远程的Renderer*/
         mRemoteSurfaceRenderer.init(mRootEglBase.getEglBaseContext(), null);
         mRemoteSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
         mRemoteSurfaceRenderer.setMirror(true);
         mRemoteSurfaceRenderer.setEnableHardwareScaler(true);
-        mRemoteSurfaceRenderer.setZOrderMediaOverlay(true);
+
     }
 
 
@@ -295,7 +292,9 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
                 Logger.d("创建Answer成功,发送到对面去");
                 addLocalLogCat("创建Answer成功,发送到对面去");
-                Signaling.getInstance().sendMessage("type", SignalType.ANSWER, "sdp", sessionDescription.description);
+                Signaling.getInstance().sendMessage(
+                        "type", SignalType.ANSWER,
+                        "sdp", sessionDescription.description);
             }
 
             @Override
@@ -404,26 +403,28 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      *
      * @param message data
      */
-    private void onOfferReceived(JSONObject message) {
+    private void onRemoteOfferReceived(JSONObject message) {
         Logger.json(message.toString());
         if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         Logger.d("收到对方的Offer,首先 setRemoteDescription");
         addLocalLogCat("收到对方的Offer,首先 setRemoteDescription");
-        SessionDescription description = new SessionDescription(SessionDescription.Type.OFFER, message.optString("sdp"));
+        SessionDescription description = new SessionDescription(
+                SessionDescription.Type.OFFER,
+                message.optString("sdp"));
         mPeerConnect.setRemoteDescription(new SdpObserverAdapter(){
             @Override
             public void onSetFailure(String s) {
                 super.onSetFailure(s);
-                addLocalLogCat("设置setRemoteDescription失败"+s);
+                addLocalLogCat("onRemoteOfferReceived 设置setRemoteDescription失败"+s);
                 Logger.e("设置setRemoteDescription失败"+s);
             }
 
             @Override
             public void onSetSuccess() {
                 super.onSetSuccess();
-                addLocalLogCat("设置setRemoteDescription成功");
+                addLocalLogCat("onRemoteOfferReceived 设置setRemoteDescription成功");
                 Logger.e("设置setRemoteDescription成功");
             }
         }, description);
@@ -538,14 +539,14 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                 Logger.d("onAddTrack MediaStream ID = &s", mediaStream.getId());
             }
             //加入轨道
-//            MediaStreamTrack track = rtpReceiver.track();
-//            if (track instanceof VideoTrack) {
-//                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
-//                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
-//                VideoTrack remoteVideoTrack = (VideoTrack) track;
-//                remoteVideoTrack.setEnabled(true);
-//                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
-//            }
+            MediaStreamTrack track = rtpReceiver.track();
+            if (track instanceof VideoTrack) {
+                addLocalLogCat("收到对端的Track数据,设置到SurfaceView上去");
+                Logger.d("收到对端的Track数据,且是VideoTrack,设置到SurfaceView上去.");
+                VideoTrack remoteVideoTrack = (VideoTrack) track;
+                remoteVideoTrack.setEnabled(true);
+                remoteVideoTrack.addSink(mRemoteSurfaceRenderer);
+            }
         }
     };
 
@@ -619,7 +620,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
                     onAnswerReceived(message);
                     break;
                 case SignalType.OFFER:
-                    onOfferReceived(message);
+                    onRemoteOfferReceived(message);
                     break;
                 case SignalType.CANDIDATE:
                     onCandidateReceived(message);

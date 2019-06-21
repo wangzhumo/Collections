@@ -23,16 +23,10 @@ class MainActivity : BaseActivity() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-//        ARouter.getInstance()
-//            .build(IRoute.WEBRTC_MAIN)
-//            .navigation()
-
-
-        val disposable = Flowable.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
-            .subscribe(Consumer {
-                Log.d(TAG, "com.wangzhumo.app.MainActivity", "initViews", 33, "日志 - $it")
-                InyuLog.e(TAG, "com.wangzhumo.app.MainActivity", "initViews", 33, "日志 - $it")
-            })
-        addDisposable(disposable)
+        ARouter.getInstance()
+            .build(IRoute.WEBRTC_MAIN)
+            .navigation()
+        finish()
     }
+
 }
