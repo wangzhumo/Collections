@@ -1,7 +1,8 @@
 ## [Mars](https://github.com/Tencent/mars)
 
-
 ### Xlog 加密使用指引
+
+####加密
 
 1. 下载 [pyelliptic1.5.7](https://github.com/yann2192/pyelliptic/releases/tag/1.5.7)
 2. 解压执行：`python setup.py install` 安装 pyelliptic1.5.7 注：如果没权限`sudo python setup.py install`
@@ -23,6 +24,27 @@ appender_open's parameter:
 def main(args):
 5d49f224f1
 ```
+
+
+
+#### 解密
+
+1. 下载 [pyelliptic1.5.7](https://github.com/yann2192/pyelliptic/releases/tag/1.5.7)
+
+2. 解压执行：`python setup.py install` 安装 pyelliptic1.5.7 
+
+3. 执行 `python decode_mars_crypt_log_file.py [filepath]`
+
+   ```
+   eg:
+   python decode_mars_crypt_log_file.py ~/Downloads/inyu_20190619.xlog
+   
+   而后会生成一个inyu_20190619.xlog.log
+   ```
+
+   
+
+
 
 
 
