@@ -1,0 +1,11 @@
+#### licences
+
+```
+
+Failed to install the following Android SDK packages as some licences have not been accepted in
+
+//Fix
+# phyooos @ wangzhumo in ~/workspace/webRTC on git:master o [23:31:11]
+$ yes | sudo ~/Library/Android/sdk/tools/bin/sdkmanager --licenses
+
+```
