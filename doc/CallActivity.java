@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -89,6 +90,7 @@ public class CallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_call);
 
         mLogcatView = findViewById(R.id.LogcatView);
+        mLogcatView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         mRootEglBase = EglBase.create();
 
@@ -250,7 +252,7 @@ public class CallActivity extends AppCompatActivity {
                 Log.i(TAG, "Create answer success !");
                 logcatOnUI("创建Answer成功,设置到setLocalDescription");
                 mPeerConnection.setLocalDescription(new SimpleSdpObserver(),
-                                                    sessionDescription);
+                        sessionDescription);
 
                 JSONObject message = new JSONObject();
                 try {
@@ -283,10 +285,10 @@ public class CallActivity extends AppCompatActivity {
         LinkedList<PeerConnection.IceServer> iceServers = new LinkedList<PeerConnection.IceServer>();
 
         PeerConnection.IceServer ice_server =
-                    PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
-                                            .setPassword("wangzhumo")
-                                            .setUsername("wangzhumo")
-                                            .createIceServer();
+                PeerConnection.IceServer.builder("turn:stun.wangzhumo.com:3478")
+                        .setPassword("wangzhumo")
+                        .setUsername("wangzhumo")
+                        .createIceServer();
 
         iceServers.add(ice_server);
 
@@ -304,7 +306,7 @@ public class CallActivity extends AppCompatActivity {
         //rtcConfig.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN;
         PeerConnection connection =
                 mPeerConnectionFactory.createPeerConnection(rtcConfig,
-                                                            mPeerConnectionObserver);
+                        mPeerConnectionObserver);
         if (connection == null) {
             Log.e(TAG, "Failed to createPeerConnection !");
             return null;
@@ -322,9 +324,9 @@ public class CallActivity extends AppCompatActivity {
         final VideoDecoderFactory decoderFactory;
 
         encoderFactory = new DefaultVideoEncoderFactory(
-                                mRootEglBase.getEglBaseContext(),
-                                false /* enableIntelVp8Encoder */,
-                                true);
+                mRootEglBase.getEglBaseContext(),
+                false /* enableIntelVp8Encoder */,
+                true);
         decoderFactory = new DefaultVideoDecoderFactory(mRootEglBase.getEglBaseContext());
 
         PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(context)
@@ -454,6 +456,7 @@ public class CallActivity extends AppCompatActivity {
             MediaStreamTrack track = rtpReceiver.track();
             if (track instanceof VideoTrack) {
                 Log.i(TAG, "onAddVideoTrack");
+                logcatOnUI("收到对端的Track数据,设置到SurfaceView上去");
                 VideoTrack remoteVideoTrack = (VideoTrack) track;
                 remoteVideoTrack.setEnabled(true);
                 remoteVideoTrack.addSink(mRemoteSurfaceView);
@@ -483,7 +486,7 @@ public class CallActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onUserJoined(String roomName, String userID){
+        public void onUserJoined(String roomName, String userID) {
 
             logcatOnUI("local user joined!");
 
@@ -496,7 +499,7 @@ public class CallActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onUserLeaved(String roomName, String userID){
+        public void onUserLeaved(String roomName, String userID) {
             logcatOnUI("local user leaved!");
 
             mState = "leaved";
@@ -506,7 +509,7 @@ public class CallActivity extends AppCompatActivity {
         public void onRemoteUserJoined(String roomName) {
             logcatOnUI("Remote User Joined, room: " + roomName);
 
-            if(mState.equals("joined_unbind")){
+            if (mState.equals("joined_unbind")) {
                 if (mPeerConnection == null) {
                     mPeerConnection = createPeerConnection();
                 }
@@ -519,36 +522,36 @@ public class CallActivity extends AppCompatActivity {
 
         @Override
         public void onRemoteUserLeaved(String roomName, String userID) {
-            logcatOnUI("Remote User Leaved, room: " + roomName + "uid:"  + userID);
+            logcatOnUI("Remote User Leaved, room: " + roomName + "uid:" + userID);
             mState = "joined_unbind";
 
-            if(mPeerConnection !=null ){
+            if (mPeerConnection != null) {
                 mPeerConnection.close();
                 mPeerConnection = null;
             }
         }
 
         @Override
-        public void onRoomFull(String roomName, String userID){
-            logcatOnUI("The Room is Full, room: " + roomName + "uid:"  + userID);
+        public void onRoomFull(String roomName, String userID) {
+            logcatOnUI("The Room is Full, room: " + roomName + "uid:" + userID);
             mState = "leaved";
 
-            if(mLocalSurfaceView != null) {
+            if (mLocalSurfaceView != null) {
                 mLocalSurfaceView.release();
                 mLocalSurfaceView = null;
             }
 
-            if(mRemoteSurfaceView != null) {
+            if (mRemoteSurfaceView != null) {
                 mRemoteSurfaceView.release();
                 mRemoteSurfaceView = null;
             }
 
-            if(mVideoCapturer != null) {
+            if (mVideoCapturer != null) {
                 mVideoCapturer.dispose();
                 mVideoCapturer = null;
             }
 
-            if(mSurfaceTextureHelper != null) {
+            if (mSurfaceTextureHelper != null) {
                 mSurfaceTextureHelper.dispose();
                 mSurfaceTextureHelper = null;
 
@@ -557,7 +560,7 @@ public class CallActivity extends AppCompatActivity {
             PeerConnectionFactory.stopInternalTracingCapture();
             PeerConnectionFactory.shutdownInternalTracer();
 
-            if(mPeerConnectionFactory !=null) {
+            if (mPeerConnectionFactory != null) {
                 mPeerConnectionFactory.dispose();
                 mPeerConnectionFactory = null;
             }
@@ -575,12 +578,12 @@ public class CallActivity extends AppCompatActivity {
                 if (type.equals("offer")) {
                     logcatOnUI("Receive offer");
                     onRemoteOfferReceived(message);
-                }else if(type.equals("answer")) {
+                } else if (type.equals("answer")) {
                     logcatOnUI("Receive answer");
                     onRemoteAnswerReceived(message);
-                }else if(type.equals("candidate")) {
-                        onRemoteCandidateReceived(message);
-                }else{
+                } else if (type.equals("candidate")) {
+                    onRemoteCandidateReceived(message);
+                } else {
                     Log.w(TAG, "the type is invalid: " + type);
                 }
             } catch (JSONException e) {
@@ -598,10 +601,10 @@ public class CallActivity extends AppCompatActivity {
                 logcatOnUI("收到对方的Offer,setRemoteDescription");
                 String description = message.getString("sdp");
                 mPeerConnection.setRemoteDescription(
-                                            new SimpleSdpObserver(),
-                                            new SessionDescription(
-                                                                SessionDescription.Type.OFFER,
-                                                                description));
+                        new SimpleSdpObserver(),
+                        new SessionDescription(
+                                SessionDescription.Type.OFFER,
+                                description));
                 doAnswerCall();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -613,10 +616,10 @@ public class CallActivity extends AppCompatActivity {
             try {
                 String description = message.getString("sdp");
                 mPeerConnection.setRemoteDescription(
-                                    new SimpleSdpObserver(),
-                                    new SessionDescription(
-                                            SessionDescription.Type.ANSWER,
-                                            description));
+                        new SimpleSdpObserver(),
+                        new SessionDescription(
+                                SessionDescription.Type.ANSWER,
+                                description));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -628,8 +631,8 @@ public class CallActivity extends AppCompatActivity {
             try {
                 IceCandidate remoteIceCandidate =
                         new IceCandidate(message.getString("id"),
-                                            message.getInt("label"),
-                                            message.getString("candidate"));
+                                message.getInt("label"),
+                                message.getString("candidate"));
 
                 mPeerConnection.addIceCandidate(remoteIceCandidate);
             } catch (JSONException e) {

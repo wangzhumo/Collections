@@ -289,24 +289,25 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
      * 收到了远端的Offer,应该回应一个answer
      */
     private void doOnRemoteOfferReceived() {
+        addLocalLogCat("Answer Call, Wait ...");
         if (mPeerConnect != null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         //建立一个媒体约束,进行媒体协商
         MediaConstraints mediaConstraints = new MediaConstraints();
-
+        addLocalLogCat("收到对方的Offer,创建一个Answer给对方");
         mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
                 Logger.d("创建Answer成功,设置到setLocalDescription");
-                addLocalLogCat("创建Answer成功,设置到setLocalDescription");
                 addLocalLogCat("创建Answer成功 signalingState = " + mPeerConnect.signalingState().name());
+                addLocalLogCat("创建Answer成功,设置到setLocalDescription");
                 mPeerConnect.setLocalDescription(new SdpObserverAdapter(), sessionDescription);
                 Logger.d("创建Answer成功,发送到对面去");
-                addLocalLogCat("创建Answer成功,发送到对面去");
                 Signaling.getInstance().sendMessage(
                         "type", SignalType.ANSWER,
                         "sdp", sessionDescription.description);
+                addLocalLogCat("创建Answer成功,发送到对面去");
             }
 
             @Override
