@@ -421,8 +421,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
-        //创建给对方的offer
-        doCreateOffer();
 
         addLocalLogCat("收到对方的Offer,setRemoteDescription");
         SessionDescription description = new SessionDescription(
@@ -446,6 +444,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
 
         //对面传递了一个Offer,那我我们应该回应
         Logger.d("收到对方的Offer,创建一个Answer给对方");
+        //创建给对方的offer
+        doCreateOffer();
     }
 
 
