@@ -111,7 +111,8 @@ public class Signaling {
 
         //发送退出房间的请求
         mSocket.emit(Action.REQUEST_EXIT, mRoomName);
-        //注册监听
+        mSocket.close();
+        mSocket = null;
         return true;
     }
 
@@ -121,7 +122,7 @@ public class Signaling {
      *
      * @param socket Socket
      */
-    private void handleSignalEvent(final Socket socket) {
+    private void handleSignalEvent(Socket socket) {
         socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
