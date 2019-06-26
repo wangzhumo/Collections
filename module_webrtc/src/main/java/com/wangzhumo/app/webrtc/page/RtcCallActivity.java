@@ -1,5 +1,6 @@
 package com.wangzhumo.app.webrtc.page;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,7 +105,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         initStreamRenderer(mRootEglBase);
 
         /*Create PeerConnectionFactory*/
-        mPeerFactory = createPeerFactory(mRootEglBase);
+        mPeerFactory = createPeerFactory(mRootEglBase,this);
         Logging.enableLogToDebugOutput(Logging.Severity.LS_VERBOSE);      //打开日志
 
         /*Capture And Tracks*/
@@ -154,11 +155,11 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     /**
      * 创建Renderer
      *
-     * @param mRootEglBase EglBase
+     * @param rootEglBase EglBase
      */
-    private void initStreamRenderer(EglBase mRootEglBase) {
+    private void initStreamRenderer(EglBase rootEglBase) {
         //*设置OpenGl的上下文
-        mLocalSurfaceRenderer.init(mRootEglBase.getEglBaseContext(), null);
+        mLocalSurfaceRenderer.init(rootEglBase.getEglBaseContext(), null);
         //*缩放类型  填充缩放
         mLocalSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
         //*镜像翻转
@@ -168,7 +169,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         mLocalSurfaceRenderer.setZOrderMediaOverlay(true);
 
         /*远程的Renderer*/
-        mRemoteSurfaceRenderer.init(mRootEglBase.getEglBaseContext(), null);
+        mRemoteSurfaceRenderer.init(rootEglBase.getEglBaseContext(), null);
         mRemoteSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
         mRemoteSurfaceRenderer.setMirror(true);
         mRemoteSurfaceRenderer.setEnableHardwareScaler(true);
@@ -207,17 +208,27 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     /**
      * 创建一个PeerConnectionFactory
      *
+     * @param rootEglBase  EglBase
      * @param context ctx
      * @return PeerConnectionFactory
      */
-    private PeerConnectionFactory createPeerFactory(EglBase context) {
-        PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(getApplicationContext())
-                .setEnableInternalTracer(true).createInitializationOptions());
-        VideoDecoderFactory videoDecoderFactory = new DefaultVideoDecoderFactory(context.getEglBaseContext());
+    private PeerConnectionFactory createPeerFactory(EglBase rootEglBase,Context context) {
+        final VideoDecoderFactory videoDecoderFactory = new DefaultVideoDecoderFactory(
+                rootEglBase.getEglBaseContext());
 
         //移动端推荐使用H264,不适用VP8
-        VideoEncoderFactory videoEncoderFactory = new DefaultVideoEncoderFactory(context.getEglBaseContext(),
-                false, true);
+        final VideoEncoderFactory videoEncoderFactory = new DefaultVideoEncoderFactory(
+                rootEglBase.getEglBaseContext(),
+                false,
+                true);
+
+        //PeerConnectionFactory  进行初始化,
+        PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(
+                        context.getApplicationContext()
+                )
+                .setEnableInternalTracer(true) //打开内部日志追踪迹
+                .createInitializationOptions());
+
         PeerConnectionFactory.Builder builder = PeerConnectionFactory.builder()
                 .setVideoDecoderFactory(videoDecoderFactory)
                 .setVideoEncoderFactory(videoEncoderFactory);
