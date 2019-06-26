@@ -288,14 +288,13 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     /**
      * 收到了远端的Offer,应该回应一个answer
      */
-    private void doCreateOffer() {
-        addLocalLogCat("Answer Call, Wait ...");
-        if (mPeerConnect != null) {
+    private void doCreateOfferForRemote() {
+        addLocalLogCat("收到对方的Offer,创建一个Answer给对方");
+        if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
         }
         //建立一个媒体约束,进行媒体协商
         MediaConstraints mediaConstraints = new MediaConstraints();
-        addLocalLogCat("收到对方的Offer,创建一个Answer给对方");
         mPeerConnect.createAnswer(new SdpObserverAdapter() {
             @Override
             public void onCreateSuccess(SessionDescription sessionDescription) {
@@ -445,7 +444,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         //对面传递了一个Offer,那我我们应该回应
         Logger.d("收到对方的Offer,创建一个Answer给对方");
         //创建给对方的offer
-        doCreateOffer();
+        doCreateOfferForRemote();
     }
 
 
