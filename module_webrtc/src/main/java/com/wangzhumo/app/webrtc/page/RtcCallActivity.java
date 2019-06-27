@@ -288,7 +288,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     /**
      * 收到了远端的Offer,应该回应一个answer
      */
-    private void doCreateOfferForRemote() {
+    private void doCreateAnswerForRemote() {
         addLocalLogCat("收到对方的Offer,创建一个Answer给对方");
         if (mPeerConnect == null) {
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
@@ -444,7 +444,7 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
         //对面传递了一个Offer,那我我们应该回应
         Logger.d("收到对方的Offer,创建一个Answer给对方");
         //创建给对方的offer
-        doCreateOfferForRemote();
+        doCreateAnswerForRemote();
     }
 
 
