@@ -2,28 +2,30 @@
 
 some android project collections
 
-### inyu_xlog
+## Introduction
+
+### INYU_XLOG
 一个对tencent开源项目Mars/Xlog模块的封装.
 > https://github.com/Tencent/mars
 
 
-### library_origin
+### LIBRARY_ORIGIN
 all of project third part libraries.
 
-### module_base
+### MODULE_BASE
 require all modules dependent.
 
 - static resource
 - route 
 - utils
 
-### module_media
+### MODULE_MEDIA
 jni.
 
-### module_playground
+### MODULE_PLAYGROUND
 playground for android demo.
 
-### module_webrtc
+### MODULE_WEBRTC
 webRTC project client.
 
 #### server 
@@ -31,3 +33,9 @@ webRTC project client.
 
 #### web
 > https://www.wangzhumo.com
+
+## Mobile demo
+
+
+## About
+Email : wangzhumoo@gmail.com
