@@ -9,3 +9,5 @@ Failed to install the following Android SDK packages as some licences have not b
 $ yes | sudo ~/Library/Android/sdk/tools/bin/sdkmanager --licenses
 
 ```
+
+> https://www.jb51.net/article/83014.htm
