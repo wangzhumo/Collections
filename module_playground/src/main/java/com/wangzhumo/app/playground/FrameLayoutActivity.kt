@@ -13,11 +13,5 @@ class FrameLayoutActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        var mediaPlayer: MediaPlayer = MediaPlayer()
-        mediaPlayer.setDataSource("/storage/emulated/0/Android/data/io.liuliu.music/files/audio/e968c8b31b2d51809936e60722892ad9_res/yinyu_audios_part7/warfare_bgm.m4a")
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            mediaPlayer.start()
-        }
     }
 }
