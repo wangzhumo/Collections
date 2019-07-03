@@ -11,3 +11,12 @@ $ yes | sudo ~/Library/Android/sdk/tools/bin/sdkmanager --licenses
 ```
 
 > https://www.jb51.net/article/83014.htm
+
+
+redModel.size() == blueModel.size()
+
+add(redModel_0)
+add(blueModel_0)
+
+...
+
