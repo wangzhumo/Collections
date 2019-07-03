@@ -61,3 +61,4 @@ androidTest/
 test/
 
 app/debug/
+app/release
