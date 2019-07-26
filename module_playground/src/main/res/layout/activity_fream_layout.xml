@@ -6,15 +6,9 @@
         android:layout_height="match_parent"
         tools:context=".FrameLayoutActivity">
 
-    <com.wangzhumo.app.playground.GameVolumeView
-            android:id="@+id/game_volume"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/game_ic_mic_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-    </com.wangzhumo.app.playground.GameVolumeView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="FrameActivity"
+              android:textColor="@color/black_100" android:textSize="50sp" app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+    />
 </android.support.constraint.ConstraintLayout>
