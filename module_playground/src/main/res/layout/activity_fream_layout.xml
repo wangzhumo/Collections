@@ -8,8 +8,9 @@
 
     <com.wangzhumo.app.playground.GameVolumeView
             android:id="@+id/game_volume"
-            android:layout_height="100dp"
-            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/game_ic_mic_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
