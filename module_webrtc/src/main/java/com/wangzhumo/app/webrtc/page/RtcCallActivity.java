@@ -391,7 +391,8 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
             stringBuffer = new StringBuffer();
         }
         stringBuffer.append(message).append("\n");
-        mLogTextView.setText(stringBuffer.toString());
+        runOnUiThread(() -> mLogTextView.setText(stringBuffer.toString()));
+
     }
 
     /**
