@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -9,6 +10,11 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 1
         versionName VERSION_NAME
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     buildTypes {
@@ -17,6 +23,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    android {
+        sourceSets {
+            main.jniLibs.srcDirs = ['libs']
+        }
+    }
+
 
     compileOptions {
         sourceCompatibility = JDK_VERSION
@@ -28,7 +41,5 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(":library_origin")
-    api project(":library_widget")
+    implementation deps.support.appCompat
 }
-
