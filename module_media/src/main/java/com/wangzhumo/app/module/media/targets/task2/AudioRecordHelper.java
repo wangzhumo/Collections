@@ -6,7 +6,14 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -24,6 +31,7 @@ public class AudioRecordHelper {
     private int sampleRate = 44100;
     private int encodingFormat = AudioFormat.ENCODING_PCM_16BIT;
     private File outputFile;  //输出文件 pcm
+    private ExecutorService mExecutor;
 
     private int mState = AudioState.DISABLE;
 
@@ -53,25 +61,31 @@ public class AudioRecordHelper {
         return true;
     }
 
-    public void setOutPutFile(File outputFile){
+    public void setOutPutFile(File outputFile) {
         this.outputFile = outputFile;
     }
 
     /**
      * 开始录制音频
      */
-    public void startRecord(){
+    public void startRecord() {
         //是否有文件
         if (outputFile == null || !outputFile.exists() || !outputFile.isFile()) {
             throw new IllegalArgumentException("OutputFile Error.");
         }
-        if (mState == AudioState.DISABLE || mState == AudioState.RECORDING){
+        if (mState == AudioState.DISABLE || mState == AudioState.RECORDING) {
             throw new IllegalStateException("AudioRecord State Error.");
         }
         Log.d(TAG, "startRecord outputFile = " + outputFile.getAbsolutePath());
         //开始录制
         mRecorder.startRecording();
         mState = AudioState.RECORDING;
+
+        //开启写文件线程.
+        if (mExecutor == null) {
+            mExecutor = Executors.newCachedThreadPool();
+        }
+        mExecutor.execute(writePcmToFile);
     }
 
 
@@ -101,5 +115,19 @@ public class AudioRecordHelper {
         }
         mState = AudioState.DISABLE;
     }
+
+    private Runnable writePcmToFile = new Runnable() {
+        @Override
+        public void run() {
+            OutputStream outputStream = null;
+            try {
+                outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
 }
