@@ -115,6 +115,7 @@ public class AudioTrackHelper {
         if (file == null) {
             throw new IllegalArgumentException("OutputFile Error.");
         }
+        inputFile = file;
         if (mState == AudioState.DISABLE || mState == AudioState.PLAYING) {
             throw new IllegalStateException("AudioTrack State Error.");
         }

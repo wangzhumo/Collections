@@ -24,6 +24,7 @@ import java.io.File
 class Task2Activity : BaseActivity() {
 
     val TAG = "Task2Activity"
+    lateinit var file :File
 
     override fun getLayoutId(): Int = R.layout.activity_task2
 
@@ -36,6 +37,16 @@ class Task2Activity : BaseActivity() {
             } else {
                 button_record.text = "Record"
                 stopRecord()
+            }
+        }
+
+        button_play.setOnClickListener {
+            if (TextUtils.equals(button_play.text, "Play")) {
+                button_play.text = "Stop"
+                AudioTrackHelper.getInstance().startPlay(file)
+            } else {
+                button_play.text = "Play"
+                AudioTrackHelper.getInstance().stopPlay()
             }
         }
     }
@@ -58,8 +69,8 @@ class Task2Activity : BaseActivity() {
         if (!recordFile.exists()) {
             recordFile.mkdirs()
         }
-        var tempFile = File(recordFile, "${System.currentTimeMillis()}.pcm")
-        AudioRecordHelper.getInstance().setOutPutFile(tempFile)
+        file = File(recordFile, "${System.currentTimeMillis()}.pcm")
+        AudioRecordHelper.getInstance().setOutPutFile(file)
         AudioRecordHelper.getInstance().startRecord()
         Log.e(TAG, "AudioRecordHelper -----StartRecord-----")
     }
