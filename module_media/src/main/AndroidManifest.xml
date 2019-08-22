@@ -3,8 +3,9 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
-        <activity android:name=".targets.task1.Task1Activity"></activity>
-        <activity android:name=".CppActivity"></activity>
+        <activity android:name=".targets.task1.Task2Activity"></activity>
+        <activity android:name=".targets.task1.Task1Activity" />
+        <activity android:name=".CppActivity" />
     </application>
 
 </manifest>

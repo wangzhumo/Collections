@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_task1.*
  *
  *    1.初始化SurfaceView
  *    2.当SurfaceView可用 - 调起绘制
- *    3.绘制图片  lockCanvans
+ *    3.绘制图片  lockCanvas
  */
 @Route(path = IRoute.MEDIA_TASK_1)
 class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
