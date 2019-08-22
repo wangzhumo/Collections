@@ -1,7 +1,6 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
-import android.os.Handler
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.tencent.mars.xlog.Log
@@ -12,15 +11,14 @@ import com.wangzhumo.app.origin.BaseActivity
 @Route(path = IRoute.APP_MAIN)
 class MainActivity : BaseActivity() {
 
-    val TAG = "MainActivity"
-    val mHandler = Handler()
+    private val TAG = "MainActivity"
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         ARouter.getInstance()
-            .build(IRoute.FRAME_ACTIVITY)
+            .build(IRoute.MEDIA_TASK_1)
             .navigation()
     }
 
