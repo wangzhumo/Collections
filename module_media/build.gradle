@@ -44,6 +44,7 @@ android {
 }
 
 kapt {
+    correctErrorTypes = true
     arguments {
         arg("AROUTER_MODULE_NAME", project.getName())
     }
@@ -54,5 +55,6 @@ dependencies {
     implementation project(":module_base")
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     kapt deps.arouter.compiler
+    //kapt deps.epoxy_processor
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

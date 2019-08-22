@@ -233,6 +233,8 @@ def pay = [:]
     deps.marqueeview = 'com.sunfusheng:marqueeview:1.3.3'
     deps.LikeButton = 'com.github.jd-alexander:LikeButton:0.2.3'
     deps.logger = 'com.orhanobut:logger:2.2.0'
+    deps.epoxy = 'com.airbnb.android:epoxy:3.7.0'
+    deps.epoxy_processor = 'com.airbnb.android:epoxy-processor:3.7.0'
 
 ext.deps = deps
 

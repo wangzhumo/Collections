@@ -69,7 +69,7 @@ public class AudioRecordHelper {
                 mBufferSizeInBytes
         );
 
-        if (mRecorder.getState() != AudioRecord.STATE_INITIALIZED) {
+        if (mRecorder.getState() == AudioRecord.STATE_UNINITIALIZED) {
             mRecorder = null;
             mBufferSizeInBytes = 0;
             mState = AudioState.DISABLE;
@@ -93,7 +93,7 @@ public class AudioRecordHelper {
      */
     public void startRecord() {
         //是否有文件
-        if (outputFile == null || !outputFile.exists() || !outputFile.isFile()) {
+        if (outputFile == null) {
             throw new IllegalArgumentException("OutputFile Error.");
         }
         if (mState == AudioState.DISABLE || mState == AudioState.RECORDING) {

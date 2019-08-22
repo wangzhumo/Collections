@@ -16,7 +16,9 @@ public interface IRoute {
     String APP_MAIN = "/main/activity/main";
 
     String JNI_CPP = "/media/activity/cpp";
+
     String MEDIA_TASK_1 = "/media/activity/task_1";
+    String MEDIA_TASK_2 = "/media/activity/task_2";
 
     String FRAME_ACTIVITY = "/activity/framelayout";
 
