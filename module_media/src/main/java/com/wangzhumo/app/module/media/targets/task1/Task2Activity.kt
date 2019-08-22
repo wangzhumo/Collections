@@ -5,6 +5,7 @@ import android.text.TextUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_task2.*
+import java.io.File
 
 
 /**
@@ -37,7 +38,13 @@ class Task2Activity : BaseActivity() {
      * 停止录制
      */
     private fun stopRecord() {
-        //
+        val recordPath = "$filesDir/record"
+        val recordFile = File(recordPath)
+        if (!recordFile.exists()){
+            recordFile.mkdirs()
+        }
+        var tempFile = File(recordFile,"${System.currentTimeMillis()}.pcm")
+
     }
 
     /**
