@@ -11,10 +11,12 @@ import java.lang.annotation.RetentionPolicy;
  * @author 王诛魔 2019-08-22$  23:35$
  */
 
-@IntDef({AudioState.DISABLE,AudioState.INIT,AudioState.RECORDING})
+@IntDef({AudioState.DISABLE, AudioState.INIT,
+        AudioState.RECORDING,AudioState.PLAYING})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AudioState {
     int DISABLE = 0;
     int INIT = 1;
     int RECORDING = 20;
+    int PLAYING = 30;
 }
