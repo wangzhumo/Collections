@@ -36,6 +36,24 @@ public class AudioRecordHelper {
     private int mState = AudioState.DISABLE;
 
 
+    private AudioRecordHelper() {
+        createRecorder();
+    }
+
+    private static class Singleton{
+        private static AudioRecordHelper INSTANCE = new AudioRecordHelper();
+    }
+
+
+    /**
+     * 获取AudioRecordHelper实例
+     * @return AudioRecordHelper
+     */
+    public static AudioRecordHelper getInstance(){
+        return Singleton.INSTANCE;
+    }
+
+
     /**
      * 创建Record实例
      */
@@ -61,6 +79,11 @@ public class AudioRecordHelper {
         return true;
     }
 
+
+    /**
+     * 设置输出文件
+     * @param outputFile
+     */
     public void setOutPutFile(File outputFile) {
         this.outputFile = outputFile;
     }
@@ -116,6 +139,10 @@ public class AudioRecordHelper {
         mState = AudioState.DISABLE;
     }
 
+
+    /**
+     * 写PCM数据到文件中
+     */
     private Runnable writePcmToFile = new Runnable() {
         @Override
         public void run() {
@@ -128,11 +155,11 @@ public class AudioRecordHelper {
                     if (readSize > 0) {
                         outputStream.write(audioData, 0, readSize);
                     } else {
-                        Log.w(TAG, "writeAudioDataToFile readSize: " + readSize);
+                        Log.e(TAG, "writePcmToFile readSize: " + readSize);
                     }
                 }
                 outputStream.flush();
-
+                outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
