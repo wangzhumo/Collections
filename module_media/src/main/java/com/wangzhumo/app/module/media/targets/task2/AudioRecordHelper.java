@@ -1,0 +1,105 @@
+package com.wangzhumo.app.module.media.targets.task2;
+
+
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.util.Log;
+
+import java.io.File;
+
+
+/**
+ * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
+ *
+ * @author 王诛魔 2019-08-22  23:17
+ */
+public class AudioRecordHelper {
+
+    private static final String TAG = "AudioRecordHelper";
+
+    private AudioRecord mRecorder;
+    private int recordBufSize = 0; // Bufffer的大小字段
+    private int channel = AudioFormat.CHANNEL_IN_STEREO;
+    private int sampleRate = 44100;
+    private int encodingFormat = AudioFormat.ENCODING_PCM_16BIT;
+    private File outputFile;  //输出文件 pcm
+
+    private int mState = AudioState.DISABLE;
+
+
+    /**
+     * 创建Record实例
+     */
+    private boolean createRecorder() {
+        //获取系统提供的bufferSize
+        recordBufSize = AudioRecord.getMinBufferSize(sampleRate, channel, encodingFormat);
+        //创建AudioRecord实例
+        mRecorder = new AudioRecord(
+                MediaRecorder.AudioSource.MIC,
+                sampleRate,
+                channel,
+                encodingFormat,
+                recordBufSize
+        );
+
+        if (mRecorder.getState() != AudioRecord.STATE_INITIALIZED) {
+            mRecorder = null;
+            recordBufSize = 0;
+            mState = AudioState.DISABLE;
+            return false;
+        }
+        mState = AudioState.INIT;
+        return true;
+    }
+
+    public void setOutPutFile(File outputFile){
+        this.outputFile = outputFile;
+    }
+
+    /**
+     * 开始录制音频
+     */
+    public void startRecord(){
+        //是否有文件
+        if (outputFile == null || !outputFile.exists() || !outputFile.isFile()) {
+            throw new IllegalArgumentException("OutputFile Error.");
+        }
+        if (mState == AudioState.DISABLE || mState == AudioState.RECORDING){
+            throw new IllegalStateException("AudioRecord State Error.");
+        }
+        Log.d(TAG, "startRecord outputFile = " + outputFile.getAbsolutePath());
+        //开始录制
+        mRecorder.startRecording();
+        mState = AudioState.RECORDING;
+    }
+
+
+    /**
+     * 停止录制.
+     */
+    public void stopRecord() {
+        Log.d(TAG, "stopRecord");
+        if (mState == AudioState.DISABLE || mState == AudioState.INIT) {
+            Log.d(TAG, "没有开始录制");
+        } else {
+            mRecorder.stop();
+            mState = AudioState.INIT;
+            release();
+        }
+    }
+
+
+    /**
+     * 释放资源
+     */
+    public void release() {
+        Log.d(TAG, "release record");
+        if (mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
+        mState = AudioState.DISABLE;
+    }
+
+}
