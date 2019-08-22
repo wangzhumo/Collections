@@ -1,8 +1,6 @@
 package com.wangzhumo.app.module.media.targets.task1
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
@@ -31,7 +29,8 @@ import kotlinx.android.synthetic.main.activity_task1.*
 class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
 
     val TAG = "Task1Activity"
-
+    var srcRect = Rect()
+    var dstRect = Rect()
 
     override fun getLayoutId(): Int = R.layout.activity_task1
 
@@ -42,9 +41,13 @@ class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         //load images
-        mBitmapOrigin = scaleBitmap(DensityUtils.getScreenWidth(this).toFloat())
+        val mOrigin = BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch)
+        mBitmapOrigin = scaleBitmap(mOrigin,DensityUtils.getScreenWidth(this).toFloat())
+//        mBitmapOrigin = BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch)
+//        srcRect.set(0, 0, mBitmapOrigin.width, mBitmapOrigin.height)
         //初始化SurfaceView
         initSurface(surface_view)
+
     }
 
 
@@ -56,7 +59,7 @@ class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
         //获取Holder
         mSurfaceHolder = surfaceView.holder
         mSurfaceHolder.addCallback(this)
-        Log.e(TAG,"drawImage")
+        Log.e(TAG, "drawImage")
     }
 
 
@@ -67,14 +70,14 @@ class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
     override fun surfaceCreated(holder: SurfaceHolder?) {
         //start draw image
         drawImage(holder)
-        Log.e(TAG,"surfaceCreated")
+        Log.e(TAG, "surfaceCreated")
     }
 
     private fun drawImage(holder: SurfaceHolder?) {
-        Log.e(TAG,"drawImage")
+        Log.e(TAG, "drawImage")
         val canvas = holder?.lockCanvas()
         canvas?.drawColor(Color.WHITE)
-        canvas?.drawBitmap(mBitmapOrigin,0F,0F,null)
+        canvas?.drawBitmap(mBitmapOrigin, srcRect, dstRect, null)
         holder?.unlockCanvasAndPost(canvas)
     }
 
@@ -85,31 +88,21 @@ class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
      * @param scaleWidth  图的宽
      * @return new Bitmap
      */
-    private fun scaleBitmap(scaleWidth: Float): Bitmap {
-        //load info
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch, options)
-
+    private fun scaleBitmap(mOrigin: Bitmap, scaleWidth: Float): Bitmap {
         //calculate
-        val height = options.outHeight
-        val width = options.outWidth
-        var inSampleSize = 1
+        val height = mOrigin.height
+        val width = mOrigin.width
+        Log.e(TAG, "height = $height   width = $width")
         //ratio
-        val ratio = width / height
-        val scaleHeight = scaleWidth / ratio
+        val ratio = scaleWidth / width
+        val scaleHeight = height * ratio
+        Log.e(TAG, "ratio = $ratio   scaleWidth = $scaleWidth  scaleHeight = $scaleHeight")
         //获取Bitmap
-        if (height > scaleHeight || width > scaleWidth) {
-            val halfHeight = height / 2
-            val halfWidth = width / 2
-            //计算inSampleSize直到缩放后的宽高都小于指定的宽高
-            while ((halfHeight / inSampleSize) >= scaleHeight && (halfWidth / inSampleSize) >= scaleWidth) {
-                inSampleSize *= 2
-            }
-        }
-        options.inSampleSize = inSampleSize
-        options.inJustDecodeBounds = false
-        return BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch, options)
-    }
+        val matrix = Matrix()
+        matrix.postScale(ratio, ratio)// 使用后乘
 
+        srcRect.set(0, 0, scaleWidth.toInt(), scaleHeight.toInt())
+        dstRect.set(0, 200, scaleWidth.toInt(), scaleHeight.toInt() + 200)
+        return Bitmap.createBitmap(mOrigin, 0, 0, mOrigin.width, mOrigin.height, matrix, false)
+    }
 }

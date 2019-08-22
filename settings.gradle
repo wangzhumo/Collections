@@ -1,5 +1,10 @@
-include ':app', ':inyu_xlog', ':library_widget'
-include ':library_origin'
+include ':app'
+
+include ':inyu_xlog'
+
+include ':library_origin',
+        ':library_widget'
+
 include ':module_media',
         ':module_webrtc',
         ':module_base',
