@@ -124,21 +124,14 @@ public class AudioRecordHelper {
                 outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
                 byte[] audioData = new byte[mBufferSizeInBytes];
                 while (mState == AudioState.RECORDING) {
-                    int readSize = mAudioRecord.read(audioData, 0, mBufferSizeInBytes);
+                    int readSize = mRecorder.read(audioData, 0, mBufferSizeInBytes);
                     if (readSize > 0) {
-                        try {
-                            bos.write(audioData, 0, readSize);
-                            if (mRecordStreamListener != null) {
-                                mRecordStreamListener.onRecording(audioData, 0, readSize);
-                            }
-                        } catch (IOException e) {
-                            Log.e(TAG, "writeAudioDataToFile", e);
-                        }
+                        outputStream.write(audioData, 0, readSize);
                     } else {
                         Log.w(TAG, "writeAudioDataToFile readSize: " + readSize);
                     }
                 }
-                bos.flush();
+                outputStream.flush();
 
             } catch (IOException e) {
                 e.printStackTrace();
