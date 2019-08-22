@@ -26,7 +26,7 @@ public class AudioRecordHelper {
     private static final String TAG = "AudioRecordHelper";
 
     private AudioRecord mRecorder;
-    private int recordBufSize = 0; // Bufffer的大小字段
+    private int mBufferSizeInBytes = 0; // Bufffer的大小字段
     private int channel = AudioFormat.CHANNEL_IN_STEREO;
     private int sampleRate = 44100;
     private int encodingFormat = AudioFormat.ENCODING_PCM_16BIT;
@@ -41,19 +41,19 @@ public class AudioRecordHelper {
      */
     private boolean createRecorder() {
         //获取系统提供的bufferSize
-        recordBufSize = AudioRecord.getMinBufferSize(sampleRate, channel, encodingFormat);
+        mBufferSizeInBytes = AudioRecord.getMinBufferSize(sampleRate, channel, encodingFormat);
         //创建AudioRecord实例
         mRecorder = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
                 sampleRate,
                 channel,
                 encodingFormat,
-                recordBufSize
+                mBufferSizeInBytes
         );
 
         if (mRecorder.getState() != AudioRecord.STATE_INITIALIZED) {
             mRecorder = null;
-            recordBufSize = 0;
+            mBufferSizeInBytes = 0;
             mState = AudioState.DISABLE;
             return false;
         }
@@ -123,7 +123,7 @@ public class AudioRecordHelper {
             try {
                 outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
                 byte[] audioData = new byte[mBufferSizeInBytes];
-                while (mStatus == Status.STATUS_START) {
+                while (mState == AudioState.RECORDING) {
                     int readSize = mAudioRecord.read(audioData, 0, mBufferSizeInBytes);
                     if (readSize > 0) {
                         try {
