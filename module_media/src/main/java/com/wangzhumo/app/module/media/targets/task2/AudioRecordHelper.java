@@ -6,10 +6,14 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,7 +34,9 @@ public class AudioRecordHelper {
     private int sampleRate = 44100;
     private int encodingFormat = AudioFormat.ENCODING_PCM_16BIT;
     private File outputFile;  //输出文件 pcm
+    private File wavFile;  //输出文件 wav
     private ExecutorService mExecutor;
+    private onRecordListener listener;
 
     private int mState = AudioState.DISABLE;
 
@@ -39,16 +45,17 @@ public class AudioRecordHelper {
         createRecorder();
     }
 
-    private static class Singleton{
+    private static class Singleton {
         private static AudioRecordHelper INSTANCE = new AudioRecordHelper();
     }
 
 
     /**
      * 获取AudioRecordHelper实例
+     *
      * @return AudioRecordHelper
      */
-    public static AudioRecordHelper getInstance(){
+    public static AudioRecordHelper getInstance() {
         return Singleton.INSTANCE;
     }
 
@@ -81,11 +88,22 @@ public class AudioRecordHelper {
 
     /**
      * 设置输出文件
+     *
      * @param outputFile
      */
     public void setOutPutFile(File outputFile) {
         this.outputFile = outputFile;
     }
+
+
+    /**
+     * 设置录制的监听
+     * @param recordListener onRecordListener
+     */
+    public void setOnRecordListener(onRecordListener recordListener){
+        this.listener = recordListener;
+    }
+
 
     /**
      * 开始录制音频
@@ -102,12 +120,23 @@ public class AudioRecordHelper {
         //开始录制
         mRecorder.startRecording();
         mState = AudioState.RECORDING;
-
+        if (listener != null){
+            listener.onRecording();
+        }
         //开启写文件线程.
         if (mExecutor == null) {
             mExecutor = Executors.newCachedThreadPool();
         }
         mExecutor.execute(writePcmToFile);
+    }
+
+
+    /**
+     * PCM转化为Wav文件
+     */
+    public void covertPcm2Wav() {
+        createWavFile();
+        makePcm2Wav();
     }
 
 
@@ -138,6 +167,56 @@ public class AudioRecordHelper {
         mState = AudioState.DISABLE;
     }
 
+    /**
+     * 创建一个临时文件
+     */
+    private void createWavFile() {
+        String filePcmFile = outputFile.getAbsolutePath();
+        //创建一个临时文件
+        String wavFilePath = filePcmFile.replace(IMediaType.PCM, IMediaType.WAV);
+        wavFile = new File(wavFilePath);
+    }
+
+
+    /**
+     * 将一个pcm文件转化为wav文件
+     *
+     * @return boolean
+     */
+    private boolean makePcm2Wav() {
+        byte[] buffer;
+        if (!outputFile.exists()) {
+            return false;
+        }
+        WavHeader wavHeader = new WavHeader(outputFile.length(), sampleRate, channel, encodingFormat);
+        byte[] h = wavHeader.toBytes();
+        if (h.length != 44) // WAV标准，头部应该是44字节,如果不是44个字节则不进行转换文件
+            return false;
+        //合成所有的pcm文件的数据，写到目标文件
+        try {
+            buffer = new byte[1024 * 4]; // Length of All Files, Total Size
+            InputStream inStream;
+            OutputStream ouStream;
+            ouStream = new BufferedOutputStream(new FileOutputStream(wavFile));
+            ouStream.write(h, 0, h.length);
+            inStream = new BufferedInputStream(new FileInputStream(outputFile));
+            int size = inStream.read(buffer);
+            while (size != -1) {
+                ouStream.write(buffer);
+                size = inStream.read(buffer);
+            }
+            inStream.close();
+            ouStream.close();
+            if (listener != null){
+                listener.onWavFile(wavFile);
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException ioe) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * 写PCM数据到文件中
@@ -157,6 +236,9 @@ public class AudioRecordHelper {
                         Log.e(TAG, "writePcmToFile readSize: " + readSize);
                     }
                 }
+                if (listener != null){
+                    listener.onRecorded(outputFile);
+                }
                 outputStream.flush();
                 outputStream.close();
             } catch (IOException e) {
@@ -165,4 +247,10 @@ public class AudioRecordHelper {
         }
     };
 
+
+    public interface onRecordListener {
+        void onRecording();
+        void onRecorded(File pcm);
+        void onWavFile(File wav);
+    }
 }

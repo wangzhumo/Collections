@@ -9,6 +9,7 @@ import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_task2.*
 import java.io.File
+import java.lang.StringBuilder
 
 
 /**
@@ -21,10 +22,11 @@ import java.io.File
  *
  */
 @Route(path = IRoute.MEDIA_TASK_2)
-class Task2Activity : BaseActivity() {
+class Task2Activity : BaseActivity() , AudioRecordHelper.onRecordListener{
 
     val TAG = "Task2Activity"
     lateinit var file :File
+    val sb = StringBuilder()
 
     override fun getLayoutId(): Int = R.layout.activity_task2
 
@@ -43,6 +45,7 @@ class Task2Activity : BaseActivity() {
         button_play.setOnClickListener {
             if (TextUtils.equals(button_play.text, "Play")) {
                 button_play.text = "Stop"
+                Log.e(TAG,"StartPlay File = " + file.absoluteFile)
                 AudioTrackHelper.getInstance().startPlay(file)
             } else {
                 button_play.text = "Play"
@@ -57,7 +60,6 @@ class Task2Activity : BaseActivity() {
      */
     private fun stopRecord() {
         AudioRecordHelper.getInstance().stopRecord()
-        Log.e(TAG, "AudioRecordHelper -----StopRecord-----")
     }
 
     /**
@@ -70,8 +72,33 @@ class Task2Activity : BaseActivity() {
             recordFile.mkdirs()
         }
         file = File(recordFile, "${System.currentTimeMillis()}.pcm")
+        AudioRecordHelper.getInstance().setOnRecordListener(this)
         AudioRecordHelper.getInstance().setOutPutFile(file)
         AudioRecordHelper.getInstance().startRecord()
+    }
+
+
+    override fun onRecording() {
         Log.e(TAG, "AudioRecordHelper -----StartRecord-----")
+    }
+
+    override fun onRecorded(pcm: File) {
+        sb.append(pcm.absolutePath)
+        sb.append("\n")
+        AudioRecordHelper.getInstance().covertPcm2Wav()
+        this.runOnUiThread {
+            record_path.text = sb.toString()
+        }
+        Log.e(TAG, "AudioRecordHelper -----onRecorded----- pcm = " + pcm.absoluteFile)
+    }
+
+    override fun onWavFile(wav: File) {
+        file = wav
+        sb.append(wav.absolutePath)
+        sb.append("\n")
+        this.runOnUiThread {
+            record_path.text = sb.toString()
+        }
+        Log.e(TAG, "AudioRecordHelper -----onWavFile----- wav = " + wav.absoluteFile)
     }
 }
