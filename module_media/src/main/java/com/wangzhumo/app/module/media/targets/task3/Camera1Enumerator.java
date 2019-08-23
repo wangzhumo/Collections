@@ -1,7 +1,7 @@
 package com.wangzhumo.app.module.media.targets.task3;
 
 import android.hardware.Camera;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;

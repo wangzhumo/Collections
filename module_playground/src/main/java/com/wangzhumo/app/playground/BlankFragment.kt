@@ -1,9 +1,9 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
-import android.support.animation.SpringAnimation
-import android.support.animation.SpringForce
-import android.support.v4.app.FragmentManager
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
+import androidx.fragment.app.FragmentManager
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar

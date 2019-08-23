@@ -1,6 +1,6 @@
 package com.wangzhumo.app
 
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import com.wangzhumo.app.origin.BaseFragment
 import com.wangzhumo.app.playground.R
 
@@ -28,7 +28,7 @@ abstract class BaseAnimFragment : BaseFragment() {
 
     }
 
-    fun show(supportFragmentManager: FragmentManager, layoutId: Int) {
+    fun show(supportFragmentManager: androidx.fragment.app.FragmentManager, layoutId: Int) {
         try {
             supportFragmentManager
                 .beginTransaction()

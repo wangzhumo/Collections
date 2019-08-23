@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/root_layout"
             android:layout_width="match_parent"
             android:layout_height="225dp">
@@ -29,7 +29,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="40dp"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="Start"/>
     </LinearLayout>
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/stiffness"
             android:max="10000"
             android:layout_marginLeft="20dp"
@@ -61,7 +61,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="45dp"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/damping_ratio"
             android:max="10"
             android:layout_marginLeft="20dp"
