@@ -118,6 +118,8 @@ def androidx = [:]
     androidx.v4 = "androidx.legacy:legacy-support-v4:$versions.androidx"
     androidx.core = "androidx.core:core:$versions.androidx"
     androidx.coreKtx = "androidx.core:core-ktx:$versions.androidx"
+    androidx.dynamicanimation = "androidx.dynamicanimation:dynamicanimation:$versions.androidx"
+    androidx.constraint = 'androidx.constraintlayout:constraintlayout:1.1.3'
     deps.androidx = androidx
 
 def glide = [:]
@@ -186,7 +188,6 @@ def pay = [:]
     //view
     deps.magicIndicator = "com.github.hackware1993:MagicIndicator:$versions.indicator"
     deps.multiType = "me.drakeet.multitype:multitype:$versions.multiType"
-    deps.constraint = 'androidx.constraintlayout:constraintlayout:1.1.3'
     deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
     deps.kprogress = "com.kaopiz:kprogresshud:$versions.kprogress"
     deps.banner = "com.youth.banner:banner:$versions.banner"

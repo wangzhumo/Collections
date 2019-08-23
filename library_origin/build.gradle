@@ -43,7 +43,7 @@ dependencies {
     api deps.androidx.appCompat
     api deps.androidx.recyclerview
     api deps.androidx.design
-    api deps.constraint
+    api deps.androidx.constraint
     api deps.immersionbar
     api deps.fragmentation
     api deps.logger

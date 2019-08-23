@@ -94,9 +94,9 @@ dependencies {
     implementation project(":inyu_xlog")
     implementation project(":module_playground")
     implementation deps.stdlib
-    implementation deps.constraint
-    implementation deps.support.appCompat
-    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+    implementation deps.androidx.constraint
+    implementation deps.androidx.appCompat
+    implementation deps.androidx.dynamicanimation
     kapt deps.arouter.compiler
     testImplementation 'junit:junit:4.12'
 }
