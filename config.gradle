@@ -10,6 +10,7 @@ def versions = [:]
     versions.room = "1.1.1"
     versions.paging = "1.0.1"
     versions.support = "28.0.0"
+    versions.androidx = "1.0.0"
     versions.constraint = "1.1.3"
 
     //jetpack
@@ -50,7 +51,7 @@ def versions = [:]
     //view
     versions.dialogs = "0.9.6.0"
     versions.barLibVersion = "2.3.0"
-    versions.fragment = "1.3.6"
+    versions.fragment = "1.3.7"
     versions.indicator = "1.5.0"
     versions.multiType = "3.4.4"
     versions.wheelPicker = "1.5.5"
@@ -98,10 +99,10 @@ def rxLib = [:]
 
 def support = [:]
     support.annotations = "com.android.support:support-annotations:$versions.support"
-    support.appCompat = "com.android.support:appcompat-v7:$versions.support"
-    support.recyclerview = "com.android.support:recyclerview-v7:$versions.support"
+    support.appCompat = 'androidx.appcompat:appcompat:1.0.0'
+    support.recyclerview = 'androidx.recyclerview:recyclerview:1.0.0'
     support.cardview = "com.android.support:cardview-v7:$versions.support"
-    support.design = "com.android.support:design:$versions.support"
+    support.design = 'com.google.android.material:material:1.0.0'
     support.v4 = "com.android.support:support-v4:$versions.support"
     support.v4Compat = "com.android.support:support-compat:$versions.support"
     support.coreUtils = "com.android.support:support-core-utils:$versions.support"
@@ -109,8 +110,16 @@ def support = [:]
     deps.support = support
 
 def androidx = [:]
-    androidx.appCompat = "androidx.appcompat:appcompat:1.0.0"
-    androidx.coreKtx = "androidx.core:core-ktx:1.0.0"
+    androidx.annotations = "androidx.annotation:annotation:$versions.androidx"
+    androidx.appCompat = "androidx.appcompat:appcompat:$versions.androidx"
+    androidx.recyclerview = "androidx.recyclerview:recyclerview:$versions.androidx"
+    androidx.cardview = "androidx.cardview:cardview:$versions.androidx"
+    androidx.design = "com.google.android.material:material:1.0.0"
+    androidx.v4 = "androidx.legacy:legacy-support-v4:$versions.androidx"
+    androidx.core = "androidx.core:core:$versions.androidx"
+    androidx.coreKtx = "androidx.core:core-ktx:$versions.androidx"
+    androidx.dynamicanimation = "androidx.dynamicanimation:dynamicanimation:$versions.androidx"
+    androidx.constraint = 'androidx.constraintlayout:constraintlayout:1.1.3'
     deps.androidx = androidx
 
 def glide = [:]
@@ -179,7 +188,6 @@ def pay = [:]
     //view
     deps.magicIndicator = "com.github.hackware1993:MagicIndicator:$versions.indicator"
     deps.multiType = "me.drakeet.multitype:multitype:$versions.multiType"
-    deps.constraint = "com.android.support.constraint:constraint-layout:$versions.constraint"
     deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
     deps.kprogress = "com.kaopiz:kprogresshud:$versions.kprogress"
     deps.banner = "com.youth.banner:banner:$versions.banner"
@@ -188,7 +196,7 @@ def pay = [:]
     deps.fragmentation = "me.yokeyword:fragmentation:$versions.fragment"
     deps.flowlayout = "com.hyman:flowlayout-lib:1.1.2"
     deps.frameAnim = "com.yuyashuai.android:silkyanimation:1.1.6"
-    deps.immersionbar = "com.gyf.immersionbar:immersionbar:2.3.3"
+    deps.immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0-beta07"
 
     //media
     deps.gpuImage = "org.wysaid:gpuimage-plus:$versions.gpuImage"

@@ -3,7 +3,7 @@ package com.wangzhumo.app.module.media.targets.task3;
 import android.content.Context;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AndroidException;
 import android.util.Log;
 

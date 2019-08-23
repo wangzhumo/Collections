@@ -1,8 +1,8 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
-import android.support.animation.SpringAnimation
-import android.support.animation.SpringForce
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
