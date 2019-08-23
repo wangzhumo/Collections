@@ -33,7 +33,7 @@ public class CppActivity extends BaseActivity {
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_2)
+                .build(IRoute.MEDIA_TASK_3)
                 .navigation();
     }
 

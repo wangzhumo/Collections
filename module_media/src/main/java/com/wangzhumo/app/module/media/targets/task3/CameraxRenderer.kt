@@ -1,0 +1,118 @@
+package com.wangzhumo.app.module.media.targets.task3
+
+import android.graphics.SurfaceTexture
+import android.opengl.*
+import android.view.TextureView
+
+/**
+ * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
+ *
+ * @author 王诛魔 2019-08-23  16:22
+ *
+ * Camera的Renderer
+ */
+class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
+
+    var eglSurface: EGLSurface = EGL14.EGL_NO_SURFACE
+    var eglContext: EGLContext = EGL14.EGL_NO_CONTEXT
+    var eglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
+
+    private var mTextureView: TextureView? = null
+    private var mOESTextureId: Int = 0
+
+    fun init(textureView: TextureView, oesTextureId: Int) {
+        mTextureView = textureView
+        mOESTextureId = oesTextureId
+    }
+
+
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+
+    }
+
+
+    /**
+     * 创建EGL环境
+     */
+    private fun initEGL() {
+        eglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
+        //需判断是否成功获取EGLDisplay
+        if (eglDisplay == EGL14.EGL_NO_DISPLAY) {
+            throw  RuntimeException("Unable to get EGL14 display")
+        }
+        val versions = IntArray(2)
+
+        if (!EGL14.eglInitialize(eglDisplay, versions, 0, versions, 1)) {
+            throw RuntimeException("eglInitialize failed! " + EGL14.eglGetError())
+        }
+
+        //egl的一些配置
+        val eglConfigAttribute = intArrayOf(
+            EGL14.EGL_RED_SIZE, 8,
+            EGL14.EGL_GREEN_SIZE, 8,
+            EGL14.EGL_BLUE_SIZE, 8,
+            EGL14.EGL_ALPHA_SIZE, 8,
+            EGL14.EGL_NONE
+        )
+        val numConfig = IntArray(1)
+        val eglConfig = arrayOfNulls<EGLConfig>(1)
+
+        val eglChooseFlag = EGL14.eglChooseConfig(
+            eglDisplay,
+            eglConfigAttribute, 0,
+            eglConfig, 0, 1,
+            numConfig, 0
+        )
+
+        if (!eglChooseFlag) {
+            throw RuntimeException("eglChooseConfig failed! " + EGL14.eglGetError())
+        }
+
+        val ctxAttribute = intArrayOf(
+            EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+            EGL14.EGL_NONE
+        )
+
+        eglContext = EGL14.eglCreateContext(
+            eglDisplay,
+            eglConfig[0],
+            EGL14.EGL_NO_CONTEXT,
+            ctxAttribute, 0
+        )
+
+        if (eglDisplay === EGL14.EGL_NO_DISPLAY || eglContext === EGL14.EGL_NO_CONTEXT) {
+            throw RuntimeException("eglCreateContext fail failed! " + EGL14.eglGetError())
+        }
+
+        val surfaceAttribute = intArrayOf(
+            EGL14.EGL_NONE
+        )
+
+        eglSurface = EGL14.eglCreateWindowSurface(
+            eglDisplay, eglConfig[0], mTextureView?.surfaceTexture,
+            surfaceAttribute, 0
+        )
+
+        val makeFlag = EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
+        if (!makeFlag){
+            throw RuntimeException("eglMakeCurrent failed! " + EGL14.eglGetError())
+        }
+    }
+
+
+    fun release(){
+        if (eglSurface != EGL14.EGL_NO_SURFACE) {
+            EGL14.eglMakeCurrent(eglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT)
+            EGL14.eglDestroySurface(eglDisplay, eglSurface)
+            eglSurface = EGL14.EGL_NO_SURFACE
+        }
+        if (eglContext != EGL14.EGL_NO_CONTEXT) {
+            EGL14.eglDestroyContext(eglDisplay, eglContext)
+            eglContext = EGL14.EGL_NO_CONTEXT
+        }
+        if (eglDisplay != EGL14.EGL_NO_DISPLAY) {
+            EGL14.eglTerminate(eglDisplay)
+            eglDisplay = EGL14.EGL_NO_DISPLAY
+        }
+    }
+}
