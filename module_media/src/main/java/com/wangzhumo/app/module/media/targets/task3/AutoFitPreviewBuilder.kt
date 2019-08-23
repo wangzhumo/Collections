@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.media.targets.task3
 
 import android.content.Context
 import android.graphics.Matrix
+import android.graphics.SurfaceTexture
 import android.hardware.display.DisplayManager
 import android.util.Log
 import android.util.Size
@@ -54,8 +55,8 @@ class AutoFitPreviewBuilder private constructor(
         }
     }
 
-    //private var mOESTextureId = -1
-    //private var mRenderer: GLSurfaceView.Renderer = GLSurfaceView.Renderer()
+    private var mOESTextureId = -1
+    private var mRenderer: CameraxRenderer = CameraxRenderer()
 
     init {
         // Make sure that the view finder reference is valid
@@ -86,32 +87,32 @@ class AutoFitPreviewBuilder private constructor(
             //viewFinder.surfaceTexture = it.surfaceTexture
 
             // 启用下面的代码，走 GL 线程，图像经过黑白滤镜处理
-//            viewFinder.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-//
-//                override fun onSurfaceTextureSizeChanged(
-//                    surface: SurfaceTexture?,
-//                    width: Int,
-//                    height: Int
-//                ) {
-//                }
-//
-//                override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
-//                }
-//
-//                override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-//                    return true
-//                }
-//
-//                override fun onSurfaceTextureAvailable(
-//                    surface: SurfaceTexture?,
-//                    width: Int,
-//                    height: Int
-//                ) {
+            viewFinder.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+
+                override fun onSurfaceTextureSizeChanged(
+                    surface: SurfaceTexture?,
+                    width: Int,
+                    height: Int
+                ) {
+                }
+
+                override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+                }
+
+                override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+                    return true
+                }
+
+                override fun onSurfaceTextureAvailable(
+                    surface: SurfaceTexture?,
+                    width: Int,
+                    height: Int
+                ) {
 //                    mOESTextureId = TextureDrawer.createOESTextureObject()
-//                    mRenderer.init(viewFinder, mOESTextureId)
-//                    mRenderer.initOESTexture(it.surfaceTexture)
-//                }
-//            }
+                    mRenderer.init(viewFinder, mOESTextureId)
+                    mRenderer.initTexture(it.surfaceTexture)
+                }
+            }
 
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)

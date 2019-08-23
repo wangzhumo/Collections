@@ -2,7 +2,11 @@ package com.wangzhumo.app.module.media.targets.task3
 
 import android.graphics.SurfaceTexture
 import android.opengl.*
+import android.os.Handler
 import android.view.TextureView
+import android.os.HandlerThread
+import android.os.Message
+
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -17,17 +21,50 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
     var eglContext: EGLContext = EGL14.EGL_NO_CONTEXT
     var eglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
 
-    private var mTextureView: TextureView? = null
     private var mOESTextureId: Int = 0
+    private lateinit var mTextureView: TextureView
+    private lateinit var mSurfaceTexture: SurfaceTexture
+    private lateinit var mHandler: Handler
 
     fun init(textureView: TextureView, oesTextureId: Int) {
         mTextureView = textureView
         mOESTextureId = oesTextureId
+        val mHandlerThread = HandlerThread("EGL Renderer Thread")
+        mHandlerThread.start()
+        mHandler = object : Handler(mHandlerThread.looper) {
+            override fun handleMessage(msg: Message?) {
+                when (msg?.what) {
+                    //创建EGL环境
+                    MSG_INIT -> initEGL()
+                    MSG_RENDER -> drawFrame(msg.obj as SurfaceTexture?)
+                    MSG_ATTACH -> attachSurfaceTexture()
+                    MSG_DETACH -> detachSurfaceTexture()
+                    else -> return
+                }
+            }
+        }
+    }
+
+    fun initTexture(surfacetexture: SurfaceTexture) {
+        mSurfaceTexture = surfacetexture
+        mHandler.sendEmptyMessage(MSG_ATTACH)
+    }
+
+    /**
+     * 绘制图像.
+     * @param surfaceTexture SurfaceTexture
+     */
+    private fun drawFrame(surfaceTexture: SurfaceTexture?) {
+        mSurfaceTexture.updateTexImage()
     }
 
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
-
+        mHandler.sendMessage(
+            Message.obtain().apply {
+                what = MSG_RENDER
+                obj = surfaceTexture
+            })
     }
 
 
@@ -94,15 +131,28 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
         )
 
         val makeFlag = EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
-        if (!makeFlag){
+        if (!makeFlag) {
             throw RuntimeException("eglMakeCurrent failed! " + EGL14.eglGetError())
         }
     }
 
+    private fun detachSurfaceTexture() {
+        mSurfaceTexture.detachFromGLContext()
+    }
 
-    fun release(){
+    private fun attachSurfaceTexture() {
+        mSurfaceTexture.attachToGLContext(mOESTextureId)
+        mSurfaceTexture.setOnFrameAvailableListener(this)
+    }
+
+    fun release() {
         if (eglSurface != EGL14.EGL_NO_SURFACE) {
-            EGL14.eglMakeCurrent(eglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT)
+            EGL14.eglMakeCurrent(
+                eglDisplay,
+                EGL14.EGL_NO_SURFACE,
+                EGL14.EGL_NO_SURFACE,
+                EGL14.EGL_NO_CONTEXT
+            )
             EGL14.eglDestroySurface(eglDisplay, eglSurface)
             eglSurface = EGL14.EGL_NO_SURFACE
         }
@@ -114,5 +164,13 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
             EGL14.eglTerminate(eglDisplay)
             eglDisplay = EGL14.EGL_NO_DISPLAY
         }
+    }
+
+
+    companion object {
+        private const val MSG_INIT = 1
+        private const val MSG_RENDER = 2
+        private const val MSG_DETACH = 3
+        private const val MSG_ATTACH = 4
     }
 }
