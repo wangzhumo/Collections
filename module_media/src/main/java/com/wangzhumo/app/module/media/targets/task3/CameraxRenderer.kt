@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.TextureView
 import android.os.HandlerThread
 import android.os.Message
+import javax.microedition.khronos.opengles.GL10
 
 
 /**
@@ -78,17 +79,20 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
             throw  RuntimeException("Unable to get EGL14 display")
         }
         val versions = IntArray(2)
-
+        versions[0] = 3
         if (!EGL14.eglInitialize(eglDisplay, versions, 0, versions, 1)) {
             throw RuntimeException("eglInitialize failed! " + EGL14.eglGetError())
         }
 
         //egl的一些配置
         val eglConfigAttribute = intArrayOf(
+            EGL14.EGL_BUFFER_SIZE, 32,
             EGL14.EGL_RED_SIZE, 8,
             EGL14.EGL_GREEN_SIZE, 8,
             EGL14.EGL_BLUE_SIZE, 8,
             EGL14.EGL_ALPHA_SIZE, 8,
+            EGL14.EGL_RENDERABLE_TYPE, 4,
+            EGL14.EGL_SURFACE_TYPE, EGL14.EGL_WINDOW_BIT,
             EGL14.EGL_NONE
         )
         val numConfig = IntArray(1)
@@ -126,7 +130,7 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
         )
 
         eglSurface = EGL14.eglCreateWindowSurface(
-            eglDisplay, eglConfig[0], mTextureView?.surfaceTexture,
+            eglDisplay, eglConfig[0], mTextureView.surfaceTexture,
             surfaceAttribute, 0
         )
 
@@ -143,6 +147,39 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
     private fun attachSurfaceTexture() {
         //mSurfaceTexture.attachToGLContext(mOESTextureId)
         mSurfaceTexture.setOnFrameAvailableListener(this)
+    }
+
+    /**
+     * 加载OES Texture
+     *
+     * @return
+     */
+    fun loadOESTexture(): Int {
+        val textureIds = IntArray(1)
+        GLES20.glGenTextures(1, textureIds, 0)
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureIds[0])
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GL10.GL_TEXTURE_MIN_FILTER,
+            GL10.GL_NEAREST.toFloat()
+        )
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GL10.GL_TEXTURE_MAG_FILTER,
+            GL10.GL_LINEAR.toFloat()
+        )
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GL10.GL_TEXTURE_WRAP_S,
+            GL10.GL_CLAMP_TO_EDGE.toFloat()
+        )
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GL10.GL_TEXTURE_WRAP_T,
+            GL10.GL_CLAMP_TO_EDGE.toFloat()
+        )
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
+        return textureIds[0]
     }
 
     fun release() {
