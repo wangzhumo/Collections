@@ -54,6 +54,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":module_base")
     implementation deps.androidx.constraint
+    implementation deps.androidx.camera_core
+    implementation deps.androidx.camera_camera2
     kapt deps.arouter.compiler
     //kapt deps.epoxy_processor
     implementation deps.stdlib
