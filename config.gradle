@@ -10,6 +10,7 @@ def versions = [:]
     versions.room = "1.1.1"
     versions.paging = "1.0.1"
     versions.support = "28.0.0"
+    versions.androidx = "1.0.0"
     versions.constraint = "1.1.3"
 
     //jetpack
@@ -109,8 +110,14 @@ def support = [:]
     deps.support = support
 
 def androidx = [:]
-    androidx.appCompat = "androidx.appcompat:appcompat:1.0.0"
-    androidx.coreKtx = "androidx.core:core-ktx:1.0.0"
+    androidx.annotations = "androidx.annotation:annotation:$versions.androidx"
+    androidx.appCompat = "androidx.appcompat:appcompat:$versions.androidx"
+    androidx.recyclerview = "androidx.recyclerview:recyclerview:$versions.androidx"
+    androidx.cardview = "androidx.cardview:cardview:$versions.androidx"
+    androidx.design = "com.google.android.material:material:1.0.0"
+    androidx.v4 = "androidx.legacy:legacy-support-v4:$versions.androidx"
+    androidx.core = "androidx.core:core:$versions.androidx"
+    androidx.coreKtx = "androidx.core:core-ktx:$versions.androidx"
     deps.androidx = androidx
 
 def glide = [:]
@@ -188,7 +195,7 @@ def pay = [:]
     deps.fragmentation = "me.yokeyword:fragmentation:$versions.fragment"
     deps.flowlayout = "com.hyman:flowlayout-lib:1.1.2"
     deps.frameAnim = "com.yuyashuai.android:silkyanimation:1.1.6"
-    deps.immersionbar = "com.gyf.immersionbar:immersionbar:2.3.3"
+    deps.immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0-beta07"
 
     //media
     deps.gpuImage = "org.wysaid:gpuimage-plus:$versions.gpuImage"

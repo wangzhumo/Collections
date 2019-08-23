@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -100,8 +101,6 @@ public abstract class BaseActivity extends SupportActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //销毁状态栏
-        ImmersionBar.with(this).destroy();
         //网络资源
         if (mDisposable != null) {
             mDisposable.dispose();
