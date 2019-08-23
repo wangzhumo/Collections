@@ -55,16 +55,14 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
      * @param surfaceTexture SurfaceTexture
      */
     private fun drawFrame(surfaceTexture: SurfaceTexture?) {
+//        EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
         mSurfaceTexture.updateTexImage()
+//        EGL14.eglSwapBuffers(eglDisplay, eglSurface);
     }
 
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
-        mHandler.sendMessage(
-            Message.obtain().apply {
-                what = MSG_RENDER
-                obj = surfaceTexture
-            })
+        mHandler.sendEmptyMessage(MSG_RENDER)
     }
 
 

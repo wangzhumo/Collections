@@ -9,6 +9,7 @@ import android.util.Size
 import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
@@ -108,7 +109,7 @@ class AutoFitPreviewBuilder private constructor(
                     width: Int,
                     height: Int
                 ) {
-//                    mOESTextureId = TextureDrawer.createOESTextureObject()
+                    mOESTextureId = TextureUtils.loadOESTexture()
                     mRenderer.init(viewFinder, mOESTextureId)
                     mRenderer.initTexture(it.surfaceTexture)
                 }
