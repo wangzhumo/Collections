@@ -2,14 +2,12 @@ package com.wangzhumo.app.module.media.targets.task3
 
 import android.content.Context
 import android.graphics.Matrix
-import android.graphics.SurfaceTexture
 import android.hardware.display.DisplayManager
 import android.util.Log
 import android.util.Size
 import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
@@ -27,6 +25,8 @@ class AutoFitPreviewBuilder private constructor(
     config: PreviewConfig,
     viewFinderRef: WeakReference<TextureView>
 ) {
+
+
     /** Public instance of preview use-case which can be used by consumers of this adapter */
     val useCase: Preview
 
@@ -82,38 +82,38 @@ class AutoFitPreviewBuilder private constructor(
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
 
-            Log.d("zhy", "OnPreviewOutputUpdateListener")
+            Log.e(TAG, "OnPreviewOutputUpdateListener")
 
             // 启用下面的代码正常显示内容
-            //viewFinder.surfaceTexture = it.surfaceTexture
+            viewFinder.surfaceTexture = it.surfaceTexture
 
             // 启用下面的代码，走 GL 线程，图像经过黑白滤镜处理
-            viewFinder.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-
-                override fun onSurfaceTextureSizeChanged(
-                    surface: SurfaceTexture?,
-                    width: Int,
-                    height: Int
-                ) {
-                }
-
-                override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
-                }
-
-                override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-                    return true
-                }
-
-                override fun onSurfaceTextureAvailable(
-                    surface: SurfaceTexture?,
-                    width: Int,
-                    height: Int
-                ) {
-                    mOESTextureId = TextureUtils.loadOESTexture()
-                    mRenderer.init(viewFinder, mOESTextureId)
-                    mRenderer.initTexture(it.surfaceTexture)
-                }
-            }
+//            viewFinder.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+//
+//                override fun onSurfaceTextureSizeChanged(
+//                    surface: SurfaceTexture?,
+//                    width: Int,
+//                    height: Int
+//                ) {
+//                }
+//
+//                override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+//                }
+//
+//                override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+//                    return true
+//                }
+//
+//                override fun onSurfaceTextureAvailable(
+//                    surface: SurfaceTexture?,
+//                    width: Int,
+//                    height: Int
+//                ) {
+//                    mOESTextureId = TextureUtils.loadOESTexture()
+//                    mRenderer.init(viewFinder, mOESTextureId)
+//                    mRenderer.initTexture(it.surfaceTexture)
+//                }
+//            }
 
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)
@@ -229,6 +229,8 @@ class AutoFitPreviewBuilder private constructor(
             Surface.ROTATION_270 -> 270
             else -> null
         }
+
+        const val TAG = "AutoFitPreview"
 
         /**
          * Main entrypoint for users of this class: instantiates the adapter and returns an instance

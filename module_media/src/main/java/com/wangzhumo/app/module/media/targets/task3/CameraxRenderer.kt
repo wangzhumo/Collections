@@ -141,7 +141,14 @@ class CameraxRenderer : SurfaceTexture.OnFrameAvailableListener {
         mSurfaceTexture.detachFromGLContext()
     }
 
+    fun loadOESTexture(): SurfaceTexture {
+        mSurfaceTexture = SurfaceTexture(mOESTextureId)
+        mSurfaceTexture.setOnFrameAvailableListener(this)
+        return mSurfaceTexture
+    }
+
     private fun attachSurfaceTexture() {
+
         //mSurfaceTexture.attachToGLContext(mOESTextureId)
         mSurfaceTexture.setOnFrameAvailableListener(this)
     }
