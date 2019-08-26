@@ -54,7 +54,6 @@ class Task3Activity : BaseActivity(), LifecycleOwner {
     private fun bindCameraUseCases() {
         // Make sure that there are no other use cases bound to CameraX
         CameraX.unbindAll()
-
         //sys display info
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
         val screenSize = Size(metrics.widthPixels, metrics.heightPixels)
