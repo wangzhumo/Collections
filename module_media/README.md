@@ -9,5 +9,15 @@ https://blog.csdn.net/byhook/article/details/83990792
 
 ### Opengl es
 
+```
+《OpenGL ES 2.0 for Android》读书笔记
+https://juejin.im/post/5aefdb2c51882522835e6542
+```
+
+
+
+
 ### texture
+
+
 
