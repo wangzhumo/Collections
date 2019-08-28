@@ -30,12 +30,22 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
 
 
     override fun handleMessage(msg: Message?): Boolean {
-        return when (msg?.what) {
+        when (msg?.what) {
             //创建EGL环境
-            GLESTextureThread.MSG_INIT -> initEGL()
-            GLESTextureThread.MSG_RENDER -> drawFrame()
-            GLESTextureThread.MSG_ATTACH -> attachSurfaceTexture()
-            GLESTextureThread.MSG_DETACH -> detachSurfaceTexture()
+            GLESTextureThread.MSG_INIT -> {
+                initEGL()
+                mRendererListener.onSurfaceCreated()
+                return true
+            }
+            GLESTextureThread.MSG_RENDER -> {
+                return true
+            }
+            GLESTextureThread.MSG_ATTACH -> {
+                return true
+            }
+            GLESTextureThread.MSG_DETACH -> {
+                return true
+            }
             else -> return true
         }
     }
@@ -44,7 +54,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
     /**
      * 创建EGL环境
      */
-    private fun initEGL() : Boolean {
+    private fun initEGL()  {
         mEglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
         //需判断是否成功获取EGLDisplay
         if (mEglDisplay == EGL14.EGL_NO_DISPLAY) {
@@ -110,7 +120,6 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
         if (!makeFlag) {
             throw RuntimeException("eglMakeCurrent failed! " + EGL14.eglGetError())
         }
-        return true
     }
 
 
