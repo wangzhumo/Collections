@@ -17,7 +17,6 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     private val mSurfaceTexture :SurfaceTexture? = surface
     private val mRendererListener: IGLESRenderer? = rendererListener
 
-    private lateinit var mEgl : EGL14
     private var mEglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
     private var mEglSurface: EGLSurface = EGL14.EGL_NO_SURFACE
     private var mEglContext: EGLContext = EGL14.EGL_NO_CONTEXT
@@ -26,6 +25,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
 
     init {
         mHandler = Handler(mHandlerThread.looper,this)
+        mHandlerThread.start()
     }
 
 
@@ -122,6 +122,26 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
         }
     }
 
+    private fun release() {
+        if (mEglSurface != EGL14.EGL_NO_SURFACE) {
+            EGL14.eglMakeCurrent(
+                mEglDisplay,
+                EGL14.EGL_NO_SURFACE,
+                EGL14.EGL_NO_SURFACE,
+                EGL14.EGL_NO_CONTEXT
+            )
+            EGL14.eglDestroySurface(mEglDisplay, mEglSurface)
+            mEglSurface = EGL14.EGL_NO_SURFACE
+        }
+        if (mEglContext != EGL14.EGL_NO_CONTEXT) {
+            EGL14.eglDestroyContext(mEglDisplay, mEglContext)
+            mEglContext = EGL14.EGL_NO_CONTEXT
+        }
+        if (mEglDisplay != EGL14.EGL_NO_DISPLAY) {
+            EGL14.eglTerminate(mEglDisplay)
+            mEglDisplay = EGL14.EGL_NO_DISPLAY
+        }
+    }
 
     /**
      * 需要刷新数据了.
