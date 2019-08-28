@@ -19,5 +19,9 @@ https://juejin.im/post/5aefdb2c51882522835e6542
 
 ### texture
 
+```
+TextureView展示OpenGL内容(Demo)
+https://www.iteye.com/blog/flycatdeng-2359280
+```
 
 
