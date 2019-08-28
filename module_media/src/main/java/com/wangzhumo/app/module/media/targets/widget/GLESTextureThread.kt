@@ -11,11 +11,11 @@ import android.os.Message
  *
  * @author 王诛魔 2019-08-28  23:49
  */
-class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGLESRenderer) : Handler.Callback {
+class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IGLESRenderer?) : Handler.Callback {
 
 
-    private val mSurfaceTexture :SurfaceTexture = surface
-    private val mRendererListener: IGLESRenderer = rendererListener
+    private val mSurfaceTexture :SurfaceTexture? = surface
+    private val mRendererListener: IGLESRenderer? = rendererListener
 
     private lateinit var mEgl : EGL14
     private var mEglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
@@ -34,7 +34,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
             //创建EGL环境
             GLESTextureThread.MSG_INIT -> {
                 initEGL()
-                mRendererListener.onSurfaceCreated()
+                mRendererListener?.onSurfaceCreated()
                 return true
             }
             GLESTextureThread.MSG_RENDER -> {
@@ -123,14 +123,37 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
     }
 
 
+    /**
+     * 需要刷新数据了.
+     */
+    fun requestRender() {
+
+    }
+
+
+    /**
+     * 设置刷新的模式
+     */
+    fun setRenderMode(mRendererMode: Int) {
+
+    }
+
+    /**
+     * Surface的信息发生变化
+     */
+    fun onSurfaceChange(width: Int, height: Int) {
+
+    }
+
+
     companion object {
         const val TAG = "GLESTextureThread"
         const val EGL_CONTEXT_CLIENT_VERSION = 0x3098
         const val EGL_OPENGL_ES2_BIT = 4
 
-        private const val MSG_INIT = 1
-        private const val MSG_RENDER = 2
-        private const val MSG_DETACH = 3
-        private const val MSG_ATTACH = 4
+        const val MSG_INIT = 1
+        const val MSG_RENDER = 2
+        const val MSG_DETACH = 3
+        const val MSG_ATTACH = 4
     }
 }
