@@ -24,4 +24,9 @@ TextureView展示OpenGL内容(Demo)
 https://www.iteye.com/blog/flycatdeng-2359280
 ```
 
+```
+TextureView+SurfaceTexture+OpenGL ES来播放视频
+https://www.jianshu.com/p/d3d3186eefcb
+```
+
 
