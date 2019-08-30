@@ -6,7 +6,9 @@ android平台下OpenGL ES 3.0使用TextureView对相机Camera预览实时处理
 https://blog.csdn.net/byhook/article/details/83990792
 
 
-2019年08月30日23:36:07 android平台下OpenGL ES 3.0使用TextureView对相机Camera预览实时处理
+2019年08月30日23:36:07
+android平台下OpenGL ES 3.0从零开始
+https://blog.csdn.net/byhook/article/details/83715360
 
 ### 一直不能实现,滚去补充基础知识了
 
