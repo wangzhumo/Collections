@@ -10,6 +10,10 @@ https://blog.csdn.net/byhook/article/details/83990792
 android平台下OpenGL ES 3.0从零开始
 https://blog.csdn.net/byhook/article/details/83715360
 
+2019年08月31日23:43:42
+android平台下OpenGL ES 3.0绘制纯色背景
+https://blog.csdn.net/byhook/article/details/83716870
+
 ### 一直不能实现,滚去补充基础知识了
 
 ### Opengl es
