@@ -3,7 +3,9 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
-        <activity android:name=".targets.task3.Task3Activity"></activity>
+        <activity
+                android:name=".targets.task3.Task3Activity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".targets.task2.Task2Activity"
                 android:screenOrientation="portrait" />

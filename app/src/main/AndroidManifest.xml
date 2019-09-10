@@ -46,8 +46,6 @@
         <meta-data
                 android:name="BUGLY_ENABLE_DEBUG"
                 android:value="true" />
-
-
         <meta-data
                 android:name="android.max_aspect"
                 android:value="2.1"/> <!-- 适配华为（huawei）刘海屏 -->
@@ -57,7 +55,6 @@
         <meta-data
                 android:name="notch.config"
                 android:value="portrait|landscape"/>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
