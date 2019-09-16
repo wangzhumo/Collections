@@ -52,6 +52,14 @@ https://blog.csdn.net/a8688555/article/details/82819646
 https://laishujie.coding.me/2018/09/23/%E9%80%9A%E4%BF%97%E6%98%93%E6%87%82%E7%9A%84%20OpenGL%20ES%20%EF%BC%88%E4%B8%80%EF%BC%89%E5%85%A5%E9%97%A8%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86/
 ```
 
+### opengl ndk
+
+```
+https://www.zybuluo.com/cxm-2016/note/542687
+NDK开发OpenGL ES 3.0(一)——OpenGL-ES 3.0介绍以及NDK环境搭建
+
+```
+
 ### learnopengl-cn.github.io
 
 > 其中有几幅图讲得比较好
