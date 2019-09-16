@@ -17,10 +17,6 @@ import com.wangzhumo.app.origin.BaseActivity;
 @Route(path = IRoute.JNI_CPP)
 public class CppActivity extends BaseActivity {
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
 
 
 
@@ -37,9 +33,4 @@ public class CppActivity extends BaseActivity {
                 .navigation();
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 }

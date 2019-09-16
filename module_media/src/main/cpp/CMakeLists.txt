@@ -1,44 +1,30 @@
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
-
-# Sets the minimum version of CMake required to build the native library.
-
+# 指定了CMake的最低版本为3.4.1
 cmake_minimum_required(VERSION 3.4.1)
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
+# 添加一个库
+add_library(
+        # 这里设置so库的名称为native-lib
+        native-lib
 
-add_library( # Sets the name of the library.
-             native-lib
+        # 设置该库为共享
+        SHARED
 
-             # Sets the library as a shared library.
-             SHARED
+        # 源文件的路径，可以有多个，最终这个源文件将被编译并打包进native-lib库
+        native-lib.cpp)
 
-             # Provides a relative path to your source file(s).
-             native-lib.cpp )
 
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
+# 查找一个库，并设置到路径变量中去
+find_library(
+        # 设置路径变量
+        log-lib
 
-find_library( # Sets the name of the path variable.
-              log-lib
+        # 你希望CMake编译器加载的NDK函数库
+        log)
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+# 关联指定的库到目标函数库中
+target_link_libraries(
+        # 目标函数库
+        native-lib
 
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in this
-# build script, prebuilt third-party libraries, or system libraries.
-
-target_link_libraries( # Specifies the target library.
-                       native-lib
-
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+        # 需要在目标函数库中使用的函数库，${路径变量}
+        ${log-lib})
