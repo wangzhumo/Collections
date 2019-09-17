@@ -22,8 +22,9 @@ class CppActivity : BaseActivity() {
         return R.layout.activity_cpp
     }
 
-    override fun initData(savedInstanceState: Bundle) {
-        super.initData(savedInstanceState)
+
+    override fun initViews(savedInstanceState: Bundle?) {
+        super.initViews(savedInstanceState)
         button_task1.setOnClickListener {
             ARouter.getInstance()
                 .build(IRoute.MEDIA_TASK_1)
@@ -47,9 +48,5 @@ class CppActivity : BaseActivity() {
                 .build(IRoute.MEDIA_OPENGL_1)
                 .navigation()
         }
-
-
-
     }
-
 }
