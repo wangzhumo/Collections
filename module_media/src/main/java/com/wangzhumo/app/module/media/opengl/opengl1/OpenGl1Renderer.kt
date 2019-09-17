@@ -13,16 +13,24 @@ import javax.microedition.khronos.opengles.GL10
  */
 class OpenGl1Renderer : GLSurfaceView.Renderer{
 
-    //绘制资源
-    override fun onDrawFrame(gl: GL10?) {
+    //surface创建成功时
+    override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+        //设置一个清屏的颜色
+        gl?.glClearColor(0F, 0F, 0F, 1F)
     }
 
     //size改变时回调
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+
     }
 
-    //surface创建成功时
-    override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+    //绘制资源
+    override fun onDrawFrame(gl: GL10?) {
+
     }
+
+
+
+
 
 }

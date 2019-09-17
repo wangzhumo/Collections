@@ -11,4 +11,4 @@ import android.util.AttributeSet
  *
  * opengl1 练习用GLSurface
  */
-class OpenGl1SurfaceView(ctx: Context, attrs: AttributeSet? = null) : GLSurfaceView(ctx, attrs)
+class OpenGl1SurfaceView @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : GLSurfaceView(ctx, attrs)

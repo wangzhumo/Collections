@@ -9,5 +9,5 @@
     <com.wangzhumo.app.module.media.opengl.opengl1.OpenGl1SurfaceView
             android:id="@+id/gl_surface_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
