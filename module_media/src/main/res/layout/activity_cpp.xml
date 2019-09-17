@@ -7,4 +7,56 @@
         android:layout_height="match_parent"
         tools:context=".CppActivity">
 
+
+    <Button
+            android:id="@+id/button_task1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Task-1"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+            android:id="@+id/button_task2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:text="Task-2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_task1"
+            tools:visibility="visible" />
+
+    <Button
+            android:id="@+id/button_task3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:text="Task-3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_task2"
+            tools:visibility="visible" />
+
+    <Button
+            android:id="@+id/button_opengl1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:text="OpenGL-1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_task3"
+            tools:visibility="visible" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

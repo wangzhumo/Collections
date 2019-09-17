@@ -3,6 +3,7 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
+        <activity android:name=".opengl.opengl1.OpenGL1Activity"></activity>
         <activity
                 android:name=".targets.task3.Task3Activity"
                 android:screenOrientation="portrait" />
