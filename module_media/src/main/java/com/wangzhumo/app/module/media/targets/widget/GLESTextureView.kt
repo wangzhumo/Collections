@@ -5,6 +5,7 @@ import android.graphics.SurfaceTexture
 import android.os.Message
 import android.util.AttributeSet
 import android.view.TextureView
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 
 
 /**
@@ -18,7 +19,8 @@ class GLESTextureView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
+) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener,SurfaceTexture.OnFrameAvailableListener {
+
 
 
     private var mGLThread: GLESTextureThread? = null
@@ -58,14 +60,13 @@ class GLESTextureView @JvmOverloads constructor(
         mGLThread?.requestRender()
     }
 
-    override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
+    override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         //创建GLESTextureThread
         mGLThread = GLESTextureThread(surface, mRenderer)
+        surface.setOnFrameAvailableListener(this@GLESTextureView)
         mGLThread?.apply {
             //通过发消息的形式开始初始化,后期封装.
-            handleMessage(Message.obtain()?.apply {
-                what = GLESTextureThread.MSG_INIT
-            })
+            attachSurfaceId(TextureUtils.loadOESTexture())
             //设置渲染模式
             setRenderMode(mRendererMode)
             //设置surface的大小信息
@@ -73,6 +74,9 @@ class GLESTextureView @JvmOverloads constructor(
         }
     }
 
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+
+    }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
         mGLThread?.onSurfaceChange(width, height)

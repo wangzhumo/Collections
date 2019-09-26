@@ -14,12 +14,14 @@ import android.os.Message
 class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IGLESRenderer?) : Handler.Callback {
 
 
+
     private val mSurfaceTexture :SurfaceTexture? = surface
     private val mRendererListener: IGLESRenderer? = rendererListener
 
     private var mEglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
     private var mEglSurface: EGLSurface = EGL14.EGL_NO_SURFACE
     private var mEglContext: EGLContext = EGL14.EGL_NO_CONTEXT
+    private var mOESTextureId: Int = 0
     private val mHandlerThread = HandlerThread("EGL Renderer Thread")
     private val mHandler: Handler
 
@@ -29,10 +31,13 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     }
 
 
+
+
     override fun handleMessage(msg: Message?): Boolean {
         when (msg?.what) {
             //创建EGL环境
-            GLESTextureThread.MSG_INIT -> {
+            MSG_INIT -> {
+                initSurfaceTexture()
                 initEGL()
                 mRendererListener?.onSurfaceCreated()
                 return true
@@ -147,7 +152,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
      * 需要刷新数据了.
      */
     fun requestRender() {
-
+        mHandler.sendEmptyMessage(MSG_RENDER)
     }
 
 
@@ -165,6 +170,19 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
 
     }
 
+    /**
+     * 设置mOESTextureId
+     */
+    fun attachSurfaceId(textureId :Int){
+        this.mOESTextureId = textureId
+        mHandler.sendEmptyMessage(MSG_INIT)
+    }
+
+    private fun initSurfaceTexture() {
+        mSurfaceTexture?.apply {
+            attachToGLContext(mOESTextureId)
+        }
+    }
 
     companion object {
         const val TAG = "GLESTextureThread"
