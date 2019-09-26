@@ -73,9 +73,9 @@ class OpenGl1Renderer : GLSurfaceView.Renderer {
 
         //确定三角形位置
         val trianglePoint = floatArrayOf(
-            0F, 0.5F, 0F,
-            -0.5F, -0.5F, 0F,
-            0.5F, -0.5F, 0F
+            0F, 0.25F, 0F,
+            -0.75F, -0.25F, 0F,
+            0.75F, -0.25F, 0F
         )
 
         //创建顶点缓冲区
@@ -92,6 +92,11 @@ class OpenGl1Renderer : GLSurfaceView.Renderer {
 
         //设置绘图的颜色
         gl?.glColor4f(0F,0F,1F,1F)
+        //指定缓冲区
+        //int size  标识使用3个坐标标识一个点
+        //int type  点的数据类型
+        //int stride  跨度
+        gl?.glVertexPointer(3, GL10.GL_FLOAT, 0, pointBuffer)
         //画一个三角
         gl?.glDrawArrays(GL10.GL_TRIANGLES,0,3)
     }
