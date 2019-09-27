@@ -28,6 +28,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     init {
         mHandler = Handler(mHandlerThread.looper,this)
         mHandlerThread.start()
+        initEGL()
     }
 
 
@@ -38,7 +39,6 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
             //创建EGL环境
             MSG_INIT -> {
                 initSurfaceTexture()
-                initEGL()
                 mRendererListener?.onSurfaceCreated()
                 return true
             }
@@ -108,7 +108,7 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
             ctxAttribute, 0
         )
 
-        if (mEglDisplay === android.opengl.EGL14.EGL_NO_DISPLAY || mEglContext === android.opengl.EGL14.EGL_NO_CONTEXT) {
+        if (mEglDisplay === EGL14.EGL_NO_DISPLAY || mEglContext === EGL14.EGL_NO_CONTEXT) {
             throw RuntimeException("eglCreateContext fail failed! " + EGL14.eglGetError())
         }
 
