@@ -32,8 +32,6 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     }
 
 
-
-
     override fun handleMessage(msg: Message?): Boolean {
         when (msg?.what) {
             //创建EGL环境
