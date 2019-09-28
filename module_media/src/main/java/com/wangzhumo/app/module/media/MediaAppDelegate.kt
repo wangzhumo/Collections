@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.media
 
 import android.app.Application
 import android.util.Log
+import com.google.auto.service.AutoService
 import com.wangzhumo.app.base.delegate.AppDelegate
 import com.wangzhumo.app.base.delegate.IApp
 import com.wangzhumo.app.base.delegate.IAppConstant
@@ -12,8 +13,9 @@ import com.wangzhumo.app.base.delegate.IAppConstant
  * @author 王诛魔 2019-09-28  17:48
  */
 @IApp(name = IAppConstant.MEDIA)
-//@AutoService(Fragment.class)
+@AutoService(AppDelegate::class)
 class MediaAppDelegate: AppDelegate{
+
     override fun init(application: Application) {
         Log.e("AppDelegate", "MediaAppDelegate = $application")
     }

@@ -79,7 +79,7 @@ def versions = [:]
     versions.bottomBar = "1.0.4"
     versions.pingpp = "2.1.16"
     versions.update = "3.1.2"
-    versions.auto_service = "1.0-rc6"
+    versions.auto_server = "1.0-rc6"
 
     //leak memory checked
     versions.leakcanary="1.6.1"
