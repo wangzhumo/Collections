@@ -40,13 +40,13 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
                 mRendererListener?.onSurfaceCreated()
                 return true
             }
-            GLESTextureThread.MSG_RENDER -> {
+            MSG_RENDER -> {
                 return true
             }
-            GLESTextureThread.MSG_ATTACH -> {
+            MSG_ATTACH -> {
                 return true
             }
-            GLESTextureThread.MSG_DETACH -> {
+            MSG_DETACH -> {
                 return true
             }
             else -> return true

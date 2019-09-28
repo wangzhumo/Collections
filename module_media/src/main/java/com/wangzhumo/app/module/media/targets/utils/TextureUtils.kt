@@ -17,7 +17,7 @@ class TextureUtils {
     /**
      * 创建一个顶点Buffer
      */
-    private fun createBuffer(vertexData: FloatArray): FloatBuffer {
+    private fun loadVertexBuffer(vertexData: FloatArray): FloatBuffer {
         val buffer = ByteBuffer.allocateDirect(vertexData.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
@@ -33,12 +33,13 @@ class TextureUtils {
          * 顶点数组
          */
         private val vertexData = floatArrayOf(
-            1f, 1f, 1f, 1f,
-            -1f, 1f, 0f, 1f,
-            -1f, -1f, 0f, 0f,
-            1f, 1f, 1f, 1f,
-            -1f, -1f, 0f, 0f,
-            1f, -1f, 1f, 0f)
+            1.0f, 1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f
+        )
 
 
         private val POSITION_ATTRIBUTE = "aPosition"
