@@ -25,6 +25,7 @@ object AppUtils {
      * 获取applicationContext
      * @return applicationContext
      */
+    @JvmStatic
     fun getContext(): Context {
         return mApp.applicationContext
     }
@@ -33,6 +34,7 @@ object AppUtils {
      * 获取Application
      * @return APP.kt
      */
+    @JvmStatic
     fun getApplication(): Application {
         return mApp
     }

@@ -4,10 +4,10 @@ import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.GLES30
-import android.view.SurfaceView
 import android.view.TextureView
 import com.wangzhumo.app.base.utils.UIUtils
 import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.targets.utils.RawUtils
 import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import com.wangzhumo.app.module.media.targets.widget.GLESTextureThread
@@ -61,20 +61,23 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
 
 
     override fun onSurfaceCreated() {
+        //主要是创建线程.
         mSurfaceTexture?.setOnFrameAvailableListener(this@CameraTextureRenderer)
         mGLThread = GLESTextureThread(mTextureView,mSurfaceTexture)
+        mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT)
         mGLThread.setRendererListener(this)
+        mGLThread.attachSurfaceId(mOESTextureId)
+        mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT_SURFACE)
 
-        val vertexShader = ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader))
-        val fragmentShader = ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader))
+        //加载GL的一些东西
+        val vertexShader = ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
+        val fragmentShader = ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader))
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
 
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE);
         aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, TEXTURE_COORD_ATTRIBUTE);
-        uTextureMatrixLocation =
-            GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM);
-        uTextureSamplerLocation =
-            GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM);
+        uTextureMatrixLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM);
+        uTextureSamplerLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM);
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
@@ -82,21 +85,23 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
     }
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
-
+        mGLThread.requestRender()
     }
 
-    override fun onDrawFrame(surfaceTexture: SurfaceTexture) {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+    override fun onDrawFrame() {
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
-        GLES30.glUseProgram(mShaderProgram);
+        GLES30.glUseProgram(mShaderProgram)
 
-        surfaceTexture.updateTexImage();
-        surfaceTexture.getTransformMatrix(transformMatrix);
+        mSurfaceTexture?.apply {
+            updateTexImage()
+            getTransformMatrix(transformMatrix)
+        }
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
-        GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId);
-        GLES30.glUniform1i(uTextureSamplerLocation, 0);
-        GLES30.glUniformMatrix4fv(uTextureMatrixLocation, 1, false, transformMatrix, 0);
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
+        GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId)
+        GLES30.glUniform1i(uTextureSamplerLocation, 0)
+        GLES30.glUniformMatrix4fv(uTextureMatrixLocation, 1, false, transformMatrix, 0)
 
         mVertexBuffer.position(0);
         GLES30.glEnableVertexAttribArray(aPositionLocation);
@@ -107,7 +112,7 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
             false,
             STRIDE,
             mVertexBuffer
-        );
+        )
 
         mVertexBuffer.position(2);
         GLES30.glEnableVertexAttribArray(aTextureCoordLocation);
@@ -118,9 +123,9 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
             false,
             STRIDE,
             mVertexBuffer
-        );
+        )
 
-        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 6);
+        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 6)
     }
 
     override fun onResume() {
@@ -132,7 +137,7 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
     }
 
     override fun onDestroy() {
-
+        mGLThread.sendEmptyMessage(GLESTextureThread.MSG_DETACH)
     }
 
     override fun getTextureId(): Int {
@@ -141,7 +146,6 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
 
     override fun setRenderMode(rendererMode: Int) {
         mRendererMode = rendererMode
-        mGLThread.setRenderMode(mRendererMode)
     }
 
     override fun setTextureView(textureView: TextureView) {

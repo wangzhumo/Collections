@@ -27,7 +27,7 @@ interface IGLESRenderer {
     /**
      * 绘制每一帧
      */
-    fun onDrawFrame(surfaceTexture: SurfaceTexture)
+    fun onDrawFrame()
 
     /**
      * onResume操作

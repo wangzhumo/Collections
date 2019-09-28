@@ -33,10 +33,6 @@ class Task3Activity : BaseActivity(), LifecycleOwner {
     @SuppressLint("RestrictedApi")
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-//        viewFinder.apply {
-//            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY)
-//            setRenderer(CameraTextureRenderer())
-//        }
         viewFinder.post {
             bindCameraUseCases()
         }

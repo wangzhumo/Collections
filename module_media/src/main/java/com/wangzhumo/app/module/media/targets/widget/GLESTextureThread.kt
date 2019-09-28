@@ -29,7 +29,6 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
     init {
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper,this)
-        initEGL()
     }
 
 
@@ -41,17 +40,20 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
         when (msg?.what) {
             //创建EGL环境
             MSG_INIT -> {
+                initEGL()
+                return true
+            }
+            MSG_INIT_SURFACE -> {
                 initSurfaceTexture()
                 mRendererListener?.onSurfaceCreated()
                 return true
             }
             MSG_RENDER -> {
-                return true
-            }
-            MSG_ATTACH -> {
+                mRendererListener?.onDrawFrame()
                 return true
             }
             MSG_DETACH -> {
+                release()
                 return true
             }
             else -> return true
@@ -159,20 +161,10 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
         mHandler.sendEmptyMessage(MSG_RENDER)
     }
 
-
-    /**
-     * 设置刷新的模式
-     */
-    fun setRenderMode(mRendererMode: Int) {
-
+    fun sendEmptyMessage(what : Int){
+        mHandler.sendEmptyMessage(what)
     }
 
-    /**
-     * Surface的信息发生变化
-     */
-    fun onSurfaceChange(width: Int, height: Int) {
-
-    }
 
     /**
      * 设置mOESTextureId
@@ -189,11 +181,9 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
     }
 
     companion object {
-        const val TAG = "GLESTextureThread"
-        const val EGL_CONTEXT_CLIENT_VERSION = 0x3098
-        const val EGL_OPENGL_ES2_BIT = 4
 
-        const val MSG_INIT = 1
+        const val MSG_INIT = 10
+        const val MSG_INIT_SURFACE = 11
         const val MSG_RENDER = 2
         const val MSG_DETACH = 3
         const val MSG_ATTACH = 4

@@ -2,10 +2,8 @@ package com.wangzhumo.app.module.media.targets.widget
 
 import android.content.Context
 import android.graphics.SurfaceTexture
-import android.os.Message
 import android.util.AttributeSet
 import android.view.TextureView
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 
 
 /**
@@ -25,16 +23,15 @@ class GLESTextureView @JvmOverloads constructor(
     lateinit var mRenderer: IGLESRenderer
     private var mRendererMode = RENDERMODE_CONTINUOUSLY
 
-    //给自己设置监听.
-    init {
-        surfaceTextureListener = this
-    }
+
 
     /**
      * 模仿GLSurfaceView的setRenderer
      */
     fun setRenderer(renderer: IGLESRenderer) {
         mRenderer = renderer
+        //给自己设置监听.
+        surfaceTextureListener = this@GLESTextureView
     }
 
     /**
