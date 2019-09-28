@@ -13,6 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.SOURCE)
 @StringDef({IAppConstant.WEBRTC,IAppConstant.MEDIA})
 public @interface IAppConstant {
+    String BASE = "app_base";
     String MEDIA = "app_media";
     String WEBRTC = "app_webrtc";
 }

@@ -91,7 +91,6 @@ dependencies {
     implementation project(":module_base")
     implementation project(":module_media")
     implementation project(":module_webrtc")
-    implementation project(":inyu_xlog")
     implementation project(":module_playground")
     implementation deps.stdlib
     implementation deps.androidx.constraint
