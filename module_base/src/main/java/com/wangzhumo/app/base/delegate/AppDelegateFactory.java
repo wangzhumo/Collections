@@ -81,7 +81,6 @@ public class AppDelegateFactory {
             });
         }
         //完成之后,就是一个有序的列表了
-        Log.e("AppDelegate", "startLoadAppDelegate: size = " + mDelegateList.size());
         init(application);
     }
 

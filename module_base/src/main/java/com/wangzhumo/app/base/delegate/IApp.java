@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  *
  * 标注是否延期
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface IApp {
 
