@@ -44,4 +44,9 @@ interface IGLESRenderer {
     fun onDestroy()
 
     fun getTextureId(): Int
+
+    /**
+     * 设置渲染模式
+     */
+    fun setRenderMode(mRendererMode: Int)
 }

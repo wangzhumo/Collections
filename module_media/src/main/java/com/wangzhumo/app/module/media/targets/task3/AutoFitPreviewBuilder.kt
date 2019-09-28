@@ -2,16 +2,11 @@ package com.wangzhumo.app.module.media.targets.task3
 
 import android.content.Context
 import android.graphics.Matrix
-import android.graphics.SurfaceTexture
 import android.hardware.display.DisplayManager
-import android.opengl.GLSurfaceView
-import android.util.Log
 import android.util.Size
 import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
-import com.wangzhumo.app.module.media.targets.widget.GLESTextureThread
 import com.wangzhumo.app.module.media.targets.widget.GLESTextureView
 import java.lang.ref.WeakReference
 import java.util.*
@@ -82,7 +77,10 @@ class AutoFitPreviewBuilder private constructor(
             val parent = viewFinder.parent as ViewGroup
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
-            Log.e(TAG, "OnPreviewOutputUpdateListener")
+
+            viewFinder.surfaceTexture = it.surfaceTexture
+            val renderer = CameraTextureRenderer(it.surfaceTexture)
+
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)
             updateTransform(viewFinder, rotation, it.textureSize, viewFinderDimens)

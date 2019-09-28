@@ -5,6 +5,9 @@ import android.opengl.GLES20
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
+import android.graphics.SurfaceTexture
+
+
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -70,6 +73,15 @@ class TextureUtils {
                 .asFloatBuffer()
             buffer.put(vertexData, 0, vertexData.size).position(0)
             return buffer
+        }
+
+
+        /**
+         * 创建一个新的SurfaceTexture
+         */
+        fun loadOESTexture(mOESTextureId : Int): SurfaceTexture {
+            val mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
+            return mOESSurfaceTexture
         }
     }
 }

@@ -33,10 +33,10 @@ class Task3Activity : BaseActivity(), LifecycleOwner {
     @SuppressLint("RestrictedApi")
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        viewFinder.apply {
-            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY)
-            setRenderer(CameraTextureRenderer())
-        }
+//        viewFinder.apply {
+//            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY)
+//            setRenderer(CameraTextureRenderer())
+//        }
         viewFinder.post {
             bindCameraUseCases()
         }
@@ -75,6 +75,7 @@ class Task3Activity : BaseActivity(), LifecycleOwner {
             setLensFacing(lensFacing)
             setTargetRotation(viewFinder.display.rotation)
         }.build()
+
 
         // Use the auto-fit preview builder to automatically handle size and orientation changes
         val preview = AutoFitPreviewBuilder.build(viewFinderConfig, viewFinder)

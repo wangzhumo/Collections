@@ -11,9 +11,10 @@ import android.os.Message
  *
  * @author 王诛魔 2019-08-28  23:49
  */
-class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IGLESRenderer?) : Handler.Callback {
+class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGLESRenderer?) : Handler.Callback,SurfaceTexture.OnFrameAvailableListener {
 
-    private val mSurfaceTexture :SurfaceTexture? = surface
+
+    private val mSurfaceTexture :SurfaceTexture = surface
     private val mRendererListener: IGLESRenderer? = rendererListener
 
     private var mEglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
@@ -26,9 +27,13 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     init {
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper,this)
+        mSurfaceTexture.setOnFrameAvailableListener(this@GLESTextureThread)
         initEGL()
     }
 
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture) {
+
+    }
 
     override fun handleMessage(msg: Message?): Boolean {
         when (msg?.what) {

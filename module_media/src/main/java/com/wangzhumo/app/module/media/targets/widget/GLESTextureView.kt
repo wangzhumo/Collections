@@ -19,11 +19,9 @@ class GLESTextureView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener,
-    SurfaceTexture.OnFrameAvailableListener {
+) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
 
 
-    private var mGLThread: GLESTextureThread? = null
     lateinit var mRenderer: IGLESRenderer
     private var mRendererMode = RENDERMODE_CONTINUOUSLY
 
@@ -49,38 +47,17 @@ class GLESTextureView @JvmOverloads constructor(
         mRendererMode = mode
     }
 
-    /**
-     * Request that the renderer render a frame. This method is typically used when the render mode has been set to [.RENDERMODE_WHEN_DIRTY], so
-     * that frames are only rendered on demand. May be called from any thread. Must not be called before a renderer has been set.
-     */
-    fun requestRender() {
-        if (mRendererMode != RENDERMODE_WHEN_DIRTY) {
-            return
-        }
-        mGLThread?.requestRender()
-    }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         requireNotNull(mRenderer) { "No Renderer." }
         //创建GLESTextureThread
-        mGLThread = GLESTextureThread(surface, mRenderer)
-        surface.setOnFrameAvailableListener(this@GLESTextureView)
-        mGLThread?.apply {
-            //通过发消息的形式开始初始化,后期封装.
-            attachSurfaceId(mRenderer.getTextureId())
-            //设置渲染模式
-            setRenderMode(mRendererMode)
-            //设置surface的大小信息
-            onSurfaceChange(width, height)
-        }
+        mRenderer.onSurfaceCreated()
+        mRenderer.setRenderMode(mRendererMode)
     }
 
-    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
-
-    }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
-        mGLThread?.onSurfaceChange(width, height)
+        mRenderer.onSurfaceChanged(width, height)
     }
 
     override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
@@ -88,7 +65,8 @@ class GLESTextureView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-        return false
+        mRenderer.onDestroy()
+        return true
     }
 
 

@@ -4,12 +4,15 @@ import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.GLES30
+import android.view.SurfaceView
+import android.view.TextureView
 import com.wangzhumo.app.base.utils.UIUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
+import com.wangzhumo.app.module.media.targets.widget.GLESTextureThread
+import com.wangzhumo.app.module.media.targets.widget.GLESTextureView
 import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
-
 
 
 /**
@@ -17,7 +20,14 @@ import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
  *
  * @author 王诛魔 2019-09-28  16:24
  */
-class CameraTextureRenderer : IGLESRenderer {
+class CameraTextureRenderer(surfaceTexture: SurfaceTexture) : IGLESRenderer {
+
+
+
+    /**
+     * GL Thread
+     */
+    var mGLThread : GLESTextureThread = GLESTextureThread(surfaceTexture, this)
 
 
     /**
@@ -46,22 +56,33 @@ class CameraTextureRenderer : IGLESRenderer {
      * 程序
      */
     private var mShaderProgram = -1
-    private val mOESTextureId  = TextureUtils.loadOESTexture()
+    private var mRendererMode = GLESTextureView.RENDERMODE_WHEN_DIRTY
+    private val mOESTextureId = TextureUtils.loadOESTexture()
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
     init {
-
+        mGLThread.apply {
+            //通过发消息的形式开始初始化,后期封装.
+            attachSurfaceId(getTextureId())
+            //设置渲染模式
+            setRenderMode(mRendererMode)
+        }
     }
 
+
     override fun onSurfaceCreated() {
-        val vertexShader = ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader))
-        val fragmentShader = ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader))
+        val vertexShader =
+            ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader))
+        val fragmentShader =
+            ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader))
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
 
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE);
         aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, TEXTURE_COORD_ATTRIBUTE);
-        uTextureMatrixLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM);
-        uTextureSamplerLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM);
+        uTextureMatrixLocation =
+            GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM);
+        uTextureSamplerLocation =
+            GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM);
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
@@ -83,11 +104,25 @@ class CameraTextureRenderer : IGLESRenderer {
 
         mVertexBuffer.position(0);
         GLES30.glEnableVertexAttribArray(aPositionLocation);
-        GLES30.glVertexAttribPointer(aPositionLocation, 2, GLES30.GL_FLOAT, false, STRIDE, mVertexBuffer);
+        GLES30.glVertexAttribPointer(
+            aPositionLocation,
+            2,
+            GLES30.GL_FLOAT,
+            false,
+            STRIDE,
+            mVertexBuffer
+        );
 
         mVertexBuffer.position(2);
         GLES30.glEnableVertexAttribArray(aTextureCoordLocation);
-        GLES30.glVertexAttribPointer(aTextureCoordLocation, 2, GLES30.GL_FLOAT, false, STRIDE, mVertexBuffer);
+        GLES30.glVertexAttribPointer(
+            aTextureCoordLocation,
+            2,
+            GLES30.GL_FLOAT,
+            false,
+            STRIDE,
+            mVertexBuffer
+        );
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 6);
     }
@@ -108,8 +143,12 @@ class CameraTextureRenderer : IGLESRenderer {
         return mOESTextureId
     }
 
+    override fun setRenderMode(rendererMode: Int) {
+        mRendererMode = rendererMode
+        mGLThread.setRenderMode(mRendererMode)
+    }
 
-    companion object{
+    companion object {
         private val POSITION_ATTRIBUTE = "aPosition"
         private val TEXTURE_COORD_ATTRIBUTE = "aTextureCoordinate"
         private val TEXTURE_MATRIX_UNIFORM = "uTextureMatrix"
