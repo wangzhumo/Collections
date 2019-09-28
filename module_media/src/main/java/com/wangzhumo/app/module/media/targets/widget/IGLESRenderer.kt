@@ -1,5 +1,7 @@
 package com.wangzhumo.app.module.media.targets.widget
 
+import android.graphics.SurfaceTexture
+
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
@@ -24,7 +26,7 @@ interface IGLESRenderer {
     /**
      * 绘制每一帧
      */
-    fun onDrawFrame()
+    fun onDrawFrame(surfaceTexture: SurfaceTexture)
 
     /**
      * onResume操作

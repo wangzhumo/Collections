@@ -84,6 +84,7 @@ class GLESTextureView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {

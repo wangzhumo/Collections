@@ -13,8 +13,6 @@ import android.os.Message
  */
 class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IGLESRenderer?) : Handler.Callback {
 
-
-
     private val mSurfaceTexture :SurfaceTexture? = surface
     private val mRendererListener: IGLESRenderer? = rendererListener
 
@@ -26,8 +24,8 @@ class GLESTextureThread constructor(surface:SurfaceTexture?,rendererListener: IG
     private val mHandler: Handler
 
     init {
-        mHandler = Handler(mHandlerThread.looper,this)
         mHandlerThread.start()
+        mHandler = Handler(mHandlerThread.looper,this)
         initEGL()
     }
 

@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".targets.task3.Task3Activity">
 
-    <TextureView
+    <com.wangzhumo.app.module.media.targets.widget.GLESTextureView
             android:id="@+id/viewFinder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -71,7 +71,7 @@ class BaseModuleAppDelegate : AppDelegate {
             Xlog.setConsoleLogOpen(false)
         }
         Log.setLogImp(Xlog())
-        android.util.Log.d("AppDelegate","Application - initXLog")
+        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initXLog")
     }
 
 
@@ -82,7 +82,7 @@ class BaseModuleAppDelegate : AppDelegate {
             .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
-        android.util.Log.d("AppDelegate","Application - initLogger")
+        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initLogger")
     }
 
 
@@ -99,7 +99,7 @@ class BaseModuleAppDelegate : AppDelegate {
         }
         // 尽可能早，推荐在Application中初始化
         ARouter.init(application)
-        android.util.Log.d("AppDelegate","Application - ARouter")
+        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - ARouter")
     }
 
 
@@ -116,7 +116,7 @@ class BaseModuleAppDelegate : AppDelegate {
         strategy.isUploadProcess = processName == null || processName == packageName
         // 初始化Bugly
         CrashReport.initCrashReport(application, "962f4d00a2", BuildConfig.DEBUG, strategy)
-        android.util.Log.d("AppDelegate","Application - initBugly")
+        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initBugly")
     }
 
     /**

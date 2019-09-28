@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.media.targets.task3
 
 import android.annotation.SuppressLint
+import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -26,15 +27,19 @@ class Task3Activity : BaseActivity(), LifecycleOwner {
 
     private var lensFacing = CameraX.LensFacing.BACK
 
+
     override fun getLayoutId(): Int = R.layout.activity_task3
 
     @SuppressLint("RestrictedApi")
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
+        viewFinder.apply {
+            setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY)
+            setRenderer(CameraTextureRenderer())
+        }
         viewFinder.post {
             bindCameraUseCases()
         }
-
         switch_camera.setOnCheckedChangeListener { buttonView, isChecked ->
             lensFacing = if (CameraX.LensFacing.FRONT == lensFacing) {
                 CameraX.LensFacing.BACK

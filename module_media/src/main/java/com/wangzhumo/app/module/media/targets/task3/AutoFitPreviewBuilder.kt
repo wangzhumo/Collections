@@ -2,12 +2,17 @@ package com.wangzhumo.app.module.media.targets.task3
 
 import android.content.Context
 import android.graphics.Matrix
+import android.graphics.SurfaceTexture
 import android.hardware.display.DisplayManager
+import android.opengl.GLSurfaceView
 import android.util.Log
 import android.util.Size
 import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
+import com.wangzhumo.app.module.media.targets.widget.GLESTextureThread
+import com.wangzhumo.app.module.media.targets.widget.GLESTextureView
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.roundToInt
@@ -23,7 +28,7 @@ import kotlin.math.roundToInt
  */
 class AutoFitPreviewBuilder private constructor(
     config: PreviewConfig,
-    viewFinderRef: WeakReference<TextureView>
+    viewFinderRef: WeakReference<GLESTextureView>
 ) {
 
 
@@ -56,22 +61,18 @@ class AutoFitPreviewBuilder private constructor(
         }
     }
 
-    private var mOESTextureId = -1
-    private var mRenderer: CameraxRenderer = CameraxRenderer()
 
     init {
         // Make sure that the view finder reference is valid
         val viewFinder = viewFinderRef.get() ?: throw IllegalArgumentException(
             "Invalid reference to view finder used"
         )
-
         // Initialize the display and rotation from texture view information
         viewFinderDisplay = viewFinder.display.displayId
         viewFinderRotation = getDisplaySurfaceRotation(viewFinder.display) ?: 0
 
         // Initialize public use-case with the given config
         useCase = Preview(config)
-
 
         // Every time the view finder is updated, recompute layout
         useCase.onPreviewOutputUpdateListener = Preview.OnPreviewOutputUpdateListener {
@@ -81,44 +82,13 @@ class AutoFitPreviewBuilder private constructor(
             val parent = viewFinder.parent as ViewGroup
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
-
             Log.e(TAG, "OnPreviewOutputUpdateListener")
-
-            // 启用下面的代码正常显示内容
-            viewFinder.surfaceTexture = it.surfaceTexture
-
-            // 启用下面的代码，走 GL 线程，图像经过黑白滤镜处理
-//            viewFinder.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-//
-//                override fun onSurfaceTextureSizeChanged(
-//                    surface: SurfaceTexture?,
-//                    width: Int,
-//                    height: Int
-//                ) {
-//                }
-//
-//                override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
-//                }
-//
-//                override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-//                    return true
-//                }
-//
-//                override fun onSurfaceTextureAvailable(
-//                    surface: SurfaceTexture?,
-//                    width: Int,
-//                    height: Int
-//                ) {
-//                    mOESTextureId = TextureUtils.loadOESTexture()
-//                    mRenderer.init(viewFinder, mOESTextureId)
-//                    mRenderer.initTexture(it.surfaceTexture)
-//                }
-//            }
-
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)
             updateTransform(viewFinder, rotation, it.textureSize, viewFinderDimens)
         }
+
+
 
         // Every time the provided texture view changes, recompute layout
         viewFinder.addOnLayoutChangeListener { view, left, top, right, bottom, _, _, _, _ ->
@@ -129,8 +99,7 @@ class AutoFitPreviewBuilder private constructor(
         }
 
         // Every time the orientation of device changes, recompute layout
-        displayManager =
-            viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        displayManager = viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         displayManager.registerDisplayListener(displayListener, null)
 
         // Remove the display listeners when the view is detached to avoid
@@ -142,7 +111,6 @@ class AutoFitPreviewBuilder private constructor(
             override fun onViewDetachedFromWindow(view: View?) {
                 displayManager.unregisterDisplayListener(displayListener)
             }
-
         })
     }
 
@@ -237,7 +205,7 @@ class AutoFitPreviewBuilder private constructor(
          * of [Preview] which automatically adjusts in size and rotation to compensate for
          * config changes.
          */
-        fun build(config: PreviewConfig, viewFinder: TextureView) =
+        fun build(config: PreviewConfig, viewFinder: GLESTextureView) =
             AutoFitPreviewBuilder(config, WeakReference(viewFinder)).useCase
     }
 }
