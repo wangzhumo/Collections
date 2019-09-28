@@ -5,7 +5,9 @@ import android.opengl.*
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
+import android.util.Log
 import android.view.TextureView
+import com.orhanobut.logger.Logger
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -29,6 +31,7 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
     init {
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper,this)
+        Log.e("Renderer","GLESTextureThread Init")
     }
 
 
@@ -45,7 +48,6 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
             }
             MSG_INIT_SURFACE -> {
                 initSurfaceTexture()
-                mRendererListener?.onSurfaceCreated()
                 return true
             }
             MSG_RENDER -> {
@@ -53,6 +55,7 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
                 return true
             }
             MSG_DETACH -> {
+                deInitSurfaceTexture()
                 release()
                 return true
             }
@@ -65,6 +68,7 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
      * 创建EGL环境
      */
     private fun initEGL()  {
+        Log.e("Renderer","GLESTextureThread initEGL")
         mEglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
         //需判断是否成功获取EGLDisplay
         if (mEglDisplay == EGL14.EGL_NO_DISPLAY) {
@@ -171,13 +175,18 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
      */
     fun attachSurfaceId(textureId :Int){
         this.mOESTextureId = textureId
-        mHandler.sendEmptyMessage(MSG_INIT)
     }
 
     private fun initSurfaceTexture() {
+        Log.e("Renderer","GLESTextureThread initSurfaceTexture")
         mSurfaceTexture?.apply {
             attachToGLContext(mOESTextureId)
+            setOnFrameAvailableListener(mRendererListener)
         }
+    }
+
+    private fun deInitSurfaceTexture() {
+        mSurfaceTexture?.detachFromGLContext()
     }
 
     companion object {
@@ -186,6 +195,5 @@ class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTe
         const val MSG_INIT_SURFACE = 11
         const val MSG_RENDER = 2
         const val MSG_DETACH = 3
-        const val MSG_ATTACH = 4
     }
 }

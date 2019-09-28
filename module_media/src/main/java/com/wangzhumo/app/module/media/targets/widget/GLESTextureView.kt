@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.media.targets.widget
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
+import android.util.Log
 import android.view.TextureView
 
 
@@ -22,7 +23,6 @@ class GLESTextureView @JvmOverloads constructor(
 
     lateinit var mRenderer: IGLESRenderer
     private var mRendererMode = RENDERMODE_CONTINUOUSLY
-
 
 
     /**
@@ -47,6 +47,7 @@ class GLESTextureView @JvmOverloads constructor(
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         requireNotNull(mRenderer) { "No Renderer." }
+        Log.e("Renderer","GLESTextureView onSurfaceTextureAvailable")
         //创建GLESTextureThread
         mRenderer.setRenderMode(mRendererMode)
         mRenderer.onSurfaceCreated()

@@ -4,7 +4,9 @@ import android.graphics.SurfaceTexture
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.GLES30
+import android.util.Log
 import android.view.TextureView
+import com.orhanobut.logger.Logger
 import com.wangzhumo.app.base.utils.UIUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.utils.RawUtils
@@ -20,12 +22,13 @@ import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
  *
  * @author 王诛魔 2019-09-28  16:24
  */
-class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: TextureView? = null) : IGLESRenderer,SurfaceTexture.OnFrameAvailableListener {
+class CameraTextureRenderer(surfaceTexture: SurfaceTexture?,textureView: TextureView?) : IGLESRenderer {
 
     /**
      * GL Thread
      */
     lateinit var mGLThread : GLESTextureThread
+    //xml里面的TextureView
     private var mTextureView: TextureView? = textureView
     private var mSurfaceTexture: SurfaceTexture? = surfaceTexture
 
@@ -60,14 +63,17 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
 
+    init {
+        Log.e("Renderer","CameraTextureRenderer Init")
+    }
+
     override fun onSurfaceCreated() {
+        Log.e("Renderer","CameraTextureRenderer onSurfaceCreated")
         //主要是创建线程.
-        mSurfaceTexture?.setOnFrameAvailableListener(this@CameraTextureRenderer)
         mGLThread = GLESTextureThread(mTextureView,mSurfaceTexture)
         mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT)
         mGLThread.setRendererListener(this)
         mGLThread.attachSurfaceId(mOESTextureId)
-        mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT_SURFACE)
 
         //加载GL的一些东西
         val vertexShader = ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
@@ -78,6 +84,9 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
         aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, TEXTURE_COORD_ATTRIBUTE);
         uTextureMatrixLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM);
         uTextureSamplerLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM);
+
+
+        mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT_SURFACE)
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
@@ -85,10 +94,12 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: 
     }
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+        Log.e("Renderer","onFrameAvailable")
         mGLThread.requestRender()
     }
 
     override fun onDrawFrame() {
+        Log.e("Renderer","onDrawFrame")
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
         GLES30.glUseProgram(mShaderProgram)

@@ -7,6 +7,7 @@ import android.util.Size
 import android.view.*
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
+import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.targets.widget.GLESTextureView
 import java.lang.ref.WeakReference
 import java.util.*
@@ -78,9 +79,8 @@ class AutoFitPreviewBuilder private constructor(
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
 
-            val renderer = CameraTextureRenderer()
-            renderer.setSurfaceTexture(it.surfaceTexture)
-            renderer.setTextureView(viewFinder)
+            Log.e("Renderer","onPreviewOutputUpdateListener")
+            val renderer = CameraTextureRenderer(it.surfaceTexture,viewFinder)
             viewFinder.setRenderer(renderer)
             viewFinder.setRenderMode(GLESTextureView.RENDERMODE_WHEN_DIRTY)
 
@@ -88,7 +88,6 @@ class AutoFitPreviewBuilder private constructor(
             val rotation = getDisplaySurfaceRotation(viewFinder.display)
             updateTransform(viewFinder, rotation, it.textureSize, viewFinderDimens)
         }
-
 
 
         // Every time the provided texture view changes, recompute layout
@@ -100,7 +99,8 @@ class AutoFitPreviewBuilder private constructor(
         }
 
         // Every time the orientation of device changes, recompute layout
-        displayManager = viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        displayManager =
+            viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         displayManager.registerDisplayListener(displayListener, null)
 
         // Remove the display listeners when the view is detached to avoid

@@ -10,7 +10,7 @@ import android.view.TextureView
  *
  * 指定Renderer需要实现的方法
  */
-interface IGLESRenderer {
+interface IGLESRenderer : SurfaceTexture.OnFrameAvailableListener{
 
     /**
      * Surface创建好之后
