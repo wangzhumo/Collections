@@ -18,6 +18,6 @@ import com.wangzhumo.app.base.delegate.IAppConstant;
 public class WebRTCAppDelegate implements AppDelegate {
     @Override
     public void init(Application application) {
-        Log.e("AppDelegate", "WebRTCAppDelegate  = " + application);
+        Log.d("AppDelegate", "WebRTCAppDelegate  = " + application);
     }
 }

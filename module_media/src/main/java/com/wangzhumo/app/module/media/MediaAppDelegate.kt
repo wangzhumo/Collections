@@ -17,6 +17,6 @@ import com.wangzhumo.app.base.delegate.IAppConstant
 class MediaAppDelegate: AppDelegate{
 
     override fun init(application: Application) {
-        Log.e("AppDelegate", "MediaAppDelegate = $application")
+        Log.d("AppDelegate", "MediaAppDelegate = $application")
     }
 }
