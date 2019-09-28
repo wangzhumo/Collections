@@ -26,13 +26,12 @@ class TextureUtils {
     }
 
 
-
     companion object {
 
         /**
          * 顶点数组
          */
-        private val vertexData = floatArrayOf(
+        val vertexData = floatArrayOf(
             1.0f, 1.0f, 1.0f, 1.0f,
             -1.0f, 1.0f, 0.0f, 1.0f,
             -1.0f, -1f, 0.0f, 0.0f,
@@ -102,8 +101,17 @@ class TextureUtils {
             GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
             return textureIds[0]
         }
+
+
+        /**
+         * 创建一个顶点Buffer
+         */
+        fun loadVertexBuffer(vertexData: FloatArray): FloatBuffer {
+            val buffer = ByteBuffer.allocateDirect(vertexData.size * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+            buffer.put(vertexData, 0, vertexData.size).position(0)
+            return buffer
+        }
     }
-
-
-
 }

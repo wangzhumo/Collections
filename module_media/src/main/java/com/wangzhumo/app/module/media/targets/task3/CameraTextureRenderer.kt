@@ -1,6 +1,10 @@
 package com.wangzhumo.app.module.media.targets.task3
 
+import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
+import java.nio.FloatBuffer
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -11,18 +15,32 @@ class CameraTextureRenderer : IGLESRenderer {
 
 
     /**
+     * 顶点数组
+     */
+    val vertexData = floatArrayOf(
+        1.0f, 1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, -1f, 0.0f, 0.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 0.0f
+    )
+
+
+    /**
      * 程序
      */
     private val mShaderProgram = -1
+    private val mOESTextureId  = TextureUtils.loadOESTexture()
+    private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
-    private val mOESTextureId = -1
-
-    init {
-
-    }
 
 
     override fun onSurfaceCreated() {
+
+        //val vertexShader = ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.vertex_texture_shader));
+        //val fragmentShader = ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.fragment_texture_shader));
+        //mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader);
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
