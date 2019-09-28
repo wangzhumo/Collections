@@ -20,15 +20,14 @@ import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
  *
  * @author 王诛魔 2019-09-28  16:24
  */
-class CameraTextureRenderer(surfaceTexture: SurfaceTexture) : IGLESRenderer {
-
-
+class CameraTextureRenderer(surfaceTexture: SurfaceTexture? = null,textureView: TextureView? = null) : IGLESRenderer,SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * GL Thread
      */
-    var mGLThread : GLESTextureThread = GLESTextureThread(surfaceTexture, this)
-
+    lateinit var mGLThread : GLESTextureThread
+    private var mTextureView: TextureView? = textureView
+    private var mSurfaceTexture: SurfaceTexture? = surfaceTexture
 
     /**
      * 顶点数组
@@ -60,21 +59,14 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture) : IGLESRenderer {
     private val mOESTextureId = TextureUtils.loadOESTexture()
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
-    init {
-        mGLThread.apply {
-            //通过发消息的形式开始初始化,后期封装.
-            attachSurfaceId(getTextureId())
-            //设置渲染模式
-            setRenderMode(mRendererMode)
-        }
-    }
-
 
     override fun onSurfaceCreated() {
-        val vertexShader =
-            ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader))
-        val fragmentShader =
-            ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader))
+        mSurfaceTexture?.setOnFrameAvailableListener(this@CameraTextureRenderer)
+        mGLThread = GLESTextureThread(mTextureView,mSurfaceTexture)
+        mGLThread.setRendererListener(this)
+
+        val vertexShader = ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader))
+        val fragmentShader = ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader))
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
 
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE);
@@ -87,6 +79,10 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture) : IGLESRenderer {
 
     override fun onSurfaceChanged(width: Int, height: Int) {
         GLES30.glViewport(0, 0, width, height)
+    }
+
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+
     }
 
     override fun onDrawFrame(surfaceTexture: SurfaceTexture) {
@@ -147,6 +143,15 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture) : IGLESRenderer {
         mRendererMode = rendererMode
         mGLThread.setRenderMode(mRendererMode)
     }
+
+    override fun setTextureView(textureView: TextureView) {
+        mTextureView = textureView
+    }
+
+    override fun setSurfaceTexture(surfaceTexture: SurfaceTexture) {
+        mSurfaceTexture = surfaceTexture
+    }
+
 
     companion object {
         private val POSITION_ATTRIBUTE = "aPosition"

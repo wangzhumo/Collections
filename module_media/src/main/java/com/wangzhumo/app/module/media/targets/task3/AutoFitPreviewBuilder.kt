@@ -78,8 +78,11 @@ class AutoFitPreviewBuilder private constructor(
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
 
-            viewFinder.surfaceTexture = it.surfaceTexture
-            val renderer = CameraTextureRenderer(it.surfaceTexture)
+            val renderer = CameraTextureRenderer()
+            renderer.setSurfaceTexture(it.surfaceTexture)
+            renderer.setTextureView(viewFinder)
+            viewFinder.setRenderer(renderer)
+            viewFinder.setRenderMode(GLESTextureView.RENDERMODE_WHEN_DIRTY)
 
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)

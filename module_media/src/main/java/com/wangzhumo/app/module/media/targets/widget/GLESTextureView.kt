@@ -51,8 +51,8 @@ class GLESTextureView @JvmOverloads constructor(
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         requireNotNull(mRenderer) { "No Renderer." }
         //创建GLESTextureThread
-        mRenderer.onSurfaceCreated()
         mRenderer.setRenderMode(mRendererMode)
+        mRenderer.onSurfaceCreated()
     }
 
 

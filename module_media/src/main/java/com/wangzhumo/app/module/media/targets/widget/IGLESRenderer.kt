@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.media.targets.widget
 
 import android.graphics.SurfaceTexture
+import android.view.TextureView
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -48,5 +49,8 @@ interface IGLESRenderer {
     /**
      * 设置渲染模式
      */
-    fun setRenderMode(mRendererMode: Int)
+    fun setRenderMode(rendererMode: Int)
+
+    fun setTextureView(textureView: TextureView)
+    fun setSurfaceTexture(surfaceTexture: SurfaceTexture)
 }

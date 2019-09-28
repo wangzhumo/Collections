@@ -5,18 +5,20 @@ import android.opengl.*
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
+import android.view.TextureView
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2019-08-28  23:49
  */
-class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGLESRenderer?) : Handler.Callback,SurfaceTexture.OnFrameAvailableListener {
+class GLESTextureThread constructor(textureView : TextureView?,surface:SurfaceTexture?) : Handler.Callback {
+
+    private var mTextureView : TextureView? = textureView
+    private var mSurfaceTexture : SurfaceTexture? = surface
 
 
-    private val mSurfaceTexture :SurfaceTexture = surface
-    private val mRendererListener: IGLESRenderer? = rendererListener
-
+    private var mRendererListener: IGLESRenderer? = null
     private var mEglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
     private var mEglSurface: EGLSurface = EGL14.EGL_NO_SURFACE
     private var mEglContext: EGLContext = EGL14.EGL_NO_CONTEXT
@@ -27,12 +29,12 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
     init {
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper,this)
-        mSurfaceTexture.setOnFrameAvailableListener(this@GLESTextureThread)
         initEGL()
     }
 
-    override fun onFrameAvailable(surfaceTexture: SurfaceTexture) {
 
+    fun setRendererListener(rendererListener: IGLESRenderer) {
+        mRendererListener = rendererListener
     }
 
     override fun handleMessage(msg: Message?): Boolean {
@@ -117,8 +119,9 @@ class GLESTextureThread constructor(surface:SurfaceTexture,rendererListener: IGL
             EGL14.EGL_NONE
         )
 
+        val surfaceTexture = mTextureView?.surfaceTexture
         mEglSurface = EGL14.eglCreateWindowSurface(
-            mEglDisplay, eglConfig[0], mSurfaceTexture,
+            mEglDisplay, eglConfig[0], surfaceTexture,
             surfaceAttribute, 0
         )
 
