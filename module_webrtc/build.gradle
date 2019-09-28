@@ -41,5 +41,6 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     kapt deps.arouter.compiler
+    kapt deps.auto_server
     implementation deps.rxPermission
 }

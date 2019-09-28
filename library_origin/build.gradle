@@ -52,6 +52,7 @@ dependencies {
     api deps.rxLibs.rxAndroid
     api deps.bugly
     api deps.bugly_native
+    api deps.auto_server_annotations
     //api deps.epoxy
 }
 

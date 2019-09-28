@@ -79,6 +79,7 @@ def versions = [:]
     versions.bottomBar = "1.0.4"
     versions.pingpp = "2.1.16"
     versions.update = "3.1.2"
+    versions.auto_service = "1.0-rc6"
 
     //leak memory checked
     versions.leakcanary="1.6.1"
@@ -245,6 +246,8 @@ def pay = [:]
     deps.logger = 'com.orhanobut:logger:2.2.0'
     deps.epoxy = 'com.airbnb.android:epoxy:3.7.0'
     deps.epoxy_processor = 'com.airbnb.android:epoxy-processor:3.7.0'
+    deps.auto_server = "com.google.auto.service:auto-service:$versions.auto_server"
+    deps.auto_server_annotations = "com.google.auto.service:auto-service-annotations:$versions.auto_server"
 
 ext.deps = deps
 

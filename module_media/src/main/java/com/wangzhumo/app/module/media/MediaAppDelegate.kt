@@ -12,6 +12,7 @@ import com.wangzhumo.app.base.delegate.IAppConstant
  * @author 王诛魔 2019-09-28  17:48
  */
 @IApp(name = IAppConstant.MEDIA)
+//@AutoService(Fragment.class)
 class MediaAppDelegate: AppDelegate{
     override fun init(application: Application) {
         Log.e("AppDelegate", "MediaAppDelegate = $application")
