@@ -15,6 +15,7 @@ import java.io.IOException
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
+import com.wangzhumo.app.base.delegate.AppDelegateFactory
 
 
 /**
@@ -30,6 +31,8 @@ class APP : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.e("AppDelegate","Application - onCreate")
+        AppDelegateFactory.getInstance().startLoadAppDelegate(this)
         initARouter()
         initLogger()
         initBugly()

@@ -16,9 +16,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface IApp {
 
-    //加载的模块名
+    //加载的模块名 - 方便我们辨识确切的模块.
     String name() default "APP";
 
-    //优先级
+    //优先级 - 加载的排序.
     int priority() default 0;
 }
