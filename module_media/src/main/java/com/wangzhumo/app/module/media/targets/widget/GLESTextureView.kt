@@ -19,12 +19,12 @@ class GLESTextureView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener,SurfaceTexture.OnFrameAvailableListener {
-
+) : TextureView(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener,
+    SurfaceTexture.OnFrameAvailableListener {
 
 
     private var mGLThread: GLESTextureThread? = null
-    private var mRenderer: IGLESRenderer? = null
+    lateinit var mRenderer: IGLESRenderer
     private var mRendererMode = RENDERMODE_CONTINUOUSLY
 
     //给自己设置监听.
@@ -61,16 +61,17 @@ class GLESTextureView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+        requireNotNull(mRenderer) { "No Renderer." }
         //创建GLESTextureThread
         mGLThread = GLESTextureThread(surface, mRenderer)
         surface.setOnFrameAvailableListener(this@GLESTextureView)
         mGLThread?.apply {
             //通过发消息的形式开始初始化,后期封装.
-            attachSurfaceId(TextureUtils.loadOESTexture())
+            attachSurfaceId(mRenderer.getTextureId())
             //设置渲染模式
             setRenderMode(mRendererMode)
             //设置surface的大小信息
-            onSurfaceChange(width,height)
+            onSurfaceChange(width, height)
         }
     }
 
@@ -88,8 +89,6 @@ class GLESTextureView @JvmOverloads constructor(
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
         return false
     }
-
-
 
 
     companion object {

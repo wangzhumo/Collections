@@ -41,4 +41,5 @@ interface IGLESRenderer {
      */
     fun onDestroy()
 
+    fun getTextureId(): Int
 }
