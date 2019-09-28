@@ -1,5 +1,7 @@
 package com.wangzhumo.app.module.media.targets.task3
 
+import com.wangzhumo.app.base.AppUtils
+import com.wangzhumo.app.base.UIUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
@@ -30,17 +32,16 @@ class CameraTextureRenderer : IGLESRenderer {
     /**
      * 程序
      */
-    private val mShaderProgram = -1
+    private var mShaderProgram = -1
     private val mOESTextureId  = TextureUtils.loadOESTexture()
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
 
 
     override fun onSurfaceCreated() {
-
-        //val vertexShader = ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.vertex_texture_shader));
-        //val fragmentShader = ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.fragment_texture_shader));
-        //mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader);
+        val vertexShader = ShaderUtils.compileVertexShader(UIUtils.readRaw(R.raw.vertex_texture_shader));
+        val fragmentShader = ShaderUtils.compileFragmentShader(UIUtils.readRaw(R.raw.fragment_texture_shader));
+        mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader);
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {

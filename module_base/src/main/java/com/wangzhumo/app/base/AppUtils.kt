@@ -43,49 +43,4 @@ object AppUtils {
     fun getApplication(): Application {
         return mApp
     }
-
-
-    /**
-     * 获取String
-     * @param res: Int
-     * @return String
-     */
-    fun getString(@StringRes res: Int): String {
-        return try {
-            mApp.resources.getString(res)
-
-        } catch (e: Resources.NotFoundException) {
-            ""
-        }
-    }
-
-    /**
-     * 读取Raw资源
-     *
-     * @param resourceId
-     * @return String
-     *
-     */
-    fun readRaw(@RawRes resourceId: Int): String {
-        val builder = StringBuilder()
-        try {
-            val inputStream = mApp.resources.openRawResource(resourceId)
-            val streamReader = InputStreamReader(inputStream)
-
-            val bufferedReader = BufferedReader(streamReader)
-            var textLine: String = bufferedReader.readLine()
-            while (!TextUtils.isEmpty(textLine)) {
-                builder.append(textLine)
-                builder.append("\n")
-                textLine = bufferedReader.readLine()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: Resources.NotFoundException) {
-            e.printStackTrace()
-        }
-        return builder.toString()
-    }
-
-
 }
