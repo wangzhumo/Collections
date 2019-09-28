@@ -1,12 +1,10 @@
 package com.wangzhumo.app.module.media.targets.task3
 
-import com.wangzhumo.app.base.AppUtils
-import com.wangzhumo.app.base.UIUtils
+import com.wangzhumo.app.base.utils.UIUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import com.wangzhumo.app.module.media.targets.widget.IGLESRenderer
-import java.nio.FloatBuffer
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -35,7 +33,6 @@ class CameraTextureRenderer : IGLESRenderer {
     private var mShaderProgram = -1
     private val mOESTextureId  = TextureUtils.loadOESTexture()
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
-
 
 
     override fun onSurfaceCreated() {

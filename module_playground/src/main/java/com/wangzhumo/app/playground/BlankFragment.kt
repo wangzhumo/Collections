@@ -3,15 +3,12 @@ package com.wangzhumo.app
 import android.os.Bundle
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
-import androidx.fragment.app.FragmentManager
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import com.wangzhumo.app.base.DensityUtils
-import com.wangzhumo.app.origin.BaseFragment
+import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.playground.R
 import kotlinx.android.synthetic.main.fragment_blank.*
-import kotlin.math.log
 
 
 /**

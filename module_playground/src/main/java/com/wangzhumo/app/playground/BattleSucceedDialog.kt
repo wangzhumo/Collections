@@ -1,15 +1,13 @@
 package com.wangzhumo.app
 
 import android.os.Bundle
-import androidx.dynamicanimation.animation.FloatValueHolder
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import com.wangzhumo.app.base.DensityUtils
+import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.playground.R
-import kotlinx.android.synthetic.main.fragment_blank.*
 import kotlinx.android.synthetic.main.fragment_blank.bt_start
 import kotlinx.android.synthetic.main.fragment_blank.damping_ratio
 import kotlinx.android.synthetic.main.fragment_blank.stiffness

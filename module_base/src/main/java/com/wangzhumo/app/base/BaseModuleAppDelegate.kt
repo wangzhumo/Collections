@@ -14,6 +14,7 @@ import com.tencent.mars.xlog.Xlog
 import com.wangzhumo.app.base.delegate.AppDelegate
 import com.wangzhumo.app.base.delegate.IApp
 import com.wangzhumo.app.base.delegate.IAppConstant
+import com.wangzhumo.app.base.utils.AppUtils
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -26,6 +27,7 @@ import java.io.IOException
 @IApp(name = IAppConstant.BASE)
 @AutoService(AppDelegate::class)
 class BaseModuleAppDelegate : AppDelegate {
+
     override fun init(application: Application) {
         AppUtils.init(application)
         initARouter(application)
@@ -68,6 +70,7 @@ class BaseModuleAppDelegate : AppDelegate {
             Xlog.setConsoleLogOpen(false)
         }
         Log.setLogImp(Xlog())
+        Log.d("AppDelegate","Application - initXLog")
     }
 
 
@@ -78,6 +81,7 @@ class BaseModuleAppDelegate : AppDelegate {
             .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
+        Log.d("AppDelegate","Application - initLogger")
     }
 
 
@@ -94,6 +98,7 @@ class BaseModuleAppDelegate : AppDelegate {
         }
         // 尽可能早，推荐在Application中初始化
         ARouter.init(application)
+        Log.d("AppDelegate","Application - ARouter")
     }
 
 
@@ -110,6 +115,7 @@ class BaseModuleAppDelegate : AppDelegate {
         strategy.isUploadProcess = processName == null || processName == packageName
         // 初始化Bugly
         CrashReport.initCrashReport(application, "962f4d00a2", BuildConfig.DEBUG, strategy)
+        Log.d("AppDelegate","Application - initBugly")
     }
 
     /**

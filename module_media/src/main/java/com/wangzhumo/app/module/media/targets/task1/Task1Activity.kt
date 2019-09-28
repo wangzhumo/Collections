@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.wangzhumo.app.base.DensityUtils
+import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
@@ -42,7 +42,7 @@ class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
         super.initViews(savedInstanceState)
         //load images
         val mOrigin = BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch)
-        mBitmapOrigin = scaleBitmap(mOrigin,DensityUtils.getScreenWidth(this).toFloat())
+        mBitmapOrigin = scaleBitmap(mOrigin, DensityUtils.getScreenWidth(this).toFloat())
 //        mBitmapOrigin = BitmapFactory.decodeResource(resources, R.mipmap.ic_over_watch)
 //        srcRect.set(0, 0, mBitmapOrigin.width, mBitmapOrigin.height)
         //初始化SurfaceView

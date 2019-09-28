@@ -1,14 +1,7 @@
-package com.wangzhumo.app.base
+package com.wangzhumo.app.base.utils
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
-import android.text.TextUtils
-import androidx.annotation.RawRes
-import androidx.annotation.StringRes
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 
 
 /**

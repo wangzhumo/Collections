@@ -1,4 +1,4 @@
-package com.wangzhumo.app.base;
+package com.wangzhumo.app.base.utils;
 
 import android.content.Context;
 import android.util.TypedValue;
