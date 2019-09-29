@@ -23,6 +23,7 @@ object UIUtils {
      * @param res: Int
      * @return String
      */
+    @JvmStatic
     fun getString(@StringRes res: Int): String {
         return try {
             AppUtils.getApplication().resources.getString(res)
@@ -39,6 +40,7 @@ object UIUtils {
      * @return String
      *
      */
+    @JvmStatic
     fun readRaw(@RawRes resourceId: Int): String {
         val builder = StringBuilder()
         try {
