@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         tools:context=".targets.task3_2.Task31Activity">
 
-    <SurfaceView
+    <TextureView
             android:id="@+id/viewFinder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
