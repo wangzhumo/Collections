@@ -1,4 +1,4 @@
-package com.onzhou.opengles.camera;
+package com.wangzhumo.app.module.media.targets.task3_2;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
@@ -10,15 +10,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.IntDef;
 import android.view.TextureView;
 
-import com.onzhou.opengles.renderer.CameraTextureRenderer;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-
+import androidx.annotation.IntDef;
 /**
  * @anchor: andy
  * @date: 2018-11-11

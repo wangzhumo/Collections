@@ -1,4 +1,4 @@
-package com.onzhou.opengles.renderer;
+package com.wangzhumo.app.module.media.targets.task3_2;
 
 
 import android.graphics.SurfaceTexture;
@@ -6,10 +6,10 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 
-import com.onzhou.opengles.api.ITextureRenderer;
-import com.onzhou.opengles.camera.R;
-import com.onzhou.opengles.utils.ResReadUtils;
-import com.onzhou.opengles.utils.ShaderUtils;
+import com.wangzhumo.app.base.utils.UIUtils;
+import com.wangzhumo.app.module.media.R;
+import com.wangzhumo.app.module.media.targets.utils.RawUtils;
+import com.wangzhumo.app.module.media.targets.utils.ShaderUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -83,8 +83,8 @@ public class CameraTextureRenderer implements ITextureRenderer {
 
     @Override
     public void onSurfaceCreated() {
-        final int vertexShader = ShaderUtils.compileVertexShader(ResReadUtils.readResource(R.raw.vertex_texture_shader));
-        final int fragmentShader = ShaderUtils.compileFragmentShader(ResReadUtils.readResource(R.raw.fragment_texture_shader));
+        final int vertexShader = ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader));
+        final int fragmentShader = ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader));
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader);
 
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, CameraTextureRenderer.POSITION_ATTRIBUTE);

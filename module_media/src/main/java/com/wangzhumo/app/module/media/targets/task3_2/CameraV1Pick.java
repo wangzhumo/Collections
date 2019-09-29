@@ -1,4 +1,4 @@
-package com.onzhou.opengles.camera;
+package com.wangzhumo.app.module.media.targets.task3_2;
 
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
@@ -6,8 +6,8 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.TextureView;
 
-import com.onzhou.opengles.api.ICamera;
-import com.onzhou.opengles.utils.TextureUtils;
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils;
+
 
 /**
  * @anchor: andy
