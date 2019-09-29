@@ -43,6 +43,12 @@ class CppActivity : BaseActivity() {
                 .navigation()
         }
 
+        button_task3_1.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.MEDIA_TASK_3_1)
+                .navigation()
+        }
+
         button_opengl1.setOnClickListener {
             ARouter.getInstance()
                 .build(IRoute.MEDIA_OPENGL_1)
