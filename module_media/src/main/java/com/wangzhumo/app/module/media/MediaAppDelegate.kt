@@ -19,4 +19,7 @@ class MediaAppDelegate: AppDelegate{
     override fun init(application: Application) {
         Log.d("AppDelegate", "MediaAppDelegate = $application")
     }
+
+
+
 }

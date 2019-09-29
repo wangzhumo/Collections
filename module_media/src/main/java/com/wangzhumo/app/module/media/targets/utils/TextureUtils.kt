@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.targets.utils;
+package com.wangzhumo.app.module.media.targets.utils
 
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
@@ -20,6 +20,7 @@ object TextureUtils {
      *
      * @return
      */
+    @JvmStatic
     fun loadOESTexture(): Int {
         val textureIds = IntArray(1)
         GLES20.glGenTextures(1, textureIds, 0)

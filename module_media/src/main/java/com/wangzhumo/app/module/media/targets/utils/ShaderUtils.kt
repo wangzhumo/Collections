@@ -16,6 +16,7 @@ object ShaderUtils {
      * @param shaderCode
      * @return
      */
+    @JvmStatic
     fun compileVertexShader(shaderCode: String): Int {
         return compileShader(GLES30.GL_VERTEX_SHADER, shaderCode)
     }
@@ -26,6 +27,7 @@ object ShaderUtils {
      * @param shaderCode
      * @return
      */
+    @JvmStatic
     fun compileFragmentShader(shaderCode: String): Int {
         return compileShader(GLES30.GL_FRAGMENT_SHADER, shaderCode)
     }
@@ -38,6 +40,7 @@ object ShaderUtils {
      * @param shaderCode
      * @return
      */
+    @JvmStatic
     private fun compileShader(type: Int, shaderCode: String): Int {
         //创建一个着色器
         val shaderId = GLES30.glCreateShader(type)
@@ -68,6 +71,7 @@ object ShaderUtils {
      * @param fragmentShaderId 片段着色器
      * @return
      */
+    @JvmStatic
     fun linkProgram(vertexShaderId: Int, fragmentShaderId: Int): Int {
         val programId = GLES30.glCreateProgram()
         if (programId != 0) {
@@ -99,6 +103,7 @@ object ShaderUtils {
      * @param programObjectId
      * @return
      */
+    @JvmStatic
     fun validProgram(programObjectId: Int): Boolean {
         GLES30.glValidateProgram(programObjectId)
         val programStatus = IntArray(1)
