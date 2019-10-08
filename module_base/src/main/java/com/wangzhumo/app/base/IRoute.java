@@ -21,6 +21,7 @@ public interface IRoute {
     String MEDIA_TASK_2 = "/media/activity/task_2";
     String MEDIA_TASK_3 = "/media/activity/task_3";
     String MEDIA_TASK_3_1 = "/media/activity/task_3_1";
+    String MEDIA_TASK_3_2 = "/media/activity/task_3_2";
     String MEDIA_OPENGL_1 = "/media/activity/opengl_1";
 
     String FRAME_ACTIVITY = "/activity/framelayout";

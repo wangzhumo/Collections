@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.targets.task3_2;
+package com.wangzhumo.app.module.media.targets.task3_1;
 
 
 import android.graphics.SurfaceTexture;
@@ -6,7 +6,6 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 
-import com.wangzhumo.app.base.utils.UIUtils;
 import com.wangzhumo.app.module.media.R;
 import com.wangzhumo.app.module.media.targets.utils.RawUtils;
 import com.wangzhumo.app.module.media.targets.utils.ShaderUtils;

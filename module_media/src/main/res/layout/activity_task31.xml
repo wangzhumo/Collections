@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".targets.task3_2.Task31Activity">
+        tools:context=".targets.task3_1.Task31Activity">
 
     <TextureView
             android:id="@+id/viewFinder"
