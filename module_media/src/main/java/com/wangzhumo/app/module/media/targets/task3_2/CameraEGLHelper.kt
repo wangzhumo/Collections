@@ -2,7 +2,6 @@ package com.wangzhumo.app.module.media.targets.task3_2
 
 import android.graphics.SurfaceTexture
 import android.view.TextureView
-import androidx.lifecycle.LifecycleOwner
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -11,9 +10,10 @@ import androidx.lifecycle.LifecycleOwner
  */
 class CameraEGLHelper : TextureView.SurfaceTextureListener{
 
-    fun bindToLifecycle(lifecycleOwner : LifecycleOwner, textureView: TextureView?) {
+    fun bindToLifecycle(textureView: TextureView?) {
         //创建Renderer. ->  HandlerThread
         //添加监听到这里
+        textureView?.surfaceTextureListener = this@CameraEGLHelper
     }
 
 
