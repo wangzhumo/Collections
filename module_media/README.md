@@ -14,10 +14,13 @@ https://blog.csdn.net/byhook/article/details/83715360
 android平台下OpenGL ES 3.0绘制纯色背景
 https://blog.csdn.net/byhook/article/details/83716870
 
-
 2019年09月07日23:38:15
 android平台下OpenGL ES 3.0绘制圆点、直线和三角形
 https://blog.csdn.net/byhook/article/details/83719500
+
+2019年10月11日23:53:40
+
+在IPad上看书
 
 ### 一直不能实现,滚去补充基础知识了
 
