@@ -1,4 +1,4 @@
-include ':app'
+include ':app',
 
 include ':inyu_xlog'
 
@@ -8,4 +8,5 @@ include ':library_origin',
 include ':module_media',
         ':module_webrtc',
         ':module_base',
-        ':module_playground'
+        ':module_playground',
+        ':module_gift'
