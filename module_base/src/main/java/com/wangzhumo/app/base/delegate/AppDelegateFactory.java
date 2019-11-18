@@ -71,13 +71,10 @@ public class AppDelegateFactory {
             mDelegateOrder.put(appDelegate, property.priority());
             mDelegateName.put(property.name(), appDelegate);
             mDelegateList.add(appDelegate);
-            Collections.sort(mDelegateList, new Comparator<AppDelegate>() {
-                @Override
-                public int compare(AppDelegate o1, AppDelegate o2) {
-                    int order1 = mDelegateOrder.get(o1);
-                    int order2 = mDelegateOrder.get(o2);
-                    return order1 - order2;
-                }
+            Collections.sort(mDelegateList, (o1, o2) -> {
+                int order1 = mDelegateOrder.get(o1);
+                int order2 = mDelegateOrder.get(o2);
+                return order1 - order2;
             });
         }
         //完成之后,就是一个有序的列表了
