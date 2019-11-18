@@ -13,20 +13,6 @@
 
 
 
-```java
-
-save private key
-8d3ad93e22cb5adb164427819523898f5304f32cf2b569cdbf1ae00b95d569d1
-
-appender_open's parameter:
-1152b1620b4fe6457a7ddabcf514987b3ba44e3d6c7554fbbf22767bba4b98b3c0b071de670676292a18f53d552da64d5820eb9a7992c97d4ee691189
-
-def main(args):
-5d49f224f1
-```
-
-
-
 #### 解密
 
 1. 下载 [pyelliptic1.5.7](https://github.com/yann2192/pyelliptic/releases/tag/1.5.7)
