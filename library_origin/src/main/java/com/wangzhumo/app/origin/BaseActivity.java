@@ -106,4 +106,5 @@ public abstract class BaseActivity extends SupportActivity {
             mDisposable.dispose();
         }
     }
+
 }

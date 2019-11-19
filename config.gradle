@@ -33,7 +33,7 @@ def versions = [:]
     versions.gson = "2.8.5"
 
     //classpath
-    versions.gradle = '3.5.1'
+    versions.gradle = '3.5.2'
 
     versions.objectbox = "1.4.1"
     versions.butterknife = "9.0.0"
