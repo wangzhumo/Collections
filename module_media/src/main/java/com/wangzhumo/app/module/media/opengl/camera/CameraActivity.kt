@@ -12,6 +12,8 @@ import android.widget.FrameLayout
 import androidx.camera.core.CameraX
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.task3.AutoFitPreviewBuilder
 import com.wangzhumo.app.origin.BaseActivity
@@ -26,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_task3.*
  *
  * 相机预览显示.
  */
+@Route(path = IRoute.MEDIA_OPENGL_CAMERA)
 class CameraActivity : BaseActivity() {
 
     private var lensFacing = CameraX.LensFacing.BACK
