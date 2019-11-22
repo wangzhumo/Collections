@@ -23,8 +23,17 @@ object TextureUtils {
     @JvmStatic
     fun loadOESTexture(): Int {
         val textureIds = IntArray(1)
+
+        //textureIds 中存放一个textures中的可用值
         GLES20.glGenTextures(1, textureIds, 0)
+
+        //当调用glBindTexture
+        //如果是第一次调用这个函数textureIds[0] ，会创建一个新的纹理对象
+        //如果textureIds[0]已经创建过了，把这个纹理置为 活动
+        //如果texture为0，就停止使用这个纹理对象，并返回无名称的默认纹理
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureIds[0])
+
+        //设置参数
         GLES20.glTexParameterf(
             GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
             GLES20.GL_TEXTURE_MIN_FILTER,
@@ -45,6 +54,8 @@ object TextureUtils {
             GLES20.GL_TEXTURE_WRAP_T,
             GLES20.GL_CLAMP_TO_EDGE.toFloat()
         )
+
+        //取消绑定纹理???
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
         return textureIds[0]
     }
@@ -66,8 +77,7 @@ object TextureUtils {
      * 创建一个新的SurfaceTexture
      */
     fun loadOESTexture(mOESTextureId: Int): SurfaceTexture {
-        val mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
-        return mOESSurfaceTexture
+        return SurfaceTexture(mOESTextureId)
     }
 }
 

@@ -7,11 +7,11 @@ import android.util.Log
 import android.util.Rational
 import android.util.Size
 import android.view.TextureView
-import android.view.View
 import androidx.camera.core.CameraX
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
 import androidx.lifecycle.LifecycleOwner
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -21,18 +21,15 @@ import androidx.lifecycle.LifecycleOwner
  * 需要LifeRecycler
  * 需要View
  */
-class CameraOpenHelper constructor(private val viewFinder: View,private val lifeOwner: LifecycleOwner) :
+class CameraOpenHelper constructor(private val viewFinder: TextureView,private val lifeOwner: LifecycleOwner) :
     TextureView.SurfaceTextureListener{
 
     private var mLensFacing = CameraX.LensFacing.BACK
+    private var textureEGLHelper: TextureEGLHelper = TextureEGLHelper()
+    private var preview : Preview? = null
 
     init {
-        //初始化一些东西
-        //1.GLThread
-        //2. 加载loadOESTexture
-        //2. 创建Renderer Thread
-
-
+        viewFinder.surfaceTextureListener = this
     }
 
     fun bindCameraUseCases() {
@@ -55,13 +52,7 @@ class CameraOpenHelper constructor(private val viewFinder: View,private val life
             setTargetRotation(viewFinder.display.rotation)
         }.build()
 
-        val useCase = Preview(viewFinderConfig)
-        useCase.setOnPreviewOutputUpdateListener {
-            //此处是相机的绑定.
-        }
-
-        // Apply declared configs to CameraX using the same lifecycle owner
-        CameraX.bindToLifecycle(lifeOwner, useCase)
+        preview = Preview(viewFinderConfig)
     }
 
 
@@ -87,20 +78,28 @@ class CameraOpenHelper constructor(private val viewFinder: View,private val life
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
-
+        textureEGLHelper.onSurfaceChanged(width, height)
     }
 
     override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+        onDestroy()
         return false
-
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-
+        //当外部的TextureView可用之后，开启摄像头，打开渲染线程
+        val textureId = TextureUtils.loadOESTexture()
+        textureEGLHelper.initEGL(viewFinder,textureId)
+        //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
+        preview?.setOnPreviewOutputUpdateListener {
+            //此处是相机的绑定.
+            textureEGLHelper.loadOESTexture(it.surfaceTexture)
+        }
+        // Apply declared configs to CameraX using the same lifecycle owner
+        CameraX.bindToLifecycle(lifeOwner, preview)
     }
-
 
 }

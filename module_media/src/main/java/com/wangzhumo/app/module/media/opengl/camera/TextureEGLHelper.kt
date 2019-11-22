@@ -6,7 +6,6 @@ import android.opengl.EGLConfig
 import android.opengl.EGLSurface
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.os.Message
 import android.view.TextureView
 
@@ -69,7 +68,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     /**
      * 自定义的SurfaceTexture - 实际上接收Camera上的数据
      */
-    private val mOESSurfaceTexture: SurfaceTexture? = null
+    private var mOESSurfaceTexture: SurfaceTexture? = null
 
 
     /**
@@ -95,11 +94,13 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
                     }
                     MSG_RENDER -> {
                         //开始渲染，onFrameAvailable中发送，由mHandlerThread负责渲染的调用。
+                        drawFrame()
                     }
                     MSG_DESTROY -> {
                         //mHandlerThread 关闭
                         //停止mHandler
                         //销毁资源
+
                     }
                     else -> return
                 }
@@ -183,10 +184,31 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     }
 
     /**
+     * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
+     */
+    fun loadOESTexture(): SurfaceTexture? {
+        mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
+        mOESSurfaceTexture?.setOnFrameAvailableListener(this)
+        return mOESSurfaceTexture
+    }
+
+    /**
+     * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
+     */
+    fun loadOESTexture(surface : SurfaceTexture): SurfaceTexture? {
+        mOESSurfaceTexture = surface
+        mOESSurfaceTexture?.attachToGLContext(mOESTextureId)
+        mOESSurfaceTexture?.setOnFrameAvailableListener(this)
+        return mOESSurfaceTexture
+    }
+
+
+    /**
      * 初始化Renderer
      */
     private fun initEGLRenderer() {
        //mRenderer = ITextureRenderer()
+       //mRenderer?.onSurfaceCreated()
     }
 
     /*
@@ -194,6 +216,25 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      */
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
         //frame可用之后，开始渲染
+        if (mHandler != null) {
+            //不能直接调用，需要在mHandlerThread中去渲染
+            mHandler!!.sendEmptyMessage(MSG_RENDER)
+        }
+    }
+
+    /**
+     * 实际上渲染画面的方法
+     */
+    private fun drawFrame() {
+        if (mRenderer != null) {
+            EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)
+            mRenderer?.onDrawFrame(mOESSurfaceTexture)
+            EGL14.eglSwapBuffers(mEGLDisplay, mEglSurface)
+        }
+    }
+
+    fun onSurfaceChanged(width: Int, height: Int) {
+        mRenderer?.onSurfaceChanged(width, height)
     }
 
 
