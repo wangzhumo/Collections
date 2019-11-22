@@ -60,5 +60,11 @@ class CppActivity : BaseActivity() {
                 .build(IRoute.MEDIA_OPENGL_1)
                 .navigation()
         }
+
+        button_camera.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.MEDIA_OPENGL_CAMERA)
+                .navigation()
+        }
     }
 }

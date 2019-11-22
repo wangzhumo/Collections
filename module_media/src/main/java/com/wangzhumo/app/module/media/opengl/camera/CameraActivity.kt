@@ -49,7 +49,6 @@ class CameraActivity : BaseActivity() {
             try {
                 // Only bind use cases if we can query a camera with this orientation
                 CameraX.getCameraWithLensFacing(lensFacing)
-                bindCameraUseCases()
             } catch (exc: Exception) {
                 // Do nothing
             }
@@ -62,40 +61,13 @@ class CameraActivity : BaseActivity() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        container_ff.addView(textureView, layoutParams)
+        container_ff.addView(textureView,layoutParams)
 
         //创建相机控制器
-        bindCameraUseCases()
+        val cameraOpenHelper = CameraOpenHelper(this)
+        cameraOpenHelper.bindCameraUseCases(textureView)
+        //cameraOpenHelper.switchFacing(lensFacing)
     }
 
-
-    private fun bindCameraUseCases() {
-        // Make sure that there are no other use cases bound to CameraX
-        CameraX.unbindAll()
-        //sys display info
-        val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
-        val screenSize = Size(metrics.widthPixels, metrics.heightPixels)
-        val screenAspectRatio = Rational(metrics.widthPixels, metrics.heightPixels)
-
-        Log.d(javaClass.simpleName, "Metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
-
-        // Set up the view finder use case to display camera preview
-        val viewFinderConfig = PreviewConfig.Builder().apply {
-            // We provide an aspect ratio in case the exact resolution is not available
-            setTargetAspectRatio(screenAspectRatio)
-            // We request a specific resolution matching screen size
-            setTargetResolution(screenSize)
-            setLensFacing(lensFacing)
-            setTargetRotation(viewFinder.display.rotation)
-        }.build()
-
-        val useCase = Preview(viewFinderConfig)
-        useCase.setOnPreviewOutputUpdateListener {
-            //此处是相机的绑定.
-        }
-
-        // Apply declared configs to CameraX using the same lifecycle owner
-        CameraX.bindToLifecycle(this, useCase)
-    }
 
 }

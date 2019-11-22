@@ -75,7 +75,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * @param textureView  外部的TextureView
      * @param textureId    提供的TextureID
      */
-    fun initEGL(textureView: TextureView, textureId: Int) {
+    fun initEGL(textureView: TextureView?, textureId: Int) {
         mTextureView = textureView
         mOESTextureId = textureId
         mHandlerThread = HandlerThread("Renderer Thread")

@@ -84,5 +84,18 @@
             app:layout_constraintTop_toBottomOf="@+id/button_task3_2"
             tools:visibility="visible" />
 
+    <Button
+            android:id="@+id/button_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:text="OpenGL-Camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_task3_2"
+            tools:visibility="visible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

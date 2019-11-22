@@ -21,22 +21,23 @@ import com.wangzhumo.app.module.media.targets.utils.TextureUtils
  * 需要LifeRecycler
  * 需要View
  */
-class CameraOpenHelper constructor(private val viewFinder: TextureView,private val lifeOwner: LifecycleOwner) :
+class CameraOpenHelper constructor(private val lifeOwner: LifecycleOwner) :
     TextureView.SurfaceTextureListener{
 
     private var mLensFacing = CameraX.LensFacing.BACK
     private var textureEGLHelper: TextureEGLHelper = TextureEGLHelper()
     private var preview : Preview? = null
+    private var viewFinder : TextureView? = null
 
-    init {
-        viewFinder.surfaceTextureListener = this
-    }
 
-    fun bindCameraUseCases() {
+
+    fun bindCameraUseCases(textureView: TextureView) {
+        viewFinder = textureView
+        viewFinder?.surfaceTextureListener = this
         // Make sure that there are no other use cases bound to CameraX
         CameraX.unbindAll()
         //sys display info
-        val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
+        val metrics = DisplayMetrics().also { viewFinder?.display?.getRealMetrics(it) }
         val screenSize = Size(metrics.widthPixels, metrics.heightPixels)
         val screenAspectRatio = Rational(metrics.widthPixels, metrics.heightPixels)
 
@@ -49,7 +50,7 @@ class CameraOpenHelper constructor(private val viewFinder: TextureView,private v
             // We request a specific resolution matching screen size
             setTargetResolution(screenSize)
             setLensFacing(mLensFacing)
-            setTargetRotation(viewFinder.display.rotation)
+            viewFinder?.display?.rotation?.let { setTargetRotation(it) }
         }.build()
 
         preview = Preview(viewFinderConfig)
@@ -65,7 +66,6 @@ class CameraOpenHelper constructor(private val viewFinder: TextureView,private v
             //如果一致，需要修改
             mLensFacing = lensface
             CameraX.getCameraWithLensFacing(lensface)
-            bindCameraUseCases()
         }
     }
 
@@ -98,8 +98,6 @@ class CameraOpenHelper constructor(private val viewFinder: TextureView,private v
             //此处是相机的绑定.
             textureEGLHelper.loadOESTexture(it.surfaceTexture)
         }
-        // Apply declared configs to CameraX using the same lifecycle owner
-        CameraX.bindToLifecycle(lifeOwner, preview)
     }
 
 }
