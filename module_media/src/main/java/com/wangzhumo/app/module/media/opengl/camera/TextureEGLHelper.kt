@@ -207,8 +207,8 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化Renderer
      */
     private fun initEGLRenderer() {
-       //mRenderer = ITextureRenderer()
-       //mRenderer?.onSurfaceCreated()
+       mRenderer = TextureEGLRenderer(mOESTextureId)
+       mRenderer?.onSurfaceCreated()
     }
 
     /*
