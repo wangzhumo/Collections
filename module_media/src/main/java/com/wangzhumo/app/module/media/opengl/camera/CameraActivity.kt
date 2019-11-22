@@ -40,19 +40,19 @@ class CameraActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         createTextureView()
-        switch_camera.setOnCheckedChangeListener { buttonView, isChecked ->
-            lensFacing = if (CameraX.LensFacing.FRONT == lensFacing) {
-                CameraX.LensFacing.BACK
-            } else {
-                CameraX.LensFacing.FRONT
-            }
-            try {
-                // Only bind use cases if we can query a camera with this orientation
-                CameraX.getCameraWithLensFacing(lensFacing)
-            } catch (exc: Exception) {
-                // Do nothing
-            }
-        }
+//        switch_camera.setOnCheckedChangeListener { buttonView, isChecked ->
+//            lensFacing = if (CameraX.LensFacing.FRONT == lensFacing) {
+//                CameraX.LensFacing.BACK
+//            } else {
+//                CameraX.LensFacing.FRONT
+//            }
+//            try {
+//                // Only bind use cases if we can query a camera with this orientation
+//                CameraX.getCameraWithLensFacing(lensFacing)
+//            } catch (exc: Exception) {
+//                // Do nothing
+//            }
+//        }
     }
 
     private fun createTextureView() {

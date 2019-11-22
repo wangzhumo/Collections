@@ -1,16 +1,14 @@
 package com.wangzhumo.app.module.media.opengl.camera
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.SurfaceTexture
-import android.util.DisplayMetrics
-import android.util.Log
-import android.util.Rational
-import android.util.Size
+import android.hardware.Camera
 import android.view.TextureView
 import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
 import androidx.lifecycle.LifecycleOwner
+import com.wangzhumo.app.module.media.targets.task3_1.CameraV1
+import com.wangzhumo.app.module.media.targets.task3_1.ICamera
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 
 /**
@@ -26,34 +24,13 @@ class CameraOpenHelper constructor(private val lifeOwner: LifecycleOwner) :
 
     private var mLensFacing = CameraX.LensFacing.BACK
     private var textureEGLHelper: TextureEGLHelper = TextureEGLHelper()
-    private var preview : Preview? = null
     private var viewFinder : TextureView? = null
 
-
+    private var mCamera: ICamera? = null
+    private var mCameraId = 0
 
     fun bindCameraUseCases(textureView: TextureView) {
-        viewFinder = textureView
-        viewFinder?.surfaceTextureListener = this
-        // Make sure that there are no other use cases bound to CameraX
-        CameraX.unbindAll()
-        //sys display info
-        val metrics = DisplayMetrics().also { viewFinder?.display?.getRealMetrics(it) }
-        val screenSize = Size(metrics.widthPixels, metrics.heightPixels)
-        val screenAspectRatio = Rational(metrics.widthPixels, metrics.heightPixels)
-
-        Log.d(javaClass.simpleName, "Metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
-
-        // Set up the view finder use case to display camera preview
-        val viewFinderConfig = PreviewConfig.Builder().apply {
-            // We provide an aspect ratio in case the exact resolution is not available
-            setTargetAspectRatio(screenAspectRatio)
-            // We request a specific resolution matching screen size
-            setTargetResolution(screenSize)
-            setLensFacing(mLensFacing)
-            viewFinder?.display?.rotation?.let { setTargetRotation(it) }
-        }.build()
-
-        preview = Preview(viewFinderConfig)
+        textureView.surfaceTextureListener = this
     }
 
 
@@ -93,10 +70,15 @@ class CameraOpenHelper constructor(private val lifeOwner: LifecycleOwner) :
         //当外部的TextureView可用之后，开启摄像头，打开渲染线程
         val textureId = TextureUtils.loadOESTexture()
         textureEGLHelper.initEGL(viewFinder,textureId)
+        val surfaceTexture = textureEGLHelper.loadOESTexture()
         //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
-        preview?.setOnPreviewOutputUpdateListener {
-            //此处是相机的绑定.
-            textureEGLHelper.loadOESTexture(it.surfaceTexture)
+        //前置摄像头
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCamera = CameraV1(viewFinder?.getContext() as Activity)
+        mCamera?.apply {
+            openCamera(mCameraId)
+            setPreviewTexture(surfaceTexture)
+            enablePreview(true)
         }
     }
 
