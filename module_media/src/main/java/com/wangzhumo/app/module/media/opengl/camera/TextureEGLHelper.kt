@@ -26,6 +26,11 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 渲染/初始化 线程
      */
     private var mHandlerThread: HandlerThread? = null
+
+    /**
+     * 渲染器
+     */
+    private var mRenderer: ITextureRenderer? = null
     /**
      * mHandlerThread 内部的Handler
      */
@@ -78,7 +83,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         mHandlerThread?.start()
 
         //此处的Handler，用于处理各种发送过来的命令
-        mHandler = object : Handler(mHandlerThread?.looper){
+        mHandler = object : Handler(mHandlerThread?.looper) {
             override fun handleMessage(msg: Message) {
 
                 when (msg.what) {
@@ -181,7 +186,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化Renderer
      */
     private fun initEGLRenderer() {
-
+       //mRenderer = ITextureRenderer()
     }
 
     /*
