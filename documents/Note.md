@@ -21,4 +21,8 @@ add(blueModel_0)
 ...
 
 
+Android-OpenGLRenderer
+AndroidOpenGLDemo
+opengles4android
+
 
