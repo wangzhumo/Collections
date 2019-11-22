@@ -6,6 +6,7 @@ import android.graphics.SurfaceTexture
 import android.hardware.Camera
 import android.view.TextureView
 import androidx.camera.core.CameraX
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.wangzhumo.app.module.media.targets.task3_1.CameraV1
 import com.wangzhumo.app.module.media.targets.task3_1.ICamera
@@ -19,7 +20,7 @@ import com.wangzhumo.app.module.media.targets.utils.TextureUtils
  * 需要LifeRecycler
  * 需要View
  */
-class CameraOpenHelper constructor(private val lifeOwner: LifecycleOwner) :
+class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
     TextureView.SurfaceTextureListener{
 
     private var mLensFacing = CameraX.LensFacing.BACK
@@ -74,7 +75,7 @@ class CameraOpenHelper constructor(private val lifeOwner: LifecycleOwner) :
         //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
         //前置摄像头
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
-        mCamera = CameraV1(viewFinder?.getContext() as Activity)
+        mCamera = CameraV1(lifeOwner)
         mCamera?.apply {
             openCamera(mCameraId)
             setPreviewTexture(surfaceTexture)
