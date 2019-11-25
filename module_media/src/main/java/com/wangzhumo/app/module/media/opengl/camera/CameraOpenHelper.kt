@@ -40,6 +40,37 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
         textureView.surfaceTextureListener = this
     }
 
+    override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
+        textureEGLHelper?.onSurfaceChanged(width, height)
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureSizeChanged",68,"onSurfaceTextureSizeChanged")
+    }
+
+    override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {}
+
+    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
+        onDestroy()
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureDestroyed",77,"onSurfaceTextureDestroyed")
+        return false
+    }
+
+    override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
+        //当外部的TextureView可用之后，开启摄像头，打开渲染线程
+        val textureId = TextureUtils.loadOESTexture()
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",85,"onSurfaceTextureAvailable  loadOESTexture = %d",textureId)
+        textureEGLHelper?.initEGL(viewFinder,textureId)
+        //通过传递的textureId,构建一个SurfaceTexture，用于相机的预览
+        val surfaceTexture = textureEGLHelper?.loadOESTexture()
+        //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
+        //前置摄像头
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCamera = CameraV1(lifeOwner)
+        mCamera?.apply {
+            openCamera(mCameraId)
+            setPreviewTexture(surfaceTexture)
+            enablePreview(true)
+            Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",95,"onSurfaceTextureAvailable  enablePreview  开启摄像头")
+        }
+    }
 
     /**
      * 修改摄像头方向.
@@ -60,38 +91,6 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
         //销毁.
         CameraX.unbind()
     }
-
-    override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
-        textureEGLHelper?.onSurfaceChanged(width, height)
-        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureSizeChanged",68,"onSurfaceTextureSizeChanged")
-    }
-
-    override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {}
-
-    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
-        onDestroy()
-        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureDestroyed",77,"onSurfaceTextureDestroyed")
-        return false
-    }
-
-    override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-        //当外部的TextureView可用之后，开启摄像头，打开渲染线程
-        val textureId = TextureUtils.loadOESTexture()
-        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",85,"onSurfaceTextureAvailable  loadOESTexture = %d",textureId)
-        textureEGLHelper?.initEGL(viewFinder,textureId)
-        val surfaceTexture = textureEGLHelper?.loadOESTexture()
-        //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
-        //前置摄像头
-        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
-        mCamera = CameraV1(lifeOwner)
-        mCamera?.apply {
-            openCamera(mCameraId)
-            setPreviewTexture(surfaceTexture)
-            enablePreview(true)
-            Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",95,"onSurfaceTextureAvailable  enablePreview  开启摄像头")
-        }
-    }
-
 
     companion object{
         const val TAG = "CameraOpenHelper"

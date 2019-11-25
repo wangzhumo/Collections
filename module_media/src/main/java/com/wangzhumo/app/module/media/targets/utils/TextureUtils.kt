@@ -55,7 +55,7 @@ object TextureUtils {
             GLES20.GL_CLAMP_TO_EDGE.toFloat()
         )
 
-        //取消绑定纹理???
+        //取消绑定纹理，并且返回一个默认的纹理
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, 0)
         return textureIds[0]
     }
