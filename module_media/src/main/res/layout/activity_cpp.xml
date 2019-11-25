@@ -65,7 +65,7 @@
             android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/margin_20"
-            android:text="Task-3-1"
+            android:text="Task-3-2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_task3_1"

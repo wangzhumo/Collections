@@ -7,6 +7,7 @@ import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.elvishew.xlog.printer.AndroidPrinter
+import com.elvishew.xlog.printer.ConsolePrinter
 import com.elvishew.xlog.printer.Printer
 import com.google.auto.service.AutoService
 import com.orhanobut.logger.AndroidLogAdapter
@@ -40,30 +41,28 @@ class BaseModuleAppDelegate : AppDelegate {
         initLogger()
         initBugly(application)
         initXLog(application)
-        initLocalXLog(application)
+        initLocalXLog()
     }
 
 
     /**
      * 开发时使用.
      */
-    private fun initLocalXLog(application: Application) {
+    private fun initLocalXLog() {
         val config = LogConfiguration.Builder()
             .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
             .tag("WangZhuMo") // Specify TAG, default: "X-LOG"
             .t() // Enable thread info, disabled by default
             .st(2) // Enable stack trace info with depth 2, disabled by default
-            .b() // Enable border, disabled by default
             .build()
 
-        val androidPrinter: Printer =
-            AndroidPrinter() // Printer that print the log using android.util.Log
+        val consolePrinter: Printer = ConsolePrinter()  // Printer that print the log to console using System.out
+        val androidPrinter: Printer = AndroidPrinter()  // Printer that print the log using android.util.Log
 
         XLog.init( // Initialize XLog
             config,  // Specify the log configuration, if not specified, will use new LogConfiguration.Builder().build()
             androidPrinter  // Specify printers, if no printer is specified, AndroidPrinter(for Android)/ConsolePrinter(for java) will be used.
         )
-        XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE);
     }
 
     /**
