@@ -170,7 +170,8 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
 
         //创建上下文
         val ctxAttribute = intArrayOf(
-            EGL14.EGL_CONTEXT_CLIENT_VERSION, versions[0],
+            EGL14.EGL_CONTEXT_CLIENT_VERSION,
+            3,
             EGL14.EGL_NONE
         )
         mEGLContext = EGL14.eglCreateContext(

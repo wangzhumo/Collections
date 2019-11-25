@@ -1,18 +1,16 @@
 package com.wangzhumo.app.module.media.opengl.camera
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.graphics.SurfaceTexture
 import android.hardware.Camera
 import android.view.TextureView
 import androidx.camera.core.CameraX
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
-import com.elvishew.xlog.XLog
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.targets.task3_1.CameraV1
 import com.wangzhumo.app.module.media.targets.task3_1.ICamera
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
+//import com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
