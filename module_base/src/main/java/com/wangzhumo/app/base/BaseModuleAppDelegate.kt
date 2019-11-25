@@ -3,7 +3,11 @@ package com.wangzhumo.app.base
 import android.app.Application
 import android.text.TextUtils
 import com.alibaba.android.arouter.launcher.ARouter
-
+import com.elvishew.xlog.LogConfiguration
+import com.elvishew.xlog.LogLevel
+import com.elvishew.xlog.XLog
+import com.elvishew.xlog.printer.AndroidPrinter
+import com.elvishew.xlog.printer.Printer
 import com.google.auto.service.AutoService
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
@@ -18,6 +22,7 @@ import com.wangzhumo.app.base.utils.AppUtils
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
+
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -35,6 +40,30 @@ class BaseModuleAppDelegate : AppDelegate {
         initLogger()
         initBugly(application)
         initXLog(application)
+        initLocalXLog(application)
+    }
+
+
+    /**
+     * 开发时使用.
+     */
+    private fun initLocalXLog(application: Application) {
+        val config = LogConfiguration.Builder()
+            .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
+            .tag("WangZhuMo") // Specify TAG, default: "X-LOG"
+            .t() // Enable thread info, disabled by default
+            .st(2) // Enable stack trace info with depth 2, disabled by default
+            .b() // Enable border, disabled by default
+            .build()
+
+        val androidPrinter: Printer =
+            AndroidPrinter() // Printer that print the log using android.util.Log
+
+        XLog.init( // Initialize XLog
+            config,  // Specify the log configuration, if not specified, will use new LogConfiguration.Builder().build()
+            androidPrinter  // Specify printers, if no printer is specified, AndroidPrinter(for Android)/ConsolePrinter(for java) will be used.
+        )
+        XLog.init(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE);
     }
 
     /**
@@ -43,7 +72,8 @@ class BaseModuleAppDelegate : AppDelegate {
      */
     private fun initXLog(application: Application) {
         val logPath = application.getExternalFilesDir("inyu_xlog")?.absolutePath
-        val public_key = "1152b1620b4fe6457a7ddabcf514987b3ba44e3d6c7554fbbf22767bba4b98b3c0b071de670676292a18f53d552da64d5820eb9a7992c97d4ee6915d49f224f1"
+        val public_key =
+            "1152b1620b4fe6457a7ddabcf514987b3ba44e3d6c7554fbbf22767bba4b98b3c0b071de670676292a18f53d552da64d5820eb9a7992c97d4ee6915d49f224f1"
 
         // this is necessary, or may cash for SIGBUS
         val cachePath = "${application.filesDir}/inyu_xlog"
@@ -71,7 +101,7 @@ class BaseModuleAppDelegate : AppDelegate {
             Xlog.setConsoleLogOpen(false)
         }
         Log.setLogImp(Xlog())
-        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initXLog")
+        android.util.Log.d("AppDelegate", "BaseModuleAppDelegate - initXLog")
     }
 
 
@@ -82,7 +112,7 @@ class BaseModuleAppDelegate : AppDelegate {
             .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
-        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initLogger")
+        android.util.Log.d("AppDelegate", "BaseModuleAppDelegate - initLogger")
     }
 
 
@@ -99,7 +129,7 @@ class BaseModuleAppDelegate : AppDelegate {
         }
         // 尽可能早，推荐在Application中初始化
         ARouter.init(application)
-        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - ARouter")
+        android.util.Log.d("AppDelegate", "BaseModuleAppDelegate - ARouter")
     }
 
 
@@ -116,7 +146,7 @@ class BaseModuleAppDelegate : AppDelegate {
         strategy.isUploadProcess = processName == null || processName == packageName
         // 初始化Bugly
         CrashReport.initCrashReport(application, "962f4d00a2", BuildConfig.DEBUG, strategy)
-        android.util.Log.d("AppDelegate","BaseModuleAppDelegate - initBugly")
+        android.util.Log.d("AppDelegate", "BaseModuleAppDelegate - initBugly")
     }
 
     /**
@@ -129,7 +159,7 @@ class BaseModuleAppDelegate : AppDelegate {
         var reader: BufferedReader? = null
         try {
             reader = BufferedReader(FileReader("/proc/$pid/cmdline"))
-            var processName:String = reader.readLine()
+            var processName: String = reader.readLine()
             if (!TextUtils.isEmpty(processName)) {
                 processName = processName.trim { it <= ' ' }
             }

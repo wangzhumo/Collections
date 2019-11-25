@@ -222,6 +222,7 @@ def pay = [:]
     deps.rxPermission = "com.github.tbruyelle:rxpermissions:$versions.rxpermiss"
     deps.walleLib = "com.meituan.android.walle:library:$versions.walle"
     deps.kLog = "com.github.zhaokaiqiang.klog:library:$versions.klogVersion"
+    deps.xLog = "com.elvishew:xlog:1.6.1"
 
     deps.voiceline = "com.carlos.voiceline:mylibrary:$versions.voiceline"
     deps.pingppCore = "com.pingxx:pingpp-core:$versions.pingpp"

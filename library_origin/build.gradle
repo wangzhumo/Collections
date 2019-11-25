@@ -51,6 +51,7 @@ dependencies {
     api deps.rxLibs.rxJava
     api deps.rxLibs.rxAndroid
     api deps.bugly
+    api deps.xLog
     api deps.bugly_native
     api deps.auto_server_annotations
     api project(":inyu_xlog")

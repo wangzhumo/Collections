@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
 import android.view.TextureView
+import com.elvishew.xlog.XLog
 
 
 /**
@@ -78,13 +79,14 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     fun initEGL(textureView: TextureView?, textureId: Int) {
         mTextureView = textureView
         mOESTextureId = textureId
+        XLog.d("initEGL HandlerThread 创建")
         mHandlerThread = HandlerThread("Renderer Thread")
+        XLog.d("initEGL HandlerThread 开始运行")
         mHandlerThread?.start()
 
         //此处的Handler，用于处理各种发送过来的命令
         mHandler = object : Handler(mHandlerThread?.looper) {
             override fun handleMessage(msg: Message) {
-
                 when (msg.what) {
                     MSG_INIT -> {
                         //initEGLContext
@@ -106,6 +108,8 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
                 }
             }
         }
+        XLog.d("initEGL HandlerThread 开始运行 -- sendEmptyMessage(MSG_INIT)")
+        mHandler?.sendEmptyMessage(MSG_INIT)
     }
 
 
@@ -113,6 +117,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化EGLContext
      */
     private fun initEGLContext() {
+        XLog.d("initEGL initEGLContext start")
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
         //需判断是否成功获取EGLDisplay
         if (mEGLDisplay == EGL14.EGL_NO_DISPLAY) {
@@ -181,21 +186,24 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         if (!makeFlag) {
             throw RuntimeException("eglMakeCurrent failed! " + EGL14.eglGetError())
         }
+        XLog.d("initEGL initEGLContext end")
     }
 
     /**
      * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
      */
     fun loadOESTexture(): SurfaceTexture? {
+        XLog.d("loadOESTexture 提供SurfaceTexture")
         mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
         mOESSurfaceTexture?.setOnFrameAvailableListener(this)
+        XLog.d("loadOESTexture 添加setOnFrameAvailableListener")
         return mOESSurfaceTexture
     }
 
     /**
      * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
      */
-    fun loadOESTexture(surface : SurfaceTexture): SurfaceTexture? {
+    fun loadOESTexture(surface: SurfaceTexture): SurfaceTexture? {
         mOESSurfaceTexture = surface
         mOESSurfaceTexture?.attachToGLContext(mOESTextureId)
         mOESSurfaceTexture?.setOnFrameAvailableListener(this)
@@ -207,8 +215,9 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化Renderer
      */
     private fun initEGLRenderer() {
-       mRenderer = TextureEGLRenderer(mOESTextureId)
-       mRenderer?.onSurfaceCreated()
+        XLog.d("initEGLRenderer  创建 TextureEGLRenderer")
+        mRenderer = TextureEGLRenderer(mOESTextureId)
+        mRenderer?.onSurfaceCreated()
     }
 
     /*
@@ -218,7 +227,8 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         //frame可用之后，开始渲染
         if (mHandler != null) {
             //不能直接调用，需要在mHandlerThread中去渲染
-            mHandler!!.sendEmptyMessage(MSG_RENDER)
+            XLog.d("onFrameAvailable  sendEmptyMessage(MSG_RENDER)")
+            mHandler?.sendEmptyMessage(MSG_RENDER)
         }
     }
 
@@ -227,6 +237,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      */
     private fun drawFrame() {
         if (mRenderer != null) {
+            XLog.d("drawFrame")
             EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)
             mRenderer?.onDrawFrame(mOESSurfaceTexture)
             EGL14.eglSwapBuffers(mEGLDisplay, mEglSurface)

@@ -13,6 +13,7 @@ import androidx.camera.core.CameraX
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.elvishew.xlog.XLog
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.targets.task3.AutoFitPreviewBuilder
@@ -39,6 +40,7 @@ class CameraActivity : BaseActivity() {
     @SuppressLint("RestrictedApi")
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
+        XLog.d("initViews createTextureView start")
         createTextureView()
 //        switch_camera.setOnCheckedChangeListener { buttonView, isChecked ->
 //            lensFacing = if (CameraX.LensFacing.FRONT == lensFacing) {
@@ -64,10 +66,13 @@ class CameraActivity : BaseActivity() {
         container_ff.addView(textureView,layoutParams)
 
         //创建相机控制器
+        XLog.d("createTextureView CameraOpenHelper")
         val cameraOpenHelper = CameraOpenHelper(this)
+        XLog.d("createTextureView bindCameraUseCases（textureView）")
         cameraOpenHelper.bindCameraUseCases(textureView)
         //cameraOpenHelper.switchFacing(lensFacing)
     }
 
 
 }
+
