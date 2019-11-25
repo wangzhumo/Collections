@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
+import com.elvishew.xlog.formatter.border.BorderFormatter
 import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.ConsolePrinter
 import com.elvishew.xlog.printer.Printer
@@ -41,7 +42,7 @@ class BaseModuleAppDelegate : AppDelegate {
         initLogger()
         initBugly(application)
         initXLog(application)
-        initLocalXLog()
+        //initLocalXLog()
     }
 
 
@@ -53,9 +54,8 @@ class BaseModuleAppDelegate : AppDelegate {
             .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
             .tag("WangZhuMo") // Specify TAG, default: "X-LOG"
             .t() // Enable thread info, disabled by default
-            .st(2) // Enable stack trace info with depth 2, disabled by default
+            .b()
             .build()
-
         val consolePrinter: Printer = ConsolePrinter()  // Printer that print the log to console using System.out
         val androidPrinter: Printer = AndroidPrinter()  // Printer that print the log using android.util.Log
 

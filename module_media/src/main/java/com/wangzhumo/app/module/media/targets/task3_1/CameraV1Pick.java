@@ -3,9 +3,9 @@ package com.wangzhumo.app.module.media.targets.task3_1;
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.TextureView;
 
+import com.tencent.mars.xlog.InyuLog;
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils;
 
 
@@ -28,7 +28,9 @@ public class CameraV1Pick implements TextureView.SurfaceTextureListener {
 
     public void bindTextureView(TextureView textureView) {
         this.mTextureView = textureView;
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","bindTextureView",34,"创建EGLHelper TextureEGLHelper()");
         mTextureEglHelper = new TextureEGLHelper();
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","bindTextureView",35,"添加 setSurfaceTextureListener");
         mTextureView.setSurfaceTextureListener(this);
     }
 
@@ -36,6 +38,7 @@ public class CameraV1Pick implements TextureView.SurfaceTextureListener {
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         //加载OES纹理ID
         final int textureId = TextureUtils.loadOESTexture();
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","onSurfaceTextureAvailable",42,"loadOESTexture textureId = %d",textureId);
         //初始化操作
         mTextureEglHelper.initEgl(mTextureView, textureId);
         //自定义的SurfaceTexture
@@ -46,8 +49,9 @@ public class CameraV1Pick implements TextureView.SurfaceTextureListener {
         if (mCamera.openCamera(mCameraId)) {
             mCamera.setPreviewTexture(surfaceTexture);
             mCamera.enablePreview(true);
+            InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","onSurfaceTextureAvailable",52,"开启摄像头 enablePreview");
         } else {
-            Log.e(TAG, "openCamera failed");
+            InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","onSurfaceTextureAvailable",56,"openCamera failed");
         }
     }
 

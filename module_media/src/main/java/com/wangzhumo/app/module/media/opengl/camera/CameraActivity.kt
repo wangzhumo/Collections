@@ -2,25 +2,16 @@ package com.wangzhumo.app.module.media.opengl.camera
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
-import android.util.Rational
-import android.util.Size
 import android.view.TextureView
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.elvishew.xlog.XLog
+import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
-import com.wangzhumo.app.module.media.targets.task3.AutoFitPreviewBuilder
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_camera.switch_camera
-import kotlinx.android.synthetic.main.activity_task3.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -40,7 +31,6 @@ class CameraActivity : BaseActivity() {
     @SuppressLint("RestrictedApi")
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        XLog.d("initViews createTextureView start")
         createTextureView()
 //        switch_camera.setOnCheckedChangeListener { buttonView, isChecked ->
 //            lensFacing = if (CameraX.LensFacing.FRONT == lensFacing) {
@@ -66,13 +56,16 @@ class CameraActivity : BaseActivity() {
         container_ff.addView(textureView,layoutParams)
 
         //创建相机控制器
-        XLog.d("createTextureView CameraOpenHelper")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraActivity","createTextureView",69,"创建帮助类 CameraOpenHelper()")
         val cameraOpenHelper = CameraOpenHelper(this)
-        XLog.d("createTextureView bindCameraUseCases（textureView）")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraActivity","createTextureView",71,"绑定TextureView  bindCameraUseCases（textureView）")
         cameraOpenHelper.bindCameraUseCases(textureView)
         //cameraOpenHelper.switchFacing(lensFacing)
     }
 
 
+    companion object{
+        const val TAG = "CameraActivity"
+    }
 }
 

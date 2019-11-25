@@ -17,6 +17,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import androidx.annotation.IntDef;
+
+import com.tencent.mars.xlog.InyuLog;
+
 /**
  * @anchor: andy
  * @date: 2018-11-11
@@ -103,13 +106,18 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
     public void initEgl(TextureView textureView, int textureId) {
         mTextureView = textureView;
         mOESTextureId = textureId;
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",111,"TextureEGLHelper HandlerThread 创建");
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",111,"TextureEGLHelper HandlerThread 创建");
         mHandlerThread = new HandlerThread("Renderer Thread");
         mHandlerThread.start();
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",114,"HandlerThread 启动了");
         mHandler = new TextureHandler(mHandlerThread.getLooper());
         mHandler.sendEmptyMessage(EGLMessage.MSG_INIT);
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",118,"sendEmptyMessage MSG_INIT");
     }
 
     private void initEGLContext(int clientVersion) {
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",121,"initEGLContext Start");
         //获取显示设备
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
         if (mEGLDisplay == EGL14.EGL_NO_DISPLAY) {
@@ -157,9 +165,12 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
         if (!EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)) {
             throw new RuntimeException("eglMakeCurrent error: " + EGL14.eglGetError());
         }
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"TextureEGLHelper initEGLContext End");
         //加载渲染器
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"CameraTextureRenderer  Start");
         mTextureRenderer = new CameraTextureRenderer(mOESTextureId);
         mTextureRenderer.onSurfaceCreated();
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"CameraTextureRenderer  End");
     }
 
     public void onSurfaceChanged(int width, int height) {
@@ -182,6 +193,7 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
     }
 
     public SurfaceTexture loadOESTexture() {
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","loadOESTexture",198,"loadOESTexture %d",mOESTextureId);
         mOESSurfaceTexture = new SurfaceTexture(mOESTextureId);
         mOESSurfaceTexture.setOnFrameAvailableListener(this);
         return mOESSurfaceTexture;

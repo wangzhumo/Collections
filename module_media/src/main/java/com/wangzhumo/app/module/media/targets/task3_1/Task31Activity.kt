@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.media.targets.task3_1
 import android.os.Bundle
 import android.view.TextureView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
@@ -26,7 +27,9 @@ class Task31Activity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         mTextureView = viewFinder
+        Log.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.Task31Activity","initViews",29,"创建帮助类  CameraV1Pick()")
         mCameraPick = CameraV1Pick()
+        Log.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.Task31Activity","initViews",32,"绑定TextureView bindTextureView")
         mCameraPick.bindTextureView(mTextureView)
     }
 
@@ -34,5 +37,9 @@ class Task31Activity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mCameraPick.onDestroy()
+    }
+
+    companion object{
+        const val TAG = "Task31Activity"
     }
 }

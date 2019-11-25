@@ -8,7 +8,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
 import android.view.TextureView
-import com.elvishew.xlog.XLog
+import com.tencent.mars.xlog.Log
 
 
 /**
@@ -79,9 +79,9 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     fun initEGL(textureView: TextureView?, textureId: Int) {
         mTextureView = textureView
         mOESTextureId = textureId
-        XLog.d("initEGL HandlerThread 创建")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGL",84,"initEGL HandlerThread 创建")
         mHandlerThread = HandlerThread("Renderer Thread")
-        XLog.d("initEGL HandlerThread 开始运行")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGL",85,"initEGL HandlerThread 开始运行")
         mHandlerThread?.start()
 
         //此处的Handler，用于处理各种发送过来的命令
@@ -108,7 +108,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
                 }
             }
         }
-        XLog.d("initEGL HandlerThread 开始运行 -- sendEmptyMessage(MSG_INIT)")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGL",113,"initEGL HandlerThread 开始运行 -- sendEmptyMessage(MSG_INIT)")
         mHandler?.sendEmptyMessage(MSG_INIT)
     }
 
@@ -117,7 +117,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化EGLContext
      */
     private fun initEGLContext() {
-        XLog.d("initEGL initEGLContext start")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLContext",122,"initEGL initEGLContext start")
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
         //需判断是否成功获取EGLDisplay
         if (mEGLDisplay == EGL14.EGL_NO_DISPLAY) {
@@ -186,17 +186,17 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         if (!makeFlag) {
             throw RuntimeException("eglMakeCurrent failed! " + EGL14.eglGetError())
         }
-        XLog.d("initEGL initEGLContext end")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLContext",191,"initEGL initEGLContext end")
     }
 
     /**
      * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
      */
     fun loadOESTexture(): SurfaceTexture? {
-        XLog.d("loadOESTexture 提供SurfaceTexture")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","loadOESTexture",198,"loadOESTexture 提供SurfaceTexture")
         mOESSurfaceTexture = SurfaceTexture(mOESTextureId)
         mOESSurfaceTexture?.setOnFrameAvailableListener(this)
-        XLog.d("loadOESTexture 添加setOnFrameAvailableListener")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","loadOESTexture",200,"loadOESTexture 添加setOnFrameAvailableListener")
         return mOESSurfaceTexture
     }
 
@@ -215,7 +215,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      * 初始化Renderer
      */
     private fun initEGLRenderer() {
-        XLog.d("initEGLRenderer  创建 TextureEGLRenderer")
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLRenderer",220,"initEGLRenderer  创建 TextureEGLRenderer")
         mRenderer = TextureEGLRenderer(mOESTextureId)
         mRenderer?.onSurfaceCreated()
     }
@@ -227,7 +227,6 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         //frame可用之后，开始渲染
         if (mHandler != null) {
             //不能直接调用，需要在mHandlerThread中去渲染
-            XLog.d("onFrameAvailable  sendEmptyMessage(MSG_RENDER)")
             mHandler?.sendEmptyMessage(MSG_RENDER)
         }
     }
@@ -237,7 +236,6 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      */
     private fun drawFrame() {
         if (mRenderer != null) {
-            XLog.d("drawFrame")
             EGL14.eglMakeCurrent(mEGLDisplay, mEglSurface, mEglSurface, mEGLContext)
             mRenderer?.onDrawFrame(mOESSurfaceTexture)
             EGL14.eglSwapBuffers(mEGLDisplay, mEglSurface)
@@ -253,6 +251,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         var MSG_INIT = 100
         var MSG_RENDER = 200
         var MSG_DESTROY = 300
+        const val TAG = "TextureEGLHelper"
     }
 
 
