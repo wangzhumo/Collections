@@ -5,6 +5,8 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.view.TextureView;
 
+import com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper;
+
 import com.tencent.mars.xlog.InyuLog;
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils;
 
@@ -40,7 +42,7 @@ public class CameraV1Pick implements TextureView.SurfaceTextureListener {
         final int textureId = TextureUtils.loadOESTexture();
         InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.CameraV1Pick","onSurfaceTextureAvailable",42,"loadOESTexture textureId = %d",textureId);
         //初始化操作
-        mTextureEglHelper.initEgl(mTextureView, textureId);
+        mTextureEglHelper.initEGL(mTextureView, textureId);
         //自定义的SurfaceTexture
         SurfaceTexture surfaceTexture = mTextureEglHelper.loadOESTexture();
         //前置摄像头

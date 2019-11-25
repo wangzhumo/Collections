@@ -57,12 +57,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     private var mEGLContext = EGL14.EGL_NO_CONTEXT
 
     /**
-     * 描述帧缓冲区配置参数
-     */
-    private val configs = arrayOfNulls<EGLConfig>(1)
-
-    /**
-     * EGL绘图表面
+     * EGL绘图surface
      */
     private var mEglSurface: EGLSurface? = null
 
@@ -146,9 +141,13 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         //EGL配置
         val eglChooseFlag = EGL14.eglChooseConfig(
             mEGLDisplay,
-            eglConfigAttribute, 0,
-            eglConfig, 0, eglConfig.size,
-            numConfig, 0
+            eglConfigAttribute,
+            0,
+            eglConfig,
+            0,
+            eglConfig.size,
+            numConfig,
+            0
         )
         if (!eglChooseFlag) {
             throw RuntimeException("eglChooseConfig failed! " + EGL14.eglGetError())
@@ -194,6 +193,15 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     }
 
     /**
+     * 初始化Renderer
+     */
+    private fun initEGLRenderer() {
+        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLRenderer",220,"initEGLRenderer  创建 TextureEGLRenderer")
+        mRenderer = TextureEGLRenderer(mOESTextureId)
+        mRenderer?.onSurfaceCreated()
+    }
+
+    /**
      * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
      */
     fun loadOESTexture(): SurfaceTexture? {
@@ -204,25 +212,6 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         return mOESSurfaceTexture
     }
 
-    /**
-     * 创建可以放在外部，但是为了加入监听方便，就放在这里初始化
-     */
-    fun loadOESTexture(surface: SurfaceTexture): SurfaceTexture? {
-        mOESSurfaceTexture = surface
-        mOESSurfaceTexture?.attachToGLContext(mOESTextureId)
-        mOESSurfaceTexture?.setOnFrameAvailableListener(this)
-        return mOESSurfaceTexture
-    }
-
-
-    /**
-     * 初始化Renderer
-     */
-    private fun initEGLRenderer() {
-        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLRenderer",220,"initEGLRenderer  创建 TextureEGLRenderer")
-        mRenderer = TextureEGLRenderer(mOESTextureId)
-        mRenderer?.onSurfaceCreated()
-    }
 
     /*
      * setOnFrameAvailableListener   给 loadOESTexture 提供的SurfaceTexture使用
@@ -246,10 +235,20 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         }
     }
 
+    /**
+     * onSurfaceChanged 回调
+     */
     fun onSurfaceChanged(width: Int, height: Int) {
         mRenderer?.onSurfaceChanged(width, height)
     }
 
+    /**
+     * 释放资源
+     */
+    fun onDestroy() {
+        mHandler?.removeCallbacksAndMessages(null)
+        mHandlerThread?.quitSafely()
+    }
 
     companion object {
         var MSG_INIT = 100
