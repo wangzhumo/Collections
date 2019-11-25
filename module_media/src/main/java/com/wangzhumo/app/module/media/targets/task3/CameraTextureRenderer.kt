@@ -63,12 +63,8 @@ class CameraTextureRenderer(surfaceTexture: SurfaceTexture?,textureView: Texture
     private val mVertexBuffer = TextureUtils.loadVertexBuffer(vertexData)
 
 
-    init {
-        Log.e("Renderer","CameraTextureRenderer Init")
-    }
 
     override fun onSurfaceCreated() {
-        Log.e("Renderer","CameraTextureRenderer onSurfaceCreated")
         //主要是创建线程.
         mGLThread = GLESTextureThread(mTextureView,mSurfaceTexture)
         mGLThread.sendEmptyMessage(GLESTextureThread.MSG_INIT)

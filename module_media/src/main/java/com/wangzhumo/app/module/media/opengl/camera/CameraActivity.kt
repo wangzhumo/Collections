@@ -48,18 +48,18 @@ class CameraActivity : BaseActivity() {
     }
 
     private fun createTextureView() {
-        val textureView = TextureView(this)
-        val layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        container_ff.addView(textureView,layoutParams)
+//        val textureView = TextureView(this)
+//        val layoutParams = FrameLayout.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.MATCH_PARENT
+//        )
+//        container_ff.addView(viewFinder,layoutParams)
 
         //创建相机控制器
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraActivity","createTextureView",69,"创建帮助类 CameraOpenHelper()")
         val cameraOpenHelper = CameraOpenHelper(this)
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraActivity","createTextureView",71,"绑定TextureView  bindCameraUseCases（textureView）")
-        cameraOpenHelper.bindCameraUseCases(textureView)
+        cameraOpenHelper.bindCameraUseCases(viewFinder)
         //cameraOpenHelper.switchFacing(lensFacing)
     }
 

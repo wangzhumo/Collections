@@ -12,13 +12,14 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.TextureView;
 
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import androidx.annotation.IntDef;
 
 import com.tencent.mars.xlog.InyuLog;
+import com.wangzhumo.app.module.media.opengl.camera.ITextureRenderer;
+import com.wangzhumo.app.module.media.opengl.camera.TextureEGLRenderer;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @anchor: andy
@@ -74,7 +75,7 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
      */
     private SurfaceTexture mOESSurfaceTexture;
 
-    private CameraTextureRenderer mTextureRenderer;
+    private ITextureRenderer mTextureRenderer;
 
     private final class TextureHandler extends Handler {
 
@@ -106,7 +107,6 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
     public void initEgl(TextureView textureView, int textureId) {
         mTextureView = textureView;
         mOESTextureId = textureId;
-        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",111,"TextureEGLHelper HandlerThread 创建");
         InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEgl",111,"TextureEGLHelper HandlerThread 创建");
         mHandlerThread = new HandlerThread("Renderer Thread");
         mHandlerThread.start();
@@ -167,10 +167,10 @@ public class TextureEGLHelper extends HandlerThread implements SurfaceTexture.On
         }
         InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"TextureEGLHelper initEGLContext End");
         //加载渲染器
-        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"CameraTextureRenderer  Start");
-        mTextureRenderer = new CameraTextureRenderer(mOESTextureId);
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"TextureRenderer  Start");
+        mTextureRenderer = new TextureEGLRenderer(mOESTextureId);
         mTextureRenderer.onSurfaceCreated();
-        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"CameraTextureRenderer  End");
+        InyuLog.d(TAG,"com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper","initEGLContext",168,"TextureRenderer  End");
     }
 
     public void onSurfaceChanged(int width, int height) {

@@ -147,7 +147,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         val eglChooseFlag = EGL14.eglChooseConfig(
             mEGLDisplay,
             eglConfigAttribute, 0,
-            eglConfig, 0, 1,
+            eglConfig, 0, eglConfig.size,
             numConfig, 0
         )
         if (!eglChooseFlag) {
@@ -158,6 +158,10 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         val surfaceAttribute = intArrayOf(
             EGL14.EGL_NONE
         )
+        val surfaceTexture = mTextureView?.surfaceTexture
+        if (surfaceTexture == null) {
+            throw RuntimeException("surfaceTexture is null")
+        }
         mEglSurface = EGL14.eglCreateWindowSurface(
             mEGLDisplay,
             eglConfig[0],
@@ -167,7 +171,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
 
         //创建上下文
         val ctxAttribute = intArrayOf(
-            EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+            EGL14.EGL_CONTEXT_CLIENT_VERSION, versions[0],
             EGL14.EGL_NONE
         )
         mEGLContext = EGL14.eglCreateContext(
