@@ -71,8 +71,7 @@ class BaseModuleAppDelegate : AppDelegate {
      */
     private fun initXLog(application: Application) {
         val logPath = application.getExternalFilesDir("inyu_xlog")?.absolutePath
-        val public_key =
-            "1152b1620b4fe6457a7ddabcf514987b3ba44e3d6c7554fbbf22767bba4b98b3c0b071de670676292a18f53d552da64d5820eb9a7992c97d4ee6915d49f224f1"
+        val public_key = "837e1fe9298e6dc0e43e67d2af9e8a9019eeba0fe90bc604f9bc72ce089844ab8d64e63fbaf3bd103b077b6a89ee3fdbcf2e690cfdecf2e9d6cb1e9564446fbc"
 
         // this is necessary, or may cash for SIGBUS
         val cachePath = "${application.filesDir}/inyu_xlog"
