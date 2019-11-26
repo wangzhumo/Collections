@@ -222,6 +222,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
         if (mHandler != null) {
             //不能直接调用，需要在mHandlerThread中去渲染
             mHandler?.sendEmptyMessage(MSG_RENDER)
+
         }
     }
 
