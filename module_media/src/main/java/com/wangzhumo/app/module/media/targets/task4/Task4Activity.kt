@@ -39,7 +39,8 @@ class Task4Activity : BaseActivity() {
         button_choose.setOnClickListener {
             //开始选择
             appendLogs("开始选择文件")
-            showFileChooser()
+            //showFileChooser()
+            extractorMedia("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4")
         }
 
     }
