@@ -61,7 +61,8 @@ class Task4Activity : BaseActivity() {
 
 
     fun playVideo(path :String){
-//        videoPlayer.setAspectRatio(path)
+        videoPlayer.setUp("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4",false,"Sample")
+        videoPlayer.startPlayLogic()
 //        videoPlayer.setMediaController(AndroidMediaController(this))
 //        videoPlayer.seekTo(0)
 //        videoPlayer.requestFocus()

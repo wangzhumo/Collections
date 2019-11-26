@@ -7,7 +7,7 @@
         android:fitsSystemWindows="true"
         tools:context=".targets.task4.Task4Activity">
 
-    <tv.danmaku.ijk.media.example.widget.media.IjkVideoView
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
             android:id="@+id/videoPlayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
