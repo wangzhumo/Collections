@@ -80,9 +80,7 @@ class AutoFitPreviewBuilder private constructor(
             parent.addView(viewFinder, 0)
 
             Log.e("Renderer","onPreviewOutputUpdateListener")
-            val renderer = CameraTextureRenderer(it.surfaceTexture,viewFinder)
-            viewFinder.setRenderer(renderer)
-            viewFinder.setRenderMode(GLESTextureView.RENDERMODE_WHEN_DIRTY)
+            it.surfaceTexture
 
             bufferRotation = it.rotationDegrees
             val rotation = getDisplaySurfaceRotation(viewFinder.display)
@@ -116,10 +114,7 @@ class AutoFitPreviewBuilder private constructor(
     }
 
     /** Helper function that fits a camera preview into the given [TextureView] */
-    private fun updateTransform(
-        textureView: TextureView?, rotation: Int?, newBufferDimens: Size,
-        newViewFinderDimens: Size
-    ) {
+    private fun updateTransform(textureView: TextureView?, rotation: Int?, newBufferDimens: Size, newViewFinderDimens: Size) {
         // This should happen anyway, but now the linter knows
         val textureView = textureView ?: return
 

@@ -47,28 +47,28 @@
             tools:visibility="visible" />
 
     <Button
-            android:id="@+id/button_task3_1"
+            android:id="@+id/button_task4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/margin_20"
-            android:text="Task-3-1"
+            android:text="Task-4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_task3"
             tools:visibility="visible" />
     <Button
-            android:id="@+id/button_task3_2"
+            android:id="@+id/button_task5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/margin_20"
-            android:text="Task-3-2"
+            android:text="Task-5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_task3_1"
+            app:layout_constraintTop_toBottomOf="@+id/button_task4"
             tools:visibility="visible" />
 
     <Button
@@ -78,24 +78,12 @@
             android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/margin_20"
-            android:text="OpenGL-1"
+            android:text="Task-6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_task3_2"
+            app:layout_constraintTop_toBottomOf="@+id/button_task5"
             tools:visibility="visible" />
 
-    <Button
-            android:id="@+id/button_camera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/margin_20"
-            android:text="OpenGL-Camera"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_task3_2"
-            tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

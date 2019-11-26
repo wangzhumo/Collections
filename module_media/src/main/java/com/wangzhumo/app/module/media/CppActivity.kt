@@ -29,42 +29,29 @@ class CppActivity : BaseActivity() {
             ARouter.getInstance()
                 .build(IRoute.MEDIA_TASK_1)
                 .navigation()
+            finish()
         }
 
         button_task2.setOnClickListener {
             ARouter.getInstance()
                 .build(IRoute.MEDIA_TASK_2)
                 .navigation()
+            finish()
         }
 
         button_task3.setOnClickListener {
             ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_3)
-                .navigation()
-        }
-
-        button_task3_1.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_3_1)
-                .navigation()
-        }
-
-        button_task3_2.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_3_2)
-                .navigation()
-        }
-
-        button_opengl1.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_OPENGL_1)
-                .navigation()
-        }
-
-        button_camera.setOnClickListener {
-            ARouter.getInstance()
                 .build(IRoute.MEDIA_OPENGL_CAMERA)
                 .navigation()
+            finish()
         }
+
+        button_task4.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.MEDIA_TASK_4)
+                .navigation()
+            finish()
+        }
+
     }
 }

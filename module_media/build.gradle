@@ -64,8 +64,9 @@ dependencies {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
     }
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.shuyu:GSYVideoPlayer:7.1.1'
     kapt deps.arouter.compiler
     kapt deps.auto_server
     //kapt deps.epoxy_processor
