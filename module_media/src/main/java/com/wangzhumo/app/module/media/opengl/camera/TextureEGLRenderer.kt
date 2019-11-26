@@ -49,11 +49,15 @@ class TextureEGLRenderer constructor(val textureId: Int) : ITextureRenderer {
 
     override fun onSurfaceCreated() {
         //加载GL的一些东西
+        //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
         val vertexShader = ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
+        //创建并编译片段着色器
         val fragmentShader = ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader))
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLRenderer","onSurfaceCreated",56,"vertexShader = $vertexShader , fragmentShader = $fragmentShader")
+        //创建一个OpenGL ES 程序，绑定了vertexShader、fragmentShader
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
 
+        //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE)
         aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, TEXTURE_COORD_ATTRIBUTE)
         uTextureMatrixLocation = GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM)
@@ -67,12 +71,13 @@ class TextureEGLRenderer constructor(val textureId: Int) : ITextureRenderer {
     }
 
     override fun onDrawFrame(surfaceTexture: SurfaceTexture?) {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-        GLES30.glUseProgram(mShaderProgram)  //开始使用程序
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)    //生成FrameBuffer对象
+        GLES30.glUseProgram(mShaderProgram)           //开始使用程序，生成纹理
 
         surfaceTexture?.updateTexImage()
         surfaceTexture?.getTransformMatrix(transformMatrix)
 
+        //申请纹理存储区域，并设置相关的参数
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId)
         GLES30.glUniform1i(uTextureSamplerLocation, 0)
