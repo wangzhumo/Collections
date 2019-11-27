@@ -180,6 +180,11 @@ class Task4Activity : BaseActivity() {
         mMediaMuxer.start()
 
         //读取数据，并且写入MediaMuxer
+        //写入视频文件
+        extractor.selectTrack(videoTrackIndex)
+        readTrackAndMuxer(mMediaMuxer,extractor)
+        //写入音频文件
+        extractor.selectTrack(audioTrackIndex)
         readTrackAndMuxer(mMediaMuxer,extractor)
 
         //释放MediaExtractor
