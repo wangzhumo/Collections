@@ -18,7 +18,6 @@ import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_task4.*
-import sun.jvm.hotspot.utilities.IntArray
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URISyntaxException
@@ -145,13 +144,43 @@ class Task4Activity : BaseActivity() {
     /**
      * 合并音视频
      */
-    fun muxerMediaStream(){
+    fun muxerMediaStream(path: String){
         val mOutputVideoPath = File(OUTPUT_DIR, "output_mp4_file.mp4").absolutePath
         //指定输出目录，指定Format格式
         val mMediaMuxer = MediaMuxer(
             mOutputVideoPath,
             MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4
         )
+
+        //获取两个轨道，并且添加到mMediaMuxer
+        val extractor = MediaExtractor()
+        //设置来源
+        extractor.setDataSource(path)
+        //记录音频/视屏轨道的index
+        var videoTrackIndex = -1
+        var audioTrackIndex = -1
+        //获取媒体文件的track数量
+        val numTracks = extractor.trackCount
+        for (index in 0 until numTracks) {
+            val format = extractor.getTrackFormat(index)
+            val mimeType = format.getString(MediaFormat.KEY_MIME)
+            //标记视频轨道
+            if (mimeType.startsWith("video/")) {
+                videoTrackIndex = index
+            }
+            //标记音频轨道
+            if (mimeType.startsWith("audio/")) {
+                audioTrackIndex = index
+            }
+        }
+        //添加Track
+        extractor.selectTrack(videoTrackIndex)
+        mMediaMuxer.addTrack(extractor.getTrackFormat(videoTrackIndex))
+        extractor.selectTrack(audioTrackIndex)
+        mMediaMuxer.addTrack(extractor.getTrackFormat(audioTrackIndex))
+        //添加完毕开始
+        mMediaMuxer.start()
+
 
     }
 
