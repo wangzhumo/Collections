@@ -7,6 +7,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.media.MediaExtractor
 import android.media.MediaFormat
+import android.media.MediaMuxer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -17,6 +18,7 @@ import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_task4.*
+import sun.jvm.hotspot.utilities.IntArray
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URISyntaxException
@@ -138,6 +140,21 @@ class Task4Activity : BaseActivity() {
         }while (readCount > 0)
         byteBuffer.clear()
     }
+
+
+    /**
+     * 合并音视频
+     */
+    fun muxerMediaStream(){
+        val mOutputVideoPath = File(OUTPUT_DIR, "output_mp4_file.mp4").absolutePath
+        //指定输出目录，指定Format格式
+        val mMediaMuxer = MediaMuxer(
+            mOutputVideoPath,
+            MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4
+        )
+
+    }
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
