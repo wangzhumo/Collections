@@ -70,8 +70,7 @@ public abstract class BaseActivity extends SupportActivity {
      *
      * @return layoutID
      */
-    protected abstract @LayoutRes
-    int getLayoutId();
+    protected abstract @LayoutRes int getLayoutId();
 
     /**
      * setContentView 之前

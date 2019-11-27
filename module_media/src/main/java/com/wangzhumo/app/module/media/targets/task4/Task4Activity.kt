@@ -174,16 +174,24 @@ class Task4Activity : BaseActivity() {
             }
         }
         //添加Track
-        extractor.selectTrack(videoTrackIndex)
         mMediaMuxer.addTrack(extractor.getTrackFormat(videoTrackIndex))
-        extractor.selectTrack(audioTrackIndex)
         mMediaMuxer.addTrack(extractor.getTrackFormat(audioTrackIndex))
         //添加完毕开始
         mMediaMuxer.start()
 
+        //读取数据，并且写入MediaMuxer
+        readTrackAndMuxer(mMediaMuxer,extractor)
 
+        //释放MediaExtractor
+        extractor.release()
+        //释放MediaMuxer
+        mMediaMuxer.stop();
+        mMediaMuxer.release();
     }
 
+    private fun readTrackAndMuxer(mMediaMuxer: MediaMuxer, extractor: MediaExtractor) {
+
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
