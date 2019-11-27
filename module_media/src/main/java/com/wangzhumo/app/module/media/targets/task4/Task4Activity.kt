@@ -91,22 +91,24 @@ class Task4Activity : BaseActivity() {
             )
             //标记视频轨道
             if (mimeType.startsWith("video/")) {
-                appendLogs("视频分离 - 任务开始")
                 videoTrackIndex = index
-                extractor.selectTrack(videoTrackIndex)
-                readTrackStream(videoStream,extractor)
-                videoStream.close()
-                appendLogs("视频分离 - 任务结束")
             }
             //标记音频轨道
             if (mimeType.startsWith("audio/")) {
-                appendLogs("音频分离 - 任务开始")
                 audioTrackIndex = index
-                extractor.selectTrack(audioTrackIndex)
-                readTrackStream(audioStream,extractor)
-                audioStream.close()
-                appendLogs("音频分离 - 任务结束")
             }
+
+            appendLogs("视频分离 - 任务开始")
+            extractor.selectTrack(videoTrackIndex)
+            readTrackStream(videoStream,extractor)
+            videoStream.close()
+            appendLogs("视频分离 - 任务结束")
+
+            appendLogs("音频分离 - 任务开始")
+            extractor.selectTrack(audioTrackIndex)
+            readTrackStream(audioStream,extractor)
+            audioStream.close()
+            appendLogs("音频分离 - 任务结束")
         }
         appendLogs("任务结束")
         Log.d(TAG,"com.wangzhumo.app.module.media.targets.task4.Task4Activity","extractorMedia",107,"任务结束")
