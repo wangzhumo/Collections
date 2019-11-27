@@ -6,18 +6,21 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.media.MediaExtractor
+import android.media.MediaFormat
 import android.net.Uri
 import android.os.Bundle
-import android.widget.MediaController
+import android.os.Environment
 import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_task32.*
 import kotlinx.android.synthetic.main.activity_task4.*
+import java.io.File
+import java.io.FileOutputStream
 import java.net.URISyntaxException
+import java.nio.ByteBuffer
 
 
 /**
@@ -32,17 +35,14 @@ class Task4Activity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_task4
     val stringBuffer = StringBuffer()
     var lines = 0
-
+    //准备写入的文件
+    val OUTPUT_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         button_choose.setOnClickListener {
-            //开始选择
-            appendLogs("开始选择文件")
-            //showFileChooser()
-            extractorMedia("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4")
+            showFileChooser()
         }
-
     }
 
     private val FILE_SELECT_CODE = 0
@@ -61,16 +61,6 @@ class Task4Activity : BaseActivity() {
     }
 
 
-    fun playVideo(path :String){
-        videoPlayer.setUp("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4",false,"Sample")
-        videoPlayer.startPlayLogic()
-//        videoPlayer.setMediaController(AndroidMediaController(this))
-//        videoPlayer.seekTo(0)
-//        videoPlayer.requestFocus()
-//        videoPlayer.start()
-    }
-
-
     /**
      * @param path 媒体文件地址
      *
@@ -79,14 +69,72 @@ class Task4Activity : BaseActivity() {
         val extractor = MediaExtractor()
         //设置来源
         extractor.setDataSource(path)
+        //视频文件
+        val videoStream = File(OUTPUT_DIR, "output_video_mp4.mp4").outputStream()
+        //音频文件
+        val audioStream = File(OUTPUT_DIR, "output_audio_mp4").outputStream()
+
+        //记录音频/视屏轨道的index
+        var videoTrackIndex = -1
+        var audioTrackIndex = -1
         //获取媒体文件的track数量
         val numTracks = extractor.trackCount
-        for (index in 0 until numTracks){
+        for (index in 0 until numTracks) {
             val format = extractor.getTrackFormat(index)
-            Log.d(TAG,"com.wangzhumo.app.module.media.targets.task4.Task4Activity","extractorMedia",61,format.toString())
-            //获取到你想要使用的Track
-            appendLogs(format.toString())
+            val mimeType = format.getString(MediaFormat.KEY_MIME)
+            Log.d(
+                TAG,
+                "com.wangzhumo.app.module.media.targets.task4.Task4Activity",
+                "extractorMedia",
+                61,
+                format.toString()
+            )
+            //标记视频轨道
+            if (mimeType.startsWith("video/")) {
+                appendLogs("视频分离 - 任务开始")
+                videoTrackIndex = index
+                extractor.selectTrack(videoTrackIndex)
+                readTrackStream(videoStream,extractor)
+                videoStream.close()
+                appendLogs("视频分离 - 任务结束")
+            }
+            //标记音频轨道
+            if (mimeType.startsWith("audio/")) {
+                appendLogs("音频分离 - 任务开始")
+                audioTrackIndex = index
+                extractor.selectTrack(audioTrackIndex)
+                readTrackStream(audioStream,extractor)
+                audioStream.close()
+                appendLogs("音频分离 - 任务结束")
+            }
         }
+        appendLogs("任务结束")
+        Log.d(TAG,"com.wangzhumo.app.module.media.targets.task4.Task4Activity","extractorMedia",107,"任务结束")
+        extractor.release()
+    }
+
+    /**
+     * 读取数据，写入到文件中
+     */
+    private fun readTrackStream(fileInput: FileOutputStream, extractor: MediaExtractor) {
+        //Buffer
+        val byteBuffer = ByteBuffer.allocate(1024 * 500)
+        var readCount = 0
+        do {
+            //读取数据
+            readCount = extractor.readSampleData(byteBuffer,0)
+            if (readCount < 0){
+                break
+            }
+            //写入文件
+            val buffer = ByteArray(readCount)
+            byteBuffer.get(buffer)
+            fileInput.write(buffer)
+            byteBuffer.clear()
+            //移动到下一帧
+            extractor.advance()
+        }while (readCount > 0)
+        byteBuffer.clear()
     }
 
 
@@ -99,17 +147,22 @@ class Task4Activity : BaseActivity() {
                 if (uri != null) {
                     val path: String = getPath(this, uri)
                     appendLogs(path)
-                    //extractorMedia(path)
-                    playVideo(path)
+                    extractorMedia(path)
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun appendLogs(log : String){
-        Log.d(TAG,"com.wangzhumo.app.module.media.targets.task4.Task4Activity","appendLogs",97,"[$lines].$log")
-        lines ++
+    fun appendLogs(log: String) {
+        Log.d(
+            TAG,
+            "com.wangzhumo.app.module.media.targets.task4.Task4Activity",
+            "appendLogs",
+            97,
+            "[$lines].$log"
+        )
+        lines++
         stringBuffer.append("[$lines].").append(log).append("\n")
         textView.text = stringBuffer.toString()
     }
