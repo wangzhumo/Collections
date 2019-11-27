@@ -189,6 +189,10 @@ class Task4Activity : BaseActivity() {
         mMediaMuxer.release();
     }
 
+
+    /**
+     * 读取文件，并且写入mMediaMuxer.
+     */
     private fun readTrackAndMuxer(mMediaMuxer: MediaMuxer, extractor: MediaExtractor) {
 
     }
