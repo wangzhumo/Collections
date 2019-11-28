@@ -53,5 +53,12 @@ class CppActivity : BaseActivity() {
             finish()
         }
 
+        button_task5.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.MEDIA_OPENGL_1)
+                .navigation()
+            finish()
+        }
+
     }
 }
