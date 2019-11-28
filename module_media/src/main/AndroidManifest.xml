@@ -3,7 +3,8 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
-        <activity android:name=".targets.task4.Task4Activity"></activity>
+        <activity android:name=".opengl.triangle.TriangleActivity"></activity>
+        <activity android:name=".targets.task4.Task4Activity" />
         <activity
                 android:name=".opengl.camera.CameraActivity"
                 android:hardwareAccelerated="true" />

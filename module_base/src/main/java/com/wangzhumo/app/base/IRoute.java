@@ -25,6 +25,7 @@ public interface IRoute {
     String MEDIA_TASK_3_2 = "/media/activity/task_3_2";
     String MEDIA_OPENGL_1 = "/media/activity/opengl_1";
     String MEDIA_OPENGL_CAMERA = "/media/activity/opengl_camera";
+    String MEDIA_OPENGL_TRIANGLE = "/media/activity/opengl_triangle";
 
     String FRAME_ACTIVITY = "/activity/framelayout";
 
