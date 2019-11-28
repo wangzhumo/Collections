@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.media.MediaCodec
 import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.media.MediaMuxer
@@ -145,8 +146,10 @@ class Task4Activity : BaseActivity() {
      * 合并音视频
      */
     fun muxerMediaStream(path: String){
+        appendLogs("任务开始")
         val mOutputVideoPath = File(OUTPUT_DIR, "output_mp4_file.mp4").absolutePath
         //指定输出目录，指定Format格式
+        appendLogs("输出目录：$mOutputVideoPath" )
         val mMediaMuxer = MediaMuxer(
             mOutputVideoPath,
             MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4
@@ -167,10 +170,12 @@ class Task4Activity : BaseActivity() {
             //标记视频轨道
             if (mimeType.startsWith("video/")) {
                 videoTrackIndex = index
+                appendLogs("videoTrackIndex ：$videoTrackIndex" )
             }
             //标记音频轨道
             if (mimeType.startsWith("audio/")) {
                 audioTrackIndex = index
+                appendLogs("audioTrackIndex ：$audioTrackIndex" )
             }
         }
         //添加Track
@@ -181,11 +186,9 @@ class Task4Activity : BaseActivity() {
 
         //读取数据，并且写入MediaMuxer
         //写入视频文件
-        extractor.selectTrack(videoTrackIndex)
-        readTrackAndMuxer(mMediaMuxer,extractor)
+        readTrackAndMuxer(videoTrackIndex,mMediaMuxer,extractor)
         //写入音频文件
-        extractor.selectTrack(audioTrackIndex)
-        readTrackAndMuxer(mMediaMuxer,extractor)
+        readTrackAndMuxer(audioTrackIndex,mMediaMuxer,extractor)
 
         //释放MediaExtractor
         extractor.release()
@@ -198,8 +201,31 @@ class Task4Activity : BaseActivity() {
     /**
      * 读取文件，并且写入mMediaMuxer.
      */
-    private fun readTrackAndMuxer(mMediaMuxer: MediaMuxer, extractor: MediaExtractor) {
-
+    private fun readTrackAndMuxer(trackIndex: Int,mMediaMuxer: MediaMuxer, extractor: MediaExtractor) {
+        appendLogs("readTrackAndMuxer 开始写入" )
+        //读取数据
+        extractor.selectTrack(trackIndex)
+        val byteBuffer = ByteBuffer.allocate(1024 * 500)
+        val info: MediaCodec.BufferInfo = MediaCodec.BufferInfo()
+        info.presentationTimeUs = 0
+        var readCount = 0
+        do {
+            //读取数据
+            readCount = extractor.readSampleData(byteBuffer,0)
+            if (readCount < 0){
+                break
+            }
+            //写入文件
+            info.offset = 0
+            info.size = readCount
+            info.flags = MediaCodec.BUFFER_FLAG_KEY_FRAME
+            info.presentationTimeUs = extractor.sampleTime
+            mMediaMuxer.writeSampleData(trackIndex,byteBuffer,info)
+            byteBuffer.clear()
+            //移动到下一帧
+            extractor.advance()
+        }while (readCount > 0)
+        appendLogs("readTrackAndMuxer 结束写入" )
     }
 
 
@@ -212,7 +238,7 @@ class Task4Activity : BaseActivity() {
                 if (uri != null) {
                     val path: String = getPath(this, uri)
                     appendLogs(path)
-                    extractorMedia(path)
+                    muxerMediaStream(path)
                 }
             }
         }
