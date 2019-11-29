@@ -72,6 +72,15 @@ object TextureUtils {
         return buffer
     }
 
+    /**
+     * 创建一个顶点Buffer
+     */
+    fun loadVertexBuffer(byteBuffer: ByteBuffer,vertexData: FloatArray): FloatBuffer {
+        val buffer = byteBuffer.order(ByteOrder.nativeOrder()).asFloatBuffer()
+        buffer.put(vertexData, 0, vertexData.size).position(0)
+        return buffer
+    }
+
 
     /**
      * 创建一个新的SurfaceTexture

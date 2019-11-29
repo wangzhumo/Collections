@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.media.opengl.triangle
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
+import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 import java.nio.ByteBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -36,14 +37,13 @@ class TriangleRenderer : GLSurfaceView.Renderer {
             1F, -ratio, 2F
         )
         //创建顶点缓冲区
-        val floatBuffer = ByteBuffer.allocate(trianglePoint.size * 4).asFloatBuffer()
-        //把顶点数据放入floatBuffer
-        floatBuffer.put(trianglePoint)
-        //为了native中，开始读取的指针位置 在第一个可用元素
-        floatBuffer.position(0)
+        val pointBuffer = ByteBuffer.allocateDirect(trianglePoint.size * 4)
+        val floatBuffer = TextureUtils.loadVertexBuffer(pointBuffer,trianglePoint)
+
         //设置绘图的颜色,使用红色
         gl?.glColor4f(1F,0F,0F,1F)
         //指定3个值确定一个点
+        //Must use a native order direct Buffer
         gl?.glVertexPointer(3, GL10.GL_FLOAT, 0, floatBuffer)
         //画一个三角
         gl?.glDrawArrays(GL10.GL_TRIANGLES,0,3)
@@ -60,7 +60,7 @@ class TriangleRenderer : GLSurfaceView.Renderer {
             //计算比例，避免缩放后显示变形
             ratio = width.toFloat() / height
             //设置平截头体，为了投射到viewport上时，不超出viewport，top/bottom 按照我们viewport的比例设置
-            glFrustumf(-1F, 0F, -ratio, ratio, 3F, 7F)
+            glFrustumf(-1F, 1F, -ratio, ratio, 3F, 7F)
         }
     }
 
