@@ -17,7 +17,6 @@ class PictureActivity : BaseActivity() {
 
     override fun getLayoutId(): Int = R.layout.activity_picture
 
-
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         gl_surface_view.setRenderer(PictureRenderer())

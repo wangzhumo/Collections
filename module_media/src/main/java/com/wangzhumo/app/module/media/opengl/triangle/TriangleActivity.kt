@@ -21,5 +21,4 @@ class TriangleActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         gl_surface_view.setRenderer(TriangleRenderer())
     }
-
 }
