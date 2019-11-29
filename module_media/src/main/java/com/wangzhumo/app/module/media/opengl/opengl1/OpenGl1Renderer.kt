@@ -98,6 +98,9 @@ class OpenGl1Renderer : GLSurfaceView.Renderer {
         //int stride  跨度
         gl?.glVertexPointer(3, GL10.GL_FLOAT, 0, pointBuffer)
         //画一个三角
+        //mode  绘制的类型
+        //first 第一个
+        //count 有几个点
         gl?.glDrawArrays(GL10.GL_TRIANGLES,0,3)
     }
 

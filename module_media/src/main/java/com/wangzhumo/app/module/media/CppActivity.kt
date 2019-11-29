@@ -55,7 +55,7 @@ class CppActivity : BaseActivity() {
 
         button_task5.setOnClickListener {
             ARouter.getInstance()
-                .build(IRoute.MEDIA_OPENGL_1)
+                .build(IRoute.MEDIA_OPENGL_TRIANGLE)
                 .navigation()
             finish()
         }
