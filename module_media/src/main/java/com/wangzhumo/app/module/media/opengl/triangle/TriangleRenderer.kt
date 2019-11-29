@@ -32,9 +32,9 @@ class TriangleRenderer : GLSurfaceView.Renderer {
         GLU.gluLookAt(gl, 0F, 0F, 5F, 0F, 0F, 0F, 0F, 1F, 0F)
         //顶点数组
         val trianglePoint = floatArrayOf(
-            0F, ratio, 2F,
-            -1F, -ratio, 2F,
-            1F, -ratio, 2F
+            0F, ratio, 1F,
+            -1F, -ratio, 1F,
+            1F, -ratio, 1F
         )
         //创建顶点缓冲区
         val pointBuffer = ByteBuffer.allocateDirect(trianglePoint.size * 4)
