@@ -32,6 +32,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(":library_origin")
     api project(":library_widget")
+    api project(":library_circle")
     kapt deps.auto_server
 }
 
