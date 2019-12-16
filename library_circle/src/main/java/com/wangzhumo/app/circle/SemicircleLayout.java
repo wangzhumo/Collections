@@ -122,7 +122,9 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
         for (int i = 0; i < radiusOffset.size(); i++) {
             radiusOffset.put(i, radiusOffset.get(i) + offset);
             //调用他们自己LayoutParam改变位置.
-            changeAngle(mImageArray.get(i), radiusOffset.get(i));
+            if (isNeedChangeViewPosition){
+                changeAngle(mImageArray.get(i), radiusOffset.get(i));
+            }
             if (i == index){
                 mImageArray.get(i).setColorFilter(null);
             }else{
