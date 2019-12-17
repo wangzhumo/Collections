@@ -18,10 +18,13 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +38,7 @@ import java.util.List;
  * 2.4个圆可以定位与约束所有的Item
  * 3.通过角度与半径计算path的4个坐标
  */
-public class CircleImageLayout extends ViewGroup {
+public class CircleImageLayout extends ViewGroup implements View.OnTouchListener {
 
     /**
      * 可以设置的半径(整个View的最大圆半径,通过整体尺寸计算)
@@ -69,7 +72,6 @@ public class CircleImageLayout extends ViewGroup {
     /**
      * Item的个数
      */
-    private int mItemCount = 12;
     private final int mDefaultItemCount = 12;
 
     /**
@@ -85,6 +87,7 @@ public class CircleImageLayout extends ViewGroup {
     private SparseArray<PointF> mAngleInnerPoint;
     private SparseArray<PointF> mAngleFullPoint;
     private Paint mArcPaint,mShaderPaint;
+    private GestureDetector mGestureDetector;
 
     public CircleImageLayout(Context context) {
         this(context, null);
@@ -111,8 +114,8 @@ public class CircleImageLayout extends ViewGroup {
         mArcPaint = new Paint();
         mArcPaint.setAntiAlias(true);
         mArcPaint.setStyle(Paint.Style.STROKE);
-        mArcPaint.setColor(Color.BLUE);
-        mArcPaint.setStrokeWidth(4);
+        mArcPaint.setColor(Color.BLACK);
+        mArcPaint.setStrokeWidth(1);
 
         mShaderPaint = new Paint();
         mShaderPaint.setAntiAlias(true);
@@ -122,13 +125,16 @@ public class CircleImageLayout extends ViewGroup {
         mAngleFullPoint = new SparseArray<>();
         int tempAngle = mDefaultAngle;
         //初始化
-        for (int i = 0; i < mItemCount; i++) {
+        for (int i = 0; i < mDefaultItemCount; i++) {
             mAngleOutPoint.put(tempAngle, new PointF());
             mAngleInnerPoint.put(tempAngle, new PointF());
             mAngleFullPoint.put(tempAngle, new PointF());
             tempAngle += anglePre;
         }
         rectF = new RectF();
+        mCircleDataList = new ArrayList<>();
+        mGestureDetector = new GestureDetector(getContext(), new CircleGestureListener());
+        setOnTouchListener(this);
     }
 
     @Override
@@ -151,7 +157,7 @@ public class CircleImageLayout extends ViewGroup {
 
         float outX, outY, fullX, fullY, innerX, innerY;
         int tempAngle = mDefaultAngle - 15;
-        for (int i = 0; i < mItemCount; i++) {
+        for (int i = 0; i < mDefaultItemCount; i++) {
             innerX = (mRadius >> 1) + (int) Math.round(tempValue1 * Math.cos(Math.toRadians(tempAngle)));
             innerY = (mRadius >> 1) + (int) Math.round(tempValue1 * Math.sin(Math.toRadians(tempAngle)));
 
@@ -177,7 +183,6 @@ public class CircleImageLayout extends ViewGroup {
                 mAngleInnerPoint.get(tempAngle + 15).set(innerX,innerY);
             }
 
-            Log.e("Circle", "tempAngle = " + (tempAngle + 15));
             tempAngle += anglePre;
         }
         addItems();
@@ -211,68 +216,42 @@ public class CircleImageLayout extends ViewGroup {
 
 
     @Override
-    public void onDrawForeground(Canvas canvas) {
-        super.onDrawForeground(canvas);
-//        mArcPaint.setColor(Color.BLUE);
-//        canvas.drawCircle(mRadius / 2, mRadius / 2, mRadius / 2, mArcPaint);
-//        mArcPaint.setColor(Color.YELLOW);
-//        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewInnerRadius / 2, mArcPaint);
-//        mArcPaint.setColor(Color.BLACK);
-//        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewOutRadius / 2 + 10, mArcPaint);
-//        mArcPaint.setColor(Color.GREEN);
-//        canvas.drawCircle(mRadius / 2, mRadius / 2, mAuxiliaryRadius / 2, mArcPaint);
-    }
-
-    boolean color = true;
-
-    @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         int tag = (int) child.getTag();
         PointF innerf = mAngleInnerPoint.get(tag);
         PointF outf = mAngleOutPoint.get(tag);
-        PointF innerfnext, outfnext;
+        PointF innerfnext;
         if (tag + anglePre == 360) {
             innerfnext = mAngleInnerPoint.get(0);
-            outfnext = mAngleOutPoint.get(0);
         } else {
             innerfnext = mAngleInnerPoint.get(tag + anglePre);
-            outfnext = mAngleOutPoint.get(tag + anglePre);
         }
-        Log.e("Circle", "Tag = " + tag);
         canvas.save();
         clipPath.reset();
-        //clipPath.moveTo(innerf.x,innerf.y);
         clipPath.moveTo(outf.x, outf.y);
         rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius >> 1) + (mViewOutRadius / 2), (mRadius >> 1) + (mViewOutRadius / 2));
         clipPath.addArc(rectF, tag-15, anglePre);
         clipPath.lineTo(innerfnext.x, innerfnext.y);
-        rectF.set((mRadius - mViewInnerRadius) / 2 , (mRadius - mViewInnerRadius) / 2 , (mRadius >> 1) + (mViewInnerRadius / 2), (mRadius >> 1) + (mViewInnerRadius / 2));
-        clipPath.addArc(rectF, tag+15, -anglePre);
+        int conX = (mRadius >> 1) + (int) Math.round((mViewInnerRadius/2 + inner_out_offset) * Math.cos(Math.toRadians(tag)));
+        int conY = (mRadius >> 1) + (int) Math.round((mViewInnerRadius/2 + inner_out_offset) * Math.sin(Math.toRadians(tag)));
+        clipPath.quadTo(conX,conY,innerf.x,innerf.y);
         clipPath.lineTo(outf.x, outf.y);
-//        clipPath.reset();
-//        clipPath.moveTo(innerf.x, innerf.y);
-//        clipPath.lineTo(outf.x, outf.y);
-//        rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius >> 1) + (mViewOutRadius / 2), (mRadius / 2) + (mViewOutRadius / 2));
-//        clipPath.addArc(rectF, tag - 15, anglePre);
-//        clipPath.moveTo(innerf.x, innerf.y);
-//        rectF.set((mRadius - mViewInnerRadius) / 2 - 10, (mRadius - mViewInnerRadius) / 2 - 10, (mRadius >> 1) + (mViewInnerRadius / 2) + 10, (mRadius / 2) + (mViewInnerRadius / 2) +10);
-//        clipPath.addArc(rectF, tag - 15, anglePre);
-//        clipPath.close();
-        //canvas.clipPath(clipPath);
-        canvas.drawPath(clipPath,mArcPaint);
-        //super.drawChild(canvas, child, drawingTime);
+        canvas.clipPath(clipPath);
+        super.drawChild(canvas, child, drawingTime);
         canvas.restore();
-
+        //再绘制一条线
         return true;
     }
 
+
+    private float inner_out_offset;
     private void addItems() {
         removeAllViews();
-        double temp = ((mViewInnerRadius / 2F) - Math.ceil((mViewInnerRadius / 2F) * Math.cos(Math.toRadians(anglePre / 2F))));
-        mItemWidth = (float) ((mViewOutRadius - mViewInnerRadius) / 2F + temp);
+        inner_out_offset = (float) ((mViewInnerRadius / 2F) - Math.ceil((mViewInnerRadius / 2F) * Math.cos(Math.toRadians(anglePre / 2F))));
+        mItemWidth = (mViewOutRadius - mViewInnerRadius) / 2F + inner_out_offset + 10;
         mItemHeight = (float) Math.ceil((mViewOutRadius / 2F) * Math.sin(Math.toRadians(anglePre / 2F)) * 2) + 10;
         for (int index = 0; index < mDefaultItemCount; index++) {
-            CircleItemView imageView = new CircleItemView(getContext(), (int) temp);
+            CircleItemView imageView = new CircleItemView(getContext(), (int) inner_out_offset);
             if (mLoader != null) {
                 // TODO: 2019-12-17  mCircleDataList.get(index)
                 mLoader.onLoader(imageView, null); 
@@ -286,6 +265,19 @@ public class CircleImageLayout extends ViewGroup {
         //添加View完毕,可以开始布局
     }
 
+
+    class CircleGestureListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    }
+
     /**
      * 设置Item的资源
      *
@@ -293,12 +285,12 @@ public class CircleImageLayout extends ViewGroup {
      */
     public void setCircleData(List list) {
         if (list == null || list.isEmpty()) return;
-
         //设置给
+        mCircleDataList.clear();
         mCircleDataList = list;
-        mItemCount = mCircleDataList.size();
 
         //开始渲染到Item.
+        requestLayout();
     }
 
     /**
@@ -317,6 +309,11 @@ public class CircleImageLayout extends ViewGroup {
      */
     public void addOnImageLoader(OnImageLoader loader) {
         this.mLoader = loader;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return mGestureDetector.onTouchEvent(motionEvent);
     }
 
     public interface OnImageLoader {
