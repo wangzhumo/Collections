@@ -35,7 +35,7 @@ def versions = [:]
     versions.gson = "2.8.5"
 
     //classpath
-    versions.gradle = '3.5.2'
+    versions.gradle = '3.5.3'
 
     versions.objectbox = "1.4.1"
     versions.butterknife = "9.0.0"
@@ -270,7 +270,7 @@ def buildVersions = [:]
     ext.buildVersion = buildVersions
 
 static def addRepos(RepositoryHandler handler) {
-    handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    //handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     handler.google()
     handler.mavenCentral()
     handler.jcenter()

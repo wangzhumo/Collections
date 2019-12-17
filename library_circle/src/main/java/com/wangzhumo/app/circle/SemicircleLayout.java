@@ -95,7 +95,7 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
     private void selectIndexSelf(int index){
         selectIndex(index);
         if (mListener != null){
-            mListener.onItemChange(index);
+            mListener.onItemChange(index,null);
         }
     }
 
@@ -181,10 +181,4 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
         this.mListener = listener;
     }
 
-    /**
-     * 回调
-     */
-    interface OnItemChangeListener{
-        void onItemChange(int position);
-    }
 }
