@@ -84,11 +84,7 @@ public class CircleImageLayout extends ViewGroup {
     private SparseArray<PointF> mAngleOutPoint;
     private SparseArray<PointF> mAngleInnerPoint;
     private SparseArray<PointF> mAngleFullPoint;
-
-    private Bitmap mBitmap;
-
     private Paint mArcPaint,mShaderPaint;
-    private Shader mShader;
 
     public CircleImageLayout(Context context) {
         this(context, null);
@@ -133,10 +129,6 @@ public class CircleImageLayout extends ViewGroup {
             tempAngle += anglePre;
         }
         rectF = new RectF();
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle_ic_dashang_select);
-        //mBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-        //mBitmap.eraseColor(Color.GRAY);
-        mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
     }
 
     @Override
@@ -160,14 +152,14 @@ public class CircleImageLayout extends ViewGroup {
         float outX, outY, fullX, fullY, innerX, innerY;
         int tempAngle = mDefaultAngle - 15;
         for (int i = 0; i < mItemCount; i++) {
-            innerX = mRadius / 2 + (int) Math.round(tempValue1 * Math.cos(Math.toRadians(tempAngle)));
-            innerY = mRadius / 2 + (int) Math.round(tempValue1 * Math.sin(Math.toRadians(tempAngle)));
+            innerX = (mRadius >> 1) + (int) Math.round(tempValue1 * Math.cos(Math.toRadians(tempAngle)));
+            innerY = (mRadius >> 1) + (int) Math.round(tempValue1 * Math.sin(Math.toRadians(tempAngle)));
 
-            outX = mRadius / 2 + (int) Math.round(tempValue2 * Math.cos(Math.toRadians(tempAngle)));
-            outY = mRadius / 2 + (int) Math.round(tempValue2 * Math.sin(Math.toRadians(tempAngle)));
+            outX = (mRadius >> 1) + (int) Math.round(tempValue2 * Math.cos(Math.toRadians(tempAngle)));
+            outY = (mRadius >> 1) + (int) Math.round(tempValue2 * Math.sin(Math.toRadians(tempAngle)));
 
-            fullX = mRadius / 2 + (int) Math.round(tempValue3 * Math.cos(Math.toRadians(tempAngle)));
-            fullY = mRadius / 2 + (int) Math.round(tempValue3 * Math.sin(Math.toRadians(tempAngle)));
+            fullX = (mRadius >> 1) + (int) Math.round(tempValue3 * Math.cos(Math.toRadians(tempAngle)));
+            fullY = (mRadius >> 1) + (int) Math.round(tempValue3 * Math.sin(Math.toRadians(tempAngle)));
 
             if (mAngleOutPoint.get(tempAngle + 15) == null) {
                 mAngleOutPoint.put(tempAngle + 15,new PointF(outX,outY));
@@ -204,8 +196,8 @@ public class CircleImageLayout extends ViewGroup {
             float tempValue = mAuxiliaryRadius / 2F;
 
             //计算中心点的坐标
-            itemX = mRadius / 2 + (int) Math.round(tempValue * Math.cos(Math.toRadians(mDefaultAngle)));
-            itemY = mRadius / 2 + (int) Math.round(tempValue * Math.sin(Math.toRadians(mDefaultAngle)));
+            itemX = (mRadius >> 1) + (int) Math.round(tempValue * Math.cos(Math.toRadians(mDefaultAngle)));
+            itemY = (mRadius >> 1) + (int) Math.round(tempValue * Math.sin(Math.toRadians(mDefaultAngle)));
 
             itemView.layout(Float.valueOf(itemX - mItemWidth / 2F).intValue(),
                     Float.valueOf(itemY - mItemHeight / 2).intValue(),
@@ -249,15 +241,26 @@ public class CircleImageLayout extends ViewGroup {
         Log.e("Circle", "Tag = " + tag);
         canvas.save();
         clipPath.reset();
+        //clipPath.moveTo(innerf.x,innerf.y);
         clipPath.moveTo(outf.x, outf.y);
-        rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius / 2) + (mViewOutRadius / 2), (mRadius / 2) + (mViewOutRadius / 2));
+        rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius >> 1) + (mViewOutRadius / 2), (mRadius >> 1) + (mViewOutRadius / 2));
         clipPath.addArc(rectF, tag-15, anglePre);
         clipPath.lineTo(innerfnext.x, innerfnext.y);
-        rectF.set((mRadius - mViewInnerRadius) / 2, (mRadius - mViewInnerRadius) / 2, (mRadius / 2) + (mViewInnerRadius / 2), (mRadius / 2) + (mViewInnerRadius / 2));
+        rectF.set((mRadius - mViewInnerRadius) / 2 , (mRadius - mViewInnerRadius) / 2 , (mRadius >> 1) + (mViewInnerRadius / 2), (mRadius >> 1) + (mViewInnerRadius / 2));
         clipPath.addArc(rectF, tag+15, -anglePre);
         clipPath.lineTo(outf.x, outf.y);
-        canvas.clipPath(clipPath);
-        super.drawChild(canvas, child, drawingTime);
+//        clipPath.reset();
+//        clipPath.moveTo(innerf.x, innerf.y);
+//        clipPath.lineTo(outf.x, outf.y);
+//        rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius >> 1) + (mViewOutRadius / 2), (mRadius / 2) + (mViewOutRadius / 2));
+//        clipPath.addArc(rectF, tag - 15, anglePre);
+//        clipPath.moveTo(innerf.x, innerf.y);
+//        rectF.set((mRadius - mViewInnerRadius) / 2 - 10, (mRadius - mViewInnerRadius) / 2 - 10, (mRadius >> 1) + (mViewInnerRadius / 2) + 10, (mRadius / 2) + (mViewInnerRadius / 2) +10);
+//        clipPath.addArc(rectF, tag - 15, anglePre);
+//        clipPath.close();
+        //canvas.clipPath(clipPath);
+        canvas.drawPath(clipPath,mArcPaint);
+        //super.drawChild(canvas, child, drawingTime);
         canvas.restore();
 
         return true;

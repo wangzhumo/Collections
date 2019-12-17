@@ -12,11 +12,11 @@ import com.wangzhumo.app.base.delegate.IAppConstant
  *
  * @author 王诛魔 2019-12-17  17:48
  */
-@IApp(name = IAppConstant.PLAYGROUND)
-@AutoService(AppDelegate::class)
-class PlaygroundAppDelegate : AppDelegate{
-    override fun init(application: Application?) {
-
-    }
-
-}
+//@IApp(name = IAppConstant.PLAYGROUND)
+//@AutoService(AppDelegate::class)
+//class PlaygroundAppDelegate : AppDelegate{
+//    override fun init(application: Application?) {
+//
+//    }
+//
+//}
