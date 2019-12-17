@@ -1,6 +1,9 @@
 package com.wangzhumo.app.circle;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +11,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.media.Image;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -80,7 +85,10 @@ public class CircleImageLayout extends ViewGroup {
     private SparseArray<PointF> mAngleInnerPoint;
     private SparseArray<PointF> mAngleFullPoint;
 
-    private Paint mArcPaint;
+    private Bitmap mBitmap;
+
+    private Paint mArcPaint,mShaderPaint;
+    private Shader mShader;
 
     public CircleImageLayout(Context context) {
         this(context, null);
@@ -110,6 +118,9 @@ public class CircleImageLayout extends ViewGroup {
         mArcPaint.setColor(Color.BLUE);
         mArcPaint.setStrokeWidth(4);
 
+        mShaderPaint = new Paint();
+        mShaderPaint.setAntiAlias(true);
+        mShaderPaint.setStyle(Paint.Style.FILL);
         mAngleOutPoint = new SparseArray<>();
         mAngleInnerPoint = new SparseArray<>();
         mAngleFullPoint = new SparseArray<>();
@@ -122,6 +133,10 @@ public class CircleImageLayout extends ViewGroup {
             tempAngle += anglePre;
         }
         rectF = new RectF();
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.circle_ic_dashang_select);
+        //mBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        //mBitmap.eraseColor(Color.GRAY);
+        mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
     }
 
     @Override
@@ -154,9 +169,22 @@ public class CircleImageLayout extends ViewGroup {
             fullX = mRadius / 2 + (int) Math.round(tempValue3 * Math.cos(Math.toRadians(tempAngle)));
             fullY = mRadius / 2 + (int) Math.round(tempValue3 * Math.sin(Math.toRadians(tempAngle)));
 
-            mAngleOutPoint.get(tempAngle + 15).set(outX, outY);
-            mAngleInnerPoint.get(tempAngle + 15).set(innerX, innerY);
-            mAngleFullPoint.get(tempAngle + 15).set(fullX, fullY);
+            if (mAngleOutPoint.get(tempAngle + 15) != null) {
+                mAngleOutPoint.put(tempAngle + 15,new PointF(outX,outY));
+            }else {
+                mAngleOutPoint.get(tempAngle + 15).set(outX, outY);
+            }
+            if (mAngleFullPoint.get(tempAngle + 15) != null) {
+                mAngleFullPoint.put(tempAngle + 15,new PointF(fullX,fullY));
+            }else {
+                mAngleFullPoint.get(tempAngle + 15).set(fullX,fullY);
+            }
+            if (mAngleInnerPoint.get(tempAngle + 15) != null) {
+                mAngleInnerPoint.put(tempAngle + 15,new PointF(innerX,innerY));
+            }else {
+                mAngleInnerPoint.get(tempAngle + 15).set(innerX,innerY);
+            }
+
             Log.e("Circle", "tempAngle = " + (tempAngle + 15));
             tempAngle += anglePre;
         }
@@ -193,23 +221,24 @@ public class CircleImageLayout extends ViewGroup {
     @Override
     public void onDrawForeground(Canvas canvas) {
         super.onDrawForeground(canvas);
-        mArcPaint.setColor(Color.BLUE);
-        canvas.drawCircle(mRadius / 2, mRadius / 2, mRadius / 2, mArcPaint);
-        mArcPaint.setColor(Color.YELLOW);
-        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewInnerRadius / 2, mArcPaint);
-        mArcPaint.setColor(Color.BLACK);
-        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewOutRadius / 2 + 10, mArcPaint);
-        mArcPaint.setColor(Color.GREEN);
-        canvas.drawCircle(mRadius / 2, mRadius / 2, mAuxiliaryRadius / 2, mArcPaint);
+//        mArcPaint.setColor(Color.BLUE);
+//        canvas.drawCircle(mRadius / 2, mRadius / 2, mRadius / 2, mArcPaint);
+//        mArcPaint.setColor(Color.YELLOW);
+//        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewInnerRadius / 2, mArcPaint);
+//        mArcPaint.setColor(Color.BLACK);
+//        canvas.drawCircle(mRadius / 2, mRadius / 2, mViewOutRadius / 2 + 10, mArcPaint);
+//        mArcPaint.setColor(Color.GREEN);
+//        canvas.drawCircle(mRadius / 2, mRadius / 2, mAuxiliaryRadius / 2, mArcPaint);
     }
 
+    boolean color = true;
 
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         int tag = (int) child.getTag();
         PointF innerf = mAngleInnerPoint.get(tag);
         PointF outf = mAngleOutPoint.get(tag);
-        PointF innerfnext,outfnext;
+        PointF innerfnext, outfnext;
         if (tag + anglePre == 360) {
             innerfnext = mAngleInnerPoint.get(0);
             outfnext = mAngleOutPoint.get(0);
@@ -217,10 +246,21 @@ public class CircleImageLayout extends ViewGroup {
             innerfnext = mAngleInnerPoint.get(tag + anglePre);
             outfnext = mAngleOutPoint.get(tag + anglePre);
         }
-        if (child instanceof CircleItemView){
-            ((CircleItemView)child).setClipParams(innerf,innerfnext,outf,outfnext);
-        }
-        return super.drawChild(canvas, child, drawingTime);
+        Log.e("Circle", "Tag = " + tag);
+        canvas.save();
+        clipPath.reset();
+        clipPath.moveTo(outf.x, outf.y);
+        rectF.set((mRadius - mViewOutRadius) / 2, (mRadius - mViewOutRadius) / 2, (mRadius / 2) + (mViewOutRadius / 2), (mRadius / 2) + (mViewOutRadius / 2));
+        clipPath.addArc(rectF, tag-15, anglePre);
+        clipPath.lineTo(innerfnext.x, innerfnext.y);
+        rectF.set((mRadius - mViewInnerRadius) / 2, (mRadius - mViewInnerRadius) / 2, (mRadius / 2) + (mViewInnerRadius / 2), (mRadius / 2) + (mViewInnerRadius / 2));
+        clipPath.addArc(rectF, tag+15, -anglePre);
+        clipPath.lineTo(outf.x, outf.y);
+        canvas.clipPath(clipPath);
+        super.drawChild(canvas, child, drawingTime);
+        canvas.restore();
+
+        return true;
     }
 
     private void addItems() {
@@ -231,10 +271,10 @@ public class CircleImageLayout extends ViewGroup {
         for (int index = 0; index < mDefaultItemCount; index++) {
             CircleItemView imageView = new CircleItemView(getContext(), (int) temp);
             if (mLoader != null) {
-                mLoader.onLoader(imageView, mCircleDataList.get(index));
+                // TODO: 2019-12-17  mCircleDataList.get(index)
+                mLoader.onLoader(imageView, null); 
             }
-            imageView.setBackgroundColor(Color.RED);
-            imageView.setRadiusParams(mViewInnerRadius/2,mViewOutRadius/2);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             //计算宽度,高度
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                     Float.valueOf(mItemWidth).intValue(), Float.valueOf(mItemHeight).intValue());

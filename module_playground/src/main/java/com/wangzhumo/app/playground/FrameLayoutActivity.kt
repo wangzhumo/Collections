@@ -1,16 +1,10 @@
 package com.wangzhumo.app.playground
 
-import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.squareup.picasso.Picasso
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.origin.BaseActivity
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_fream_layout.*
-import java.util.concurrent.TimeUnit
-import kotlin.random.Random
 
 
 @Route(path = IRoute.FRAME_ACTIVITY)
@@ -21,5 +15,12 @@ class FrameLayoutActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        semicircle_layout.addOnImageLoader { imageView, iData ->
+
+            Picasso.with(this).load("https://wangzhumo.com/img/avatar.png").into(imageView)
+
+        }
+
+
     }
 }
