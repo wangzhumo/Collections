@@ -24,14 +24,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class SemicircleLayout extends ConstraintLayout implements SemicircleRes, View.OnTouchListener {
 
     //---------------View的参数-----------------
-
-    private ImageView mSemicircleFirst;
-    private ImageView mSemicircleSecond;
-    private ImageView mSemicircleThird;
-    private ImageView mSemicircleFourth;
-    private ImageView mSemicircleFive;
-
-    private SparseIntArray radiusOffset;
+    private SparseIntArray mAngleOffset;
     private SparseArray<ImageView> mImageArray;
     final int FLING_MIN_DISTANCE = 40;
     final int FLING_MIN_VELOCITY = 100;
@@ -40,8 +33,6 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
     private ColorMatrixColorFilter mGrayColorFilter;
     private OnItemChangeListener mListener;
     private int currentIndex = 2;
-
-
     //---------------View的参数-----------------
 
 
@@ -64,11 +55,11 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
 
     private void initViews() {
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.view_semicircle_layout, this, true);
-        mSemicircleFirst = rootView.findViewById(R.id.semicircle_first);
-        mSemicircleSecond = rootView.findViewById(R.id.semicircle_second);
-        mSemicircleThird = rootView.findViewById(R.id.semicircle_third);
-        mSemicircleFourth = rootView.findViewById(R.id.semicircle_fourth);
-        mSemicircleFive = rootView.findViewById(R.id.semicircle_five);
+        ImageView mSemicircleFirst = rootView.findViewById(R.id.semicircle_first);
+        ImageView mSemicircleSecond = rootView.findViewById(R.id.semicircle_second);
+        ImageView mSemicircleThird = rootView.findViewById(R.id.semicircle_third);
+        ImageView mSemicircleFourth = rootView.findViewById(R.id.semicircle_fourth);
+        ImageView mSemicircleFive = rootView.findViewById(R.id.semicircle_five);
         mImageArray = new SparseArray<>();
         mImageArray.put(0,mSemicircleFirst);
         mImageArray.put(1,mSemicircleSecond);
@@ -76,11 +67,9 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
         mImageArray.put(3,mSemicircleFourth);
         mImageArray.put(4,mSemicircleFive);
         //设置默认值.
-        mSemicircleFirst.setImageResource(FIRST);
-        mSemicircleSecond.setImageResource(SECOND);
-        mSemicircleThird.setImageResource(THIRD);
-        mSemicircleFourth.setImageResource(FOUR);
-        mSemicircleFive.setImageResource(FIVE);
+        for (int i = 0; i < mImageArray.size(); i++) {
+            mImageArray.get(i).setImageResource(SELECT.RES[i]);
+        }
 
         //设置灰色
         ColorMatrix cm = new ColorMatrix();
@@ -88,12 +77,12 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
         mGrayColorFilter = new ColorMatrixColorFilter(cm);
 
         //设置偏移量.
-        radiusOffset = new SparseIntArray();
-        radiusOffset.put(0,-60);
-        radiusOffset.put(1,-30);
-        radiusOffset.put(2,0);
-        radiusOffset.put(3,30);
-        radiusOffset.put(4,60);
+        mAngleOffset = new SparseIntArray();
+        mAngleOffset.put(0,-60);
+        mAngleOffset.put(1,-30);
+        mAngleOffset.put(2,0);
+        mAngleOffset.put(3,30);
+        mAngleOffset.put(4,60);
         mGestureDetector = new GestureDetector(getContext(), new SemicircleGestureListener());
         setOnTouchListener(this);
         selectIndexSelf(currentIndex);
@@ -118,12 +107,12 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
      */
     public void selectIndex(int index){
         //这里对每一个角度进行运算.
-        int offset = 90 - radiusOffset.get(index);
-        for (int i = 0; i < radiusOffset.size(); i++) {
-            radiusOffset.put(i, radiusOffset.get(i) + offset);
+        int offset = 90 - mAngleOffset.get(index);
+        for (int i = 0; i < mAngleOffset.size(); i++) {
+            mAngleOffset.put(i, mAngleOffset.get(i) + offset);
             //调用他们自己LayoutParam改变位置.
             if (isNeedChangeViewPosition){
-                changeAngle(mImageArray.get(i), radiusOffset.get(i));
+                changeAngle(mImageArray.get(i), mAngleOffset.get(i));
             }
             if (i == index){
                 mImageArray.get(i).setColorFilter(null);
