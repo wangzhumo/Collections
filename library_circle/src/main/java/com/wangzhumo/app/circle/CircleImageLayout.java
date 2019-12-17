@@ -169,17 +169,17 @@ public class CircleImageLayout extends ViewGroup {
             fullX = mRadius / 2 + (int) Math.round(tempValue3 * Math.cos(Math.toRadians(tempAngle)));
             fullY = mRadius / 2 + (int) Math.round(tempValue3 * Math.sin(Math.toRadians(tempAngle)));
 
-            if (mAngleOutPoint.get(tempAngle + 15) != null) {
+            if (mAngleOutPoint.get(tempAngle + 15) == null) {
                 mAngleOutPoint.put(tempAngle + 15,new PointF(outX,outY));
             }else {
                 mAngleOutPoint.get(tempAngle + 15).set(outX, outY);
             }
-            if (mAngleFullPoint.get(tempAngle + 15) != null) {
+            if (mAngleFullPoint.get(tempAngle + 15) == null) {
                 mAngleFullPoint.put(tempAngle + 15,new PointF(fullX,fullY));
             }else {
                 mAngleFullPoint.get(tempAngle + 15).set(fullX,fullY);
             }
-            if (mAngleInnerPoint.get(tempAngle + 15) != null) {
+            if (mAngleInnerPoint.get(tempAngle + 15) == null) {
                 mAngleInnerPoint.put(tempAngle + 15,new PointF(innerX,innerY));
             }else {
                 mAngleInnerPoint.get(tempAngle + 15).set(innerX,innerY);
