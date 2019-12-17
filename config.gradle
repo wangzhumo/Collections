@@ -270,7 +270,7 @@ def buildVersions = [:]
     ext.buildVersion = buildVersions
 
 static def addRepos(RepositoryHandler handler) {
-    //handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     handler.google()
     handler.mavenCentral()
     handler.jcenter()

@@ -16,4 +16,5 @@ public @interface IAppConstant {
     String BASE = "app_base";
     String MEDIA = "app_media";
     String WEBRTC = "app_webrtc";
+    String PLAYGROUND = "app_playground";
 }
