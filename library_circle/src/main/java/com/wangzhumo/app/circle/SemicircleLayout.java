@@ -39,7 +39,7 @@ public class SemicircleLayout extends ConstraintLayout implements SemicircleRes,
     /**
      * 是否需要改变View的位置
      */
-    private boolean isNeedChangeViewPosition = true;
+    private boolean isNeedChangeViewPosition = false;
 
 
     public SemicircleLayout(Context context) {
