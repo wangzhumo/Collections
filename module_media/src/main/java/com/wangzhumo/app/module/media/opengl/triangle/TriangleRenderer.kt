@@ -67,7 +67,7 @@ class TriangleRenderer : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         gl?.apply {
             //清屏颜色设置
-            glClearColor(0F, 0F, 0F, 1F)
+            glClearColor(0F, 0F, 0F, 0F)
             //开启顶点缓冲区
             glEnableClientState(GL10.GL_VERTEX_ARRAY)
         }

@@ -1,5 +1,6 @@
 package com.wangzhumo.app.module.media.opengl.triangle
 
+import android.graphics.PixelFormat
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
@@ -19,6 +20,19 @@ class TriangleActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_triangle
 
     override fun initViews(savedInstanceState: Bundle?) {
+        gl_surface_view.setZOrderOnTop(true)
+        gl_surface_view.setEGLConfigChooser(8,8,8,8,16,0);
         gl_surface_view.setRenderer(TriangleRenderer())
+        gl_surface_view.getHolder().setFormat(PixelFormat.TRANSLUCENT);//设置透明
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //gl_surface_view.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //gl_surface_view.onPause()
     }
 }
