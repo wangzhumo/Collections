@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         ARouter.getInstance()
-            .build(IRoute.FRAME_ACTIVITY)
+            .build(IRoute.JNI_CPP)
             .navigation()
     }
 

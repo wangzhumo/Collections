@@ -3,14 +3,18 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
-        <activity android:name=".opengl.picture.PictureActivity"></activity>
-        <activity android:name=".opengl.triangle.TriangleActivity" />
-        <activity android:name=".targets.task4.Task4Activity" />
+        <activity
+                android:name=".opengl.picture.PictureActivity"
+                android:hardwareAccelerated="true" />
+        <activity
+                android:name=".opengl.triangle.TriangleActivity"
+                android:hardwareAccelerated="true" />
+        <activity
+                android:name=".targets.task4.Task4Activity"
+                android:hardwareAccelerated="true" />
         <activity
                 android:name=".opengl.camera.CameraActivity"
                 android:hardwareAccelerated="true" />
-        <activity android:name=".targets.task3_2.Task32Activity" />
-        <activity android:name=".targets.task3_1.Task31Activity" />
         <activity
                 android:name=".opengl.opengl1.OpenGL1Activity"
                 android:screenOrientation="portrait" />

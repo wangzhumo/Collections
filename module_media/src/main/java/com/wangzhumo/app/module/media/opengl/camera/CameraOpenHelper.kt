@@ -2,13 +2,13 @@ package com.wangzhumo.app.module.media.opengl.camera
 
 import android.annotation.SuppressLint
 import android.graphics.SurfaceTexture
+import android.hardware.Camera
 import android.view.TextureView
 import androidx.camera.core.CameraX
 import androidx.fragment.app.FragmentActivity
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.targets.utils.TextureUtils
 
-//import com.wangzhumo.app.module.media.targets.task3_1.TextureEGLHelper
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -59,7 +59,7 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
         val surfaceTexture = textureEGLHelper?.loadOESTexture()
         //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
         //前置摄像头
-//        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
 //        mCamera = CameraV1(lifeOwner)
 //        mCamera?.apply {
 //            openCamera(mCameraId)
