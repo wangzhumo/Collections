@@ -15,6 +15,8 @@ class FrameLayoutActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        semicircle_layout.addOnImageLoader { imageView, iData ->
+            Picasso.with(this).load("https://wangzhumo.com/img/avatar.png").into(imageView)
+        }
     }
 }

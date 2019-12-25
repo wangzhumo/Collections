@@ -7,7 +7,7 @@ import android.view.TextureView
 import androidx.camera.core.CameraX
 import androidx.fragment.app.FragmentActivity
 import com.tencent.mars.xlog.Log
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
+import com.wangzhumo.app.module.media.utils.TextureUtils
 
 
 /**

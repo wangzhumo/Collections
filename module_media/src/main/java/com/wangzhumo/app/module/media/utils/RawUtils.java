@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.targets.utils;
+package com.wangzhumo.app.module.media.utils;
 
 import android.content.res.Resources;
 

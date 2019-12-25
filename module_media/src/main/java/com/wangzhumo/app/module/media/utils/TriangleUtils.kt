@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.targets.utils
+package com.wangzhumo.app.module.media.utils
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}

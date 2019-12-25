@@ -7,9 +7,9 @@ import android.opengl.GLES30
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.opengl.IRenderer
-import com.wangzhumo.app.module.media.targets.utils.RawUtils
-import com.wangzhumo.app.module.media.targets.utils.ShaderUtils
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
+import com.wangzhumo.app.module.media.utils.RawUtils
+import com.wangzhumo.app.module.media.utils.ShaderUtils
+import com.wangzhumo.app.module.media.utils.TextureUtils
 import java.nio.FloatBuffer
 
 

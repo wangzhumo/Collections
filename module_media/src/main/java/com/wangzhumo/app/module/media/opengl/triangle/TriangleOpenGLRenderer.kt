@@ -1,9 +1,6 @@
 package com.wangzhumo.app.module.media.opengl.triangle
 
 import android.opengl.GLSurfaceView
-import android.opengl.GLU
-import com.wangzhumo.app.module.media.targets.utils.TextureUtils
-import java.nio.ByteBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
