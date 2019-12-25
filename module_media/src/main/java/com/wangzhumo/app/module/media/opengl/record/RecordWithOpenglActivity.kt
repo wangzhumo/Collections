@@ -18,6 +18,9 @@ import com.wangzhumo.app.origin.BaseActivity
 class RecordWithOpenglActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_record_with_opengl
 
+    override fun initViews(savedInstanceState: Bundle?) {
+        super.initViews(savedInstanceState)
 
+    }
 
 }
