@@ -3,6 +3,7 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
+        <activity android:name=".opengl.record.RecordWithOpenglActivity"></activity>
         <activity
                 android:name=".opengl.picture.PictureActivity"
                 android:hardwareAccelerated="true" />

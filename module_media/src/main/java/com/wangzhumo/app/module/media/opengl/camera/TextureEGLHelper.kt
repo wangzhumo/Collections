@@ -9,6 +9,7 @@ import android.os.HandlerThread
 import android.os.Message
 import android.view.TextureView
 import com.tencent.mars.xlog.Log
+import com.wangzhumo.app.module.media.opengl.IRenderer
 
 
 /**
@@ -30,7 +31,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
     /**
      * 渲染器
      */
-    private var mRenderer: ITextureRenderer? = null
+    private var mRenderer: IRenderer? = null
     /**
      * mHandlerThread 内部的Handler
      */
@@ -198,7 +199,7 @@ class TextureEGLHelper : SurfaceTexture.OnFrameAvailableListener {
      */
     private fun initEGLRenderer() {
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLHelper","initEGLRenderer",220,"initEGLRenderer  创建 TextureEGLRenderer")
-        mRenderer = TextureEGLRenderer(mOESTextureId)
+        mRenderer = EGLRenderer(mOESTextureId)
         mRenderer?.onSurfaceCreated()
     }
 

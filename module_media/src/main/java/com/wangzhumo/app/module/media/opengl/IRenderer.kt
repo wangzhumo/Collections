@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.opengl.camera
+package com.wangzhumo.app.module.media.opengl
 
 import android.graphics.SurfaceTexture
 
@@ -10,7 +10,7 @@ import android.graphics.SurfaceTexture
  *
  * Renderer要实现的方法.
  */
-interface ITextureRenderer {
+interface IRenderer {
 
     fun onSurfaceCreated()
 
