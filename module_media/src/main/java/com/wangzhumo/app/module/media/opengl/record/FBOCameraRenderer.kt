@@ -177,7 +177,6 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
 
     fun draw(fboTextureId:Int){
         this.fboTextureId = fboTextureId
-
     }
 
 
