@@ -6,4 +6,11 @@
         android:layout_height="match_parent"
         tools:context=".opengl.record.RecordWithOpenglActivity">
 
+
+
+    <com.wangzhumo.app.module.media.opengl.record.CameraSurfaceView
+            android:id="@+id/camera_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    </com.wangzhumo.app.module.media.opengl.record.CameraSurfaceView>
 </androidx.constraintlayout.widget.ConstraintLayout>
