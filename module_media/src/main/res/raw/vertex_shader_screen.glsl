@@ -1,9 +1,16 @@
-attribute vec4 av_Position;//顶点位置
-attribute vec2 af_Position;//纹理位置
-varying vec2 v_texPo;//纹理位置  与fragment_shader交互
+#version 300 es
+
+//顶点位置
+in vec4 a_Position;
+
+//纹理位置
+in vec2 a_TexCoord;
+
+//纹理位置  与fragment_shader交互
+out vec2 v_texPo;
 
 void main() {
-    v_texPo = af_Position;
-    gl_Position = av_Position;
+    v_texPo = a_TexCoord;
+    gl_Position = a_Position;
 }
 
