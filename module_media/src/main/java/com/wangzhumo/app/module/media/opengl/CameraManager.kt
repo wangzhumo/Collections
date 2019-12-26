@@ -27,6 +27,7 @@ class CameraManager(ctx :Context) {
     init {
         width = DensityUtils.getScreenWidth(ctx)
         height = DensityUtils.getScreenHeight(ctx)
+        Log.d(TAG,"CameraManager 初始化")
     }
 
 
@@ -35,6 +36,7 @@ class CameraManager(ctx :Context) {
      * @param surfaceTexture
      */
     fun startCamera(surfaceTexture: SurfaceTexture?) {
+        Log.d(TAG,"CameraManager startCamera 打开摄像头")
         this.surfaceTexture = surfaceTexture
         startCamera(cameraId)
     }
@@ -44,6 +46,7 @@ class CameraManager(ctx :Context) {
      * 停止预览
      */
     fun stopCamera() {
+        Log.d(TAG,"CameraManager stopCamera 关闭摄像头")
         if (camera != null) {
             camera!!.stopPreview()
             camera!!.release()
@@ -104,6 +107,8 @@ class CameraManager(ctx :Context) {
             }
         }
         camera?.startPreview()
+        Log.d(TAG, "CameraManager startCamera camera = $camera  surfaceTexture = $surfaceTexture")
+        Log.d(TAG,"CameraManager startCamera 摄像头开始预览")
     }
 
     /**
