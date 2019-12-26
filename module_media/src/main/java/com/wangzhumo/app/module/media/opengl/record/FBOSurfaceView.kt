@@ -4,6 +4,7 @@ import android.content.Context
 import android.opengl.EGLContext
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -17,11 +18,16 @@ import com.wangzhumo.app.module.media.opengl.IRenderer
  *
  * 为了使用FBO录制,自定的提供EGL环境的View,用于预览相机采集的数据
  */
-open class FBOSurfaceView @JvmOverloads constructor(
-    ctx: Context,
-    attrs: AttributeSet?,
-    defaultAttr: Int = 0
-) : SurfaceView(ctx, attrs, defaultAttr), SurfaceHolder.Callback {
+open class FBOSurfaceView : SurfaceView, SurfaceHolder.Callback {
+
+    constructor(ctx: Context) : this(ctx, null)
+    constructor(ctx: Context, attrs: AttributeSet?) : this(ctx, attrs, 0)
+    constructor(ctx: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(ctx, attrs, defStyleAttr){
+        //添加一个监听.
+        holder.addCallback(this)
+        Log.d(TAG, "FBOSurfaceView  初始化")
+    }
+
 
     /**
      * 自己内部的Surface
@@ -47,21 +53,19 @@ open class FBOSurfaceView @JvmOverloads constructor(
      * EGLContext的对象
      */
     private var eglContext: EGLContext? = null
-    private var eglRenderer:EglRenderer? = null
-    private var eglThread:Thread? = null
+    private var eglRenderer: EglRenderer? = null
+    private var eglThread: Thread? = null
 
-    init {
-        //添加一个监听.
-        holder.addCallback(this)
-    }
 
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
+        Log.d(TAG, "FBOSurfaceView  surfaceCreated")
         //初始化好,surface就可用了
         this.surface = holder?.surface
         this.eglRenderer = EglRenderer()
         this.eglThread = Thread(eglRenderer)
         eglRenderer?.isSurfaceCreate = true
+        eglThread?.start()
     }
 
 
@@ -70,7 +74,6 @@ open class FBOSurfaceView @JvmOverloads constructor(
             it.width = width
             it.height = height
             it.isSurfaceChange = true
-
         }
     }
 
@@ -130,6 +133,7 @@ open class FBOSurfaceView @JvmOverloads constructor(
 
                 //Surface创建完成,renderer不为空,就开始渲染
                 if (isSurfaceCreate && renderer != null) {
+                    Log.d(TAG, "FBOSurfaceView  renderer?.onSurfaceCreated()")
                     renderer?.onSurfaceCreated()
                     isSurfaceCreate = false
                 }
@@ -143,12 +147,13 @@ open class FBOSurfaceView @JvmOverloads constructor(
                 //最后,渲染这个新的数据
                 if (renderer != null) {
                     renderer?.onDrawFrame(null)
+                    Log.d(TAG, "FBOSurfaceView  renderer?.onDrawFrame(null)")
                     //但是如果首次调用
                     if (!isStart) {
                         renderer?.onDrawFrame(null)
                     }
                 }
-
+                Log.d(TAG, "FBOSurfaceView  swapBuffer")
                 eglHelper.swapBuffer()
                 isStart = true
             }
@@ -168,8 +173,17 @@ open class FBOSurfaceView @JvmOverloads constructor(
          */
         fun requestRender() {
             synchronized(localObject) {
+                Log.d(TAG, "FBOSurfaceView  requestRender")
                 localObject.notifyAll()
             }
         }
+    }
+
+    open fun requestRender() {
+        eglRenderer?.requestRender()
+    }
+
+    companion object {
+        const val TAG = "OpenGL Record"
     }
 }
