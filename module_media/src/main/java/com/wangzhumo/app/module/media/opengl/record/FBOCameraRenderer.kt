@@ -1,9 +1,9 @@
 package com.wangzhumo.app.module.media.opengl.record
 
-import android.content.Context
 import android.graphics.SurfaceTexture
 import android.opengl.GLES20
 import android.opengl.GLES30
+import android.util.Log
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.opengl.IRenderer
 import com.wangzhumo.app.module.media.utils.RawUtils
@@ -18,7 +18,7 @@ import java.nio.FloatBuffer
  *
  * FBOSurfaceView 的 Render, 预览FBO处理后的数据
  */
-class FBOCameraRenderer(ctx : Context) : IRenderer {
+class FBOCameraRenderer : IRenderer {
 
 
     //顶点数据
@@ -27,20 +27,16 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
     private var mTextureBuffer: FloatBuffer
     //程序地址
     private var mShaderProgram = -1
-
     //纹理
     private var mOESTextureId = -1
-
     //顶点的位置
     private var aPositionLocation = -1
     //纹理的位置
     private var aTextureCoordLocation = -1
-    //矩阵变换
-    private var uTextureMatrixLocation = -1
     //颜色类型切换
-    private var changeType = -1
+    private var changeType = 0
     //颜色值切换
-    private var changeColor = -1
+    private var changeColor = 0
     //vbo 的 id
     private var vboId = -1
     private var fboTextureId = -1
@@ -56,27 +52,32 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
         //创建用于native的数据,并把游标位置指向第一个字节
         mVertexBuffer = TextureUtils.loadVertexBuffer(VERTEX_POINT)
         mTextureBuffer = TextureUtils.loadVertexBuffer(TEXTURE_POINT)
+        Log.d(TAG, "FBOCameraRenderer Init.")
     }
 
 
     override fun onSurfaceCreated() {
+        Log.d(TAG, "FBOCameraRenderer onSurfaceCreated.")
         //启用透明
         GLES30.glEnable(GLES30.GL_BLEND)
         GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA)
 
+        //设置背景颜色
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+
         //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
         val vertexShader =
-            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
+            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_shader_screen))
         //创建并编译片段着色器
         val fragmentShader =
-            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader))
+            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_shader_screen))
         //获取Program
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
 
         if (mShaderProgram > 0) {
             //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
-            aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, "av_Position")
-            aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, "af_Position")
+            aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, "a_Position")
+            aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, "a_TexCoord")
             mOESTextureId = GLES30.glGetUniformLocation(mShaderProgram, "sTexture")
             changeType = GLES30.glGetUniformLocation(mShaderProgram, "vChangeType")
             changeColor = GLES30.glGetUniformLocation(mShaderProgram, "vChangeColor")
@@ -88,6 +89,7 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
     }
 
     private fun createVBOInstance() {
+        Log.d(TAG, "FBOCameraRenderer createVBOInstance start.")
         //1. 创建VBO
         val vbos = IntArray(1)
         GLES30.glGenBuffers(vbos.size, vbos, 0)
@@ -158,17 +160,18 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
         //2. 设置顶点数据
         GLES20.glVertexAttribPointer(
             aPositionLocation,
-            3,
+            COORDS_PER_VERTEX,
             GLES20.GL_FLOAT,
             false,
-            12,
+            VERTEX_STRIDE,
             0
         )
         GLES20.glVertexAttribPointer(
-            aTextureCoordLocation, 3,
+            aTextureCoordLocation,
+            COORDS_PER_VERTEX,
             GLES20.GL_FLOAT,
             false,
-            12,
+            VERTEX_STRIDE,
             VERTEX_POINT.size * 4
         )
         //3. 解绑VBO
@@ -182,6 +185,7 @@ class FBOCameraRenderer(ctx : Context) : IRenderer {
 
     companion object{
 
+        const val TAG = "OpenGL Record"
 
         private const val COORDS_PER_VERTEX = 3
         private const val VERTEX_STRIDE = COORDS_PER_VERTEX * 4

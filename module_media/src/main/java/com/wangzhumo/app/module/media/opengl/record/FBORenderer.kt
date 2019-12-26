@@ -43,8 +43,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
     private var aTextureCoordLocation = -1
     //矩阵变换
     private var uTextureMatrixLocation = -1
-    //OES纹理
-    private var uTextureSamplerLocation = -1
+
 
     //变换矩阵
     private val matrix = FloatArray(16)
@@ -65,45 +64,42 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
 
 
     init {
+        cameraRender = FBOCameraRenderer()
         //创建用于native的数据,并把游标位置指向第一个字节
         mVertexBuffer = TextureUtils.loadVertexBuffer(VERTEX_POINT)
         mTextureBuffer = TextureUtils.loadVertexBuffer(TEXTURE_POINT)
         //获取屏幕尺寸
         screenHeight = DensityUtils.getScreenHeight(ctx)
         screenWidth = DensityUtils.getScreenWidth(ctx)
-        cameraRender = FBOCameraRenderer(ctx)
+        Log.d(TAG, "FBORenderer Init.")
     }
 
 
     override fun onSurfaceCreated() {
+        Log.d(TAG, "FBORenderer onSurfaceCreated.")
         //设置背景颜色 - 白色
-        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
+        GLES30.glClearColor(0f, 0f, 0f, 0f)
         //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
         val vertexShader =
-            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
+            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_shader))
         //创建并编译片段着色器
         val fragmentShader =
-            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader))
+            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_shader))
         //获取Program
         mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
         if (mShaderProgram > 0) {
             //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
-            aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE)
-            aTextureCoordLocation =
-                GLES30.glGetAttribLocation(mShaderProgram, TEXTURE_COORD_ATTRIBUTE)
-            uTextureMatrixLocation =
-                GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_MATRIX_UNIFORM)
-            uTextureSamplerLocation =
-                GLES30.glGetUniformLocation(mShaderProgram, TEXTURE_SAMPLER_UNIFORM)
-            Log.d(
-                TAG,
-                "mShaderProgram = $mShaderProgram , aPositionLocation = $aPositionLocation , aTextureCoordLocation = $aTextureCoordLocation , uTextureMatrixLocation = $uTextureSamplerLocation , uTextureSamplerLocation = $uTextureSamplerLocation"
-            )
+            aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, "a_Position")
+            aTextureCoordLocation = GLES30.glGetAttribLocation(mShaderProgram, "a_TexCoord")
+            uTextureMatrixLocation = GLES30.glGetUniformLocation(mShaderProgram, "u_Matrix")
             //创建一个vbo
+            Log.d(TAG, "FBORenderer createVBOInstance.")
             createVBOInstance()
             //创建一个fbo
+            Log.d(TAG, "FBORenderer createFBOInstance.")
             createFBOInstance()
             //创建相机扩展的纹理
+            Log.d(TAG, "FBORenderer createCameraTexture.")
             createCameraTexture()
         }
         cameraRender?.onSurfaceCreated()
@@ -117,6 +113,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
     }
 
     override fun onDrawFrame(surfaceTexture: SurfaceTexture?) {
+        Log.d(TAG, "FBORenderer  onDrawFrame")
         //调用触发onFrameAvailable，更新预览图像
         surfaceTexture?.updateTexImage()
 
@@ -132,7 +129,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
         //给摄像头的扩展纹理赋值
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mOESTextureId)
         GLES30.glEnableVertexAttribArray(aPositionLocation)
-        GLES30.glEnableVertexAttribArray(aPositionLocation)
+        GLES30.glEnableVertexAttribArray(aTextureCoordLocation)
 
         //变换矩阵.
         GLES30.glUniformMatrix4fv(uTextureMatrixLocation, 1, false, matrix, 0)
@@ -144,7 +141,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
         //绘制 GLES30.GL_TRIANGLE_STRIP:复用坐标
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 4)
         GLES30.glEnableVertexAttribArray(aPositionLocation)
-        GLES30.glEnableVertexAttribArray(aPositionLocation)
+        GLES30.glEnableVertexAttribArray(aTextureCoordLocation)
 
         //解除绑定FBO
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0)
@@ -154,6 +151,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
     }
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+        Log.d(TAG, "FBORenderer  onSurfaceChanged")
         listener?.onFrameAvailable(surfaceTexture);
     }
 
@@ -197,6 +195,7 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
         surfaceTexture?.setOnFrameAvailableListener(this)
 
         //3.回调给其他人的
+        Log.d(TAG, "FBORenderer listener?.onSurfaceCreate(surfaceTexture, fboTextureId).")
         listener?.onSurfaceCreate(surfaceTexture, fboTextureId)
 
         //4.解绑扩展纹理
