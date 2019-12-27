@@ -1,7 +1,8 @@
-package com.wangzhumo.app.module.media.utils
+package com.wangzhumo.app.module.media.opengl
 
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
+import android.opengl.Matrix
 import android.util.Log
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -15,27 +16,12 @@ import java.nio.FloatBuffer
  */
 object GLUtils {
 
-    /**
-     * 编译顶点着色器
-     *
-     * @param shaderCode
-     * @return
-     */
-    @JvmStatic
-    fun compileVertexShader(shaderCode: String): Int {
-        return compileShader(GLES20.GL_VERTEX_SHADER, shaderCode)
+    val IDENTITY_MATRIX: FloatArray = FloatArray(16)
+
+    init {
+        Matrix.setIdentityM(IDENTITY_MATRIX, 0)
     }
 
-    /**
-     * 编译片段着色器
-     *
-     * @param shaderCode
-     * @return
-     */
-    @JvmStatic
-    fun compileFragmentShader(shaderCode: String): Int {
-        return compileShader(GLES20.GL_FRAGMENT_SHADER, shaderCode)
-    }
 
     /**
      * 编译
@@ -72,51 +58,25 @@ object GLUtils {
     /**
      * 链接小程序
      *
-     * @param vertexShaderId   顶点着色器
-     * @param fragmentShaderId 片段着色器
-     * @return
-     */
-    @JvmStatic
-    fun linkProgram(vertexShaderId: Int, fragmentShaderId: Int): Int {
-        val programId = GLES20.glCreateProgram()
-        if (programId != 0) {
-            //将顶点着色器加入到程序
-            GLES20.glAttachShader(programId, vertexShaderId)
-            //将片元着色器加入到程序中
-            GLES20.glAttachShader(programId, fragmentShaderId)
-            //链接着色器程序
-            GLES20.glLinkProgram(programId)
-            val linkStatus = IntArray(1)
-
-            GLES20.glGetProgramiv(programId, GLES20.GL_LINK_STATUS, linkStatus, 0)
-            if (linkStatus[0] == 0) {
-                val logInfo = GLES20.glGetProgramInfoLog(programId)
-                System.err.println(logInfo)
-                GLES20.glDeleteProgram(programId)
-                return 0
-            }
-            return programId
-        } else {
-            //创建失败
-            return 0
-        }
-    }
-
-
-    /**
-     * 链接小程序
-     *
      * @param vertexShader   顶点着色器
      * @param fragmentShader 片段着色器
      * @return
      */
     @JvmStatic
     fun linkProgram(vertexShader: String, fragmentShader: String): Int {
-        val vertexShaderId = compileShader(GLES20.GL_VERTEX_SHADER, vertexShader)
+        val vertexShaderId =
+            compileShader(
+                GLES20.GL_VERTEX_SHADER,
+                vertexShader
+            )
         if (vertexShaderId == 0) {
             return 0
         }
-        val fragmentShaderId = compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader)
+        val fragmentShaderId =
+            compileShader(
+                GLES20.GL_FRAGMENT_SHADER,
+                fragmentShader
+            )
         if (fragmentShaderId == 0) {
             return 0
         }
@@ -167,7 +127,7 @@ object GLUtils {
      * @return
      */
     @JvmStatic
-    fun loadOESTexture(): Int {
+    fun createOESTexture(): Int {
         val textureIds = IntArray(1)
 
         //textureIds 中存放一个textures中的可用值
@@ -206,12 +166,46 @@ object GLUtils {
         return textureIds[0]
     }
 
+    /**
+     * Creates a texture from raw data.
+     *
+     * @param data Image data, in a "direct" ByteBuffer.
+     * @param width Texture width, in pixels (not bytes).
+     * @param height Texture height, in pixels.
+     * @param format Image data format (use constant appropriate for glTexImage2D(), e.g. GL_RGBA).
+     * @return Handle to texture.
+     */
+    fun createImageTexture(data: ByteBuffer?, width: Int, height: Int, format: Int): Int {
+        val textureHandles = IntArray(1)
+        val textureHandle: Int
+        GLES20.glGenTextures(1, textureHandles, 0)
+        textureHandle = textureHandles[0]
+        // Bind the texture handle to the 2D texture target.
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle)
+        // Configure min/mag filtering, i.e. what scaling method do we use if what we're rendering
+        // is smaller or larger than the source image.
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,
+            GLES20.GL_LINEAR
+        )
+        GLES20.glTexParameteri(
+            GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER,
+            GLES20.GL_LINEAR
+        )
+        // Load the data from the buffer into the texture handle.
+        GLES20.glTexImage2D(
+            GLES20.GL_TEXTURE_2D, 0, format,
+            width, height, 0, format, GLES20.GL_UNSIGNED_BYTE, data
+        )
+        return textureHandle
+    }
+
 
     /**
      * 创建一个floatBuffer
      */
     @JvmStatic
-    fun loadFloatBuffer(vertexData: FloatArray): FloatBuffer {
+    fun createFloatBuffer(vertexData: FloatArray): FloatBuffer {
         val buffer = ByteBuffer.allocateDirect(vertexData.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
@@ -222,9 +216,12 @@ object GLUtils {
     /**
      * 创建一个顶点Buffer
      */
-    fun loadFloatBuffer(byteBuffer: ByteBuffer, vertexData: FloatArray): FloatBuffer {
+    @JvmStatic
+    fun createFloatBuffer(byteBuffer: ByteBuffer, vertexData: FloatArray): FloatBuffer {
         val buffer = byteBuffer.order(ByteOrder.nativeOrder()).asFloatBuffer()
         buffer.put(vertexData, 0, vertexData.size).position(0)
         return buffer
     }
+
+
 }
