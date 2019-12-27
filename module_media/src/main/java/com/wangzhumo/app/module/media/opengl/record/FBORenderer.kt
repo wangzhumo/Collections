@@ -11,9 +11,8 @@ import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.opengl.IRenderer
 import com.wangzhumo.app.module.media.opengl.OnFBOSurfaceListener
-import com.wangzhumo.app.module.media.utils.RawUtils
-import com.wangzhumo.app.module.media.utils.ShaderUtils
-import com.wangzhumo.app.module.media.utils.TextureUtils
+import com.wangzhumo.app.module.media.opengl.RawUtils
+import com.wangzhumo.app.module.media.opengl.GLUtils
 import java.nio.FloatBuffer
 
 /**
@@ -66,8 +65,8 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
     init {
         cameraRender = FBOCameraRenderer()
         //创建用于native的数据,并把游标位置指向第一个字节
-        mVertexBuffer = TextureUtils.loadVertexBuffer(VERTEX_POINT)
-        mTextureBuffer = TextureUtils.loadVertexBuffer(TEXTURE_POINT)
+        mVertexBuffer = GLUtils.createFloatBuffer(VERTEX_POINT)
+        mTextureBuffer = GLUtils.createFloatBuffer(TEXTURE_POINT)
         //获取屏幕尺寸
         screenHeight = DensityUtils.getScreenHeight(ctx)
         screenWidth = DensityUtils.getScreenWidth(ctx)
@@ -79,14 +78,8 @@ class FBORenderer(ctx: Context) : IRenderer, SurfaceTexture.OnFrameAvailableList
         Log.d(TAG, "FBORenderer onSurfaceCreated.")
         //设置背景颜色 - 白色
         GLES30.glClearColor(0f, 0f, 0f, 0f)
-        //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
-        val vertexShader =
-            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_shader))
-        //创建并编译片段着色器
-        val fragmentShader =
-            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_shader))
         //获取Program
-        mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
+        mShaderProgram = GLUtils.linkProgram(RawUtils.readResource(R.raw.vertex_shader), RawUtils.readResource(R.raw.fragment_shader))
         if (mShaderProgram > 0) {
             //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
             aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, "a_Position")

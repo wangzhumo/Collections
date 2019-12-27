@@ -7,9 +7,8 @@ import android.opengl.GLES30
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.opengl.IRenderer
-import com.wangzhumo.app.module.media.utils.RawUtils
-import com.wangzhumo.app.module.media.utils.ShaderUtils
-import com.wangzhumo.app.module.media.utils.TextureUtils
+import com.wangzhumo.app.module.media.opengl.RawUtils
+import com.wangzhumo.app.module.media.opengl.GLUtils
 import java.nio.FloatBuffer
 
 
@@ -44,20 +43,15 @@ class EGLRenderer constructor(val textureId: Int) :
 
 
     init {
-        mVertexBuffer = TextureUtils.loadVertexBuffer(VERTEX_DATA)
+        mVertexBuffer = GLUtils.createFloatBuffer(VERTEX_DATA)
         mOESTextureId = textureId
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLRenderer","init",49,"mOESTextureId = %d , mVertexBuffer = %d", mOESTextureId, mVertexBuffer.limit())
     }
 
     override fun onSurfaceCreated() {
         //加载GL的一些东西
-        //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
-        val vertexShader = ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_texture_shader))
-        //创建并编译片段着色器
-        val fragmentShader = ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_texture_shader))
-        Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.TextureEGLRenderer","onSurfaceCreated",56,"vertexShader = $vertexShader , fragmentShader = $fragmentShader")
         //创建一个OpenGL ES 程序，绑定了vertexShader、fragmentShader
-        mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
+        mShaderProgram = GLUtils.linkProgram(RawUtils.readResource(R.raw.vertex_texture_shader), RawUtils.readResource(R.raw.fragment_texture_shader))
 
         //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
         aPositionLocation = GLES30.glGetAttribLocation(mShaderProgram, POSITION_ATTRIBUTE)

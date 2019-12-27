@@ -2,7 +2,7 @@ package com.wangzhumo.app.module.media.opengl.picture
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
-import com.wangzhumo.app.module.media.utils.TextureUtils
+import com.wangzhumo.app.module.media.opengl.GLUtils
 import java.nio.ByteBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -38,7 +38,7 @@ class PictureRenderer : GLSurfaceView.Renderer {
         )
         //创建顶点缓冲区
         val pointBuffer = ByteBuffer.allocateDirect(trianglePoint.size * 4)
-        val floatBuffer = TextureUtils.loadVertexBuffer(pointBuffer,trianglePoint)
+        val floatBuffer = GLUtils.createFloatBuffer(pointBuffer,trianglePoint)
 
         //设置绘图的颜色,使用红色
         gl?.glColor4f(1F,0F,0F,1F)

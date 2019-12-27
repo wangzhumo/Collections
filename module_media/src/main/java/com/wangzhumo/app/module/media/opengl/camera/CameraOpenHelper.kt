@@ -7,7 +7,8 @@ import android.view.TextureView
 import androidx.camera.core.CameraX
 import androidx.fragment.app.FragmentActivity
 import com.tencent.mars.xlog.Log
-import com.wangzhumo.app.module.media.utils.TextureUtils
+import com.wangzhumo.app.module.media.opengl.CameraManager
+import com.wangzhumo.app.module.media.opengl.GLUtils
 
 
 /**
@@ -26,6 +27,7 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
     private var mLensFacing = CameraX.LensFacing.BACK
     private var textureEGLHelper: TextureEGLHelper? = null
     private var viewFinder : TextureView? = null
+    private var cameraManager = CameraManager(lifeOwner)
 
     private var mCameraId = 0
 
@@ -52,7 +54,7 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
         //当外部的TextureView可用之后，开启摄像头，打开渲染线程
-        val textureId = TextureUtils.loadOESTexture()
+        val textureId = GLUtils.createOESTexture()
         Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",85,"onSurfaceTextureAvailable  loadOESTexture = %d",textureId)
         textureEGLHelper?.initEGL(viewFinder,textureId)
         //通过传递的textureId,构建一个SurfaceTexture，用于相机的预览
@@ -60,13 +62,8 @@ class CameraOpenHelper constructor(private val lifeOwner: FragmentActivity) :
         //不使用自己的SurfaceView，另外构建一个SurfaceView来接收Camera的预览数据
         //前置摄像头
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
-//        mCamera = CameraV1(lifeOwner)
-//        mCamera?.apply {
-//            openCamera(mCameraId)
-//            setPreviewTexture(surfaceTexture)
-//            enablePreview(true)
-//            Log.d(TAG,"com.wangzhumo.app.module.media.opengl.camera.CameraOpenHelper","onSurfaceTextureAvailable",95,"onSurfaceTextureAvailable  enablePreview  开启摄像头")
-//        }
+        cameraManager.startCamera(surfaceTexture)
+
     }
 
     /**

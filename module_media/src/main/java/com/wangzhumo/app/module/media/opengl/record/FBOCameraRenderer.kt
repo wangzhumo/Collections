@@ -6,9 +6,8 @@ import android.opengl.GLES30
 import android.util.Log
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.opengl.IRenderer
-import com.wangzhumo.app.module.media.utils.RawUtils
-import com.wangzhumo.app.module.media.utils.ShaderUtils
-import com.wangzhumo.app.module.media.utils.TextureUtils
+import com.wangzhumo.app.module.media.opengl.RawUtils
+import com.wangzhumo.app.module.media.opengl.GLUtils
 import java.nio.FloatBuffer
 
 /**
@@ -50,8 +49,8 @@ class FBOCameraRenderer : IRenderer {
 
     init {
         //创建用于native的数据,并把游标位置指向第一个字节
-        mVertexBuffer = TextureUtils.loadVertexBuffer(VERTEX_POINT)
-        mTextureBuffer = TextureUtils.loadVertexBuffer(TEXTURE_POINT)
+        mVertexBuffer = GLUtils.createFloatBuffer(VERTEX_POINT)
+        mTextureBuffer = GLUtils.createFloatBuffer(TEXTURE_POINT)
         Log.d(TAG, "FBOCameraRenderer Init.")
     }
 
@@ -65,14 +64,8 @@ class FBOCameraRenderer : IRenderer {
         //设置背景颜色
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
-        //创建并编译顶点着色器，vertexShader 是编译后顶底着色器的句柄
-        val vertexShader =
-            ShaderUtils.compileVertexShader(RawUtils.readResource(R.raw.vertex_shader_screen))
-        //创建并编译片段着色器
-        val fragmentShader =
-            ShaderUtils.compileFragmentShader(RawUtils.readResource(R.raw.fragment_shader_screen))
         //获取Program
-        mShaderProgram = ShaderUtils.linkProgram(vertexShader, fragmentShader)
+        mShaderProgram = GLUtils.linkProgram(RawUtils.readResource(R.raw.vertex_shader_screen), RawUtils.readResource(R.raw.fragment_shader_screen))
 
         if (mShaderProgram > 0) {
             //为着色器程序传递参数 - 必须先拿到句柄才能够传递数据
