@@ -13,6 +13,12 @@ import java.nio.FloatBuffer
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2019-09-28  16:16
+ *
+ * GL工具类
+ * 1.创建一个floatBuffer
+ * 2.编译着色器程序
+ * 3.链接程序 (顶点着色器 + 片段着色器) 获取GL的Program
+ * 4.提供一个MATRIX
  */
 object GLUtils {
 
@@ -56,7 +62,7 @@ object GLUtils {
     }
 
     /**
-     * 链接小程序
+     * 链接程序
      *
      * @param vertexShader   顶点着色器
      * @param fragmentShader 片段着色器

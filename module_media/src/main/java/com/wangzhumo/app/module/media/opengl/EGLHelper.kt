@@ -12,7 +12,7 @@ import android.view.Surface
  *
  * EGL环境相关的,需要在自己开线程
  * 1.创建EGLContext
- * 2.创建EGLSurface
+ * 2.创建EGLSurface (离屏渲染 渲染展示)
  * 3.swapBuffers
  * 4.makeCurrent
  */
@@ -45,10 +45,7 @@ class EGLHelper {
             throw RuntimeException("eglInitialize failed! " + EGL14.eglGetError())
         }
         //Log.d(TAG, "Trying GLES 3");
-        val config = getConfig(flags, OPENGL_ES_VERSION)
-        if (config == null) {
-            throw RuntimeException("Unable to find a suitable EGLConfig, " + EGL14.eglGetError())
-        }
+        val config = getConfig(flags, OPENGL_ES_VERSION) ?: throw RuntimeException("Unable to find a suitable EGLConfig, " + EGL14.eglGetError())
 
         //创建EGL显示的窗口
         val ctxAttribute = intArrayOf(

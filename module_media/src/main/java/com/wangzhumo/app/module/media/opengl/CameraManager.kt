@@ -12,6 +12,9 @@ import com.wangzhumo.app.base.utils.DensityUtils
  * @author 王诛魔 2019-12-25  11:50
  *
  * 相机的管理类
+ * 1.开始预览
+ * 2.停止预览
+ * 3.销毁Camera资源
  */
 class CameraManager(ctx :Context) {
 

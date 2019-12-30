@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2019-09-28  22:38
+ *
+ * 可以读取Raw中的文件
  */
 public class RawUtils {
 
