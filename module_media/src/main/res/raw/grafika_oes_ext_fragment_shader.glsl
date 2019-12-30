@@ -1,8 +1,8 @@
+#extension GL_OES_EGL_image_external : require
+
 precision mediump float;
-//顶点的坐标
-attribute vec4 aPosition;
 //一般的2d纹理
-uniform sampler2D sTexture;
+uniform samplerExternalOES sTexture;
 //接收 vertexshader的变量
 varying vec2 vTextureCoord;
 
