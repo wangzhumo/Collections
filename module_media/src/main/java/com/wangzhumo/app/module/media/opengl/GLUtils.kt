@@ -229,5 +229,30 @@ object GLUtils {
         return buffer
     }
 
+    /**
+     * Checks to see if the location we obtained is valid.  GLES returns -1 if a label
+     * could not be found, but does not set the GL error.
+     *
+     *
+     * Throws a RuntimeException if the location is invalid.
+     */
+    @JvmStatic
+    fun checkLocation(location: Int, label: String) {
+        if (location < 0) {
+            throw RuntimeException("Unable to locate '$label' in program")
+        }
+    }
+
+    /**
+     * Checks to see if a GLES error has been raised.
+     */
+    @JvmStatic
+    fun checkGlError(op: String) {
+        val error = GLES20.glGetError()
+        if (error != GLES20.GL_NO_ERROR) {
+            val msg = op + ": glError 0x" + Integer.toHexString(error)
+            throw RuntimeException(msg)
+        }
+    }
 
 }
