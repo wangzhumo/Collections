@@ -1,0 +1,10 @@
+#### 给所有的FragmentShader使用的
+grafika_all_vertex_shader.glsl
+
+
+#### 给相机使用的 FragmentShader ,使用 GL_OES_EGL_image_external
+grafika_oes_ext_fragment_shader.glsl
+
+
+#### 使用普通的纹理
+grafika_normal_fragment_shader.glsl
