@@ -22,6 +22,7 @@ import java.nio.FloatBuffer
  */
 object GLUtils {
 
+    @JvmField
     val IDENTITY_MATRIX: FloatArray = FloatArray(16)
 
     init {
