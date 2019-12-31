@@ -11,7 +11,7 @@ import android.util.Log
  * Common base class for EGL surfaces.
  * 可以为同一个Context关联多个Surface
  */
-class EglSurfaceBase constructor(val eglHelper :EGLHelper) {
+open class EglSurfaceBase constructor(var eglHelper :EGLHelper) {
 
     private var mEGLSurface = EGL14.EGL_NO_SURFACE
     private var mWidth = -1
