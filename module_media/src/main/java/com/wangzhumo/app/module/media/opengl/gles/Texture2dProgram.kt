@@ -1,9 +1,10 @@
-package com.wangzhumo.app.module.media.opengl
+package com.wangzhumo.app.module.media.opengl.gles
 
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.util.Log
 import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.opengl.RawUtils
 import java.nio.FloatBuffer
 
 /**

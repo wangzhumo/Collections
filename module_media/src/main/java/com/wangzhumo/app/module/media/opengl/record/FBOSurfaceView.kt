@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.wangzhumo.app.module.media.opengl.EGLHelper
+import com.wangzhumo.app.module.media.opengl.gles.EGLHelper
 import com.wangzhumo.app.module.media.opengl.IRenderer
 
 /**
@@ -103,7 +103,7 @@ open class FBOSurfaceView : SurfaceView, SurfaceHolder.Callback {
             isStop = false
             localObject = Object()
             eglHelper = EGLHelper()
-            eglHelper.initEGLContext(surface, eglContext)
+            //eglHelper.initEGLContext(surface, eglContext)
 
             //内部死循环.
             while (true) {
@@ -154,7 +154,7 @@ open class FBOSurfaceView : SurfaceView, SurfaceHolder.Callback {
                     }
                 }
                 Log.d(TAG, "FBOSurfaceView  swapBuffer")
-                eglHelper.swapBuffer()
+                //eglHelper.swapBuffer()
                 isStart = true
             }
         }

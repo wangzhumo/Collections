@@ -2,7 +2,7 @@ package com.wangzhumo.app.module.media.opengl.picture
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
-import com.wangzhumo.app.module.media.opengl.GLUtils
+import com.wangzhumo.app.module.media.opengl.gles.GLUtils
 import java.nio.ByteBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10

@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.opengl
+package com.wangzhumo.app.module.media.opengl.gles
 
 import android.graphics.SurfaceTexture
 import android.opengl.*
@@ -39,17 +39,21 @@ class EGLHelper {
         }
         //EGL初始化
         val versions = IntArray(2)
-        versions[0] = OPENGL_ES_VERSION
+        versions[0] =
+            OPENGL_ES_VERSION
         //这里的IF中初始化了EGL的环境
         if (!EGL14.eglInitialize(eglDisplay, versions, 0, versions, 1)) {
             throw RuntimeException("eglInitialize failed! " + EGL14.eglGetError())
         }
         //Log.d(TAG, "Trying GLES 3");
-        val config = getConfig(flags, OPENGL_ES_VERSION) ?: throw RuntimeException("Unable to find a suitable EGLConfig, " + EGL14.eglGetError())
+        val config = getConfig(flags,
+            OPENGL_ES_VERSION
+        ) ?: throw RuntimeException("Unable to find a suitable EGLConfig, " + EGL14.eglGetError())
 
         //创建EGL显示的窗口
         val ctxAttribute = intArrayOf(
-            EGL14.EGL_CONTEXT_CLIENT_VERSION, OPENGL_ES_VERSION,
+            EGL14.EGL_CONTEXT_CLIENT_VERSION,
+            OPENGL_ES_VERSION,
             EGL14.EGL_NONE
         )
         if (sharedContext == EGL14.EGL_NO_CONTEXT) {
@@ -167,10 +171,33 @@ class EGLHelper {
     }
 
     /**
+     * Sends the presentation time stamp to EGL.  Time is expressed in nanoseconds.
+     */
+    fun setPresentationTime(eglSurface: EGLSurface?, nsecs: Long) {
+        EGLExt.eglPresentationTimeANDROID(eglDisplay, eglSurface, nsecs)
+    }
+
+    /**
      * Returns true if our context and the specified surface are current.
      */
     fun isCurrent(eglSurface: EGLSurface): Boolean {
         return eglContext.equals(EGL14.eglGetCurrentContext()) && eglSurface.equals(EGL14.eglGetCurrentSurface(EGL14.EGL_DRAW))
+    }
+
+    /**
+     * Performs a simple surface query.
+     */
+    fun querySurface(eglSurface: EGLSurface?, what: Int): Int {
+        val value = IntArray(1)
+        EGL14.eglQuerySurface(eglDisplay, eglSurface, what, value, 0)
+        return value[0]
+    }
+
+    /**
+     * Queries a string value.
+     */
+    fun queryString(what: Int): String? {
+        return EGL14.eglQueryString(eglDisplay, what)
     }
 
     /**
@@ -232,7 +259,8 @@ class EGLHelper {
 
         //添加FLAG_RECORDABLE 的标签
         if (flags and FLAG_RECORDABLE != 0) {
-            eglConfigAttribute[eglConfigAttribute.size - 3] = EGL_RECORDABLE_ANDROID
+            eglConfigAttribute[eglConfigAttribute.size - 3] =
+                EGL_RECORDABLE_ANDROID
             eglConfigAttribute[eglConfigAttribute.size - 2] = 1
         }
 

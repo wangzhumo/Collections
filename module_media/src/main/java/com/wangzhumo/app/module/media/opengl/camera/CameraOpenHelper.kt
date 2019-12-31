@@ -8,7 +8,7 @@ import androidx.camera.core.CameraX
 import androidx.fragment.app.FragmentActivity
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.module.media.opengl.CameraManager
-import com.wangzhumo.app.module.media.opengl.GLUtils
+import com.wangzhumo.app.module.media.opengl.gles.GLUtils
 
 
 /**
