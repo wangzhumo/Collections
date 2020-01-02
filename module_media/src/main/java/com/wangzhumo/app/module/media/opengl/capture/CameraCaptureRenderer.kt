@@ -16,12 +16,15 @@ class CameraCaptureRenderer : GLSurfaceView.Renderer{
 
 
     override fun onDrawFrame(gl: GL10?) {
+
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+
     }
 
 

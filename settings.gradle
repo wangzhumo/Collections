@@ -1,4 +1,4 @@
-include ':app', ':library_circle'
+include ':app', ':library_circle', ':module_opengl'
 
 include ':inyu_xlog'
 
