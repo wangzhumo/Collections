@@ -1,18 +1,20 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
+    compileSdkVersion COMPILE_SDK_VERSION as int
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 29
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 1
-        versionName "1.0"
+        versionName VERSION_NAME
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
 
     buildTypes {
@@ -22,13 +24,39 @@ android {
         }
     }
 
+
+    compileOptions {
+        sourceCompatibility = JDK_VERSION
+        targetCompatibility = JDK_VERSION
+    }
+
+}
+
+kapt {
+    correctErrorTypes = true
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation project(":module_base")
+    implementation deps.androidx.constraint
+    implementation(deps.androidx.camera_core) {
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
+    }
+    implementation(deps.androidx.camera_camera2) {
+        exclude group: 'androidx.core', module: 'core'
+        exclude group: 'androidx.annotation', module: 'annotation'
+        exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
+    }
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    kapt deps.arouter.compiler
+    kapt deps.auto_server
+    //kapt deps.epoxy_processor
+    implementation deps.stdlib
 }

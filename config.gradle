@@ -55,7 +55,7 @@ def versions = [:]
     versions.barLibVersion = "2.3.0"
     versions.fragment = "1.3.7"
     versions.indicator = "1.5.0"
-    versions.multiType = "3.4.4"
+    versions.multiType = "4.2.0"
     versions.wheelPicker = "1.5.5"
     versions.waveViwe = "v1.0.3"
     versions.banner = "1.4.10"
@@ -192,7 +192,7 @@ def pay = [:]
 
     //view
     deps.magicIndicator = "com.github.hackware1993:MagicIndicator:$versions.indicator"
-    deps.multiType = "me.drakeet.multitype:multitype:$versions.multiType"
+    deps.multiType = "com.drakeet.multitype:multitype:$versions.multiType"
     deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
     deps.kprogress = "com.kaopiz:kprogresshud:$versions.kprogress"
     deps.banner = "com.youth.banner:banner:$versions.banner"
