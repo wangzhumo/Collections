@@ -3,7 +3,7 @@
         package="com.wangzhumo.app.module.opengl">
 
     <application>
-        <activity android:name=".justshow.JustShowActivity"></activity>
+        <activity android:name=".justshow.JustShowActivity"/>
         <activity android:name=".OpenGLActivity" />
     </application>
 
