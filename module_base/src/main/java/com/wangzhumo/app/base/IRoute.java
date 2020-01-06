@@ -29,6 +29,11 @@ public interface IRoute {
     String MEDIA_OPENGL_RECORD = "/media/activity/record";
 
 
+    String OPENGL_LIST = "/opengl/main";
+    interface OPENGL{
+        String JUST_SHOW = "/opengl/justshow";
+    }
+
     String FRAME_ACTIVITY = "/activity/framelayout";
 
 
