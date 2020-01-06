@@ -1,5 +1,6 @@
 package com.wangzhumo.app.module.opengl.justshow
 
+import android.graphics.PixelFormat
 import android.opengl.GLES20
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,8 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
         val holder = surfaceView.holder
+        surfaceView.setZOrderOnTop(true)
+        holder.setFormat(PixelFormat.TRANSLUCENT)
         holder.addCallback(this)
     }
 
@@ -50,8 +53,8 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
                 DensityUtils.getScreenHeight(this))
             while (true){
 
+                GLES20.glClearColor(0F,0F,0F,1.0F)
                 GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-                GLES20.glClearColor(1F,0F,0F,1.0F)
 
                 eglHelper.swapBuffers(eglSurface)
 
