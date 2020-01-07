@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.opengl;
+package com.wangzhumo.app.module.opengl.gles;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
