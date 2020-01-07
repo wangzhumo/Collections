@@ -32,6 +32,7 @@ public interface IRoute {
     String OPENGL_LIST = "/opengl/main";
     interface OPENGL{
         String JUST_SHOW = "/opengl/justshow";
+        String CUSTOM_GL_SURFACE = "/opengl/customgl";
     }
 
     String FRAME_ACTIVITY = "/activity/framelayout";
