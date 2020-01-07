@@ -10,6 +10,7 @@ import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.module.opengl.gles.EGLCore
 import com.wangzhumo.app.module.opengl.R
+import com.wangzhumo.app.module.opengl.gles.WindowSurface
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_just_show.*
 
@@ -49,8 +50,8 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
                 null,
                 EGLCore.FLAG_TRY_GLES3
             )
-            val eglSurface = eglHelper.createWindowSurface(holder?.surface)
-            eglHelper.makeCurrent(eglSurface)
+            val windowSurface = WindowSurface(eglHelper,holder?.surface,false)
+            windowSurface.makeCurrent()
             GLES20.glViewport(0, 0,
                 DensityUtils.getScreenWidth(this),
                 DensityUtils.getScreenHeight(this))
@@ -59,7 +60,7 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
                 GLES20.glClearColor(1F,0F,0F,0.3F)
                 GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
-                eglHelper.swapBuffers(eglSurface)
+                windowSurface.swapBuffers()
 
                 try{
                     Thread.sleep(16)

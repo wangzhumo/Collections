@@ -20,7 +20,7 @@ public class WindowSurface extends EGLSurfaceBase {
      * 创建一个屏幕上的Surface,用于渲染显示
      * @param eglCore eglContext
      * @param surface surface
-     * @param releaseSurface bool
+     * @param releaseSurface bool Set releaseSurface to true if you want the Surface to be released when release() is called
      */
     public WindowSurface(EGLCore eglCore,Surface surface, boolean releaseSurface) {
         super(eglCore);
