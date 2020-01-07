@@ -8,7 +8,7 @@ import android.view.SurfaceHolder
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.base.utils.DensityUtils
-import com.wangzhumo.app.module.opengl.EglHelper
+import com.wangzhumo.app.module.opengl.gles.EGLCore
 import com.wangzhumo.app.module.opengl.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_just_show.*
@@ -34,18 +34,21 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
         height: Int
     ) {
 
-        Log.d(EglHelper.TAG,"surfaceChanged ")
+        Log.d(EGLCore.TAG,"surfaceChanged ")
 
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
-        Log.d(EglHelper.TAG,"surfaceDestroyed ")
+        Log.d(EGLCore.TAG,"surfaceDestroyed ")
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
-        Log.d(EglHelper.TAG,"surfaceCreated ")
+        Log.d(EGLCore.TAG,"surfaceCreated ")
         Thread {
-            val eglHelper = EglHelper(null, EglHelper.FLAG_TRY_GLES3)
+            val eglHelper = EGLCore(
+                null,
+                EGLCore.FLAG_TRY_GLES3
+            )
             val eglSurface = eglHelper.createWindowSurface(holder?.surface)
             eglHelper.makeCurrent(eglSurface)
             GLES20.glViewport(0, 0,
@@ -53,7 +56,7 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
                 DensityUtils.getScreenHeight(this))
             while (true){
 
-                GLES20.glClearColor(0F,0F,0F,0F)
+                GLES20.glClearColor(1F,0F,0F,0.3F)
                 GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
                 eglHelper.swapBuffers(eglSurface)

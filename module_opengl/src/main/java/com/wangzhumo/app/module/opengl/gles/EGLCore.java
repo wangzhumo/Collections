@@ -15,7 +15,7 @@ import android.view.Surface;
  *
  * @author 王诛魔 2020-01-06  15:43
  */
-public class EglHelper {
+public class EGLCore {
 
     public static final String TAG = "OpenGL Learn";
     public static final int FLAG_RECORDABLE = 0x01;
@@ -31,7 +31,7 @@ public class EglHelper {
     private EGLConfig mEGLConfig;
     private int mGLVersion = 2;
 
-    public EglHelper(EGLContext sharedContext, int flags) {
+    public EGLCore(EGLContext sharedContext, int flags) {
         Log.d(TAG, "initEGL initEGLContext start");
 
         if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
