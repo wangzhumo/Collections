@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.opengl
 
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -8,6 +9,7 @@ import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.module.ActivityItem
 import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.widget.rv.OffsetItemDecoration
 import com.wangzhumo.app.widget.rv.OnItemActionListener
 import kotlinx.android.synthetic.main.activity_open_gl.*
 
@@ -26,6 +28,7 @@ class OpenGLActivity : BaseActivity() ,OnItemActionListener{
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(OffsetItemDecoration(this,5,0,5,0))
         val mAdapter = MultiTypeAdapter()
         val itemData = create()
 
@@ -38,7 +41,8 @@ class OpenGLActivity : BaseActivity() ,OnItemActionListener{
 
     private fun create() : List<ActivityItem>{
         return mutableListOf(
-            ActivityItem("JustShow","简单使用GLSurfaceView显示", IRoute.OPENGL.JUST_SHOW)
+            ActivityItem("JustShow","简单使用GLSurfaceView显示", IRoute.OPENGL.JUST_SHOW),
+            ActivityItem("Custom GLSurface","使用自己定义的GLSurfaceView显示", IRoute.OPENGL.CUSTOM_GL_SURFACE)
         )
     }
 

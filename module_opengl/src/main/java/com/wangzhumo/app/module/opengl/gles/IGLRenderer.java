@@ -1,5 +1,8 @@
 package com.wangzhumo.app.module.opengl.gles;
 
+import android.graphics.SurfaceTexture;
+import android.view.Surface;
+
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
@@ -7,5 +10,10 @@ package com.wangzhumo.app.module.opengl.gles;
  */
 public interface IGLRenderer {
 
+    void onSurfaceCreate();
+
+    void onSurfaceChange(int width,int height);
+
+    void drawFrame();
 
 }
