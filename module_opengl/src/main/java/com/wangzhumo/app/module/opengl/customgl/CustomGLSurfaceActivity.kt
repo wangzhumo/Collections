@@ -1,7 +1,6 @@
 package com.wangzhumo.app.module.opengl.customgl
 
 import android.opengl.GLES20
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute

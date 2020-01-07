@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.opengl;
+package com.wangzhumo.app.base.utils;
 
 import android.content.res.Resources;
 

@@ -4,7 +4,7 @@ import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.util.Log
 import com.wangzhumo.app.module.media.R
-import com.wangzhumo.app.module.media.opengl.RawUtils
+import com.wangzhumo.app.base.utils.RawUtils
 import java.nio.FloatBuffer
 
 /**
