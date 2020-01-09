@@ -42,7 +42,8 @@ class OpenGLActivity : BaseActivity() ,OnItemActionListener{
     private fun create() : List<ActivityItem>{
         return mutableListOf(
             ActivityItem("JustShow","简单使用GLSurfaceView显示", IRoute.OPENGL.JUST_SHOW),
-            ActivityItem("Custom GLSurface","使用自己定义的GLSurfaceView显示", IRoute.OPENGL.CUSTOM_GL_SURFACE)
+            ActivityItem("Custom GLSurface","使用自己定义的GLSurfaceView显示", IRoute.OPENGL.CUSTOM_GL_SURFACE),
+            ActivityItem("Image GLSurface","使用自己定义的GLSurfaceView显示Image", IRoute.OPENGL.IMAGE_TEXTURE)
         )
     }
 
