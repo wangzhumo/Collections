@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.opengl.gles;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -57,8 +58,8 @@ public class GLUtils {
             GLES20.glLinkProgram(programID);
 
             int[] linkState = new int[1];
-            GLES20.glGetShaderiv(programID, GLES20.GL_LINK_STATUS, linkState, 0);
-            if (linkState[0] == 0){
+            GLES20.glGetProgramiv(programID, GLES20.GL_LINK_STATUS, linkState, 0);
+            if (linkState[0] != GLES20.GL_TRUE){
                 String logInfo = GLES20.glGetProgramInfoLog(programID);
                 GLES20.glDeleteProgram(programID);
                 throw new RuntimeException(logInfo);

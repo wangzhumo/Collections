@@ -69,7 +69,7 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
             mSurface = holder.getSurface();
         }
         if (mEglCore == null) {
-            mEglCore = new EGLCore(null, EGLCore.FLAG_TRY_GLES3);
+            mEglCore = new EGLCore(null, EGLCore.FLAG_RECORDABLE);
         }
 
         //开启之前,判断renderer
