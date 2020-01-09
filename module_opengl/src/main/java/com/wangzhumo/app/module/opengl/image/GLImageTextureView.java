@@ -22,7 +22,7 @@ public class GLImageTextureView extends CustomGLSurfaceView {
 
     public GLImageTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setRenderer(new GLImageRenderer());
+        setRenderer(new GLImageRenderer(getContext()));
     }
 
 
