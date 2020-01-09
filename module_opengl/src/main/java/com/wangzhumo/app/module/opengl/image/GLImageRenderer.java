@@ -1,6 +1,8 @@
 package com.wangzhumo.app.module.opengl.image;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
 import com.wangzhumo.app.base.utils.RawUtils;
@@ -41,9 +43,9 @@ public class GLImageRenderer implements IGLRenderer {
     private int programId;
     private int aPosition;
     private int aTextureCoord;
+    private int sTexture;
 
-
-
+    private int bitmapTextureId;
 
     public GLImageRenderer(Context context) {
         this.mContext = context;
@@ -60,6 +62,16 @@ public class GLImageRenderer implements IGLRenderer {
 
         aPosition = GLES20.glGetAttribLocation(programId, "aPosition");
         aTextureCoord = GLES20.glGetAttribLocation(programId, "aTextureCoord");
+        sTexture = GLES20.glGetUniformLocation(programId, "sTexture");
+
+        bitmapTextureId = createTextureObject();
+        //设置图片到纹理上
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_city_night);
+        android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+        bitmap.recycle();
+
+        //解除绑定
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
     }
 
     @Override
@@ -74,6 +86,11 @@ public class GLImageRenderer implements IGLRenderer {
 
 
         GLES20.glUseProgram(programId);
+
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureId);
+        GLES20.glUniform1i(sTexture, 0);
+
         GLES20.glEnableVertexAttribArray(aPosition);
         GLES20.glVertexAttribPointer(
                 aPosition,
@@ -94,5 +111,35 @@ public class GLImageRenderer implements IGLRenderer {
                 fragmentBuffer
         );
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
     }
+
+
+    /**
+     * Creates a texture object suitable for use with this program.
+     * <p>
+     * On exit, the texture will be bound.
+     */
+    public int createTextureObject() {
+        int[] textures = new int[1];
+        GLES20.glGenTextures(1, textures, 0);
+        GLUtils.checkGLError("glGenTextures");
+
+        int texId = textures[0];
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
+        GLUtils.checkGLError("glBindTexture " + texId);
+
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,
+                GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER,
+                GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
+                GLES20.GL_REPEAT);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T,
+                GLES20.GL_REPEAT);
+        GLUtils.checkGLError("glTexParameter");
+
+        return texId;
+    }
+
 }
