@@ -34,20 +34,17 @@ public class EGLCore {
     public EGLCore(EGLContext sharedContext, int flags) {
         Log.d(TAG, "initEGL initEGLContext start");
 
-        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY)
-        {
+        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
             throw new RuntimeException("EGL already set up");
         }
 
-        if (sharedContext == null)
-        {
+        if (sharedContext == null) {
             sharedContext = EGL14.EGL_NO_CONTEXT;
         }
 
         //1.获取Display
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
-        if (mEGLDisplay == EGL14.EGL_NO_DISPLAY)
-        {
+        if (mEGLDisplay == EGL14.EGL_NO_DISPLAY) {
             throw new RuntimeException("unable to get EGL14 display");
         }
 

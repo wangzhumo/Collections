@@ -1,4 +1,3 @@
-#version 120
 //顶点的坐标
 attribute vec4 aPosition;
 //纹理的坐标

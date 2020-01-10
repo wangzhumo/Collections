@@ -1,4 +1,3 @@
-#version 120
 precision mediump float;
 
 //一般的2d纹理

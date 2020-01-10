@@ -11,6 +11,8 @@ import com.wangzhumo.app.module.opengl.gles.Drawable2d;
 import com.wangzhumo.app.module.opengl.gles.GLUtils;
 import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
 
+import java.nio.FloatBuffer;
+
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
