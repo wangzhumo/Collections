@@ -1,6 +1,5 @@
 package com.wangzhumo.app.module.opengl.gles;
 
-import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -26,6 +25,8 @@ public class Texture2dProgram {
     public int aPosition;
     public int aTextureCoord;
     public int sTexture;
+
+
 
     public enum ProgramType {
         TEXTURE_2D, TEXTURE_EXT, TEXTURE_EXT_BW, TEXTURE_EXT_FILT
@@ -62,7 +63,6 @@ public class Texture2dProgram {
         GLES20.glDeleteProgram(mProgramHandle);
         mProgramHandle = -1;
     }
-
 
 
     /**

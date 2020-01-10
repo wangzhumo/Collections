@@ -1,5 +1,7 @@
 package com.wangzhumo.app.module.opengl.gles;
 
+import android.opengl.GLES20;
+
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
@@ -52,9 +54,13 @@ public class Drawable2d {
     private float[] textureCoordsData;
 
     private int mVertexCount;
+    private int mTexCoordCount;
     private int mVertexStride;
     private int mTexCoordStride;
     private int mCoordsPerVertex;
+
+    public int vertexId;
+    public int fboId;
 
     private Prefab mPrefab;
 
@@ -73,6 +79,7 @@ public class Drawable2d {
                 mCoordsPerVertex = 2;
                 mVertexStride = mCoordsPerVertex * SIZEOF_FLOAT;
                 mVertexCount = FULL_RECTANGLE_COORDS.length / mCoordsPerVertex;
+                mTexCoordCount = FULL_RECTANGLE_TEX_COORDS.length / mCoordsPerVertex;
                 break;
             default:
                 throw new RuntimeException("Unknown shape " + shape);
@@ -258,11 +265,54 @@ public class Drawable2d {
         }
     }
 
+
+
     private void swap(float[] arr, int index1, int index2) {
         float temp = arr[index1];
         arr[index1] = arr[index2];
         arr[index2] = temp;
     }
+
+
+    /**
+     * Create VBO
+     * @return vbo buffers id
+     */
+    public int createVboBuffer(){
+        //获取
+        int[] vbos = new int[1];
+        GLES20.glGenBuffers(vbos.length, vbos, 0);
+
+        //绑定,开始操作
+        vertexId = vbos[0];
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexId);
+
+        //分配内存
+        GLES20.glBufferData(
+                GLES20.GL_ARRAY_BUFFER,
+                (mTexCoordCount + mVertexCount) * SIZEOF_FLOAT,
+                null,
+                GLES20.GL_STATIC_DRAW);
+
+        //数据设置.
+        //设置顶点数据
+        GLES20.glBufferSubData(
+                GLES20.GL_ARRAY_BUFFER,
+                0,
+                mVertexCount * SIZEOF_FLOAT,
+                mVertexArray);
+
+        //设置纹理数据
+        GLES20.glBufferSubData(
+                GLES20.GL_ARRAY_BUFFER,
+                mVertexCount * SIZEOF_FLOAT,
+                mTexCoordCount * SIZEOF_FLOAT,
+                mTexCoordArray);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+        return vertexId;
+    }
+
 
     /**
      * Returns the array of vertices.
@@ -287,6 +337,17 @@ public class Drawable2d {
      */
     public int getVertexCount() {
         return mVertexCount;
+    }
+
+    public int getVertexBufferOffset() {
+        return mVertexCount * SIZEOF_FLOAT;
+    }
+
+    /**
+     * Returns the number of vertices stored in the vertex array.
+     */
+    public int getTexCoordCount() {
+        return mTexCoordCount;
     }
 
     /**
