@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
-import com.wangzhumo.app.base.utils.RawUtils;
 import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.gles.Drawable2d;
 import com.wangzhumo.app.module.opengl.gles.GLUtils;
 import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
+import com.wangzhumo.app.module.opengl.gles.Texture2dProgram;
 import com.wangzhumo.app.module.opengl.gles.Transformation;
 
 
@@ -25,14 +25,10 @@ public class GLImageRenderer implements IGLRenderer {
 
     private Drawable2d drawable2d;
 
-    private int programId;
-    private int aPosition;
-    private int aTextureCoord;
-    private int sTexture;
-
     private int bitmapTextureId;
 
     private final Transformation mTransformation;
+    private Texture2dProgram mTexture2dProgram;
 
     public GLImageRenderer(Context context) {
         this.mContext = context;
@@ -42,19 +38,12 @@ public class GLImageRenderer implements IGLRenderer {
 
     @Override
     public void onSurfaceCreate() {
-        programId = GLUtils.linkProgram(
-                RawUtils.readResource(R.raw.gles_vertex_shader),
-                RawUtils.readResource(R.raw.gles_fragment_shader)
-        );
-
-        aPosition = GLES20.glGetAttribLocation(programId, "aPosition");
-        aTextureCoord = GLES20.glGetAttribLocation(programId, "aTextureCoord");
-        sTexture = GLES20.glGetUniformLocation(programId, "sTexture");
-
         mTransformation.setRotation(Transformation.ROTATION_180);
         drawable2d.setTransformation(mTransformation);
 
-        bitmapTextureId = createTextureObject();
+        mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
+        bitmapTextureId = mTexture2dProgram.createTextureObject();
+
         //设置图片到纹理上
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_city_night);
         android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
@@ -74,16 +63,15 @@ public class GLImageRenderer implements IGLRenderer {
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
-
-        GLES20.glUseProgram(programId);
+        GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureId);
-        GLES20.glUniform1i(sTexture, 0);
+        GLES20.glUniform1i(mTexture2dProgram.sTexture, 0);
 
-        GLES20.glEnableVertexAttribArray(aPosition);
+        GLES20.glEnableVertexAttribArray(mTexture2dProgram.aPosition);
         GLES20.glVertexAttribPointer(
-                aPosition,
+                mTexture2dProgram.aPosition,
                 drawable2d.getCoordsPerVertex(),
                 GLES20.GL_FLOAT,
                 false,
@@ -91,9 +79,9 @@ public class GLImageRenderer implements IGLRenderer {
                 drawable2d.getVertexArray()
         );
 
-        GLES20.glEnableVertexAttribArray(aTextureCoord);
+        GLES20.glEnableVertexAttribArray(mTexture2dProgram.aTextureCoord);
         GLES20.glVertexAttribPointer(
-                aTextureCoord,
+                mTexture2dProgram.aTextureCoord,
                 drawable2d.getCoordsPerVertex(),
                 GLES20.GL_FLOAT,
                 false,
