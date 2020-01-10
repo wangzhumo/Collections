@@ -30,12 +30,16 @@ public class Drawable2d {
             -1.0f, 1.0f,   // 2 top left
             1.0f, 1.0f,   // 3 top right
     };
+
+
     private static final float FULL_RECTANGLE_TEX_COORDS[] = {
             0.0f, 0.0f,     // 0 bottom left
             1.0f, 0.0f,     // 1 bottom right
             0.0f, 1.0f,     // 2 top left
             1.0f, 1.0f      // 3 top right
     };
+
+
     private static final FloatBuffer FULL_RECTANGLE_BUF =
             GLUtils.createFloatBuffer(FULL_RECTANGLE_COORDS);
     private static final FloatBuffer FULL_RECTANGLE_TEX_BUF =

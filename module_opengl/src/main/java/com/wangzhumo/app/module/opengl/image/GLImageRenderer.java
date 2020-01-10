@@ -10,6 +10,7 @@ import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.gles.Drawable2d;
 import com.wangzhumo.app.module.opengl.gles.GLUtils;
 import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
+import com.wangzhumo.app.module.opengl.gles.Transformation;
 
 
 /**
@@ -31,9 +32,12 @@ public class GLImageRenderer implements IGLRenderer {
 
     private int bitmapTextureId;
 
+    private final Transformation mTransformation;
+
     public GLImageRenderer(Context context) {
         this.mContext = context;
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
+        this.mTransformation = new Transformation();
     }
 
     @Override
@@ -46,6 +50,9 @@ public class GLImageRenderer implements IGLRenderer {
         aPosition = GLES20.glGetAttribLocation(programId, "aPosition");
         aTextureCoord = GLES20.glGetAttribLocation(programId, "aTextureCoord");
         sTexture = GLES20.glGetUniformLocation(programId, "sTexture");
+
+        mTransformation.setRotation(Transformation.ROTATION_180);
+        drawable2d.setTransformation(mTransformation);
 
         bitmapTextureId = createTextureObject();
         //设置图片到纹理上
