@@ -99,6 +99,13 @@ public class EGLSurfaceBase {
     }
 
     /**
+     * Makes our EGL context and surface current.
+     */
+    public void freeCurrent() {
+        mEglCore.makeCurrent(null);
+    }
+
+    /**
      * Makes our EGL context and surface current for drawing, using the supplied surface
      * for reading.
      */

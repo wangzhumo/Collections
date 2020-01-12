@@ -33,7 +33,8 @@ public class GLFboMultiRenderer implements IGLRenderer {
     private int bitmapTextureId;
 
     private Texture2dProgram mTexture2dProgram;
-    private FboRenderer mFboRender;
+    private FboMultiRenderer mFboRender;
+    private OnTextureListener textureListener;
 
     private int screenWidth, screenHeight;
     private int showWidth, showHeight;
@@ -41,17 +42,20 @@ public class GLFboMultiRenderer implements IGLRenderer {
     public GLFboMultiRenderer(Context context) {
         this.mContext = context;
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
-        this.mFboRender = new FboRenderer();
+        this.mFboRender = new FboMultiRenderer();
         this.screenWidth = DensityUtils.getScreenWidth(context);
         this.screenHeight = DensityUtils.getScreenHeight(context);
     }
 
     @Override
     public void onSurfaceCreate() {
-        mFboRender.onCreate();
+        mFboRender.onSurfaceCreate();
         drawable2d.createVboBuffer();
         drawable2d.createFboBuffer(screenWidth, screenHeight);
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_MATRIX);
+        if (textureListener != null){
+            textureListener.onCreate(drawable2d.fboTextureId);
+        }
         createImageTexture();
     }
 
@@ -74,7 +78,7 @@ public class GLFboMultiRenderer implements IGLRenderer {
     @Override
     public void onSurfaceChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-        mFboRender.onChange(width, height);
+        mFboRender.onSurfaceChange(width, height);
         if (width > height) {
             Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX,0);
             Matrix.orthoM(
@@ -153,6 +157,15 @@ public class GLFboMultiRenderer implements IGLRenderer {
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
-        mFboRender.onDraw(drawable2d.fboTextureId);
+        mFboRender.setTextureId(drawable2d.fboTextureId);
+        mFboRender.drawFrame();
+    }
+
+    public void setTextureListener(OnTextureListener textureListener) {
+        this.textureListener = textureListener;
+    }
+
+    interface OnTextureListener{
+        void onCreate(int textureId);
     }
 }

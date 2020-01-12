@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.opengl.multi;
 import android.opengl.GLES20;
 
 import com.wangzhumo.app.module.opengl.gles.Drawable2d;
+import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
 import com.wangzhumo.app.module.opengl.gles.Texture2dProgram;
 
 /**
@@ -12,11 +13,10 @@ import com.wangzhumo.app.module.opengl.gles.Texture2dProgram;
  *
  * FOB渲染
  */
-public class FboMultiRenderer {
+public class FboMultiRenderer implements IGLRenderer {
 
-
+    private int textureId;
     private Drawable2d drawable2d;
-    //private final Transformation mTransformation;
     private Texture2dProgram mTexture2dProgram;
 
     public FboMultiRenderer() {
@@ -24,18 +24,19 @@ public class FboMultiRenderer {
     }
 
 
-    public void onCreate(){
+    @Override
+    public void onSurfaceCreate() {
         drawable2d.createVboBuffer();
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
     }
 
-
-    public void onChange(int width,int height){
+    @Override
+    public void onSurfaceChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
     }
 
-
-    public void onDraw(int textureId){
+    @Override
+    public void drawFrame() {
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
@@ -73,5 +74,13 @@ public class FboMultiRenderer {
         //解绑
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+    }
+
+    public int getTextureId() {
+        return textureId;
+    }
+
+    public void setTextureId(int textureId) {
+        this.textureId = textureId;
     }
 }

@@ -1,10 +1,13 @@
 package com.wangzhumo.app.module.opengl.multi
 
+import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.R
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_glfbo_matrix.*
+import kotlinx.android.synthetic.main.activity_glfbo_multi.*
 
 
 /**
@@ -17,7 +20,41 @@ import kotlinx.android.synthetic.main.activity_glfbo_matrix.*
 @Route(path = IRoute.OPENGL.IMAGE_TEXTURE_MULTI)
 class GLFboMultiActivity : BaseActivity() {
 
-    override fun getLayoutId(): Int = R.layout.activity_glfbo_matrix
+    override fun getLayoutId(): Int = R.layout.activity_glfbo_multi
+
+
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+        //这里是渲染的FBO纹理ID
+        imageTextureView.renderer = GLFboMultiRenderer(this)
+        imageTextureView.fboMultiRenderer.setTextureListener {
+            //可以动态添加一个
+            runOnUiThread {
+                addTextureView(it)
+            }
+        }
+    }
+
+    /**
+     * 动态的添加一个TextureView
+     */
+    private fun addTextureView(textureId: Int) {
+        container_ff.removeAllViews()
+        val multiTextureView = GLFboMultiTextureView(this)
+
+        //添加TextureID
+        val fboMultiRenderer = FboMultiRenderer()
+        multiTextureView.setRenderer(fboMultiRenderer)
+        fboMultiRenderer.textureId = textureId
+
+        multiTextureView.setSurfaceAndCore(null, imageTextureView.eglCore)
+        val frameParam = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        container_ff.addView(multiTextureView, frameParam)
+
+    }
 
 
     override fun onDestroy() {

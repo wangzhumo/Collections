@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 
 import com.wangzhumo.app.module.opengl.customgl.CustomGLSurfaceView;
 import com.wangzhumo.app.module.opengl.fbo.GLFboImageRenderer;
+import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
 import com.wangzhumo.app.module.opengl.image.GLImageRenderer;
 import com.wangzhumo.app.module.opengl.matrix.GLFboMatrixRenderer;
 
@@ -27,5 +28,11 @@ public class GLFboMultiTextureView extends CustomGLSurfaceView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setRenderer(IGLRenderer renderer) {
+        super.setRenderer(renderer);
+    }
 
+    public GLFboMultiRenderer getFboMultiRenderer() {
+        return (GLFboMultiRenderer) getRenderer();
+    }
 }
