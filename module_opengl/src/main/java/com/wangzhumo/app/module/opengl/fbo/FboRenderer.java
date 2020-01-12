@@ -1,16 +1,16 @@
 package com.wangzhumo.app.module.opengl.fbo;
 
-import android.content.Context;
 import android.opengl.GLES20;
 
 import com.wangzhumo.app.module.opengl.gles.Drawable2d;
 import com.wangzhumo.app.module.opengl.gles.Texture2dProgram;
-import com.wangzhumo.app.module.opengl.gles.Transformation;
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2020-01-12  13:19
+ *
+ * FOB渲染
  */
 public class FboRenderer {
 

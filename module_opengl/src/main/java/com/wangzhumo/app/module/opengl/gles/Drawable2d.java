@@ -370,6 +370,7 @@ public class Drawable2d {
                 0
         );
 
+        //要在glBindTexture绑定成功之后再设置
         //FBO需要自己管理在,这里我们给FBO的内存分配空间
         GLES20.glTexImage2D(
                 GLES20.GL_TEXTURE_2D,

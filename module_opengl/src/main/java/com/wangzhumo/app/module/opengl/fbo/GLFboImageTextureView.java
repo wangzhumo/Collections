@@ -25,7 +25,4 @@ public class GLFboImageTextureView extends CustomGLSurfaceView {
         super(context, attrs, defStyleAttr);
         setRenderer(new GLFboImageRenderer(getContext()));
     }
-
-
-
 }
