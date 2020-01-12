@@ -72,7 +72,7 @@ public class Texture2dProgram {
      */
     public int createTextureObject() {
         int[] textures = new int[1];
-        GLES20.glGenTextures(1, textures, 0);
+        GLES20.glGenTextures(textures.length, textures, 0);
         GLUtils.checkGLError("glGenTextures");
 
         int texId = textures[0];

@@ -290,7 +290,7 @@ public class Drawable2d {
         //分配内存
         GLES20.glBufferData(
                 GLES20.GL_ARRAY_BUFFER,
-                (mTexCoordCount + mVertexCount) * SIZEOF_FLOAT,
+                (getVertexLength() + getTexCoordLength()) * SIZEOF_FLOAT,
                 null,
                 GLES20.GL_STATIC_DRAW);
 
@@ -299,14 +299,14 @@ public class Drawable2d {
         GLES20.glBufferSubData(
                 GLES20.GL_ARRAY_BUFFER,
                 0,
-                mVertexCount * SIZEOF_FLOAT,
+                getVertexLength() * SIZEOF_FLOAT,
                 mVertexArray);
 
         //设置纹理数据
         GLES20.glBufferSubData(
                 GLES20.GL_ARRAY_BUFFER,
-                mVertexCount * SIZEOF_FLOAT,
-                mTexCoordCount * SIZEOF_FLOAT,
+                getVertexLength() * SIZEOF_FLOAT,
+                getTexCoordLength() * SIZEOF_FLOAT,
                 mTexCoordArray);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
@@ -339,8 +339,11 @@ public class Drawable2d {
         return mVertexCount;
     }
 
-    public int getVertexBufferOffset() {
-        return mVertexCount * SIZEOF_FLOAT;
+    /**
+     * Returns the length of vertices stored in the vertex array.
+     */
+    public int getVertexLength() {
+        return FULL_RECTANGLE_COORDS.length;
     }
 
     /**
@@ -348,6 +351,13 @@ public class Drawable2d {
      */
     public int getTexCoordCount() {
         return mTexCoordCount;
+    }
+
+    /**
+     * Returns the length of vertices stored in the vertex array.
+     */
+    public int getTexCoordLength() {
+        return FULL_RECTANGLE_TEX_COORDS.length;
     }
 
     /**
@@ -369,5 +379,9 @@ public class Drawable2d {
      */
     public int getCoordsPerVertex() {
         return mCoordsPerVertex;
+    }
+
+    public int getSizeofFloat() {
+        return SIZEOF_FLOAT;
     }
 }

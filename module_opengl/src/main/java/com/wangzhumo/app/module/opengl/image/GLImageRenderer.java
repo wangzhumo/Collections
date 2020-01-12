@@ -77,7 +77,7 @@ public class GLImageRenderer implements IGLRenderer {
                 GLES20.GL_FLOAT,
                 false,
                 drawable2d.getVertexStride(),
-               0
+                0
         );
 
         GLES20.glEnableVertexAttribArray(mTexture2dProgram.aTextureCoord);
@@ -87,12 +87,12 @@ public class GLImageRenderer implements IGLRenderer {
                 GLES20.GL_FLOAT,
                 false,
                 drawable2d.getTexCoordStride(),
-                drawable2d.getVertexBufferOffset()
+                drawable2d.getVertexLength() * drawable2d.getSizeofFloat()
         );
 
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, drawable2d.getVertexCount());
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER,0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
     }
 }
