@@ -95,6 +95,10 @@ public class GLFboMatrixRenderer implements IGLRenderer {
                     -1F, 3F);
         }
 
+        //1.矩阵
+        //2.mOffset
+        //3.   a  旋转的角度
+        //4. x,y,z围绕选装的轴
         Matrix.rotateM(GLUtils.IDENTITY_MATRIX, 0, 180, 1, 0, 0);
     }
 
