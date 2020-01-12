@@ -34,6 +34,7 @@ public interface IRoute {
         String JUST_SHOW = "/opengl/justshow";
         String CUSTOM_GL_SURFACE = "/opengl/customgl";
         String IMAGE_TEXTURE = "/opengl/image";
+        String IMAGE_TEXTURE_FBO = "/opengl/image_fbo";
     }
 
     String FRAME_ACTIVITY = "/activity/framelayout";
