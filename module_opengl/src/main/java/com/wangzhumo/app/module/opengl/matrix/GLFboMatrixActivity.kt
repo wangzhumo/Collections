@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.opengl.image
+package com.wangzhumo.app.module.opengl.matrix
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute

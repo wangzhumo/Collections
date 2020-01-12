@@ -4,7 +4,8 @@
 
     <application>
         <activity android:name=".image.GLImageActivity"/>
-        <activity android:name=".image.GLFboImageActivity"/>
+        <activity android:name=".fbo.GLFboImageActivity"/>
+        <activity android:name=".matrix.GLFboMatrixActivity"/>
         <activity android:name=".customgl.CustomGLSurfaceActivity" />
         <activity android:name=".justshow.JustShowActivity" />
         <activity android:name=".OpenGLActivity" />
