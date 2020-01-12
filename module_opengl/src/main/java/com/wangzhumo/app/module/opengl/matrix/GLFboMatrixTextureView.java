@@ -24,6 +24,6 @@ public class GLFboMatrixTextureView extends CustomGLSurfaceView {
 
     public GLFboMatrixTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setRenderer(new GLFboImageRenderer(getContext()));
+        setRenderer(new GLFboMatrixRenderer(getContext()));
     }
 }

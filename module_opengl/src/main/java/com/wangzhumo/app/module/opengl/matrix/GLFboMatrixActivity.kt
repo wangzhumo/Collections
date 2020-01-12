@@ -13,9 +13,9 @@ import com.wangzhumo.app.origin.BaseActivity
  *
  * 显示一个图片纹理到OpenGL
  */
-@Route(path = IRoute.OPENGL.IMAGE_TEXTURE_FBO)
+@Route(path = IRoute.OPENGL.IMAGE_TEXTURE_MATRIX)
 class GLFboMatrixActivity : BaseActivity() {
 
-    override fun getLayoutId(): Int = R.layout.activity_glfbo_image
+    override fun getLayoutId(): Int = R.layout.activity_glfbo_matrix
 
 }

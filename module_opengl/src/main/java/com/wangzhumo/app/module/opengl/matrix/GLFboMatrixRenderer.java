@@ -21,7 +21,7 @@ import com.wangzhumo.app.module.opengl.gles.Transformation;
  *
  * @author 王诛魔 2020-01-08  17:57
  */
-public class GLFboImageRenderer implements IGLRenderer {
+public class GLFboMatrixRenderer implements IGLRenderer {
 
 
     private Context mContext;
@@ -36,7 +36,7 @@ public class GLFboImageRenderer implements IGLRenderer {
 
     private int screenWidth,screenHeight;
 
-    public GLFboImageRenderer(Context context) {
+    public GLFboMatrixRenderer(Context context) {
         this.mContext = context;
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
         this.mTransformation = new Transformation();
