@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
+import android.util.Log;
 
 import com.wangzhumo.app.base.utils.DensityUtils;
 import com.wangzhumo.app.module.opengl.R;
@@ -34,7 +36,8 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     private Texture2dProgram mTexture2dProgram;
     private com.wangzhumo.app.module.opengl.fbo.FboRenderer mFboRender;
 
-    private int screenWidth,screenHeight;
+    private int screenWidth, screenHeight;
+    private int showWidth, showHeight;
 
     public GLFboMatrixRenderer(Context context) {
         this.mContext = context;
@@ -48,11 +51,11 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     @Override
     public void onSurfaceCreate() {
         mFboRender.onCreate();
-        mTransformation.setRotation(Transformation.ROTATION_180);
-        drawable2d.setTransformation(mTransformation);
+        //mTransformation.setRotation(Transformation.ROTATION_180);
+        //drawable2d.setTransformation(mTransformation);
         drawable2d.createVboBuffer();
         drawable2d.createFboBuffer(screenWidth, screenHeight);
-        mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
+        mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_MATRIX);
         createImageTexture();
     }
 
@@ -63,6 +66,8 @@ public class GLFboMatrixRenderer implements IGLRenderer {
 
         //设置图片到纹理上
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_city_night);
+        showWidth = bitmap.getWidth();
+        showHeight = bitmap.getHeight();
         android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
         bitmap.recycle();
 
@@ -73,14 +78,34 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     @Override
     public void onSurfaceChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-        mFboRender.onChange(width,height);
+        mFboRender.onChange(width, height);
+        if (width > height) {
+            Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX,0);
+            Matrix.orthoM(
+                    GLUtils.IDENTITY_MATRIX,
+                    0,
+                    -width / ((height / showHeight) * showWidth),
+                    width / ((height / showHeight) * showWidth),
+                    -1F, 1F,
+                    -1F, 1F);
+        } else {
+            Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX,0);
+            Matrix.orthoM(
+                    GLUtils.IDENTITY_MATRIX,
+                    0,
+                    -1F, 1F,
+                    -height / ((width / showWidth) * showHeight),
+                    height / ((width / showWidth) * showHeight),
+                    -1F, 3F);
+        }
+
+        Matrix.rotateM(GLUtils.IDENTITY_MATRIX, 0, 180, 1, 0, 0);
     }
 
     @Override
     public void drawFrame() {
         //绑定FBO
-//        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
 
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
@@ -89,8 +114,11 @@ public class GLFboMatrixRenderer implements IGLRenderer {
         //使用程序
         GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
+        //设置矩阵
+        GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
+
         //绑定纹理
-        //GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureId);
 
         //绑定使用vbo
@@ -123,8 +151,8 @@ public class GLFboMatrixRenderer implements IGLRenderer {
         //取消绑定
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-//        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-//
-//        mFboRender.onDraw(drawable2d.fboTextureId);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+
+        mFboRender.onDraw(drawable2d.fboTextureId);
     }
 }

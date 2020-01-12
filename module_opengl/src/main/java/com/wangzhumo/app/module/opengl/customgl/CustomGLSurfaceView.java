@@ -86,7 +86,6 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
             mGLThread.height = height;
             mGLThread.alreadyChange = false;
         }
-
     }
 
     @Override
@@ -147,6 +146,16 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
      */
     public EGLCore getEGLCore() {
         return mEglCore;
+    }
+
+
+    /**
+     * 销毁
+     */
+    public void release(){
+        if (mGLThread != null) {
+            mGLThread.release();
+        }
     }
 
 
@@ -286,9 +295,13 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
          */
         public void release() {
             sGLThreadManager.threadExiting(this);
-            mWindowSurface.releaseEglSurface();
-            mWindowSurface.release();
-            glSurfaceView = null;
+            if (mWindowSurface != null) {
+                mWindowSurface.releaseEglSurface();
+                mWindowSurface.release();
+            }
+            if (glSurfaceView != null) {
+                glSurfaceView.clear();
+            }
         }
     }
 

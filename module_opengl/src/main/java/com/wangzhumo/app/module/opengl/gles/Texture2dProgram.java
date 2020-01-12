@@ -25,11 +25,12 @@ public class Texture2dProgram {
     public int aPosition;
     public int aTextureCoord;
     public int sTexture;
+    public int uMVPMatrix;
 
 
 
     public enum ProgramType {
-        TEXTURE_2D, TEXTURE_EXT, TEXTURE_EXT_BW, TEXTURE_EXT_FILT
+        TEXTURE_2D, TEXTURE_EXT, TEXTURE_MATRIX, TEXTURE_EXT_FILT
     }
 
 
@@ -43,6 +44,13 @@ public class Texture2dProgram {
                         RawUtils.readResource(R.raw.gles_fragment_shader)
                 );
                 break;
+            case TEXTURE_MATRIX:
+                mTextureTarget = GLES20.GL_TEXTURE_2D;
+                mProgramHandle = GLUtils.linkProgram(
+                        RawUtils.readResource(R.raw.gles_vertex_shader_matrix),
+                        RawUtils.readResource(R.raw.gles_fragment_shader)
+                );
+                break;
         }
         if (mProgramHandle == 0) {
             throw new RuntimeException("Unable to create program");
@@ -51,6 +59,9 @@ public class Texture2dProgram {
         aPosition = GLES20.glGetAttribLocation(mProgramHandle, "aPosition");
         aTextureCoord = GLES20.glGetAttribLocation(mProgramHandle, "aTextureCoord");
         sTexture = GLES20.glGetUniformLocation(mProgramHandle, "sTexture");
+        if (mProgramType == ProgramType.TEXTURE_MATRIX){
+            uMVPMatrix = GLES20.glGetUniformLocation(mProgramHandle, "uMVPMatrix");
+        }
     }
 
     /**

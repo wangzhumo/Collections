@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.R
 import com.wangzhumo.app.origin.BaseActivity
+import kotlinx.android.synthetic.main.activity_glimage.*
 
 
 /**
@@ -17,4 +18,8 @@ import com.wangzhumo.app.origin.BaseActivity
 class GLImageActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_glimage
 
+    override fun onDestroy() {
+        super.onDestroy()
+        imageTextureView.release()
+    }
 }

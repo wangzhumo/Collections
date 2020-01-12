@@ -20,6 +20,7 @@ class MainActivity : BaseActivity() {
         ARouter.getInstance()
             .build(IRoute.OPENGL_LIST)
             .navigation()
+        finish()
     }
 
 
