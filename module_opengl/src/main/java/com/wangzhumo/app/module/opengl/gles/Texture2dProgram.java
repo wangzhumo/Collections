@@ -73,11 +73,9 @@ public class Texture2dProgram {
     public int createTextureObject() {
         int[] textures = new int[1];
         GLES20.glGenTextures(textures.length, textures, 0);
-        GLUtils.checkGLError("glGenTextures");
 
         int texId = textures[0];
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texId);
-        GLUtils.checkGLError("glBindTexture " + texId);
 
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,
                 GLES20.GL_LINEAR);
@@ -87,8 +85,7 @@ public class Texture2dProgram {
                 GLES20.GL_REPEAT);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T,
                 GLES20.GL_REPEAT);
-        GLUtils.checkGLError("glTexParameter");
-
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         return texId;
     }
 }

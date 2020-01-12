@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.opengl.gles;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import java.nio.FloatBuffer;
 import java.util.Arrays;
@@ -59,8 +60,9 @@ public class Drawable2d {
     private int mTexCoordStride;
     private int mCoordsPerVertex;
 
-    public int vertexId;
+    public int vboId;
     public int fboId;
+    public int fboTextureId;
 
     private Prefab mPrefab;
 
@@ -284,8 +286,8 @@ public class Drawable2d {
         GLES20.glGenBuffers(vbos.length, vbos, 0);
 
         //绑定,开始操作
-        vertexId = vbos[0];
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexId);
+        vboId = vbos[0];
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vboId);
 
         //分配内存
         GLES20.glBufferData(
@@ -310,7 +312,86 @@ public class Drawable2d {
                 getTexCoordArray());
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        return vertexId;
+        return vboId;
+    }
+
+
+    /**
+     * 创建一个FBO
+     * @param width  纹理宽度
+     * @param height  纹理高度
+     * @return id
+     */
+    public int createFboBuffer(int width,int height){
+        //获取
+        int[] fboIds = new int[1];
+        GLES20.glGenBuffers(fboIds.length, fboIds, 0);
+        //绑定FBO
+        fboId = fboIds[0];
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId);
+
+
+        //创建一个纹理
+        int[] textureArr = new int[1];
+        GLES20.glGenTextures(textureArr.length, textureArr, 0);
+        fboTextureId = textureArr[0];
+
+        //绑定纹理
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureId);
+        //环绕（超出纹理坐标范围）  （s==x t==y GL_REPEAT 重复）
+        GLES20.glTexParameteri(
+                GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_WRAP_S,
+                GLES20.GL_REPEAT
+        );
+        GLES20.glTexParameteri(
+                GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_WRAP_T,
+                GLES20.GL_REPEAT
+        );
+        //过滤（纹理像素映射到坐标点）  （缩小、放大：GL_LINEAR线性）
+        GLES20.glTexParameteri(
+                GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_MIN_FILTER,
+                GLES20.GL_LINEAR
+        );
+        GLES20.glTexParameteri(
+                GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_MAG_FILTER,
+                GLES20.GL_LINEAR
+        );
+
+        //绑定纹理到FBO
+        GLES20.glFramebufferTexture2D(
+                GLES20.GL_FRAMEBUFFER,
+                GLES20.GL_COLOR_ATTACHMENT0,
+                GLES20.GL_TEXTURE_2D,
+                fboTextureId,
+                0
+        );
+
+        //FBO需要自己管理在,这里我们给FBO的内存分配空间
+        GLES20.glTexImage2D(
+                GLES20.GL_TEXTURE_2D,
+                0,
+                GLES20.GL_RGBA,
+                width,
+                height,
+                0,
+                GLES20.GL_RGBA,
+                GLES20.GL_UNSIGNED_BYTE,
+                null
+        );
+
+        //检查FBO与Texture是否绑定成功
+        if (GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER) != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+            Log.d(EGLCore.TAG, "createFBO 绑定FBO和Texture失败");
+        }
+
+        //解绑纹理与FBO
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, 0);
+        return fboId;
     }
 
 
