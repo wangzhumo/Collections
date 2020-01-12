@@ -38,9 +38,8 @@ public class GLImageRenderer implements IGLRenderer {
     @Override
     public void onSurfaceCreate() {
         mTransformation.setRotation(Transformation.ROTATION_180);
-
-        drawable2d.createVboBuffer();
         drawable2d.setTransformation(mTransformation);
+        drawable2d.createVboBuffer();
 
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
         bitmapTextureId = mTexture2dProgram.createTextureObject();

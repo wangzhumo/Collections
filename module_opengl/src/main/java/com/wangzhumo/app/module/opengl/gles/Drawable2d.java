@@ -300,14 +300,14 @@ public class Drawable2d {
                 GLES20.GL_ARRAY_BUFFER,
                 0,
                 getVertexLength() * SIZEOF_FLOAT,
-                mVertexArray);
+                getVertexArray());
 
         //设置纹理数据
         GLES20.glBufferSubData(
                 GLES20.GL_ARRAY_BUFFER,
                 getVertexLength() * SIZEOF_FLOAT,
                 getTexCoordLength() * SIZEOF_FLOAT,
-                mTexCoordArray);
+                getTexCoordArray());
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         return vertexId;
