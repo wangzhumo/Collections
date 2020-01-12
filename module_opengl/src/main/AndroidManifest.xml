@@ -8,6 +8,7 @@
                 android:screenOrientation="portrait" />
         <activity android:name=".fbo.GLFboImageActivity" />
         <activity android:name=".matrix.GLFboMatrixActivity" />
+        <activity android:name=".multi.GLFboMultiActivity" />
         <activity
                 android:name=".customgl.CustomGLSurfaceActivity"
                 android:screenOrientation="portrait" />

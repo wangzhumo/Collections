@@ -45,7 +45,8 @@ class OpenGLActivity : BaseActivity() ,OnItemActionListener{
             ActivityItem("Custom GLSurface","使用自己定义的GLSurfaceView显示", IRoute.OPENGL.CUSTOM_GL_SURFACE),
             ActivityItem("Image GLSurface","使用自己定义的GLSurfaceView显示Image", IRoute.OPENGL.IMAGE_TEXTURE),
             ActivityItem("Image FBO","使用FBO显示Image", IRoute.OPENGL.IMAGE_TEXTURE_FBO),
-            ActivityItem("Matrix","使用Matrix改变图像", IRoute.OPENGL.IMAGE_TEXTURE_MATRIX)
+            ActivityItem("Matrix","使用Matrix改变图像", IRoute.OPENGL.IMAGE_TEXTURE_MATRIX),
+            ActivityItem("Multi Surface","显示多个", IRoute.OPENGL.IMAGE_TEXTURE_MULTI)
         )
     }
 

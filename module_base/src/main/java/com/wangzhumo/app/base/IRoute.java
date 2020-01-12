@@ -36,6 +36,7 @@ public interface IRoute {
         String IMAGE_TEXTURE = "/opengl/image";
         String IMAGE_TEXTURE_FBO = "/opengl/image_fbo";
         String IMAGE_TEXTURE_MATRIX = "/opengl/matrix";
+        String IMAGE_TEXTURE_MULTI = "/opengl/multi";
     }
 
     String FRAME_ACTIVITY = "/activity/framelayout";
