@@ -79,7 +79,8 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     @Override
     public void drawFrame() {
         //绑定FBO
-        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
+//        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
@@ -89,6 +90,7 @@ public class GLFboMatrixRenderer implements IGLRenderer {
         GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
         //绑定纹理
+        //GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureId);
 
         //绑定使用vbo
@@ -121,8 +123,8 @@ public class GLFboMatrixRenderer implements IGLRenderer {
         //取消绑定
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-
-        mFboRender.onDraw(drawable2d.fboTextureId);
+//        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+//
+//        mFboRender.onDraw(drawable2d.fboTextureId);
     }
 }

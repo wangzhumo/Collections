@@ -78,7 +78,7 @@ public class GLFboImageRenderer implements IGLRenderer {
     @Override
     public void drawFrame() {
         //绑定FBO
-        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, drawable2d.fboId);
 
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);

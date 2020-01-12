@@ -7,7 +7,7 @@
         tools:context=".image.GLImageActivity">
 
 
-    <com.wangzhumo.app.module.opengl.fbo.GLFboMatrixTextureView
+    <com.wangzhumo.app.module.opengl.matrix.GLFboMatrixTextureView
             android:id="@+id/imageTextureView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
