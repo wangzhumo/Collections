@@ -32,7 +32,6 @@ public class GLFboMatrixRenderer implements IGLRenderer {
 
     private int bitmapTextureId;
 
-    private final Transformation mTransformation;
     private Texture2dProgram mTexture2dProgram;
     private com.wangzhumo.app.module.opengl.fbo.FboRenderer mFboRender;
 
@@ -42,7 +41,6 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     public GLFboMatrixRenderer(Context context) {
         this.mContext = context;
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
-        this.mTransformation = new Transformation();
         this.mFboRender = new FboRenderer();
         this.screenWidth = DensityUtils.getScreenWidth(context);
         this.screenHeight = DensityUtils.getScreenHeight(context);
@@ -51,8 +49,6 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     @Override
     public void onSurfaceCreate() {
         mFboRender.onCreate();
-        //mTransformation.setRotation(Transformation.ROTATION_180);
-        //drawable2d.setTransformation(mTransformation);
         drawable2d.createVboBuffer();
         drawable2d.createFboBuffer(screenWidth, screenHeight);
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_MATRIX);
