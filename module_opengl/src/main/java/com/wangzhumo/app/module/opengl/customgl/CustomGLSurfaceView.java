@@ -195,9 +195,6 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
                     glSurfaceView.get().mSurface,
                     true);
 
-            // TODO: 2020-01-12 取消这个
-            mWindowSurface.makeCurrent();
-
             while (true) {
                 //判断渲染模式
                 if (mRenderMode == RENDERMODE_WHEN_DIRTY) {
@@ -248,10 +245,12 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
             if (glSurfaceView.get() != null && glSurfaceView.get().mRenderer != null) {
                 alreadyCreate = true;
                 // TODO: 2020-01-12 取消这个
-                //mWindowSurface.makeCurrent();
+                mWindowSurface.makeCurrent();
                 glSurfaceView.get().mRenderer.onSurfaceCreate();
                 // TODO: 2020-01-12 取消这个
-                //mWindowSurface.freeCurrent();
+                if (glSurfaceView.get() != null) {
+                    glSurfaceView.get().mEglCore.makeNothingCurrent();
+                }
             }
         }
 
@@ -271,14 +270,16 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         private void onDraw() {
             if (glSurfaceView.get() != null && glSurfaceView.get().mRenderer != null) {
                 // TODO: 2020-01-12 取消这个
-                //mWindowSurface.makeCurrent();
+                mWindowSurface.makeCurrent();
                 glSurfaceView.get().mRenderer.drawFrame();
                 if (!isStartRenderer) {
                     glSurfaceView.get().mRenderer.drawFrame();
                 }
                 mWindowSurface.swapBuffers();
                 // TODO: 2020-01-12 取消这个
-                //mWindowSurface.freeCurrent();
+                if (glSurfaceView.get() != null) {
+                    glSurfaceView.get().mEglCore.makeNothingCurrent();
+                }
             }
         }
 
