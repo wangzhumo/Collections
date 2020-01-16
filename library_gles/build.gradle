@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(":library_origin")
+    implementation project(":library_origin")
     kapt deps.auto_server
 }
 

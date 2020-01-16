@@ -58,7 +58,6 @@ dependencies {
     implementation project(":module_webrtc")
     implementation project(":module_playground")
     implementation project(":module_opengl")
-    implementation project(":library_gles")
     implementation deps.stdlib
     implementation deps.androidx.constraint
     implementation deps.androidx.appCompat

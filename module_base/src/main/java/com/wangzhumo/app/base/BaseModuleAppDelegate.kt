@@ -55,7 +55,6 @@ class BaseModuleAppDelegate : AppDelegate {
             .t() // Enable thread info, disabled by default
             .b()
             .build()
-        val consolePrinter: Printer = ConsolePrinter()  // Printer that print the log to console using System.out
         val androidPrinter: Printer = AndroidPrinter()  // Printer that print the log using android.util.Log
 
         XLog.init( // Initialize XLog
