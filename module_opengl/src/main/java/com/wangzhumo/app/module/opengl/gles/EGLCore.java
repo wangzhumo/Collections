@@ -325,6 +325,13 @@ public class EGLCore {
         return mGLVersion;
     }
 
+    /**
+     * 获取Context
+     * @return EGLContext
+     */
+    public EGLContext getEGLContext() {
+        return mEGLContext;
+    }
 
     /**
      * Checks for EGL errors.  Throws an exception if an error has been raised.

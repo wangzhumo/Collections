@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
+import com.wangzhumo.app.base.utils.DensityUtils
 import com.wangzhumo.app.module.opengl.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_glfbo_multi.*
@@ -40,20 +41,22 @@ class GLFboMultiActivity : BaseActivity() {
      */
     private fun addTextureView(textureId: Int) {
         container_ff.removeAllViews()
-        val multiTextureView = GLFboMultiTextureView(this)
 
-        //添加TextureID
-        val fboMultiRenderer = FboMultiRenderer()
-        multiTextureView.setRenderer(fboMultiRenderer)
-        fboMultiRenderer.textureId = textureId
+        for (index in 0..2){
+            val multiTextureView = GLFboMultiTextureView(this)
 
-        multiTextureView.setSurfaceAndCore(null, imageTextureView.eglCore)
-        val frameParam = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        container_ff.addView(multiTextureView, frameParam)
+            //添加TextureID
+            val fboMultiRenderer = FboMultiRenderer()
+            multiTextureView.setRenderer(fboMultiRenderer)
+            fboMultiRenderer.textureId = textureId
 
+            multiTextureView.setSurfaceAndCore(null, imageTextureView.eglCore)
+            val frameParam = FrameLayout.LayoutParams(
+                DensityUtils.dp2px(this,120F),
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            container_ff.addView(multiTextureView, frameParam)
+        }
     }
 
 
