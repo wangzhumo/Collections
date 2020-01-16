@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.DebugUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,12 +114,10 @@ public class CircleImageLayout extends ViewGroup {
 
     public CircleImageLayout(Context context) {
         this(context, null);
-        super.setWillNotDraw(false);
     }
 
     public CircleImageLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        super.setWillNotDraw(false);
     }
 
     public CircleImageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -142,34 +141,19 @@ public class CircleImageLayout extends ViewGroup {
         rectF = new RectF();
         mCircleDataList = new ArrayList<>();
         setFocusableInTouchMode(true);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        int newHeight = Math.min(width, height);
-        setMeasuredDimension(newHeight, newHeight);
 
         //计算半径
-        mRadius = Math.max(getMeasuredHeight(), getMeasuredWidth());
+        mRadius = Utils.dp2px(getContext(), 500);
         mViewOutRadius = mRadius * DEFAULT_OUT_RADIUS_RADIO;
         mViewInnerRadius = mRadius * DEFAULT_INNER_RADIUS_RADIO;
         mAuxiliaryRadius = mViewInnerRadius + (mViewOutRadius - mViewInnerRadius) / 2;
-
-
-        float tempValue1 = mViewInnerRadius / 2F;
-        float tempValue2 = mViewOutRadius / 2F;
-        float tempValue3 = mRadius / 2F;
-
-        addItems();
-        Log.e("Circle", "onMeasure");
     }
 
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //最重要的方法,布局已经加入进来的所有Item.
+        if (getChildCount() == 0) return;
         //item的 坐标位置.
         float itemX, itemY;
         for (int index = 0; index < mDefaultItemCount; index++) {
@@ -243,9 +227,9 @@ public class CircleImageLayout extends ViewGroup {
         mItemHeight = (float) Math.ceil((mViewOutRadius / 2F) * Math.sin(Math.toRadians(anglePre / 2F)) * 2) + 10;
         for (int index = 0; index < mDefaultItemCount; index++) {
             CircleItemView imageView = new CircleItemView(getContext());
-            if (mLoader != null) {
+            if (mLoader != null && mCircleDataList.size() > index) {
                 // TODO: 2019-12-17  mCircleDataList.get(index)
-                mLoader.onLoader(imageView, null);
+                mLoader.onLoader(imageView, mCircleDataList.get(index));
             }
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             //计算宽度,高度
@@ -335,7 +319,7 @@ public class CircleImageLayout extends ViewGroup {
                     // post一个任务，去自动滚动
                     post(mFlingRunnable = new AutoFlingRunnable(anglePerSecond));
                     return true;
-                }else {
+                } else {
                     //否则就要自己把他移动到指定的位置
 
                 }
@@ -404,7 +388,7 @@ public class CircleImageLayout extends ViewGroup {
         //设置给
         mCircleDataList.clear();
         mCircleDataList = list;
-
+        addItems();
         //开始渲染到Item.
         requestLayout();
     }

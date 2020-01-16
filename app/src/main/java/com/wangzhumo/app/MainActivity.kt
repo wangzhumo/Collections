@@ -17,8 +17,11 @@ class MainActivity : BaseActivity() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
+//        ARouter.getInstance()
+//            .build(IRoute.OPENGL_LIST)
+//            .navigation()
         ARouter.getInstance()
-            .build(IRoute.OPENGL_LIST)
+            .build(IRoute.FRAME_ACTIVITY)
             .navigation()
         finish()
     }

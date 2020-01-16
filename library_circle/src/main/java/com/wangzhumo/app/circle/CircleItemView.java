@@ -10,8 +10,6 @@ import android.widget.ImageView;
  */
 public class CircleItemView extends ImageView {
 
-
-
     public CircleItemView(Context context) {
         super(context);
     }
