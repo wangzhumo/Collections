@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.R
-import com.wangzhumo.app.module.opengl.gles.IGLRenderer
+import com.wangzhumo.app.gles.IGLRenderer
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_custom_glsurface.*
 
@@ -30,7 +30,7 @@ class CustomGLSurfaceActivity : BaseActivity() {
     }
 
 
-    inner class MyRenderer : IGLRenderer{
+    inner class MyRenderer : com.wangzhumo.app.gles.IGLRenderer {
         override fun onSurfaceCreate() {
 
         }

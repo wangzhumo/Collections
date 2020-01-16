@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.base.utils.DensityUtils
+import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.module.opengl.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_glfbo_multi.*

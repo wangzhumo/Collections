@@ -6,7 +6,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.elvishew.xlog.formatter.border.BorderFormatter
 import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.ConsolePrinter
 import com.elvishew.xlog.printer.Printer
@@ -20,7 +19,7 @@ import com.tencent.mars.xlog.Xlog
 import com.wangzhumo.app.base.delegate.AppDelegate
 import com.wangzhumo.app.base.delegate.IApp
 import com.wangzhumo.app.base.delegate.IAppConstant
-import com.wangzhumo.app.base.utils.AppUtils
+import com.wangzhumo.app.origin.utils.AppUtils
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException

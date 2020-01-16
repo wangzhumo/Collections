@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
-import com.wangzhumo.app.base.utils.DensityUtils;
+import com.wangzhumo.app.origin.utils.DensityUtils;
 import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.gles.Drawable2d;
 import com.wangzhumo.app.module.opengl.gles.EGLCore;

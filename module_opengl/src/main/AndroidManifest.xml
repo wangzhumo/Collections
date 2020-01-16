@@ -3,6 +3,7 @@
         package="com.wangzhumo.app.module.opengl">
 
     <application>
+        <activity android:name=".camera.GLCameraPreviewActivity"></activity>
         <activity
                 android:name=".image.GLImageActivity"
                 android:screenOrientation="portrait" />

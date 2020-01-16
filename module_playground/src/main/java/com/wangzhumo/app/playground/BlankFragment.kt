@@ -6,7 +6,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import com.wangzhumo.app.base.utils.DensityUtils
+import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.playground.R
 import kotlinx.android.synthetic.main.fragment_blank.*
 

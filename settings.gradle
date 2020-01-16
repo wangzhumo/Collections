@@ -1,12 +1,15 @@
-include ':app', ':library_circle', ':module_opengl'
+include ':app'
 
-include ':inyu_xlog'
+include ':library_xlog'
 
 include ':library_origin',
-        ':library_widget'
+        ':library_circle',
+        ':library_widget',
+        ':library_gles'
 
 include ':module_media',
         ':module_webrtc',
         ':module_base',
         ':module_playground',
-        ':module_gift'
+        ':module_gift',
+        ':module_opengl'

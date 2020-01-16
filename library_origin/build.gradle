@@ -55,7 +55,7 @@ dependencies {
     api deps.xLog
     api deps.bugly_native
     api deps.auto_server_annotations
-    api project(":inyu_xlog")
+    api project(':library_xlog')
     //api deps.epoxy
 }
 

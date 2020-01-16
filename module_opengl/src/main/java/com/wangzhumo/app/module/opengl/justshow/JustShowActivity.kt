@@ -7,10 +7,10 @@ import android.util.Log
 import android.view.SurfaceHolder
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.base.utils.DensityUtils
-import com.wangzhumo.app.module.opengl.gles.EGLCore
+import com.wangzhumo.app.origin.utils.DensityUtils
+import com.wangzhumo.app.gles.EGLCore
 import com.wangzhumo.app.module.opengl.R
-import com.wangzhumo.app.module.opengl.gles.WindowSurface
+import com.wangzhumo.app.gles.WindowSurface
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_just_show.*
 
@@ -35,22 +35,26 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
         height: Int
     ) {
 
-        Log.d(EGLCore.TAG,"surfaceChanged ")
+        Log.d(com.wangzhumo.app.gles.EGLCore.TAG,"surfaceChanged ")
 
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
-        Log.d(EGLCore.TAG,"surfaceDestroyed ")
+        Log.d(com.wangzhumo.app.gles.EGLCore.TAG,"surfaceDestroyed ")
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
-        Log.d(EGLCore.TAG,"surfaceCreated ")
+        Log.d(com.wangzhumo.app.gles.EGLCore.TAG,"surfaceCreated ")
         Thread {
-            val eglHelper = EGLCore(
+            val eglHelper = com.wangzhumo.app.gles.EGLCore(
                 null,
-                EGLCore.FLAG_TRY_GLES3
+                com.wangzhumo.app.gles.EGLCore.FLAG_TRY_GLES3
             )
-            val windowSurface = WindowSurface(eglHelper,holder?.surface,false)
+            val windowSurface = com.wangzhumo.app.gles.WindowSurface(
+                eglHelper,
+                holder?.surface,
+                false
+            )
             windowSurface.makeCurrent()
             GLES20.glViewport(0, 0,
                 DensityUtils.getScreenWidth(this),

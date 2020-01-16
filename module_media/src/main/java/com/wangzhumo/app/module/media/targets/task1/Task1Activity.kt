@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.wangzhumo.app.base.utils.DensityUtils
+import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
