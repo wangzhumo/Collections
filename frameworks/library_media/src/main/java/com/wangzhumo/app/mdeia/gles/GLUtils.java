@@ -1,4 +1,4 @@
-package com.wangzhumo.app.gles;
+package com.wangzhumo.app.mdeia.gles;
 
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;

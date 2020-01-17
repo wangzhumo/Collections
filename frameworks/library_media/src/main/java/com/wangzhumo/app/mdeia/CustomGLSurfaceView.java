@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.opengl.customgl;
+package com.wangzhumo.app.mdeia;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -9,9 +9,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
-import com.wangzhumo.app.gles.EGLCore;
-import com.wangzhumo.app.gles.IGLRenderer;
-import com.wangzhumo.app.gles.WindowSurface;
+import com.wangzhumo.app.mdeia.gles.EGLCore;
+import com.wangzhumo.app.mdeia.gles.IGLRenderer;
+import com.wangzhumo.app.mdeia.gles.WindowSurface;
 
 import java.lang.ref.WeakReference;
 

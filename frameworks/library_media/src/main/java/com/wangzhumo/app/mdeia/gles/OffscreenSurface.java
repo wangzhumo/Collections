@@ -1,4 +1,4 @@
-package com.wangzhumo.app.gles;
+package com.wangzhumo.app.mdeia.gles;
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}

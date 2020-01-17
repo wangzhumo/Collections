@@ -3,7 +3,7 @@ package com.wangzhumo.app.module.opengl.image;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.wangzhumo.app.module.opengl.customgl.CustomGLSurfaceView;
+import com.wangzhumo.app.mdeia.CustomGLSurfaceView;
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}

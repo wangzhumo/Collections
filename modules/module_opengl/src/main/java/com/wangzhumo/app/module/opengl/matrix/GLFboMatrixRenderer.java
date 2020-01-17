@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-import com.wangzhumo.app.gles.Drawable2d;
-import com.wangzhumo.app.gles.GLUtils;
-import com.wangzhumo.app.gles.IGLRenderer;
-import com.wangzhumo.app.gles.Texture2dProgram;
+import com.wangzhumo.app.mdeia.gles.Drawable2d;
+import com.wangzhumo.app.mdeia.gles.GLUtils;
+import com.wangzhumo.app.mdeia.gles.IGLRenderer;
+import com.wangzhumo.app.mdeia.gles.Texture2dProgram;
 import com.wangzhumo.app.origin.utils.DensityUtils;
 import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.fbo.FboRenderer;

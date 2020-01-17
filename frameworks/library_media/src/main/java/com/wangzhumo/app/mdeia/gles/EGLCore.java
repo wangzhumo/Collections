@@ -1,4 +1,4 @@
-package com.wangzhumo.app.gles;
+package com.wangzhumo.app.mdeia.gles;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
@@ -7,7 +7,6 @@ import android.opengl.EGLContext;
 import android.opengl.EGLDisplay;
 import android.opengl.EGLExt;
 import android.opengl.EGLSurface;
-import android.opengl.GLES20;
 import android.util.Log;
 import android.view.Surface;
 

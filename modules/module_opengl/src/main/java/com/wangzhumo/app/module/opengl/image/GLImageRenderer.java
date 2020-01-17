@@ -5,10 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
-import com.wangzhumo.app.gles.Drawable2d;
-import com.wangzhumo.app.gles.IGLRenderer;
-import com.wangzhumo.app.gles.Texture2dProgram;
-import com.wangzhumo.app.gles.Transformation;
+import com.wangzhumo.app.mdeia.gles.Drawable2d;
+import com.wangzhumo.app.mdeia.gles.IGLRenderer;
+import com.wangzhumo.app.mdeia.gles.Texture2dProgram;
+import com.wangzhumo.app.mdeia.gles.Transformation;
 import com.wangzhumo.app.module.opengl.R;
 
 

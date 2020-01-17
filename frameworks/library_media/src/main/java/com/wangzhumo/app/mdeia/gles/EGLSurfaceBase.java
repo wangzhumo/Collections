@@ -1,4 +1,4 @@
-package com.wangzhumo.app.gles;
+package com.wangzhumo.app.mdeia.gles;
 
 import android.opengl.EGL14;
 import android.opengl.EGLSurface;

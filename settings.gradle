@@ -4,7 +4,7 @@ include ':frameworks:library_origin',
         ':frameworks:library_xlog',
         ':frameworks:library_circle',
         ':frameworks:library_widget',
-        ':frameworks:library_gles'
+        ':frameworks:library_media'
 
 include ':modules:module_media',
         ':modules:module_webrtc',
