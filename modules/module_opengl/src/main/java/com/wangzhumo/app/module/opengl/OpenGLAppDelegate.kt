@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media
+package com.wangzhumo.app.module.opengl
 
 import android.app.Application
 import android.util.Log
@@ -12,12 +12,12 @@ import com.wangzhumo.app.base.delegate.IAppConstant
  *
  * @author 王诛魔 2019-09-28  17:48
  */
-@IApp(name = IAppConstant.MEDIA)
+@IApp(name = IAppConstant.OPENGL)
 @AutoService(AppDelegate::class)
-class MediaAppDelegate: AppDelegate{
+class OpenGLAppDelegate: AppDelegate{
 
     override fun init(application: Application) {
-        Log.d("AppDelegate", "MediaAppDelegate = $application")
+        Log.d("AppDelegate", "OpenGLAppDelegate = $application")
     }
 
 }

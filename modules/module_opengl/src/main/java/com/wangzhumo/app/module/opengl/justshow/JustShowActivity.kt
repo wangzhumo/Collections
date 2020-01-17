@@ -48,7 +48,7 @@ class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
         Thread {
             val eglHelper = EGLCore(
                 null,
-                com.wangzhumo.app.mdeia.EGLCore.FLAG_TRY_GLES3
+                EGLCore.FLAG_TRY_GLES3
             )
             val windowSurface = WindowSurface(
                 eglHelper,

@@ -29,7 +29,7 @@
                 android:name=".targets.task1.Task1Activity"
                 android:screenOrientation="portrait" />
         <activity
-                android:name=".CppActivity"
+                android:name=".MediaActivity"
                 android:screenOrientation="portrait" />
     </application>
 

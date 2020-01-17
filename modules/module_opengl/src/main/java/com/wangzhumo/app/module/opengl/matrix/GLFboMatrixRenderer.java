@@ -30,7 +30,7 @@ public class GLFboMatrixRenderer implements IGLRenderer {
     private int bitmapTextureId;
 
     private Texture2dProgram mTexture2dProgram;
-    private com.wangzhumo.app.module.opengl.fbo.FboRenderer mFboRender;
+    private FboRenderer mFboRender;
 
     private int screenWidth, screenHeight;
     private int showWidth, showHeight;

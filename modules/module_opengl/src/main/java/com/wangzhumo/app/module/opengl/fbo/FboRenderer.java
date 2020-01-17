@@ -16,7 +16,6 @@ public class FboRenderer {
 
 
     private Drawable2d drawable2d;
-    //private final Transformation mTransformation;
     private Texture2dProgram mTexture2dProgram;
 
     public FboRenderer() {
@@ -24,18 +23,18 @@ public class FboRenderer {
     }
 
 
-    public void onCreate(){
+    public void onCreate() {
         drawable2d.createVboBuffer();
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
     }
 
 
-    public void onChange(int width,int height){
+    public void onChange(int width, int height) {
         GLES20.glViewport(0, 0, width, height);
     }
 
 
-    public void onDraw(int textureId){
+    public void onDraw(int textureId) {
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
