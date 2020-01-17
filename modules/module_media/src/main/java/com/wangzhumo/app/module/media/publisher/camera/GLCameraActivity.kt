@@ -1,12 +1,8 @@
 package com.wangzhumo.app.module.media.publisher.camera
 
-import android.graphics.SurfaceTexture
 import android.os.Bundle
-import android.view.SurfaceHolder
-import android.view.TextureView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.mdeia.CameraManager
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_glcamera.*

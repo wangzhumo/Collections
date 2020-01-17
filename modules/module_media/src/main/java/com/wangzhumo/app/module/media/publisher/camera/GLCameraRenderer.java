@@ -46,6 +46,7 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_EXT);
         //创建一个OES纹理
         mTextureOESId = mTexture2dProgram.createTextureObject();
+        // FIXME: 2020-01-17 
         GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, mTextureOESId);
         //绑定这个 OES纹理与 SurfaceTexture
         mCameraTexture = new SurfaceTexture(mTextureOESId);
