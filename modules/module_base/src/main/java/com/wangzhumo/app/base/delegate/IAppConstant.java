@@ -15,6 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface IAppConstant {
     String BASE = "app_base";
     String MEDIA = "app_media";
+    String OPENGL = "app_opengl";
     String WEBRTC = "app_webrtc";
     String PLAYGROUND = "app_playground";
 }

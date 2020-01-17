@@ -1,12 +1,17 @@
 package com.wangzhumo.app.module.media
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
+import com.wangzhumo.app.module.media.model.ActivityItem
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_cpp.*
+import com.wangzhumo.app.widget.rv.OffsetItemDecoration
+import com.wangzhumo.app.widget.rv.OnItemActionListener
+import kotlinx.android.synthetic.main.activity_media_main.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -15,50 +20,41 @@ import kotlinx.android.synthetic.main.activity_cpp.*
  *
  * CPP TEST
  */
-@Route(path = IRoute.JNI_CPP)
-class CppActivity : BaseActivity() {
+@Route(path = IRoute.MEDIA_MAIN)
+class MediaActivity : BaseActivity() , OnItemActionListener {
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_cpp
+        return R.layout.activity_media_main
     }
 
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        button_task1.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_1)
-                .navigation()
-            finish()
-        }
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(OffsetItemDecoration(this,5,0,5,0))
+        val mAdapter = MultiTypeAdapter()
+        val itemData = create()
 
-        button_task2.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_2)
-                .navigation()
-            finish()
-        }
+        mAdapter.register(ActivityItem::class,ActivityListBinder(this))
+        recyclerView.adapter = mAdapter
+        mAdapter.items = itemData
+        mAdapter.notifyDataSetChanged()
 
-        button_task3.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_OPENGL_CAMERA)
-                .navigation()
-            finish()
-        }
+    }
 
-        button_task4.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_TASK_4)
-                .navigation()
-            finish()
-        }
+    private fun create() : List<ActivityItem>{
+        return mutableListOf(
+            ActivityItem(
+                "Camera GL",
+                "使用GL预览Camera",
+                IRoute.OPENGL.JUST_SHOW
+            )
+        )
+    }
 
-        button_task5.setOnClickListener {
-            ARouter.getInstance()
-                .build(IRoute.MEDIA_OPENGL_TRIANGLE)
-                .navigation()
-            finish()
-        }
-
+    override fun onAction(what: Int, any: Any?) {
+        ARouter.getInstance()
+            .build((any as ActivityItem).path)
+            .navigation()
     }
 }

@@ -21,7 +21,7 @@ class SoundPoolUtils private constructor() {
 
     fun play(context: Context){
         mSoundPool.load(context, R.raw.game_all_give_up_challege_sound, 1)
-        mSoundPool.setOnLoadCompleteListener { soundPool, sampleId, status ->
+        mSoundPool.setOnLoadCompleteListener { _, sampleId, _ ->
             mSoundPool.play(sampleId,1F,1F,0,-1,1F)
 
             Log.d("","com.wangzhumo.app.utils.SoundPoolUtils","play",27,"")
