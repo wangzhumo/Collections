@@ -20,6 +20,4 @@ class MediaAppDelegate: AppDelegate{
         Log.d("AppDelegate", "MediaAppDelegate = $application")
     }
 
-
-
 }

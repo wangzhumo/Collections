@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media
+package com.wangzhumo.app.module.media.model
 
 import com.wangzhumo.app.base.IRoute
 import java.util.ArrayList

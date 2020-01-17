@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.opengl
+package com.wangzhumo.app.module.media
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewBinder
-import com.wangzhumo.app.module.opengl.module.ActivityItem
+import com.wangzhumo.app.module.media.model.ActivityItem
 import com.wangzhumo.app.widget.rv.OnItemActionListener
 
 /**
@@ -35,6 +35,6 @@ class ActivityListBinder(val listener: OnItemActionListener) : ItemViewBinder<Ac
         inflater: LayoutInflater,
         parent: ViewGroup
     ): ActItemViewHolder {
-        return ActItemViewHolder(inflater.inflate(R.layout.item_opengl_act_item,parent,false))
+        return ActItemViewHolder(inflater.inflate(R.layout.item_media_act_item,parent,false))
     }
 }
