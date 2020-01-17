@@ -47,7 +47,7 @@ class MediaActivity : BaseActivity() , OnItemActionListener {
             ActivityItem(
                 "Camera GL",
                 "使用GL预览Camera",
-                IRoute.OPENGL.JUST_SHOW
+                IRoute.MEDIA.CAMERA_SHOW
             )
         )
     }

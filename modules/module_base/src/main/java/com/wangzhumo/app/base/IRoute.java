@@ -28,6 +28,10 @@ public interface IRoute {
     String MEDIA_OPENGL_TRIANGLE = "/media/activity/opengl_triangle";
     String MEDIA_OPENGL_RECORD = "/media/activity/record";
 
+    interface MEDIA{
+        String CAMERA_SHOW = "/media/camera";
+
+    }
 
     String OPENGL_LIST = "/opengl/main";
     interface OPENGL{
