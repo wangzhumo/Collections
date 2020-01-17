@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
 
@@ -26,13 +27,20 @@ android {
     }
 }
 
-
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(":library_origin")
-    api project(":library_widget")
-    api project(":library_circle")
-    kapt deps.auto_server
+    testImplementation 'junit:junit:4.12'
+    implementation deps.stdlib
+    implementation deps.androidx.dynamicanimation
+    implementation deps.androidx.constraint
+    implementation deps.androidx.appCompat
+    implementation project(":modules:module_base")
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    kapt deps.arouter.compiler
 }
-

@@ -1,15 +1,13 @@
 include ':app'
 
-include ':library_xlog'
+include ':frameworks:library_origin',
+        ':frameworks:library_xlog',
+        ':frameworks:library_circle',
+        ':frameworks:library_widget',
+        ':frameworks:library_gles'
 
-include ':library_origin',
-        ':library_circle',
-        ':library_widget',
-        ':library_gles'
-
-include ':module_media',
-        ':module_webrtc',
-        ':module_base',
-        ':module_playground',
-        ':module_gift',
-        ':module_opengl'
+include ':modules:module_media',
+        ':modules:module_webrtc',
+        ':modules:module_base',
+        ':modules:module_playground',
+        ':modules:module_opengl'

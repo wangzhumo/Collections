@@ -57,7 +57,7 @@ dependencies {
     api deps.xLog
     api deps.bugly_native
     api deps.auto_server_annotations
-    api project(':library_xlog')
+    api project(':frameworks:library_xlog')
     //api deps.epoxy
 }
 
