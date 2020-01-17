@@ -1,11 +1,9 @@
 package com.wangzhumo.app.module.media.publisher.camera;
 
-import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 
 import com.wangzhumo.app.mdeia.gles.Drawable2d;
-import com.wangzhumo.app.mdeia.gles.GLUtils;
 import com.wangzhumo.app.mdeia.gles.IGLRenderer;
 import com.wangzhumo.app.mdeia.gles.Texture2dProgram;
 import com.wangzhumo.app.origin.utils.AppUtils;
@@ -17,7 +15,6 @@ import com.wangzhumo.app.origin.utils.DensityUtils;
  * @author 王诛魔 2020-01-17  14:30
  */
 public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAvailableListener {
-    private Context mContext;
 
     private Drawable2d drawable2d;
 
@@ -34,7 +31,7 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
 
     public GLCameraRenderer() {
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
-        //Renderer
+        this.mFboRender = new FboRenderer();
         this.screenWidth = DensityUtils.getScreenWidth(AppUtils.getContext());
         this.screenHeight = DensityUtils.getScreenHeight(AppUtils.getContext());
     }
@@ -72,10 +69,6 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         if (mCameraTexture != null) {
             mCameraTexture.updateTexImage();
         }
-
-        //绑定FBO
-        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
-
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
@@ -83,16 +76,18 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         //使用程序
         GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
+
         //设置矩阵
-        GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
+        //GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
 
         //绑定纹理
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureOESId);
+        //GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        //GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureOESId);
 
+        //绑定FBO
+        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
         //绑定使用vbo
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, drawable2d.vboId);
-
         //取用vbo信息
         GLES20.glEnableVertexAttribArray(mTexture2dProgram.aPosition);
         GLES20.glVertexAttribPointer(

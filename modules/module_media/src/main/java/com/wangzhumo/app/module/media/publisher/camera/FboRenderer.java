@@ -24,8 +24,8 @@ public class FboRenderer {
 
 
     public void onCreate(){
-        drawable2d.createVboBuffer();
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_2D);
+        drawable2d.createVboBuffer();
     }
 
 

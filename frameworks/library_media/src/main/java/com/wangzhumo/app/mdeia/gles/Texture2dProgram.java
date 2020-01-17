@@ -55,7 +55,7 @@ public class Texture2dProgram {
             case TEXTURE_EXT:
                 mTextureTarget = GLES11Ext.GL_TEXTURE_EXTERNAL_OES;
                 mProgramHandle = GLUtils.linkProgram(
-                        RawUtils.readResource(R.raw.gles_vertex_shader_matrix),
+                        RawUtils.readResource(R.raw.gles_vertex_shader),
                         RawUtils.readResource(R.raw.gles_fragment_oes_shader)
                 );
                 break;
