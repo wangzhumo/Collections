@@ -67,9 +67,8 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
 
     @Override
     public void drawFrame() {
-        if (mCameraTexture != null) {
-            mCameraTexture.updateTexImage();
-        }
+        mCameraTexture.updateTexImage();
+
         //清屏
         GLES20.glClearColor(0F, 0F, 1F, 0.4F);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
