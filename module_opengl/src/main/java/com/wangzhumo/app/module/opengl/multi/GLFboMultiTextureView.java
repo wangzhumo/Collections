@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.wangzhumo.app.module.opengl.customgl.CustomGLSurfaceView;
-import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
+import com.wangzhumo.app.gles.IGLRenderer;
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}

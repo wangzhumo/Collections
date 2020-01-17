@@ -8,9 +8,10 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.wangzhumo.app.module.opengl.gles.EGLCore;
-import com.wangzhumo.app.module.opengl.gles.IGLRenderer;
-import com.wangzhumo.app.module.opengl.gles.WindowSurface;
+
+import com.wangzhumo.app.gles.EGLCore;
+import com.wangzhumo.app.gles.IGLRenderer;
+import com.wangzhumo.app.gles.WindowSurface;
 
 import java.lang.ref.WeakReference;
 

@@ -4,6 +4,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.wangzhumo.app.origin.utils.RawUtils;
+
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
