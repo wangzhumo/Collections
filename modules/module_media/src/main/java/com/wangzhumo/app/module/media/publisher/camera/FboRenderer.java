@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.opengl.fbo;
+package com.wangzhumo.app.module.media.publisher.camera;
 
 import android.opengl.GLES20;
 
@@ -16,7 +16,6 @@ public class FboRenderer {
 
 
     private Drawable2d drawable2d;
-    //private final Transformation mTransformation;
     private Texture2dProgram mTexture2dProgram;
 
     public FboRenderer() {

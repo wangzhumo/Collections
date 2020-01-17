@@ -53,6 +53,7 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":modules:module_base")
+    implementation project(":frameworks:library_media")
     implementation deps.androidx.constraint
     implementation(deps.androidx.camera_core) {
         exclude group: 'androidx.core', module: 'core'

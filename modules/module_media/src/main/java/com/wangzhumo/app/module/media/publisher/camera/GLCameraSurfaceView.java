@@ -1,4 +1,4 @@
-package com.wangzhumo.app.module.media.publisher;
+package com.wangzhumo.app.module.media.publisher.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -24,5 +24,6 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView {
 
     public GLCameraSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setRenderer(new GLCameraRenderer());
     }
 }
