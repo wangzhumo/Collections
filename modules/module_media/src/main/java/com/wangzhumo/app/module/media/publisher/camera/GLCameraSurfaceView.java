@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.media.publisher.camera;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.hardware.display.DisplayManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -71,6 +72,12 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
 
     public void switchCamera() {
         if (mRenderer != null && cameraManager != null) {
+            //通知渲染
+            if (cameraManager.getCameraId() == Camera.CameraInfo.CAMERA_FACING_BACK){
+                mRenderer.setRotation(getSurfaceRotation(),Camera.CameraInfo.CAMERA_FACING_FRONT);
+            }else {
+                mRenderer.setRotation(getSurfaceRotation(),Camera.CameraInfo.CAMERA_FACING_BACK);
+            }
             cameraManager.switchCamera();
         }
     }
