@@ -70,7 +70,9 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
     }
 
     public void switchCamera() {
-        cameraManager.switchCamera();
+        if (mRenderer != null && cameraManager != null) {
+            cameraManager.switchCamera();
+        }
     }
 
     @Override
@@ -112,12 +114,16 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
     private int getDisplaySurfaceRotation(Display display) {
         switch (display.getRotation()) {
             case Surface.ROTATION_0:
+                Log.e(EGLCore.TAG, "翻转 0");
                 return 0;
             case Surface.ROTATION_90:
+                Log.e(EGLCore.TAG, "翻转 90");
                 return 90;
             case Surface.ROTATION_180:
+                Log.e(EGLCore.TAG, "翻转 180");
                 return 180;
             case Surface.ROTATION_270:
+                Log.e(EGLCore.TAG, "翻转 270");
                 return 270;
             default:
                 return 0;

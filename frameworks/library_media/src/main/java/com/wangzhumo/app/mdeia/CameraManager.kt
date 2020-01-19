@@ -28,7 +28,7 @@ class CameraManager(ctx :Context) {
     var width = 0
     var height = 0
 
-    var cameraId = Camera.CameraInfo.CAMERA_FACING_BACK
+    var cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
 
     init {
         width = DensityUtils.getScreenWidth(ctx)
@@ -80,16 +80,16 @@ class CameraManager(ctx :Context) {
             Camera.getCameraInfo(index, cameraInfo)
             if (cameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
                 if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT){
+                    cameraId = index
                     stopCamera()
                     startCamera(index)
-                    cameraId = index
                     break
                 }
             }else{
                 if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK){
+                    cameraId = index
                     stopCamera()
                     startCamera(index)
-                    cameraId = index
                     break
                 }
             }

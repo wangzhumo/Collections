@@ -1,7 +1,7 @@
 package com.wangzhumo.app.module.media.publisher.camera;
 
-import android.graphics.Camera;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
@@ -39,7 +39,6 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
         this.screenWidth = DensityUtils.getScreenWidth(AppUtils.getContext());
         this.screenHeight = DensityUtils.getScreenHeight(AppUtils.getContext());
-        //Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX, 0);
     }
 
     @Override
@@ -69,6 +68,7 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
         mFboRender.onChange(width, height);
         GLES20.glViewport(0, 0, width, height);
         //applyMatrix();
+
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
         GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
         //设置矩阵
-        //GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
+        GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
 
         //绑定纹理
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -134,7 +134,7 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
     /**
      * 当前屏幕的旋转状态.
      */
-    public void setRotation(int rotation,int cameraId) {
+    public void setRotation(int rotation, int cameraId) {
         this.mRotationValue = rotation;
         this.mCameraId = cameraId;
         applyMatrix();
@@ -146,14 +146,31 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
     private void applyMatrix() {
         Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX, 0);
         if (mRotationValue == 0) {
-            Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,90F,0F,0F,1F);
-            Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,1F);
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,-90F,0F,0F,1F);
+            }else {
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,0F);
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,90F,0F,0F,1F);
+            }
         } else if (mRotationValue == 90) {
-
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,0F);
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,0F,1F,0F);
+            }else {
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,0F);
+            }
         } else if (mRotationValue == 180) {
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
 
+            }else {
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,0F);
+            }
         } else if (mRotationValue == 270) {
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
 
+            }else {
+                Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,0F,1F,0F);
+            }
         }
     }
 

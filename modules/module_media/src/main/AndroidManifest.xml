@@ -3,23 +3,11 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
-        <activity android:name=".publisher.camera.GLCameraActivity"></activity>
-        <activity android:name=".opengl.record.RecordWithOpenglActivity" />
-        <activity
-                android:name=".opengl.picture.PictureActivity"
-                android:hardwareAccelerated="true" />
-        <activity
-                android:name=".opengl.triangle.TriangleActivity"
-                android:hardwareAccelerated="true" />
+        <activity android:name=".publisher.camera.GLCameraActivity" />
         <activity
                 android:name=".targets.task4.Task4Activity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
                 android:hardwareAccelerated="true" />
-        <activity
-                android:name=".opengl.camera.CameraActivity"
-                android:hardwareAccelerated="true" />
-        <activity
-                android:name=".opengl.opengl1.OpenGL1Activity"
-                android:screenOrientation="portrait" />
         <activity
                 android:name=".targets.task3.Task3Activity"
                 android:screenOrientation="portrait" />
