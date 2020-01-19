@@ -97,8 +97,7 @@ class AutoFitPreviewBuilder private constructor(
         }
 
         // Every time the orientation of device changes, recompute layout
-        displayManager =
-            viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        displayManager = viewFinder.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         displayManager.registerDisplayListener(displayListener, null)
 
         // Remove the display listeners when the view is detached to avoid

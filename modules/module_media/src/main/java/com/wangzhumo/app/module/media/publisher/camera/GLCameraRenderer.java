@@ -1,7 +1,9 @@
 package com.wangzhumo.app.module.media.publisher.camera;
 
+import android.graphics.Camera;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
 
 import com.wangzhumo.app.mdeia.gles.Drawable2d;
 import com.wangzhumo.app.mdeia.gles.GLUtils;
@@ -15,7 +17,7 @@ import com.wangzhumo.app.origin.utils.DensityUtils;
  *
  * @author 王诛魔 2020-01-17  14:30
  */
-public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAvailableListener {
+public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvailableListener {
 
     private Drawable2d drawable2d;
 
@@ -29,12 +31,15 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
 
     private int screenWidth, screenHeight;
     private int showWidth, showHeight;
+    private int mRotationValue = 0;
+    private int mCameraId;
 
     public GLCameraRenderer() {
         this.mFboRender = new FboRenderer();
         this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
         this.screenWidth = DensityUtils.getScreenWidth(AppUtils.getContext());
         this.screenHeight = DensityUtils.getScreenHeight(AppUtils.getContext());
+        //Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX, 0);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         mCameraTexture.setOnFrameAvailableListener(this);
         //解除绑定
         GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, 0);
-        if (createListener != null){
+        if (createListener != null) {
             createListener.onSurfaceTexture(mCameraTexture);
         }
     }
@@ -63,6 +68,7 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
     public void onSurfaceChange(int width, int height) {
         mFboRender.onChange(width, height);
         GLES20.glViewport(0, 0, width, height);
+        //applyMatrix();
     }
 
     @Override
@@ -125,11 +131,37 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
     }
 
 
+    /**
+     * 当前屏幕的旋转状态.
+     */
+    public void setRotation(int rotation,int cameraId) {
+        this.mRotationValue = rotation;
+        this.mCameraId = cameraId;
+        applyMatrix();
+    }
+
+    /**
+     * 设置opengl 的旋转
+     */
+    private void applyMatrix() {
+        Matrix.setIdentityM(GLUtils.IDENTITY_MATRIX, 0);
+        if (mRotationValue == 0) {
+            Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,90F,0F,0F,1F);
+            Matrix.rotateM(GLUtils.IDENTITY_MATRIX,0,180F,1F,0F,1F);
+        } else if (mRotationValue == 90) {
+
+        } else if (mRotationValue == 180) {
+
+        } else if (mRotationValue == 270) {
+
+        }
+    }
+
     public void setSurfaceCreateListener(OnSurfaceCreateListener createListener) {
         this.createListener = createListener;
     }
 
-    public interface OnSurfaceCreateListener{
+    public interface OnSurfaceCreateListener {
         //内部创建的SurfaceTexture可用
         void onSurfaceTexture(SurfaceTexture surfaceTexture);
     }
