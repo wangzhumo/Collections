@@ -31,10 +31,10 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView  implements GLCamer
 
     public GLCameraSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mRenderer = new GLCameraRenderer();
         cameraManager = new CameraManager(getContext());
-        setRenderer(mRenderer);
+        mRenderer = new GLCameraRenderer();
         mRenderer.setSurfaceCreateListener(this);
+        setRenderer(mRenderer);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 
 import com.wangzhumo.app.mdeia.gles.Drawable2d;
+import com.wangzhumo.app.mdeia.gles.GLUtils;
 import com.wangzhumo.app.mdeia.gles.IGLRenderer;
 import com.wangzhumo.app.mdeia.gles.Texture2dProgram;
 import com.wangzhumo.app.origin.utils.AppUtils;
@@ -30,8 +31,8 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
     private int showWidth, showHeight;
 
     public GLCameraRenderer() {
-        this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
         this.mFboRender = new FboRenderer();
+        this.drawable2d = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
         this.screenWidth = DensityUtils.getScreenWidth(AppUtils.getContext());
         this.screenHeight = DensityUtils.getScreenHeight(AppUtils.getContext());
     }
@@ -46,17 +47,16 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         mTexture2dProgram = new Texture2dProgram(Texture2dProgram.ProgramType.TEXTURE_EXT);
         //创建一个OES纹理
         mTextureOESId = mTexture2dProgram.createTextureObject();
-        // FIXME: 2020-01-17 
         GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, mTextureOESId);
         //绑定这个 OES纹理与 SurfaceTexture
         mCameraTexture = new SurfaceTexture(mTextureOESId);
         //添加纹理可用的监听
         mCameraTexture.setOnFrameAvailableListener(this);
+        //解除绑定
+        GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, 0);
         if (createListener != null){
             createListener.onSurfaceTexture(mCameraTexture);
         }
-        //解除绑定
-        GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, 0);
     }
 
     @Override
@@ -76,16 +76,15 @@ public class GLCameraRenderer implements IGLRenderer , SurfaceTexture.OnFrameAva
         //使用程序
         GLES20.glUseProgram(mTexture2dProgram.mProgramHandle);
 
-
         //设置矩阵
         //GLES20.glUniformMatrix4fv(mTexture2dProgram.uMVPMatrix, 1, false, GLUtils.IDENTITY_MATRIX, 0);
 
         //绑定纹理
-        //GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        //GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureOESId);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureOESId);
 
         //绑定FBO
-        GLES20.glBindFramebuffer(GLES20.GL_RENDERBUFFER, drawable2d.fboId);
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, drawable2d.fboId);
         //绑定使用vbo
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, drawable2d.vboId);
         //取用vbo信息
