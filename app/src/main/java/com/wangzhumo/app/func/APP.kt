@@ -16,6 +16,9 @@ import com.tencent.bugly.crashreport.CrashReport.UserStrategy
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
 import com.wangzhumo.app.base.delegate.AppDelegateFactory
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 
 /**
@@ -32,6 +35,23 @@ class APP : Application() {
         super.onCreate()
         Log.d("AppDelegate","Application - onCreate")
         AppDelegateFactory.getInstance().startLoadAppDelegate(this)
+
+        initFlutter(this);
+    }
+
+    private fun initFlutter(app: APP) {
+        // Instantiate a FlutterEngine.
+        val flutterEngine = FlutterEngine(app)
+
+        // Start executing Dart code to pre-warm the FlutterEngine.
+        flutterEngine.getDartExecutor().executeDartEntrypoint(
+            DartExecutor.DartEntrypoint.createDefault()
+        )
+
+        // Cache the FlutterEngine to be used by FlutterActivity.
+        FlutterEngineCache
+            .getInstance()
+            .put("engine_id", flutterEngine);
     }
 
 }

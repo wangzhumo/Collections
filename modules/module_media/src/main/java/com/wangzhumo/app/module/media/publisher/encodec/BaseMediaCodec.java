@@ -1,9 +1,7 @@
 package com.wangzhumo.app.module.media.publisher.encodec;
 
-import android.util.Log;
 import android.view.Surface;
 
-import com.wangzhumo.app.mdeia.CustomGLSurfaceView;
 import com.wangzhumo.app.mdeia.gles.EGLCore;
 import com.wangzhumo.app.mdeia.gles.WindowSurface;
 
