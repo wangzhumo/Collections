@@ -71,5 +71,7 @@ dependencies {
     debugImplementation deps.flutter.debug
     profileImplementation deps.flutter.profile
     releaseImplementation deps.flutter.release
+
+
     testImplementation 'junit:junit:4.12'
 }
