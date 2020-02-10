@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.origin.BaseActivity
-import io.flutter.embedding.android.FlutterActivity
+//import io.flutter.embedding.android.FlutterActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -19,11 +19,11 @@ class MainActivity : BaseActivity() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        bt_flutter.setOnClickListener {
-            startActivity(
-                FlutterActivity.createDefaultIntent(this)
-            )
-        }
+//        bt_flutter.setOnClickListener {
+//            startActivity(
+//                FlutterActivity.createDefaultIntent(this)
+//            )
+//        }
 
         bt_media.setOnClickListener {
             ARouter.getInstance()

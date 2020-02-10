@@ -68,9 +68,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     kapt deps.arouter.compiler
-    debugImplementation deps.flutter.debug
-    profileImplementation deps.flutter.profile
-    releaseImplementation deps.flutter.release
+//    debugImplementation deps.flutter.debug
+//    profileImplementation deps.flutter.profile
+//    releaseImplementation deps.flutter.releaseImplementation
 
 
     testImplementation 'junit:junit:4.12'
