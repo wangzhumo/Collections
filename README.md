@@ -2,7 +2,6 @@
 
 some android project collections
 
->test 
 
 ## Introduction
 

@@ -22,8 +22,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="Flutter Go."
+            android:text="Flutter Go"
             app:layout_constraintBottom_toTopOf="@+id/bt_media"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:id="@+id/bt_opengl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OpenGL Go"
+            app:layout_constraintBottom_toTopOf="@+id/bt_flutter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -191,7 +191,6 @@ public class CustomGLSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         @Override
         public void run() {
             super.run();
-
             //初始化WzmGLThread
             mWindowSurface = new WindowSurface(
                     glSurfaceView.get().mEglCore,

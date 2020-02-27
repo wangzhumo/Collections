@@ -31,6 +31,13 @@ class MainActivity : BaseActivity() {
                 .navigation()
             finish()
         }
+
+        bt_opengl.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.OPENGL_LIST)
+                .navigation()
+            finish()
+        }
     }
 
 
