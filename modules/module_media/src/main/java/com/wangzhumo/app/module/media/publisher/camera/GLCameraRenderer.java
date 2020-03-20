@@ -59,7 +59,7 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
         //解除绑定
         GLES20.glBindTexture(mTexture2dProgram.mTextureTarget, 0);
         if (createListener != null) {
-            createListener.onSurfaceTexture(mCameraTexture);
+            createListener.onSurfaceTexture(mCameraTexture,mTextureOESId);
         }
     }
 
@@ -180,6 +180,6 @@ public class GLCameraRenderer implements IGLRenderer, SurfaceTexture.OnFrameAvai
 
     public interface OnSurfaceCreateListener {
         //内部创建的SurfaceTexture可用
-        void onSurfaceTexture(SurfaceTexture surfaceTexture);
+        void onSurfaceTexture(SurfaceTexture surfaceTexture,int textureId);
     }
 }
