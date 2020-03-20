@@ -4,12 +4,14 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
+import android.util.Log;
 import android.view.Surface;
 
 import com.wangzhumo.app.mdeia.gles.EGLCore;
 import com.wangzhumo.app.mdeia.gles.IGLRenderer;
 import com.wangzhumo.app.mdeia.gles.WindowSurface;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
@@ -101,6 +103,12 @@ public abstract class BaseMediaCodec {
     }
 
     /**
+     * 子类必须提供一个TextureId
+     * @return id
+     */
+    public abstract int getTextureId();
+
+    /**
      * 开始录制.
      * 开启线程,渲染并且录制.
      */
@@ -151,13 +159,11 @@ public abstract class BaseMediaCodec {
         try {
             bufferInfo = new MediaCodec.BufferInfo();
 
-            mediaFormat = new MediaFormat();
+            mediaFormat = MediaFormat.createVideoFormat(mimeType, width, height);
             //设置参数.
             //输入为sufrace
             mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
             //设置码率(此处最大的  width * height = 像素的数量     * 4的原因是 ARGB)
-            mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 4);
-            //设置关键帧
             mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 4);
             //设置帧率
             mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
@@ -233,25 +239,32 @@ public abstract class BaseMediaCodec {
             isStart = false;
             lockObj = new Object();
             eglCore = new EGLCore(codecWeak.get().mEGLCore.getEGLContext(),EGLCore.FLAG_RECORDABLE);
-
+            // TODO: 2020/3/19  初始化WzmGLThread
+            mWindowSurface = new WindowSurface(
+                    eglCore,
+                    codecWeak.get().mSurface,
+                    true);
+            mWindowSurface.makeCurrent();
             //开启循环
             while(true){
                 //判断渲染模式
-                if (mRenderMode == RENDERMODE_WHEN_DIRTY) {
-                    //手动刷新
-                    synchronized (lockObj) {
+                if (isStart){
+                    if (mRenderMode == RENDERMODE_WHEN_DIRTY) {
+                        //手动刷新
+                        synchronized (lockObj) {
+                            try {
+                                lockObj.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        //自动刷新
                         try {
-                            lockObj.wait();
+                            Thread.sleep(1000 / 60);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }
-                } else {
-                    //自动刷新
-                    try {
-                        Thread.sleep(1000 / 60);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
 
@@ -272,19 +285,13 @@ public abstract class BaseMediaCodec {
                     release();
                     break;
                 }
+                isStart = true;
             }
         }
         /**
          * 进入 surfaceCreate
          */
         private void create() {
-            // TODO: 2020/3/19  初始化WzmGLThread
-            mWindowSurface = new WindowSurface(
-                    codecWeak.get().mEGLCore,
-                    codecWeak.get().mSurface,
-                    true);
-            mWindowSurface.makeCurrent();
-
             //回调onSurfaceCreate
             if (codecWeak.get() != null && codecWeak.get().mRenderer != null) {
                 alreadyCreate = true;
@@ -355,9 +362,6 @@ public abstract class BaseMediaCodec {
          * release
          */
         public void release() {
-            if (lockObj != null) {
-                lockObj.notifyAll();
-            }
             if (mWindowSurface != null) {
                 mWindowSurface.releaseEglSurface();
                 mWindowSurface.release();
@@ -379,8 +383,14 @@ public abstract class BaseMediaCodec {
         private MediaFormat mediaFormat;
         private MediaCodec.BufferInfo bufferInfo;
 
+        private MediaMuxer mediaMuxer;
+
         //退出.
         private boolean shouldExit;
+
+        //视屏index
+        private int videoTrackIndex;
+        private long pts;
 
 
         public VideoCodecThread(BaseMediaCodec codecWeakReference) {
@@ -388,6 +398,7 @@ public abstract class BaseMediaCodec {
             this.mediaCodec = codecWeakReference.mediaCodec;
             this.mediaFormat = codecWeakReference.mediaFormat;
             this.bufferInfo = codecWeakReference.bufferInfo;
+            this.mediaMuxer = codecWeakReference.mediaMuxer;
         }
 
 
@@ -401,32 +412,56 @@ public abstract class BaseMediaCodec {
             while (true) {
                 //结束.
                 if (shouldExit) {
+                    //停止循环
                     mediaCodec.stop();
                     mediaCodec.release();
-                    //停止循环
+
+                    mediaMuxer.stop();
+                    mediaMuxer.release();
+
+                    Log.e("Record", "录制完成");
                     break;
                 }
 
                 //立即返回一个outputBuffer的信息.
                 //Returns the index of an output buffer that has been successfully
                 int outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 0);
-                //获取到这个buffer中的所有信息,有可能一次取不完
-                while (outputBufferIndex >= 0){
-                    //获取一个buffer
-                    //Returns a read-only ByteBuffer for a dequeued output buffer index
-                    ByteBuffer outputBuffer = mediaCodec.getOutputBuffer(outputBufferIndex);
 
-                    //根据bufferInfo中的信息操作.
-                    outputBuffer.position(bufferInfo.offset);   //设置偏移的量.
-                    outputBuffer.limit(bufferInfo.offset + bufferInfo.size);
+                //需要对mediaMuxer进行设置
+                if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED){
+                    //此时设置给
+                    videoTrackIndex = mediaMuxer.addTrack(mediaCodec.getOutputFormat());
+                    mediaMuxer.start();
+                }else {
+                    //获取到这个buffer中的所有信息,有可能一次取不完
+                    while (outputBufferIndex >= 0){
+                        //获取一个buffer
+                        //Returns a read-only ByteBuffer for a dequeued output buffer index
+//                        ByteBuffer outputBuffer = mediaCodec.getOutputBuffer(outputBufferIndex);
+                        ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outputBufferIndex];
 
-                    // TODO: 2020/3/19 编码
+                        //根据bufferInfo中的信息操作.
+                        outputBuffer.position(bufferInfo.offset);   //设置偏移的量.
+                        outputBuffer.limit(bufferInfo.offset + bufferInfo.size);
 
-                    //释放资源
-                    mediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+                        // TODO: 2020/3/19 编码
+                        if (pts == 0){
+                            //此时记录初始的presentationTimeUs,而后bufferInfo中的会自增,
+                            // 只要减去初始值,就是一个较小的pts了
+                            pts = bufferInfo.presentationTimeUs;
+                        }
+                        //写入数据
+                        bufferInfo.presentationTimeUs = bufferInfo.presentationTimeUs - pts;
+                        mediaMuxer.writeSampleData(videoTrackIndex, outputBuffer, bufferInfo);
 
-                    //重新获取output中的信息.
-                    outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 0);
+                        Log.e("Record", "录制时间 : " + bufferInfo.presentationTimeUs / 100000);
+
+                        //释放资源
+                        mediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+
+                        //重新获取output中的信息.
+                        outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 0);
+                    }
                 }
             }
         }
