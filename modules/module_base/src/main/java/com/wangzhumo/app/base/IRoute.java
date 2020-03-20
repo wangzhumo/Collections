@@ -24,6 +24,7 @@ public interface IRoute {
 
     interface MEDIA{
         String CAMERA_SHOW = "/media/camera";
+        String CAMERA_RECORD = "/media/record";
 
     }
 

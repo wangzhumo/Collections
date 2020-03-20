@@ -3,6 +3,9 @@
         package="com.wangzhumo.app.module.media">
 
     <application>
+        <activity
+                android:name=".publisher.encodec.RecordActivity"
+                android:screenOrientation="portrait" />
         <activity android:name=".publisher.camera.GLCameraActivity" />
         <activity
                 android:name=".targets.task4.Task4Activity"
