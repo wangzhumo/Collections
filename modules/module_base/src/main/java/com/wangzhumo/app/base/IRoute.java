@@ -37,6 +37,12 @@ public interface IRoute {
         String IMAGE_TEXTURE_MULTI = "/opengl/multi";
     }
 
+    interface CPPGLES{
+        String CPP_GLES = "/cpp_gles";
+
+    }
+
+
     String FRAME_ACTIVITY = "/activity/framelayout";
 
 
