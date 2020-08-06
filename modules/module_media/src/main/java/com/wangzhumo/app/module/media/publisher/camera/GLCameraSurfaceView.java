@@ -28,6 +28,7 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
     private CameraManager cameraManager;
     private DisplayManager displayManager;
     private int mRotation = 0;
+    private int textureId = -1;
 
     public GLCameraSurfaceView(Context context) {
         this(context, null);
@@ -56,9 +57,10 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
     }
 
     @Override
-    public void onSurfaceTexture(SurfaceTexture surfaceTexture) {
+    public void onSurfaceTexture(SurfaceTexture surfaceTexture,int textureId) {
         Log.d(EGLCore.TAG, "onSurfaceTextureCreate   打开相机预览");
         cameraManager.startCamera(surfaceTexture);
+        this.textureId = textureId;
     }
 
     @Override
@@ -135,6 +137,10 @@ public class GLCameraSurfaceView extends CustomGLSurfaceView implements GLCamera
             default:
                 return 0;
         }
+    }
+
+    public int getTextureId() {
+        return textureId;
     }
 }
 

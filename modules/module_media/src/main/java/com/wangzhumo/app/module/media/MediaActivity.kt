@@ -48,6 +48,11 @@ class MediaActivity : BaseActivity() , OnItemActionListener {
                 "Camera GL",
                 "使用GL预览Camera",
                 IRoute.MEDIA.CAMERA_SHOW
+            ),
+            ActivityItem(
+                "Record Camrea",
+                "使用MediaCodec录制视频",
+                IRoute.MEDIA.CAMERA_RECORD
             )
         )
     }
