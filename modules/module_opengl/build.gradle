@@ -12,8 +12,15 @@ android {
         versionCode 1
         versionName VERSION_NAME
 
-        ndk {
-            abiFilters "armeabi-v7a"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11 -frtti -fexceptions"
+                abiFilters 'armeabi-v7a'
+            }
+
+            ndk{
+                abiFilters "armeabi-v7a"
+            }
         }
     }
 
@@ -22,11 +29,28 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         profile {
             initWith debug
         }
     }
 
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JDK_VERSION
@@ -47,6 +71,7 @@ dependencies {
     implementation project(":modules:module_base")
     implementation project(':frameworks:library_media')
     implementation deps.androidx.constraint
+    implementation deps.androidx.appCompat
     implementation(deps.androidx.camera_core) {
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.annotation', module: 'annotation'
@@ -57,8 +82,6 @@ dependencies {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
     }
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     kapt deps.arouter.compiler
     kapt deps.auto_server
     //kapt deps.epoxy_processor

@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.wangzhumo.app.module.opengl">
+    package="com.wangzhumo.app.module.opengl">
 
     <application>
-        <activity android:name=".camera.GLCameraPreviewActivity"></activity>
+        <activity android:name=".cpp.OpenGLCppActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".image.GLImageActivity"
-                android:screenOrientation="portrait" />
+            android:name=".camera.GLCameraPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".image.GLImageActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".fbo.GLFboImageActivity" />
         <activity android:name=".matrix.GLFboMatrixActivity" />
         <activity android:name=".multi.GLFboMultiActivity" />
         <activity
-                android:name=".customgl.CustomGLSurfaceActivity"
-                android:screenOrientation="portrait" />
+            android:name=".customgl.CustomGLSurfaceActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".justshow.JustShowActivity"
-                android:screenOrientation="portrait" />
+            android:name=".justshow.JustShowActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".OpenGLActivity"
-                android:screenOrientation="portrait" />
+            android:name=".OpenGLActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
