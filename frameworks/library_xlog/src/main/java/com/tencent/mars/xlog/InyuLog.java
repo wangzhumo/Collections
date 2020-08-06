@@ -52,7 +52,7 @@ public class InyuLog{
 
 
     /**
-     * close log
+     * close include.log
      */
     public static void close(){
         Log.appenderClose();

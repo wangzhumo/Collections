@@ -8,7 +8,12 @@ add_library(
         cpp/native-lib.cpp)
 
 
-# ndk官方库  log
+# Include dir
+# ${EVENT_INCLUDE_DIR}
+set(INCLUDES  ${CMAKE_SOURCE_DIR}/main/cpp/include)
+include_directories(${INCLUDES})
+
+# ndk官方库  include.log
 find_library(log-lib log)
 
 

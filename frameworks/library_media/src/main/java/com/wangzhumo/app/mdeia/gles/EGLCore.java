@@ -183,7 +183,7 @@ public class EGLCore {
                 // We're limited here -- finalizers don't run on the thread that holds
                 // the EGL state, so if a surface or context is still current on another
                 // thread we can't fully release it here.  Exceptions thrown from here
-                // are quietly discarded.  Complain in the log file.
+                // are quietly discarded.  Complain in the include.log file.
                 Log.w(TAG, "WARNING: EglCore was not explicitly released -- state may be leaked");
                 release();
             }

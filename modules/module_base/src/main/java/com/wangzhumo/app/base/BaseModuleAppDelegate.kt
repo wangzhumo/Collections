@@ -55,10 +55,10 @@ class BaseModuleAppDelegate : AppDelegate {
             .t() // Enable thread info, disabled by default
             .b()
             .build()
-        val androidPrinter: Printer = AndroidPrinter()  // Printer that print the log using android.util.Log
+        val androidPrinter: Printer = AndroidPrinter()  // Printer that print the include.log using android.util.Log
 
         XLog.init( // Initialize XLog
-            config,  // Specify the log configuration, if not specified, will use new LogConfiguration.Builder().build()
+            config,  // Specify the include.log configuration, if not specified, will use new LogConfiguration.Builder().build()
             androidPrinter  // Specify printers, if no printer is specified, AndroidPrinter(for Android)/ConsolePrinter(for java) will be used.
         )
     }

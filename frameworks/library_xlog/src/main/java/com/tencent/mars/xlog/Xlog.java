@@ -80,9 +80,9 @@ public class Xlog implements Log.LogImp {
 
 	public static native void setAppenderMode(int mode);
 
-	public static native void setConsoleLogOpen(boolean isOpen);	//set whether the console prints log
+	public static native void setConsoleLogOpen(boolean isOpen);	//set whether the console prints include.log
 
-	public static native void setErrLogOpen(boolean isOpen);	//set whether the  prints err log into a separate file
+	public static native void setErrLogOpen(boolean isOpen);	//set whether the  prints err include.log into a separate file
 
 	public static native void appenderOpen(int level, int mode, String cacheDir, String logDir, String nameprefix, int cacheDays, String pubkey);
 

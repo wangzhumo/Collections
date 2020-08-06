@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_blank.*
  * A simple [Fragment] subclass.
  *
  */
-class BlankFragment : BaseAnimFragment() {
+public class BlankFragment : BaseAnimFragment() {
 
     var dampingProgress: Float = SpringForce.DAMPING_RATIO_NO_BOUNCY
     var stiffnessProgress: Float = SpringForce.STIFFNESS_VERY_LOW

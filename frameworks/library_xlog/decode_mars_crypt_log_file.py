@@ -65,8 +65,8 @@ def IsGoodLogBuffer(_buffer, _offset, count):
 
     if _offset + headerLen + 1 + 1 > len(_buffer): return (False, 'offset:%d > len(buffer):%d'%(_offset, len(_buffer)))
     length = struct.unpack_from("I", buffer(_buffer, _offset+headerLen-4-crypt_key_len, 4))[0]
-    if _offset + headerLen + length + 1 > len(_buffer): return (False, 'log length:%d, end pos %d > len(buffer):%d'%(length, _offset + headerLen + length + 1, len(_buffer)))
-    if MAGIC_END!=_buffer[_offset + headerLen + length]: return (False, 'log length:%d, buffer[%d]:%d != MAGIC_END'%(length, _offset + headerLen + length, _buffer[_offset + headerLen + length]))
+    if _offset + headerLen + length + 1 > len(_buffer): return (False, 'include.log length:%d, end pos %d > len(buffer):%d'%(length, _offset + headerLen + length + 1, len(_buffer)))
+    if MAGIC_END!=_buffer[_offset + headerLen + length]: return (False, 'include.log length:%d, buffer[%d]:%d != MAGIC_END'%(length, _offset + headerLen + length, _buffer[_offset + headerLen + length]))
 
 
     if (1>=count): return (True, '')
@@ -116,7 +116,7 @@ def DecodeBuffer(_buffer, _offset, _outbuffer):
 
     global lastseq
     if seq != 0 and seq != 1 and lastseq != 0 and seq != (lastseq+1):
-        _outbuffer.extend("[F]decode_log_file.py log seq:%d-%d is missing\n" %(lastseq+1, seq-1))
+        _outbuffer.extend("[F]decode_log_file.py include.log seq:%d-%d is missing\n" %(lastseq+1, seq-1))
 
     if seq != 0:
         lastseq = seq
@@ -194,15 +194,15 @@ def main(args):
             filelist = glob.glob(args[0] + "/*.xlog")
             for filepath in filelist:
                 lastseq = 0
-                ParseFile(filepath, filepath+".log")
-        else: ParseFile(args[0], args[0]+".log")    
+                ParseFile(filepath, filepath+".include.log")
+        else: ParseFile(args[0], args[0]+".include.log")
     elif 2==len(args):
         ParseFile(args[0], args[1])    
     else: 
         filelist = glob.glob("*.xlog")
         for filepath in filelist:
             lastseq = 0
-            ParseFile(filepath, filepath+".log")
+            ParseFile(filepath, filepath+".include.log")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

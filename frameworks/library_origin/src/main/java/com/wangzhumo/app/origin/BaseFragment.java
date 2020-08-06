@@ -3,6 +3,8 @@ package com.wangzhumo.app.origin;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * 2.可见状态
  * 3.加载View/加载Data
  */
-public abstract class BaseFragment extends SupportFragment {
+public abstract class BaseFragment extends Fragment {
 
 
     /**

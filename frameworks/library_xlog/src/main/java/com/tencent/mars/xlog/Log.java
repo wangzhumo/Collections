@@ -10,7 +10,7 @@ import android.widget.Toast;
  * @author zhaoyuan orehzhang
  */
 public class Log {
-    private static final String TAG = "mars.xlog.log";
+    private static final String TAG = "mars.xlog.include.log";
 
     public static final int LEVEL_VERBOSE = 0;
     public static final int LEVEL_DEBUG = 1;
@@ -150,11 +150,11 @@ public class Log {
 
     public static void setLevel(final int level, final boolean jni) {
         Log.level = level;
-        android.util.Log.w(TAG, "new log level: " + level);
+        android.util.Log.w(TAG, "new include.log level: " + level);
 
         if (jni) {
             Xlog.setLogLevel(level);
-            //android.util.Log.e(TAG, "no jni log level support");
+            //android.util.Log.e(TAG, "no jni include.log level support");
         }
     }
 

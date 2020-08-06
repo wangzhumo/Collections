@@ -9,7 +9,7 @@
 
 
 
-在 mars\log\crypt 下执行` python gen_key.py` 如果能生成成功则表示配置成功。 `python gen_key.py`会生成private key 和public key,把pulic key作为appender_open 函数参数设置进去，private key务必保存在安全的位置，防止泄露。并把这两个key设置到 mars\log\crypt 中 [decode_mars_crypt_log_file.py](https://github.com/Tencent/mars/blob/master/mars/log/crypt/decode_mars_crypt_log_file.py)脚本中。
+在 mars\include.log\crypt 下执行` python gen_key.py` 如果能生成成功则表示配置成功。 `python gen_key.py`会生成private key 和public key,把pulic key作为appender_open 函数参数设置进去，private key务必保存在安全的位置，防止泄露。并把这两个key设置到 mars\include.log\crypt 中 [decode_mars_crypt_log_file.py](https://github.com/Tencent/mars/blob/master/mars/include.log/crypt/decode_mars_crypt_log_file.py)脚本中。
 
 
 
@@ -25,7 +25,7 @@
    eg:
    python decode_mars_crypt_log_file.py ~/Downloads/inyu_20190619.xlog
    
-   而后会生成一个inyu_20190619.xlog.log
+   而后会生成一个inyu_20190619.xlog.include.log
    ```
 
    

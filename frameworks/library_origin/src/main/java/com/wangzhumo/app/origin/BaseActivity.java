@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.gyf.immersionbar.ImmersionBar;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,7 +21,7 @@ import me.yokeyword.fragmentation.SupportActivity;
  *  1.CompositeDisposable
  *  2.加载View/加载Data
  */
-public abstract class BaseActivity extends SupportActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 收集Dis
