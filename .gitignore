@@ -62,3 +62,6 @@ test/
 
 app/debug/
 app/release
+
+
+gradle/
