@@ -7,7 +7,7 @@
 #include "android/native_window_jni.h"
 #include "include/log/android_log_utils.h"
 
-
+#include "include/egl/egl_helper.h"
 
 extern "C"
 JNIEXPORT jint JNICALL
@@ -18,5 +18,13 @@ Java_com_wangzhumo_app_module_opengl_cpp_OpenGLCppActivity_printAndroidLog(JNIEn
 
     LOGD("Message from Android : %s",msg);
 
+    char *cha = NULL;
+
     return 0;
+}extern "C"
+JNIEXPORT void JNICALL
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(JNIEnv *env,
+                                                                           jobject thiz,
+                                                                           jobject surface) {
+
 }
