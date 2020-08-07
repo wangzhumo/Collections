@@ -90,7 +90,7 @@ int EglHelper::initEglEnv(EGLNativeWindowType windowType) {
         LOGE("EglHelper initEglEnv eglMakeCurrent  error");
         return -1;
     }
-    LOGE("EglHelper initEglEnv complete")
+    LOGE("EglHelper initEglEnv complete");
     return 0;
 }
 
