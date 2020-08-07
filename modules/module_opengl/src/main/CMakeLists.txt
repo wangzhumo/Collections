@@ -10,7 +10,8 @@ add_library(
 
 # Include dir
 # ${EVENT_INCLUDE_DIR}
-set(INCLUDES  ${CMAKE_SOURCE_DIR}/main/cpp/include)
+set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
+set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log)
 include_directories(${INCLUDES})
 
 # ndk官方库  include.log
