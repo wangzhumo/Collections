@@ -8,14 +8,16 @@ add_library(
         cpp/native-lib.cpp)
 
 
+# ndk官方库  include.log
+find_library(log-lib log)
+
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
 set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log)
 include_directories(${INCLUDES})
 
-# ndk官方库  include.log
-find_library(log-lib log)
+
 
 
 # 将ffmpeg混合编译到native-lib中
