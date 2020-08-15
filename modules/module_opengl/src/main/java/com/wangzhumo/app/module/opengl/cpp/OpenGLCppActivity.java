@@ -15,9 +15,6 @@ import com.wangzhumo.app.origin.BaseActivity;
 @Route(path = IRoute.CPPGLES.CPP_GLES)
 public class OpenGLCppActivity extends BaseActivity {
 
-    private CppSurfaceView surfaceView;
-    private NativeOpenGl nativeOpenGl;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_opengl_cpp;
@@ -27,10 +24,10 @@ public class OpenGLCppActivity extends BaseActivity {
     protected void initViews(@Nullable Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
         // find view
-        surfaceView = findViewById(R.id.surfaceView);
+        CppSurfaceView surfaceView = findViewById(R.id.surfaceView);
 
         //native
-        nativeOpenGl = new NativeOpenGl();
+        NativeOpenGl nativeOpenGl = new NativeOpenGl();
         surfaceView.setNativeOpenGl(nativeOpenGl);
     }
 }

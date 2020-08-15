@@ -7,11 +7,13 @@
 
 #include <pthread.h>
 #include <EGL/egl.h>
+#include <GLES2/gl2.h>
 #include <unistd.h>
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
-#include "../include/egl/wzm_egl_helper.h"
-#include "../include/log/android_log_utils.h"
+#include "wzm_egl_helper.h"
+#include "../log/android_log_utils.h"
+
 
 class WzmEglThread {
 
@@ -21,9 +23,7 @@ public:
 
     void onSurfaceCreate(EGLNativeWindowType windowType);
 
-    void onSurfaceChange();
-
-    void onSurfaceDraw();
+    void onSurfaceChange(int width, int height);
 
 
 public:
@@ -33,7 +33,10 @@ public:
     bool isCreate = false;
     bool isChange = false;
     bool isExit = false;
+    bool canStart = false;
 
+    int surfaceWidth = 0;
+    int surfaceHeight = 0;
 };
 
 

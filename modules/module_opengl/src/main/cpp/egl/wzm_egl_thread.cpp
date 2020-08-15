@@ -1,43 +1,43 @@
 //
 // Created by wangzhumo on 2020/8/15.
 //
-
-
 #include "../include/egl/wzm_egl_thread.h"
 
-WzmEglThread::WzmEglThread() {
+WzmEglThread::WzmEglThread() = default;
 
-}
-
-WzmEglThread::~WzmEglThread() {
-
-}
+WzmEglThread::~WzmEglThread() = default;
 
 void *eglThreadCallBack(void *context) {
 
-    auto *wzmEglThread = static_cast<WzmEglThread *>(context);
+    WzmEglThread *wzmEglThread = static_cast<WzmEglThread *>(context);
     if (wzmEglThread != nullptr) {
         // 如果不为空,就在这里创建一个EGL的环境.
-        auto *pEglHelper = new WzmEglHelper();
+        WzmEglHelper *pEglHelper = new WzmEglHelper();
         pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
         wzmEglThread->isExit = false;
         // 这里一个循环,用来处理数据
         while (true) {
+            // 处理 surfaceCreate
             if (wzmEglThread->isCreate) {
                 LOGE("elgThread call surfaceCreate");
                 wzmEglThread->isCreate = false;
             }
-
+            // 在这里处理 surfaceChange 的事件
             if (wzmEglThread->isChange) {
                 LOGE("eglThread call surfaceChange");
                 wzmEglThread->isChange = false;
+                glViewport(0,0,wzmEglThread->surfaceWidth,wzmEglThread->surfaceHeight);
+                wzmEglThread->canStart = true;
             }
-
-            // 60 fps
+            // 这里就开始绘制 surfaceDraw
+            LOGD("eglThread draw");
+            if (wzmEglThread->canStart){
+                glClearColor(0.0, 1.0, 0.0, 1.0);
+                glClear(GL_COLOR_BUFFER_BIT);
+            }
+            // 暂停 60 fps
             usleep(1000000 / 60);
 
-            // 这里就开始绘制
-            LOGD("eglThread draw");
             if (wzmEglThread->isExit){
                 break;
             }
@@ -53,12 +53,9 @@ void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
     }
 }
 
-
-void WzmEglThread::onSurfaceDraw() {
-
-}
-
-void WzmEglThread::onSurfaceChange() {
-
+void WzmEglThread::onSurfaceChange(int width, int height) {
+    isChange = true;
+    surfaceWidth = width;
+    surfaceHeight = height;
 }
 

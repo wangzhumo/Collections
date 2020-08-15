@@ -5,34 +5,37 @@
 #include "GLES2/gl2.h"
 #include "android/native_window.h"
 #include "android/native_window_jni.h"
-#include "include/log/android_log_utils.h"
-#include "include/egl/wzm_egl_helper.h"
+#include "include/egl/wzm_egl_thread.h"
 
 
-WzmEglHelper *pEglHelper = NULL;
-ANativeWindow  *pNativeWindow = NULL;
+WzmEglThread *pEglThread = nullptr;
+ANativeWindow *pNativeWindow = nullptr;
 
-
+// 创建一个Surface - EGL 的环境
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(JNIEnv *env,jobject thiz,jobject surface)
-{
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
+        JNIEnv *env,jobject thiz,jobject surface) {
     // 获取一个 ANativeWindow
-    pNativeWindow = ANativeWindow_fromSurface(env,surface);
-    if (pNativeWindow == nullptr){
+    pNativeWindow = ANativeWindow_fromSurface(env, surface);
+    if (pNativeWindow == nullptr) {
         LOGE("ANativeWindow_fromSurface pNativeWindow = nullptr");
         return;
     }
 
-    // 创建ELG的环境
-    pEglHelper = new WzmEglHelper();
-    pEglHelper->initEglEnv(pNativeWindow);
+    // 创建ELG的环境,启动eglThread
+    pEglThread = new WzmEglThread();
+    pEglThread->onSurfaceCreate(pNativeWindow);
+}
 
-    // opengl 绘制
-    glViewport(0,0,720,1080);
-    glClearColor(0.0, 1.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
 
-    // 绘制
-    pEglHelper->swapBuffers();
+// surfaceChange调用
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
+        JNIEnv *env,jobject thiz, jint width,jint height) {
+    // surfaceChange 的调用
+    if (pEglThread != nullptr){
+        pEglThread->onSurfaceChange(width,height);
+    }
 }

@@ -39,14 +39,17 @@ public class CppSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
             mHolder = holder;
         }
         if (nativeOpenGl != null){
-            Log.e(TAG,"surfaceCreated surfaceCreate");
             nativeOpenGl.surfaceCreate(holder.getSurface());
+            Log.e(TAG,"surfaceCreated nativeOpenGl.surfaceCreate");
         }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        if (nativeOpenGl != null){
+            Log.e(TAG,"surfaceChanged nativeOpenGl.surfaceChange");
+            nativeOpenGl.surfaceChange(width, height);
+        }
     }
 
     @Override
