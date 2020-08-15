@@ -14,7 +14,7 @@ find_library(log-lib log)
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
-set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log)
+set(INCLUDES  ${INCLUDE_DIR}/egl/wzm_egl_helper.h ${INCLUDE_DIR}/log/android_log_utils.h)
 include_directories(${INCLUDES})
 
 

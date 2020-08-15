@@ -2,10 +2,10 @@
 // Created by wangzhumo on 2020/8/7.
 //
 
-#include "../include/egl/egl_helper.h"
+#include "../include/egl/wzm_egl_helper.h"
 
 // 给参数赋值 - 初始化
-EglHelper::EglHelper() {
+WzmEglHelper::WzmEglHelper() {
     mEglDisplay = EGL_NO_DISPLAY;
     mEglSurface = EGL_NO_SURFACE;
     mEglContext = EGL_NO_CONTEXT;
@@ -14,13 +14,13 @@ EglHelper::EglHelper() {
 
 
 // 析构函数中销毁一下
-EglHelper::~EglHelper() {
+WzmEglHelper::~WzmEglHelper() {
 
 }
 
 
 // 创建环境 - 0 成功  other 失败
-int EglHelper::initEglEnv(EGLNativeWindowType windowType) {
+int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
 
     //1.创建Display,得到默认的显示设备
     mEglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -90,13 +90,13 @@ int EglHelper::initEglEnv(EGLNativeWindowType windowType) {
         LOGE("EglHelper initEglEnv eglMakeCurrent  error");
         return -1;
     }
-    LOGE("EglHelper initEglEnv complete");
+    LOGD("EglHelper initEglEnv complete");
     return 0;
 }
 
 
 // 8.刷新数据，显示渲染场景  --eglSwapBuffer
-int EglHelper::swapBuffer() {
+int WzmEglHelper::swapBuffer() {
     if (mEglDisplay != EGL_NO_DISPLAY && mEglSurface != EGL_NO_SURFACE){
         // 如果成功，返回一个 0
         if (eglSwapBuffers(mEglDisplay,mEglSurface)){
@@ -108,7 +108,7 @@ int EglHelper::swapBuffer() {
 
 
 // 销毁这个EGL的环境
-void EglHelper::release() {
+void WzmEglHelper::release() {
     if (mEglDisplay != EGL_NO_DISPLAY){
         eglMakeCurrent(mEglDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
     }

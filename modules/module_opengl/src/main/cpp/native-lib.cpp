@@ -7,23 +7,10 @@
 #include "android/native_window_jni.h"
 #include "include/log/android_log_utils.h"
 
-#include "include/egl/egl_helper.h"
-
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_wangzhumo_app_module_opengl_cpp_OpenGLCppActivity_printAndroidLog(JNIEnv *env,jobject thiz,jstring message)
-{
-    const char *msg = env->GetStringUTFChars(message,NULL);
-
-    LOGD("Message from Android : %s",msg);
-
-    char *cha = NULL;
-
-    return 0;
-}
+#include "include/egl/wzm_egl_helper.h"
 
 
-EglHelper *pEglHelper = NULL;
+WzmEglHelper *pEglHelper = NULL;
 ANativeWindow  *pNativeWindow = NULL;
 
 
@@ -39,7 +26,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(JNIEn
     }
 
     // 创建ELG的环境
-    pEglHelper = new EglHelper();
+    pEglHelper = new WzmEglHelper();
     pEglHelper->initEglEnv(pNativeWindow);
 
     // opengl 绘制
@@ -49,6 +36,4 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(JNIEn
 
     // 绘制
     pEglHelper->swapBuffer();
-
-
 }

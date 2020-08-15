@@ -2,18 +2,18 @@
 // Created by wangzhumo on 2020/8/7.
 //
 
-#ifndef COLLECTIONS_EGL_HELPER_H
-#define COLLECTIONS_EGL_HELPER_H
+#ifndef COLLECTIONS_WZM_EGL_HELPER_H
+#define COLLECTIONS_WZM_EGL_HELPER_H
 
 #include "EGL/egl.h"
 #include "../log/android_log_utils.h"
 
-class EglHelper {
+class WzmEglHelper {
 
 public:
-    EglHelper();
+    WzmEglHelper();
 
-    ~EglHelper();
+    ~WzmEglHelper();
 
     int initEglEnv(EGLNativeWindowType windowType);
 
@@ -29,4 +29,4 @@ public:
 };
 
 
-#endif //COLLECTIONS_EGL_HELPER_H
+#endif //COLLECTIONS_WZM_EGL_HELPER_H
