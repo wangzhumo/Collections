@@ -2,8 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wangzhumo.app.module.opengl">
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+
+
     <application>
         <activity android:name=".cpp.OpenGLCppActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".camera.GLCameraPreviewActivity"

@@ -1,5 +1,6 @@
 package com.wangzhumo.app.module.opengl.cpp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,18 +10,22 @@ import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.cpp.opengl.CppSurfaceView;
 import com.wangzhumo.app.module.opengl.cpp.opengl.NativeOpenGl;
+import com.wangzhumo.app.origin.BaseActivity;
 
 @Route(path = IRoute.CPPGLES.CPP_GLES)
-public class OpenGLCppActivity extends AppCompatActivity {
+public class OpenGLCppActivity extends BaseActivity {
 
     private CppSurfaceView surfaceView;
     private NativeOpenGl nativeOpenGl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opengl_cpp);
+    protected int getLayoutId() {
+        return R.layout.activity_opengl_cpp;
+    }
 
+    @Override
+    protected void initViews(@Nullable Bundle savedInstanceState) {
+        super.initViews(savedInstanceState);
         // find view
         surfaceView = findViewById(R.id.surfaceView);
 
@@ -28,6 +33,4 @@ public class OpenGLCppActivity extends AppCompatActivity {
         nativeOpenGl = new NativeOpenGl();
         surfaceView.setNativeOpenGl(nativeOpenGl);
     }
-
-
 }
