@@ -5,7 +5,7 @@ package com.tencent.mars.xlog;
  *
  * @author 王诛魔 2019-06-20  17:33
  */
-public class InyuLog{
+public class CLog {
 
 
     /**

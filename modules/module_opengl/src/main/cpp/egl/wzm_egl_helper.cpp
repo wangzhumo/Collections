@@ -13,7 +13,7 @@ WzmEglHelper::WzmEglHelper() {
     mEglDisplay = EGL_NO_DISPLAY;
     mEglSurface = EGL_NO_SURFACE;
     mEglContext = EGL_NO_CONTEXT;
-    mEglConfig = NULL;
+    mEglConfig = nullptr;
 }
 
 
@@ -22,7 +22,7 @@ WzmEglHelper::~WzmEglHelper() = default;
 
 
 // 创建环境 - 0 成功  other 失败
-int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
+int WzmEglHelper::initEglEnv(EGLNativeWindowType window) {
 
     //1.创建Display,得到默认的显示设备
     mEglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -72,14 +72,14 @@ int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
             EGL_NONE
     };
     // 此处的EGL_NO_CONTEXT 表示可以共享的一个 context,这里无需共享就传入 NO_CONTEXT
-    eglCreateContext(mEglDisplay,mEglConfig,EGL_NO_CONTEXT,attrib_list);
+    mEglContext = eglCreateContext(mEglDisplay,mEglConfig,EGL_NO_CONTEXT,attrib_list);
     if (mEglContext == EGL_NO_CONTEXT){
         LOGE("EglHelper initEglEnv eglCreateContext  error");
         return -1;
     }
 
     //6.创建渲染的Surface  --eglCreateWidnowSurface
-    mEglSurface = eglCreateWindowSurface(mEglDisplay,mEglConfig,windowType,NULL);
+    mEglSurface = eglCreateWindowSurface(mEglDisplay,mEglConfig,window,NULL);
     if (mEglSurface == EGL_NO_SURFACE){
         LOGE("EglHelper initEglEnv eglCreateWindowSurface  error");
         return -1;
@@ -89,7 +89,7 @@ int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
     // draw  read 同一个surface
     EGLBoolean eglBoolean = eglMakeCurrent(mEglDisplay,mEglSurface,mEglSurface,mEglContext);
     if (!eglBoolean){
-        LOGE("EglHelper initEglEnv eglMakeCurrent  error");
+        LOGE("EglHelper initEglEnv eglMakeCurrent error");
         return -1;
     }
     LOGD("EglHelper initEglEnv complete");
@@ -102,9 +102,11 @@ int WzmEglHelper::swapBuffers() {
     if (mEglDisplay != EGL_NO_DISPLAY && mEglSurface != EGL_NO_SURFACE){
         // 如果成功，返回一个 0
         if (eglSwapBuffers(mEglDisplay,mEglSurface)){
+            LOGD("swapBuffers eglSwapBuffers succeed");
             return 0;
         }
     }
+    LOGE("swapBuffers eglSwapBuffers fail");
     return -1;
 }
 
