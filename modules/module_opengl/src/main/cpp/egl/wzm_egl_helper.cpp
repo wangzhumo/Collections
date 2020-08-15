@@ -2,7 +2,7 @@
 // Created by wangzhumo on 2020/8/7.
 //
 
-#include <memory>
+
 #include "../include/egl/wzm_egl_helper.h"
 
 

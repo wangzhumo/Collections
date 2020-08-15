@@ -24,6 +24,7 @@ add_library(
 # ndk官方库  include.log
 find_library(log-lib log)
 
+
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
@@ -39,5 +40,4 @@ target_link_libraries(
         android
         EGL
         GLESv2
-
         ${log-lib})
