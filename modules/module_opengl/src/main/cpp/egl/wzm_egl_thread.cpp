@@ -13,14 +13,13 @@ void *eglThreadCallBack(void *context) {
     if (wzmEglThread != nullptr) {
         // 如果不为空,就在这里创建一个EGL的环境.
         WzmEglHelper *pEglHelper = new WzmEglHelper();
-        pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
-        wzmEglThread->isExit = false;
         // 这里一个循环,用来处理数据
         while (true) {
             // 处理 surfaceCreate
             if (wzmEglThread->isCreate) {
                 LOGE("elgThread call surfaceCreate");
                 wzmEglThread->isCreate = false;
+                pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
             }
             // 在这里处理 surfaceChange 的事件
             if (wzmEglThread->isChange) {
@@ -30,10 +29,11 @@ void *eglThreadCallBack(void *context) {
                 wzmEglThread->canStart = true;
             }
             // 这里就开始绘制 surfaceDraw
-            LOGD("eglThread draw");
             if (wzmEglThread->canStart){
+                LOGD("eglThread draw");
                 glClearColor(0.0, 1.0, 0.0, 1.0);
                 glClear(GL_COLOR_BUFFER_BIT);
+                pEglHelper->swapBuffers();
             }
             // 暂停 60 fps
             usleep(1000000 / 60);
@@ -48,6 +48,10 @@ void *eglThreadCallBack(void *context) {
 
 void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
     if (pEglThread == -1) {
+        // surfaceCreate
+        isCreate = true;
+        // 设置窗口
+        pNativeWindow = windowType;
         // 如果 == -1,说明没有创建过,开始创建
         pEglThread = pthread_create(&pEglThread, nullptr, eglThreadCallBack, this);
     }
