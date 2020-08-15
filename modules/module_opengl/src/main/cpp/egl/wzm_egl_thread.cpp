@@ -31,7 +31,7 @@ void *eglThreadCallBack(void *context) {
             // 这里就开始绘制 surfaceDraw
             if (wzmEglThread->canStart){
                 LOGD("eglThread draw");
-                glClearColor(0.0, 1.0, 0.0, 1.0);
+                glClearColor(1.0, 1.0, 0.0, 1.0);
                 glClear(GL_COLOR_BUFFER_BIT);
                 pEglHelper->swapBuffers();
             }
@@ -43,7 +43,7 @@ void *eglThreadCallBack(void *context) {
             }
         }
     }
-    return nullptr;
+    pthread_exit(&wzmEglThread->pEglThread);
 }
 
 void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
