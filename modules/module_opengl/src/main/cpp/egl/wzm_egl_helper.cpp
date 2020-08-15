@@ -2,7 +2,11 @@
 // Created by wangzhumo on 2020/8/7.
 //
 
+#include <memory>
 #include "../include/egl/wzm_egl_helper.h"
+
+
+
 
 // 给参数赋值 - 初始化
 WzmEglHelper::WzmEglHelper() {
@@ -14,9 +18,7 @@ WzmEglHelper::WzmEglHelper() {
 
 
 // 析构函数中销毁一下
-WzmEglHelper::~WzmEglHelper() {
-
-}
+WzmEglHelper::~WzmEglHelper() = default;
 
 
 // 创建环境 - 0 成功  other 失败
@@ -51,15 +53,15 @@ int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
     };
 
     //4.获取系统中对应的属性配置   --eglChooseConfig
-    EGLint config_result;
-    // 这里的 1  ， &config_result  的1，是为了兼容一些手机
-    // 第一次调用eglChooseConfig，得到了 config_result的值
-    if(!eglChooseConfig(mEglDisplay,attribs,NULL,1,&config_result)){
+    EGLint numConfigs;
+    // 这里的config_size 1  ， &numConfigs  的1，是为了兼容一些手机
+    // 第一次调用eglChooseConfig，得到了 numConfigs的值
+    if(!eglChooseConfig(mEglDisplay,attribs,NULL,1,&numConfigs)){
         LOGE("EglHelper initEglEnv eglChooseConfig 1 error");
         return -1;
     }
 
-    if(!eglChooseConfig(mEglDisplay,attribs,mEglConfig,config_result,&config_result)){
+    if(!eglChooseConfig(mEglDisplay,attribs,&mEglConfig,numConfigs,&numConfigs)){
         LOGE("EglHelper initEglEnv eglChooseConfig 2 error");
         return -1;
     }
@@ -85,7 +87,7 @@ int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
 
     //7.绑定EglContext和Surface到显示设备中  --eglMakeCurrent
     // draw  read 同一个surface
-    EGLBoolean eglBoolean = eglMakeCurrent(mEglDisplay,mEglSurface,mEglSurface,mEglSurface,mEglContext);
+    EGLBoolean eglBoolean = eglMakeCurrent(mEglDisplay,mEglSurface,mEglSurface,mEglContext);
     if (!eglBoolean){
         LOGE("EglHelper initEglEnv eglMakeCurrent  error");
         return -1;
@@ -96,7 +98,7 @@ int WzmEglHelper::initEglEnv(EGLNativeWindowType windowType) {
 
 
 // 8.刷新数据，显示渲染场景  --eglSwapBuffer
-int WzmEglHelper::swapBuffer() {
+int WzmEglHelper::swapBuffers() {
     if (mEglDisplay != EGL_NO_DISPLAY && mEglSurface != EGL_NO_SURFACE){
         // 如果成功，返回一个 0
         if (eglSwapBuffers(mEglDisplay,mEglSurface)){

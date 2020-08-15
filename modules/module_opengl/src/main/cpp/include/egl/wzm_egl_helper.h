@@ -5,7 +5,8 @@
 #ifndef COLLECTIONS_WZM_EGL_HELPER_H
 #define COLLECTIONS_WZM_EGL_HELPER_H
 
-#include "EGL/egl.h"
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
 #include "../log/android_log_utils.h"
 
 class WzmEglHelper {
@@ -17,7 +18,7 @@ public:
 
     int initEglEnv(EGLNativeWindowType windowType);
 
-    int swapBuffer();
+    int swapBuffers();
 
     void release();
 

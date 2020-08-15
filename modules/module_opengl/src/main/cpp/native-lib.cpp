@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 
-#include "EGL/egl.h"
+
 #include "GLES2/gl2.h"
 #include "android/native_window.h"
 #include "android/native_window_jni.h"
@@ -35,5 +35,5 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(JNIEn
     glClear(EGL_COLOR_BUFFER_TYPE);
 
     // 绘制
-    pEglHelper->swapBuffer();
+    pEglHelper->swapBuffers();
 }
