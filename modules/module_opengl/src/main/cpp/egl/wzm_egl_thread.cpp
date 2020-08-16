@@ -3,9 +3,19 @@
 //
 #include "../include/egl/wzm_egl_thread.h"
 
-WzmEglThread::WzmEglThread() = default;
+WzmEglThread::WzmEglThread(){
+    // 初始化线程锁
+    pthread_mutex_init(&pThreadMutex, nullptr);
+    // 初始化信号量
+    pthread_cond_init(&pThreadCond, nullptr);
 
-WzmEglThread::~WzmEglThread() = default;
+}
+
+WzmEglThread::~WzmEglThread(){
+    // 把锁打开,释放
+    pthread_mutex_destroy(&pThreadMutex);
+    pthread_cond_destroy(&pThreadCond);
+}
 
 void *eglThreadCallBack(void *context) {
 
@@ -40,8 +50,20 @@ void *eglThreadCallBack(void *context) {
                 wzmEglThread->onDrawCall(wzmEglThread->onDrawCtx);
                 pEglHelper->swapBuffers();
             }
-            // 暂停 60 fps
-            usleep(1000000 / 60);
+
+            // 休眠根据模式来搞起.
+            if (wzmEglThread->renderMode == OPENGL_RENDER_AUTO){
+                // 暂停 60 fps
+                usleep(1000000 / 60);
+            }else{
+                // 加上锁
+                pthread_mutex_lock(&(wzmEglThread->pThreadMutex));
+                // 阻塞起来
+                pthread_cond_wait(&(wzmEglThread->pThreadCond),&(wzmEglThread->pThreadMutex));
+                // 此时打开锁，线程已经是在阻塞状态了.
+                pthread_mutex_unlock(&(wzmEglThread->pThreadMutex));
+            }
+
 
             if (wzmEglThread->isExit){
                 break;
@@ -49,8 +71,7 @@ void *eglThreadCallBack(void *context) {
         }
     }
     //也可以调用这个
-    //pthread_exit(&(wzmEglThread->pEglThread));
-    return nullptr;
+    pthread_exit(&(wzmEglThread->pEglThread));
 }
 
 void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
@@ -84,5 +105,18 @@ void WzmEglThread::setChangeCallBack(OnChangeCall onChange, void *context) {
 void WzmEglThread::setDrawCallBack(OnDrawCall drawCall, void *context) {
     this->onDrawCall = drawCall;
     this->onDrawCtx = context;
+}
+
+void WzmEglThread::setRenderMode(int mode) {
+    this->renderMode = mode;
+}
+
+void WzmEglThread::notifyRender() {
+    // 加上锁
+    pthread_mutex_lock(&pThreadMutex);
+    // 通知之前设置的阻塞 - 应该打开,继续去运行
+    pthread_cond_signal(&pThreadCond);
+    // 操作结束，此时打开锁
+    pthread_mutex_unlock(&pThreadMutex);
 }
 

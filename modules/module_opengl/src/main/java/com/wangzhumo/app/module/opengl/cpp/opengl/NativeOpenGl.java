@@ -11,9 +11,12 @@ public class NativeOpenGl {
         System.loadLibrary("opengl-cpp");
     }
 
+    // Surface创建
     public native void surfaceCreate(Surface surface);
 
+    // Surface的Size改变
     public native void surfaceChange(int width,int height);
 
     //public native void surfaceDraw(int width,int height);
+
 }

@@ -14,6 +14,11 @@
 #include "wzm_egl_helper.h"
 #include "../log/android_log_utils.h"
 
+// 自动的每秒60帧
+#define OPENGL_RENDER_AUTO 1
+// 手动调用渲染
+#define OPENGL_RENDER_DIRTY 2
+
 
 class WzmEglThread {
 
@@ -51,7 +56,13 @@ public:
     // 保持draw的参数
     void *onDrawCtx;
 
+    // 渲染的模式.
+    int renderMode = OPENGL_RENDER_AUTO;
 
+    // 添加一个线程锁,实现模式的切换功能
+    pthread_mutex_t pThreadMutex;
+    // 信号量
+    pthread_cond_t pThreadCond;
 
 public:
     WzmEglThread();
@@ -66,6 +77,10 @@ public:
     void setChangeCallBack(OnChangeCall onChange,void *context);
 
     void setDrawCallBack(OnDrawCall onDraw,void *context);
+
+    void setRenderMode(int mode);
+
+    void notifyRender();
 };
 
 
