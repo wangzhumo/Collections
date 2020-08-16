@@ -63,7 +63,7 @@ public:
 
     void setCreateCallBack(OnCreateCall onCreate,void *context);
 
-    void setChangeCallBack(OnChangeCall onChange,int width, int height,void *context);
+    void setChangeCallBack(OnChangeCall onChange,void *context);
 
     void setDrawCallBack(OnDrawCall onDraw,void *context);
 };

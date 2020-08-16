@@ -38,8 +38,6 @@ void *eglThreadCallBack(void *context) {
                 LOGD("eglThread draw");
                 // 这里执行回调.
                 wzmEglThread->onDrawCall(wzmEglThread->onDrawCtx);
-//                glClearColor(1.0, 1.0, 0.0, 1.0);
-//                glClear(GL_COLOR_BUFFER_BIT);
                 pEglHelper->swapBuffers();
             }
             // 暂停 60 fps
@@ -77,10 +75,8 @@ void WzmEglThread::setCreateCallBack(OnCreateCall onCreate, void *context) {
     this->onCreateCtx = context;
 }
 
-void WzmEglThread::setChangeCallBack(OnChangeCall onChange,int width, int height, void *context) {
+void WzmEglThread::setChangeCallBack(OnChangeCall onChange, void *context) {
     this->onChangeCall = onChange;
-    this->surfaceHeight = height;
-    this->surfaceWidth = width;
     this->onChangeCtx = context;
 }
 
