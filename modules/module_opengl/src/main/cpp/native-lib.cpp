@@ -64,5 +64,13 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
     // surfaceChange 的调用
     if (pEglThread != nullptr) {
         pEglThread->onSurfaceChange(width, height);
+
+        // 手动调用一次 notify
+        usleep(1000000);
+
+        // 查看确实已经draw了两次
+        pEglThread->notifyRender();
     }
+
+
 }
