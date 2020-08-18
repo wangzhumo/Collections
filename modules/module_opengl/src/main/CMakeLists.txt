@@ -10,10 +10,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 # Add all binary files
 aux_source_directory(cpp SRC_DIR)
 aux_source_directory(cpp/egl SRC_EGL)
+aux_source_directory(cpp/utils SRC_UTILS)
 
 
 # Set all source
-set(ALL_SOURCE ${SRC_DIR} ${SRC_EGL})
+set(ALL_SOURCE ${SRC_DIR} ${SRC_EGL} ${SRC_UTILS})
 
 add_library(
         opengl-cpp
@@ -28,9 +29,8 @@ find_library(log-lib log)
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
-set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log)
+set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log ${INCLUDE_DIR}/utils)
 include_directories(${INCLUDES})
-
 
 
 
