@@ -2,18 +2,34 @@
 #include <string>
 
 
-#include "GLES2/gl2.h"
+
 #include "android/native_window.h"
 #include "android/native_window_jni.h"
 #include "include/egl/wzm_egl_thread.h"
+#include "include/utils/shader_utils.h"
 
 
 WzmEglThread *pEglThread = nullptr;
 ANativeWindow *pNativeWindow = nullptr;
 
 
+const char *vertexSource = "attribute vec4 vPosition;    \n"
+                           "void main(){                 \n"
+                           "    gl_Position = vPosition; \n"
+                           "}";
+
+const char *fragmentSource = "precision mediump float;              \n"
+                             "void main(){                          \n"
+                             "    gl_FragColor = vec4(1f,0f,0f,1f); \n"
+                             "}";
+
+
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
+
+    // 测试opengl初始化 shader
+    int programId = createProgram(vertexSource,fragmentSource);
+    LOGD("createProgram programId = %d",programId);
 }
 
 void onSurfaceChangeCall(int width, int height, void *ctx) {
@@ -53,6 +69,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
     // 2.启动eglThread
     pEglThread->setRenderMode(OPENGL_RENDER_DIRTY);
     pEglThread->onSurfaceCreate(pNativeWindow);
+
 }
 
 
@@ -71,6 +88,4 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
         // 查看确实已经draw了两次
         pEglThread->notifyRender();
     }
-
-
 }
