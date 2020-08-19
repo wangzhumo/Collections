@@ -46,8 +46,8 @@ float vertexArrStrip[] = {
 
 float vertexArrStrip[] = {
         -1, -1,
-        -1, 1,
         1, -1,
+        -1, 1,
         1, 1,
 };
 #这样，公用的边就是  -1,1   1,-1 完美
