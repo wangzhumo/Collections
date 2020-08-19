@@ -35,10 +35,11 @@ float vertexArr[] = {
         1, 1,
 };
 
+
 float vertexArrStrip[] = {
+        -1, -1,
         -1, 1,
         1, -1,
-        -1, -1,
         1, 1,
 };
 
