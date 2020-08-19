@@ -2,7 +2,6 @@
 #include <string>
 
 
-
 #include "android/native_window.h"
 #include "android/native_window_jni.h"
 #include "include/egl/wzm_egl_thread.h"
@@ -21,39 +20,48 @@ const char *vertexSource = "attribute vec4 vPosition;    \n"
 // 片着色器
 const char *fragmentSource = "precision mediump float;              \n"
                              "void main(){                          \n"
-                             "    gl_FragColor = vec4(1f,0f,0f,1f); \n"
+                             "    gl_FragColor = vec4(0f,1f,0f,1f); \n"
                              "}";
 
 
-
-GLuint  programId = 0;
-GLuint  vPosition = 0;
+GLuint programId = 0;
+GLuint vPosition = 0;
 float vertexArr[] = {
-     -1,-1,
-     0,1,
-     1,-1
+        -1, 1,
+        -1, -1,
+        1, -1,
+        -1, 1,
+        1, -1,
+        1, 1,
+};
+
+float vertexArrStrip[] = {
+        -1, 1,
+        1, -1,
+        -1, -1,
+        1, 1,
 };
 
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
 
     // 测试opengl初始化 shader
-    programId = createProgram(vertexSource,fragmentSource);
-    LOGD("createProgram programId = %d",programId);
+    programId = createProgram(vertexSource, fragmentSource);
+    LOGD("createProgram programId = %d", programId);
     // 获取参数
-    vPosition = glGetAttribLocation(programId,"vPosition");
+    vPosition = glGetAttribLocation(programId, "vPosition");
 }
 
 void onSurfaceChangeCall(int width, int height, void *ctx) {
     //WzmEglThread *wzmEglThread = static_cast<WzmEglThread *>(ctx);
     glViewport(0, 0, width, height);
-    LOGD("onSurfaceChangeCall width = %d ,height = %d",width,height);
+    LOGD("onSurfaceChangeCall width = %d ,height = %d", width, height);
 }
 
 void onSurfaceDrawCall(void *ctx) {
     LOGD("onSurfaceDrawCall");
-    WzmEglThread *wzmEglThread = static_cast<WzmEglThread *>(ctx);
-    glClearColor(0.0, 1.0, 1.0, 1.0);
+    auto *wzmEglThread = static_cast<WzmEglThread *>(ctx);
+    glClearColor(0.0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 使用程序
@@ -66,14 +74,20 @@ void onSurfaceDrawCall(void *ctx) {
     // GL_FLOAT  参数的数据类型
     // false     是否归一化坐标
     // 8         每一个顶点的长度   float 4 * 2 = 8
+    // vertexArr 要赋值的数值数组
     glVertexAttribPointer(
-        vPosition,
-        2,
-        GL_FLOAT,
-    false,
-    8,
-    vertexArr
-            );
+            vPosition,
+            2,
+            GL_FLOAT,
+            false,
+            8,
+            vertexArrStrip
+    );
+
+    // 绘制这个三角形,共有3个点
+    //glDrawArrays(GL_TRIANGLES,0,6);
+    glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+
 }
 
 // 创建一个Surface - EGL 的环境
