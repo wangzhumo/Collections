@@ -8,6 +8,8 @@
 #include <GLES2/gl2.h>
 #include "../log/android_log_utils.h"
 
+
+
 static void checkGlError(const char* operation){
 
     for (GLint error = glGetError(); error; error = glGetError()){
