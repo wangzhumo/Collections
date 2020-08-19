@@ -70,6 +70,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
     pEglThread->setRenderMode(OPENGL_RENDER_DIRTY);
     pEglThread->onSurfaceCreate(pNativeWindow);
 
+
 }
 
 

@@ -89,6 +89,8 @@ void WzmEglThread::onSurfaceChange(int width, int height) {
     isChange = true;
     surfaceWidth = width;
     surfaceHeight = height;
+    // 渲染一次,避免线程锁住无法更新的问题
+    notifyRender();
 }
 
 void WzmEglThread::setCreateCallBack(OnCreateCall onCreate, void *context) {
