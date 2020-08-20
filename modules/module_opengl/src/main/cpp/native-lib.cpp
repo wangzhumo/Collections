@@ -15,16 +15,14 @@ ANativeWindow *pNativeWindow = nullptr;
 
 
 GLuint programId = 0;
-GLuint vPosition = 0;
-float vertexArr[] = {
-        -1, 1,
-        -1, -1,
-        1, -1,
-        -1, 1,
-        1, -1,
-        1, 1,
-};
+GLint vPosition = 0;
+GLint fPosition = 0;
+GLint samplerId = 0;
+GLuint textureId = 0;
 
+int width = 0;
+int height = 0;
+void *pixelsArr = nullptr;
 
 float vertexArrStrip[] = {
         -1, -1,
@@ -33,14 +31,45 @@ float vertexArrStrip[] = {
         1, 1,
 };
 
+float textureArr[] = {
+    0,1,
+    1,1,
+    0,0,
+    1,0
+};
+
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
-
     // 测试opengl初始化 shader
     programId = createProgram(vertexSource, fragmentSource);
     LOGD("createProgram programId = %d", programId);
+
     // 获取参数
-    vPosition = glGetAttribLocation(programId, "vPosition");
+    vPosition = glGetAttribLocation(programId, "vPosition");  //顶点的坐标
+    fPosition = glGetAttribLocation(programId, "fPosition");  //这个纹理的坐标
+    samplerId = glGetUniformLocation(programId, "sTexture");  //2d纹理
+
+    // 创建一个texture，并且赋值到 textureId
+    glGenTextures(1,&textureId);
+    // 绑定纹理
+    glBindTexture(GL_TEXTURE_2D,textureId);
+
+    // 设置环绕方式
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    // 设置过滤方式
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    //设置图片，加载资源
+    if (pixelsArr != nullptr){
+        //    glTexImage2D(EGL_SURFACE_TYPE)
+    }
+
+
+    // 设置完毕之后,解除绑定纹理
+    glBindTexture(GL_TEXTURE_2D,0);
+
 }
 
 void onSurfaceChangeCall(int width, int height, void *ctx) {
@@ -57,6 +86,8 @@ void onSurfaceDrawCall(void *ctx) {
 
     // 使用程序
     glUseProgram(programId);
+
+
     // 设置顶点数组可用
     glEnableVertexAttribArray(vPosition);
     // 设置参数
@@ -74,6 +105,12 @@ void onSurfaceDrawCall(void *ctx) {
             8,
             vertexArrStrip
     );
+
+
+    // 设置数组可用
+    glEnableVertexAttribArray(fPosition);
+    glVertexAttribPointer(fPosition,2,GL_FLOAT, false,8,textureArr);
+
 
     // 绘制这个三角形,共有3个点
     //glDrawArrays(GL_TRIANGLES,0,6);
@@ -125,4 +162,27 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
         // 查看确实已经draw了两次
         pEglThread->notifyRender();
     }
+}
+
+// 外部传递过来的imageData
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv *env, jobject thiz,
+                                                                          jint jwidth, jint jheight,
+                                                                          jbyteArray image_data) {
+
+    // 获取数据
+    jbyte *data = env->GetByteArrayElements(image_data,nullptr);
+    int length = env->GetArrayLength(image_data);
+
+    // 开辟数据内存
+    pixelsArr = malloc(length);
+    memcpy(pixelsArr,data,length);
+
+    // 设置 w, h
+    width = jwidth;
+    height = jheight;
+
+    // 回收空间
+    env->ReleaseByteArrayElements(image_data,data,0);
 }
