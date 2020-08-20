@@ -6,22 +6,12 @@
 #include "android/native_window_jni.h"
 #include "include/egl/wzm_egl_thread.h"
 #include "include/utils/shader_utils.h"
+#include "include/utils/shader_glsl.h"
 
 
 WzmEglThread *pEglThread = nullptr;
 ANativeWindow *pNativeWindow = nullptr;
 
-// 顶点着色器
-const char *vertexSource = "attribute vec4 vPosition;    \n"
-                           "void main(){                 \n"
-                           "    gl_Position = vPosition; \n"
-                           "}";
-
-// 片着色器
-const char *fragmentSource = "precision mediump float;              \n"
-                             "void main(){                          \n"
-                             "    gl_FragColor = vec4(0f,1f,0f,1f); \n"
-                             "}";
 
 
 GLuint programId = 0;
