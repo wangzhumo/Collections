@@ -18,7 +18,9 @@ WzmEglHelper::WzmEglHelper() {
 
 
 // 析构函数中销毁一下
-WzmEglHelper::~WzmEglHelper() = default;
+WzmEglHelper::~WzmEglHelper(){
+
+}
 
 
 // 创建环境 - 0 成功  other 失败

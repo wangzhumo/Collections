@@ -23,6 +23,7 @@ void *eglThreadCallBack(void *context) {
     if (wzmEglThread != nullptr) {
         // 如果不为空,就在这里创建一个EGL的环境.
         auto *pEglHelper = new WzmEglHelper();
+        wzmEglThread->isExit = false;
         // 这里一个循环,用来处理数据
         while (true) {
             // 处理 surfaceCreate
