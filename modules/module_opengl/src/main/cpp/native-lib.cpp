@@ -22,20 +22,38 @@ GLuint textureId = 0;
 
 int width = 0;
 int height = 0;
+
+int iwidth = 0;
+int iheight = 0;
+
 void *pixelsArr = nullptr;
 
 float vertexArrStrip[] = {
-        -1, -1,
-        1, -1,
-        -1, 1,
-        1, 1,
+        1,-1,
+        1,1,
+        -1,-1,
+        -1,1
 };
 
 float textureArr[] = {
-    0,1,
-    1,1,
-    0,0,
-    1,0
+        1,1,
+        1,0,
+        0,1,
+        0,0
+};
+
+float vertexs[] = {
+        1,-1,
+        1,1,
+        -1,-1,
+        -1,1
+};
+
+float fragments[] ={
+        1,1,
+        1,0,
+        0,1,
+        0,0
 };
 
 void onSurfaceCreateCall(void *) {
@@ -74,8 +92,8 @@ void onSurfaceCreateCall(void *) {
         glTexImage2D(GL_TEXTURE_2D,
                 0,
                 GL_RGBA,
-                width,
-                height,
+                iwidth,
+                iheight,
                 0,
                 GL_RGBA,
                 GL_UNSIGNED_BYTE,
@@ -97,7 +115,7 @@ void onSurfaceChangeCall(int width, int height, void *ctx) {
 void onSurfaceDrawCall(void *ctx) {
     LOGD("onSurfaceDrawCall");
     auto *wzmEglThread = static_cast<WzmEglThread *>(ctx);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 使用程序
@@ -125,7 +143,7 @@ void onSurfaceDrawCall(void *ctx) {
             GL_FLOAT,
             false,
             8,
-            vertexArrStrip
+            vertexs
     );
 
 
@@ -137,7 +155,7 @@ void onSurfaceDrawCall(void *ctx) {
             GL_FLOAT,
             false,
             8,
-            textureArr);
+            fragments);
 
 
     // 绘制这个三角形,共有3个点
@@ -199,19 +217,18 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv *env, jobject thiz,
-                                                                          jint jwidth, jint jheight,
-                                                                          jbyteArray image_data) {
+        jint jwidth, jint jheight,jbyteArray image_data) {
     // 获取数据
     jbyte *data = env->GetByteArrayElements(image_data,nullptr);
     int length = env->GetArrayLength(image_data);
-
+    LOGD("setImageData length = %d",length);
     // 开辟数据内存
     pixelsArr = malloc(length);
     memcpy(pixelsArr,data,length);
 
     // 设置 w, h
-    width = jwidth;
-    height = jheight;
+    iwidth = jwidth;
+    iheight = jheight;
 
     // 回收空间 - 使用之前拷贝的数据即可
     env->ReleaseByteArrayElements(image_data,data,0);

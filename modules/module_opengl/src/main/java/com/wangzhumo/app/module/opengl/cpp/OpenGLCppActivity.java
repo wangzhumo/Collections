@@ -32,7 +32,7 @@ public class OpenGLCppActivity extends BaseActivity {
         // find view
         CppSurfaceView surfaceView = findViewById(R.id.surfaceView);
 
-        final Bitmap city = BitmapFactory.decodeResource(getResources(), R.drawable.ic_city_night);
+        final Bitmap city = BitmapFactory.decodeResource(getResources(), R.drawable.opengl_app_logo);
         int width = city.getWidth();
         int height = city.getHeight();
         Log.e("Bitmap Bitmap Bitmap "," width = " + width + " , height = " + height);
@@ -44,6 +44,7 @@ public class OpenGLCppActivity extends BaseActivity {
 
     public byte[] getImageByte(Bitmap city) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(city.getHeight() * city.getWidth() * 4);
+        city.copyPixelsToBuffer(byteBuffer);
         byteBuffer.flip();
         byte[] pixelArr = byteBuffer.array();
         city.recycle();
