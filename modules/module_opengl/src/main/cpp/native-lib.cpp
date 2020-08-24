@@ -41,7 +41,7 @@ float textureArr[] = {
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
     // 测试opengl初始化 shader
-    programId = createProgram(vertexSource, fragmentSource);
+    programId = createProgram(vertexSurfaceSource, fragmentSurfaceSource);
     LOGD("createProgram programId = %d", programId);
 
     // 获取参数
@@ -61,11 +61,27 @@ void onSurfaceCreateCall(void *) {
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-    //设置图片，加载资源
+    //设置图片，加载资源 - 纹理资源
     if (pixelsArr != nullptr){
-        //    glTexImage2D(EGL_SURFACE_TYPE)
+        // GLenum target,      目标
+        // GLint level,        层级?
+        // GLint internalformat,  格式
+        // GLsizei width, GLsizei height,   宽,高
+        // GLint border,
+        // GLenum format,
+        // GLenum type,
+        // const void *pixels
+        glTexImage2D(GL_TEXTURE_2D,
+                0,
+                GL_RGBA,
+                width,
+                height,
+                0,
+                GL_RGBA,
+                GL_UNSIGNED_BYTE,
+                pixelsArr);
+        LOGD("onSurfaceCreateCall glTexImage2D pixelsArr");
     }
-
 
     // 设置完毕之后,解除绑定纹理
     glBindTexture(GL_TEXTURE_2D,0);
@@ -81,14 +97,20 @@ void onSurfaceChangeCall(int width, int height, void *ctx) {
 void onSurfaceDrawCall(void *ctx) {
     LOGD("onSurfaceDrawCall");
     auto *wzmEglThread = static_cast<WzmEglThread *>(ctx);
-    glClearColor(0.0, 0.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 使用程序
     glUseProgram(programId);
 
+    // 激活这个samplerId
+    glActiveTexture(GL_TEXTURE5);
+    glUniform1i(samplerId, 5);
 
-    // 设置顶点数组可用
+    // 绑定textureID
+    glBindTexture(GL_TEXTURE_2D,textureId);
+
+    // 设置顶点数组可用 - 顶点坐标
     glEnableVertexAttribArray(vPosition);
     // 设置参数
     // vPosition 参数的指向
@@ -107,14 +129,24 @@ void onSurfaceDrawCall(void *ctx) {
     );
 
 
-    // 设置数组可用
+    // 设置数组可用 - 给纹理坐标
     glEnableVertexAttribArray(fPosition);
-    glVertexAttribPointer(fPosition,2,GL_FLOAT, false,8,textureArr);
+    glVertexAttribPointer(
+            fPosition,
+            2,
+            GL_FLOAT,
+            false,
+            8,
+            textureArr);
 
 
     // 绘制这个三角形,共有3个点
     //glDrawArrays(GL_TRIANGLES,0,6);
     glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+
+
+    // 解除绑定textureID
+    glBindTexture(GL_TEXTURE_2D,0);
 
 }
 
@@ -143,7 +175,6 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
     pEglThread->setRenderMode(OPENGL_RENDER_DIRTY);
     pEglThread->onSurfaceCreate(pNativeWindow);
 
-
 }
 
 
@@ -170,7 +201,6 @@ JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv *env, jobject thiz,
                                                                           jint jwidth, jint jheight,
                                                                           jbyteArray image_data) {
-
     // 获取数据
     jbyte *data = env->GetByteArrayElements(image_data,nullptr);
     int length = env->GetArrayLength(image_data);
@@ -183,6 +213,6 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv
     width = jwidth;
     height = jheight;
 
-    // 回收空间
+    // 回收空间 - 使用之前拷贝的数据即可
     env->ReleaseByteArrayElements(image_data,data,0);
 }

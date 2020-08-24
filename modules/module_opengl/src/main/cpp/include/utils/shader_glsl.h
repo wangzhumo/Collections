@@ -29,6 +29,8 @@ const char *vertexSurfaceSource = "attribute vec4 vPosition;\n"
                                   "    ftPosition = fPosition;\n"
                                   "    gl_Position = vPosition;\n"
                                   "}";
+
+
 // 片元
 // raw/gles_fragment_surface_shader.glsl
 const char *fragmentSurfaceSource = "precision mediump float;\n"
@@ -37,5 +39,6 @@ const char *fragmentSurfaceSource = "precision mediump float;\n"
                                     "void main() {\n"
                                     "    gl_FragColor = texture2D(sTexture,ftPosition);\n"
                                     "}";
+
 
 #endif //COLLECTIONS_SHADER_GLSL_H

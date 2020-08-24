@@ -37,8 +37,8 @@ android {
 
 
     compileOptions {
-        sourceCompatibility = JDK_VERSION
-        targetCompatibility = JDK_VERSION
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
     }
 }
 
@@ -66,10 +66,5 @@ dependencies {
     implementation deps.androidx.appCompat
     implementation deps.androidx.dynamicanimation
     kapt deps.arouter.compiler
-//    debugImplementation deps.flutter.debug
-//    profileImplementation deps.flutter.profile
-//    releaseImplementation deps.flutter.releaseImplementation
-
-
     testImplementation 'junit:junit:4.12'
 }
