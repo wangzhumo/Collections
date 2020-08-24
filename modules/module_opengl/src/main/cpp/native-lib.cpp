@@ -13,7 +13,6 @@ WzmEglThread *pEglThread = nullptr;
 ANativeWindow *pNativeWindow = nullptr;
 
 
-
 GLuint programId = 0;
 GLint vPosition = 0;
 GLint fPosition = 0;
@@ -28,33 +27,44 @@ int iheight = 0;
 
 void *pixelsArr = nullptr;
 
-float vertexArrStrip[] = {
-        1,-1,
-        1,1,
-        -1,-1,
-        -1,1
+float VERTEX_ARR_STRIP[] = {
+        1, 1,
+        -1, 1,
+        1, -1,
+        -1, -1
 };
 
-float textureArr[] = {
-        1,1,
-        1,0,
-        0,1,
-        0,0
+float TEXTURE[] = {
+        0.0f, 1.0f,//左上角
+        1.0f, 1.0f,//右上角
+        0.0f, 0.0f,//左下角
+        1.0f, 0.0f,//右下角
 };
 
-float vertexs[] = {
-        1,-1,
-        1,1,
-        -1,-1,
-        -1,1
+// 因为没有翻转的原因，这里是图片的上面半部分
+float TEXTURE_HALF[] = {
+        0.0f, 0.5f,//左上角
+        1.0f, 0.5f,//右上角
+        0.0f, 0.0f,//左下角
+        1.0f, 0.0f,//右下角
 };
 
-float fragments[] ={
-        1,1,
-        1,0,
-        0,1,
-        0,0
+// 翻转这个图片
+float TEXTURE_TURN[] = {
+        0.0f, 0.0f,//左下角
+        1.0f, 0.0f,//右下角
+        0.0f, 1.0f,//左上角
+        1.0f, 1.0f,//右上角
 };
+
+// 翻转这个图片，而且取下面部分的图
+float TEXTURE_TURN_HALF [] = {
+        0.0f, 0.5f,//左下角
+        1.0f, 0.5f,//右下角
+        0.0f, 1.0f,//左上角
+        1.0f, 1.0f,//右上角
+};
+
 
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
@@ -68,19 +78,19 @@ void onSurfaceCreateCall(void *) {
     samplerId = glGetUniformLocation(programId, "sTexture");  //2d纹理
 
     // 创建一个texture，并且赋值到 textureId
-    glGenTextures(1,&textureId);
+    glGenTextures(1, &textureId);
     // 绑定纹理
-    glBindTexture(GL_TEXTURE_2D,textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     // 设置环绕方式
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // 设置过滤方式
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     //设置图片，加载资源 - 纹理资源
-    if (pixelsArr != nullptr){
+    if (pixelsArr != nullptr) {
         // GLenum target,      目标
         // GLint level,        层级?
         // GLint internalformat,  格式
@@ -90,19 +100,19 @@ void onSurfaceCreateCall(void *) {
         // GLenum type,
         // const void *pixels
         glTexImage2D(GL_TEXTURE_2D,
-                0,
-                GL_RGBA,
-                iwidth,
-                iheight,
-                0,
-                GL_RGBA,
-                GL_UNSIGNED_BYTE,
-                pixelsArr);
+                     0,
+                     GL_RGBA,
+                     iwidth,
+                     iheight,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     pixelsArr);
         LOGD("onSurfaceCreateCall glTexImage2D pixelsArr");
     }
 
     // 设置完毕之后,解除绑定纹理
-    glBindTexture(GL_TEXTURE_2D,0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -126,7 +136,7 @@ void onSurfaceDrawCall(void *ctx) {
     glUniform1i(samplerId, 5);
 
     // 绑定textureID
-    glBindTexture(GL_TEXTURE_2D,textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     // 设置顶点数组可用 - 顶点坐标
     glEnableVertexAttribArray(vPosition);
@@ -143,7 +153,7 @@ void onSurfaceDrawCall(void *ctx) {
             GL_FLOAT,
             false,
             8,
-            vertexs
+            VERTEX_ARR_STRIP
     );
 
 
@@ -155,16 +165,16 @@ void onSurfaceDrawCall(void *ctx) {
             GL_FLOAT,
             false,
             8,
-            fragments);
+            TEXTURE_TURN);
 
 
     // 绘制这个三角形,共有3个点
     //glDrawArrays(GL_TRIANGLES,0,6);
-    glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 
     // 解除绑定textureID
-    glBindTexture(GL_TEXTURE_2D,0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -217,19 +227,20 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv *env, jobject thiz,
-        jint jwidth, jint jheight,jbyteArray image_data) {
+                                                                          jint jwidth, jint jheight,
+                                                                          jbyteArray image_data) {
     // 获取数据
-    jbyte *data = env->GetByteArrayElements(image_data,nullptr);
+    jbyte *data = env->GetByteArrayElements(image_data, nullptr);
     int length = env->GetArrayLength(image_data);
-    LOGD("setImageData length = %d",length);
+    LOGD("setImageData length = %d", length);
     // 开辟数据内存
     pixelsArr = malloc(length);
-    memcpy(pixelsArr,data,length);
+    memcpy(pixelsArr, data, length);
 
     // 设置 w, h
     iwidth = jwidth;
     iheight = jheight;
 
     // 回收空间 - 使用之前拷贝的数据即可
-    env->ReleaseByteArrayElements(image_data,data,0);
+    env->ReleaseByteArrayElements(image_data, data, 0);
 }

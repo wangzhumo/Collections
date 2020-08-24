@@ -61,7 +61,7 @@ public class GLFboMultiRenderer implements IGLRenderer {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, bitmapTextureId);
 
         //设置图片到纹理上
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_city_night);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.opengl_ic_city_night);
         showWidth = bitmap.getWidth();
         showHeight = bitmap.getHeight();
         android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
