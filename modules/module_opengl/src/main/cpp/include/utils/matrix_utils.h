@@ -6,7 +6,8 @@
 #define COLLECTIONS_MATRIX_UTILS_H
 
 
-// 矩阵初始化
+// 单位矩阵初始化
+// 单位矩阵不会改变原来顶点坐标的数据。
 static void initMatrix(float *matrix){
     // 初始化这个矩阵的数据
     for (int i = 0; i < 16; i++) {
