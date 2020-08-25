@@ -31,22 +31,39 @@ void *pixelsArr = nullptr;
 
 float matrixArr[16];
 
-
+template <class T>
+int getArrSize(T& arr){
+    return sizeof(arr) / sizeof(arr[0]);
+}
 
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
     // 测试opengl初始化 shader
     programId = createProgram(vertexMatrix, fragmentSurfaceSource);
-    LOGD("createProgram programId = %d", programId);
+    LOGD("onSurfaceCreateCall createProgram programId = %d", programId);
 
     // 获取参数
     vPosition = glGetAttribLocation(programId, "vPosition");  //顶点的坐标
     fPosition = glGetAttribLocation(programId, "fPosition");  //这个纹理的坐标
     samplerId = glGetUniformLocation(programId, "sTexture");  //2d纹理
-    uMatrix = glGetUniformLocation(programId,"uMatrix");
-
+    uMatrix = glGetUniformLocation(programId,"u_Matrix");
+    LOGD("onSurfaceCreateCall uMatrix = %d", uMatrix);
     // 创建一个原始的矩阵
     initMatrix(matrixArr);
+
+    LOGE("Array length = %d",getArrSize(matrixArr));
+    for(int i = 0; i < 16; i++)
+    {
+        LOGD("%f", matrixArr[i]);
+    }
+    LOGD("======");
+    // 给他旋转一些角度
+    rotateMatrix(90,matrixArr);
+    for(int i = 0; i < 16; i++)
+    {
+        LOGD("%f", matrixArr[i]);
+    }
+    LOGD("======");
 
     // 创建一个texture，并且赋值到 textureId
     glGenTextures(1, &textureId);
@@ -102,14 +119,14 @@ void onSurfaceDrawCall(void *ctx) {
     // 使用程序
     glUseProgram(programId);
 
-    // 激活这个samplerId
-    glActiveTexture(GL_TEXTURE5);
-    glUniform1i(samplerId, 5);
-
     // 启用矩阵
     // count 表示要传递几个矩阵过去.
     // GL_FALSE 表示不需要交换行 与 列
-    glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
+    //glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
+
+    // 激活这个samplerId
+    glActiveTexture(GL_TEXTURE5);
+    glUniform1i(samplerId, 5);
 
     // 绑定textureID
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -151,7 +168,6 @@ void onSurfaceDrawCall(void *ctx) {
 
     // 解除绑定textureID
     glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 // 创建一个Surface - EGL 的环境
