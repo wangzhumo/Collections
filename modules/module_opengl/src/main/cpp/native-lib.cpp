@@ -7,6 +7,7 @@
 #include "include/egl/wzm_egl_thread.h"
 #include "include/utils/shader_utils.h"
 #include "include/utils/shader_glsl.h"
+#include "include/utils/matrix_utils.h"
 
 
 WzmEglThread *pEglThread = nullptr;
@@ -17,6 +18,7 @@ GLuint programId = 0;
 GLint vPosition = 0;
 GLint fPosition = 0;
 GLint samplerId = 0;
+GLint uMatrix = 0;
 GLuint textureId = 0;
 
 int width = 0;
@@ -27,55 +29,24 @@ int iheight = 0;
 
 void *pixelsArr = nullptr;
 
-float VERTEX_ARR_STRIP[] = {
-        1, 1,
-        -1, 1,
-        1, -1,
-        -1, -1
-};
+float matrixArr[16];
 
-float TEXTURE[] = {
-        0.0f, 1.0f,//左上角
-        1.0f, 1.0f,//右上角
-        0.0f, 0.0f,//左下角
-        1.0f, 0.0f,//右下角
-};
-
-// 因为没有翻转的原因，这里是图片的上面半部分
-float TEXTURE_HALF[] = {
-        0.0f, 0.5f,//左上角
-        1.0f, 0.5f,//右上角
-        0.0f, 0.0f,//左下角
-        1.0f, 0.0f,//右下角
-};
-
-// 翻转这个图片
-float TEXTURE_TURN[] = {
-        0.0f, 0.0f,//左下角
-        1.0f, 0.0f,//右下角
-        0.0f, 1.0f,//左上角
-        1.0f, 1.0f,//右上角
-};
-
-// 翻转这个图片，而且取下面部分的图
-float TEXTURE_TURN_HALF [] = {
-        0.0f, 0.5f,//左下角
-        1.0f, 0.5f,//右下角
-        0.0f, 1.0f,//左上角
-        1.0f, 1.0f,//右上角
-};
 
 
 void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
     // 测试opengl初始化 shader
-    programId = createProgram(vertexSurfaceSource, fragmentSurfaceSource);
+    programId = createProgram(vertexMatrix, fragmentSurfaceSource);
     LOGD("createProgram programId = %d", programId);
 
     // 获取参数
     vPosition = glGetAttribLocation(programId, "vPosition");  //顶点的坐标
     fPosition = glGetAttribLocation(programId, "fPosition");  //这个纹理的坐标
     samplerId = glGetUniformLocation(programId, "sTexture");  //2d纹理
+    uMatrix = glGetUniformLocation(programId,"uMatrix");
+
+    // 创建一个原始的矩阵
+    initMatrix(matrixArr);
 
     // 创建一个texture，并且赋值到 textureId
     glGenTextures(1, &textureId);
@@ -135,6 +106,11 @@ void onSurfaceDrawCall(void *ctx) {
     glActiveTexture(GL_TEXTURE5);
     glUniform1i(samplerId, 5);
 
+    // 启用矩阵
+    // count 表示要传递几个矩阵过去.
+    // GL_FALSE 表示不需要交换行 与 列
+    glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
+
     // 绑定textureID
     glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -153,7 +129,7 @@ void onSurfaceDrawCall(void *ctx) {
             GL_FLOAT,
             false,
             8,
-            VERTEX_ARR_STRIP
+            VERTEX_ARR
     );
 
 
