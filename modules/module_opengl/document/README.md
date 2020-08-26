@@ -91,7 +91,7 @@ static void rotateMatrix(double angle,float *matrix){
 原因是`matrix[5]`以及`matrix[6]`赋值错误了，应该是 4,5 才对
 
 
-
+- 矩阵作用于顶点坐标，因此它准守的是的 `顶点坐标系`
 
 https://learnopengl-cn.github.io/01%20Getting%20started/07%20Transformations/#_10
 
