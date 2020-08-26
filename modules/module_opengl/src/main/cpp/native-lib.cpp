@@ -52,7 +52,11 @@ void onSurfaceCreateCall(void *) {
     // 创建一个原始的矩阵
     initMatrix(matrixArr);
     // 给他旋转一些角度
-    rotateMatrix(90,matrixArr);
+    //rotateMatrix(90,matrixArr);
+    // 缩放
+    //scaleMatrix(1.5,matrixArr);
+    // 平移
+    translateMatrix(0.5,0,matrixArr);
 
     // 创建一个texture，并且赋值到 textureId
     glGenTextures(1, &textureId);
