@@ -46,10 +46,10 @@ const char *fragmentSurfaceSource = "precision mediump float;\n"
 const char *vertexMatrix = "attribute vec4 vPosition;\n"
                            "attribute vec2 fPosition;\n"
                            "varying vec2 ftPosition;\n"
-                           "uniform mat4 u_Matrix;\n"
+                           "uniform mat4 uMatrix;\n"
                            "void main() {\n"
                                "ftPosition = fPosition;\n"
-                               "gl_Position = vPosition * u_Matrix;\n"
+                               "gl_Position = vPosition * uMatrix;\n"
                            "}";
 
 

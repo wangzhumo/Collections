@@ -35,8 +35,8 @@ static void rotateMatrix(double angle,float *matrix){
     // 那么就是说，要计算四个位置的值
     matrix[0] = cos(angle);
     matrix[1] = -sin(angle);
-    matrix[5] = sin(angle);
-    matrix[6] = cos(angle);
+    matrix[4] = sin(angle);
+    matrix[5] = cos(angle);
     // 旋转矩阵完成。
 }
 

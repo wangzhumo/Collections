@@ -31,6 +31,7 @@ void *pixelsArr = nullptr;
 
 float matrixArr[16];
 
+
 template <class T>
 int getArrSize(T& arr){
     return sizeof(arr) / sizeof(arr[0]);
@@ -46,24 +47,12 @@ void onSurfaceCreateCall(void *) {
     vPosition = glGetAttribLocation(programId, "vPosition");  //顶点的坐标
     fPosition = glGetAttribLocation(programId, "fPosition");  //这个纹理的坐标
     samplerId = glGetUniformLocation(programId, "sTexture");  //2d纹理
-    uMatrix = glGetUniformLocation(programId,"u_Matrix");
-    LOGD("onSurfaceCreateCall uMatrix = %d", uMatrix);
+    uMatrix = glGetUniformLocation(programId,"uMatrix");
+
     // 创建一个原始的矩阵
     initMatrix(matrixArr);
-
-    LOGE("Array length = %d",getArrSize(matrixArr));
-    for(int i = 0; i < 16; i++)
-    {
-        LOGD("%f", matrixArr[i]);
-    }
-    LOGD("======");
     // 给他旋转一些角度
     rotateMatrix(90,matrixArr);
-    for(int i = 0; i < 16; i++)
-    {
-        LOGD("%f", matrixArr[i]);
-    }
-    LOGD("======");
 
     // 创建一个texture，并且赋值到 textureId
     glGenTextures(1, &textureId);
@@ -113,7 +102,7 @@ void onSurfaceChangeCall(int width, int height, void *ctx) {
 void onSurfaceDrawCall(void *ctx) {
     LOGD("onSurfaceDrawCall");
     auto *wzmEglThread = static_cast<WzmEglThread *>(ctx);
-    glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 使用程序
@@ -122,7 +111,7 @@ void onSurfaceDrawCall(void *ctx) {
     // 启用矩阵
     // count 表示要传递几个矩阵过去.
     // GL_FALSE 表示不需要交换行 与 列
-    //glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
+    glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
 
     // 激活这个samplerId
     glActiveTexture(GL_TEXTURE5);
