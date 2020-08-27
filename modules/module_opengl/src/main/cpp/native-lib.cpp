@@ -56,7 +56,9 @@ void onSurfaceCreateCall(void *) {
     // 缩放
     //scaleMatrix(1.5,matrixArr);
     // 平移
-    translateMatrix(0.5,0,matrixArr);
+    //translateMatrix(0.5,0,matrixArr);
+    // 修改投影矩阵
+    //orthoM(-1,1,1,-1,matrixArr);
 
     // 创建一个texture，并且赋值到 textureId
     glGenTextures(1, &textureId);
@@ -101,6 +103,21 @@ void onSurfaceChangeCall(int width, int height, void *ctx) {
     //WzmEglThread *wzmEglThread = static_cast<WzmEglThread *>(ctx);
     glViewport(0, 0, width, height);
     LOGD("onSurfaceChangeCall width = %d ,height = %d", width, height);
+    float screenR = 1.0 * width / height;
+    float sourceR = 1.0 * iwidth / iheight;
+
+    // 计算他们的比值
+    if (screenR > sourceR) {
+        // 图片的宽度的缩放
+        float r = width / (1.0 * height / iheight * iwidth);
+        LOGD("onSurfaceChangeCall 图片的高度缩放 r = %f", r);
+        orthoM(-r,1,r,-1,matrixArr);
+    }else{
+        // 图片的高度缩放
+        float r = height / (1.0 * width / iwidth * iheight);
+        LOGD("onSurfaceChangeCall 图片的高度缩放 r = %f", r);
+        orthoM(-1,r,1,-r,matrixArr);
+    }
 }
 
 void onSurfaceDrawCall(void *ctx) {
