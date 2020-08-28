@@ -67,6 +67,9 @@ void *eglThreadCallBack(void *context) {
 
 
             if (wzmEglThread->isExit){
+                pEglHelper->release();
+                delete pEglHelper;
+                pEglHelper = nullptr;
                 break;
             }
         }
@@ -121,5 +124,18 @@ void WzmEglThread::notifyRender() {
     pthread_cond_signal(&pThreadCond);
     // 操作结束，此时打开锁
     pthread_mutex_unlock(&pThreadMutex);
+}
+
+void WzmEglThread::release() {
+    this->isExit = true;
+    // 渲染一次,避免线程锁住无法更新的问题
+    notifyRender();
+
+    // 去掉pEglThread
+    pthread_join(pEglThread, nullptr);
+    pEglThread = -1;
+
+    // 由于NativeWindow,这里只是引用,我们仅仅把指针去掉即可
+    pNativeWindow = nullptr;
 }
 
