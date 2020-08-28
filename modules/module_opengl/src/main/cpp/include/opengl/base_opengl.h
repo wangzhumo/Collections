@@ -40,7 +40,10 @@ public:
     virtual void onSurfaceChange(int width,int height);
 
     // 开始绘制
-    virtual void onDraw();
+    virtual void onSurfaceDraw();
+
+    // 销毁资源
+    virtual void onRelease();
 };
 
 

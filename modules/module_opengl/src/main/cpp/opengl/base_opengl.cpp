@@ -50,6 +50,10 @@ void BaseOpenGl::onSurfaceChange(int width, int height) {
 
 }
 
-void BaseOpenGl::onDraw() {
+void BaseOpenGl::onSurfaceDraw() {
+
+}
+
+void BaseOpenGl::onRelease() {
 
 }
