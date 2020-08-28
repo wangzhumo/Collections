@@ -8,6 +8,7 @@
 #include "include/utils/shader_utils.h"
 #include "include/utils/shader_glsl.h"
 #include "include/utils/matrix_utils.h"
+#include "include/opengl/opengl_controller.h"
 
 
 WzmEglThread *pEglThread = nullptr;
