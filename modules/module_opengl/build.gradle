@@ -52,6 +52,7 @@ android {
         }
     }
 
+
     compileOptions {
         sourceCompatibility = JDK_VERSION
         targetCompatibility = JDK_VERSION
@@ -82,6 +83,7 @@ dependencies {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
     }
+    implementation files('libs/oaid_sdk_1.0.22.aar')
     kapt deps.arouter.compiler
     kapt deps.auto_server
     //kapt deps.epoxy_processor

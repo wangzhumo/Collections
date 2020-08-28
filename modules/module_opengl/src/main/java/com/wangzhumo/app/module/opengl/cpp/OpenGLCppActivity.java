@@ -39,6 +39,8 @@ public class OpenGLCppActivity extends BaseActivity {
         NativeOpenGl nativeOpenGl = new NativeOpenGl();
         surfaceView.setNativeOpenGl(nativeOpenGl);
         nativeOpenGl.setImageData(width, height, getImageByte(city));
+
+
     }
 
     public byte[] getImageByte(Bitmap city) {
