@@ -14,10 +14,10 @@ import com.wangzhumo.app.base.delegate.IAppConstant
  */
 @IApp(name = IAppConstant.OPENGL)
 @AutoService(AppDelegate::class)
-class OpenGLAppDelegate: AppDelegate{
+class OpenGLAppDelegate: AppDelegate {
 
     override fun init(application: Application) {
         Log.d("AppDelegate", "OpenGLAppDelegate = $application")
-    }
 
+    }
 }

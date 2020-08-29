@@ -81,6 +81,8 @@ public:
     void setRenderMode(int mode);
 
     void notifyRender();
+
+    void release();
 };
 
 

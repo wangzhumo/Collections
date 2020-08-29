@@ -11,7 +11,7 @@
 #include <jni.h>
 #include "../egl/wzm_egl_thread.h"
 #include "../log/android_log_utils.h"
-#include "base_opengl.h"
+#include "opengl_filter_normal.h"
 
 
 
