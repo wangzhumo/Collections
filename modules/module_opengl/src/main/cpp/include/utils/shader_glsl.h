@@ -7,33 +7,33 @@
 
 // 简单的三角形绘制
 // 顶点着色器
-const char *vertexSource = "attribute vec4 vPosition;    \n"
-                           "void main(){                 \n"
-                           "    gl_Position = vPosition; \n"
-                           "}";
+//const char *vertexSource = "attribute vec4 vPosition;    \n"
+//                           "void main(){                 \n"
+//                           "    gl_Position = vPosition; \n"
+//                           "}";
 
 // 片着色器
-const char *fragmentSource = "precision mediump float;              \n"
-                             "void main(){                          \n"
-                             "    gl_FragColor = vec4(0f,1f,0f,1f); \n"
-                             "}";
+//const char *fragmentSource = "precision mediump float;              \n"
+//                             "void main(){                          \n"
+//                             "    gl_FragColor = vec4(0f,1f,0f,1f); \n"
+//                             "}";
 
 
 // 绘制一个纹理
 // 顶点
 // raw/gles_vertex_surface_shader.glsl
-const char *vertexSurfaceSource = "attribute vec4 vPosition;\n"
-                                  "attribute vec2 fPosition;\n"
-                                  "varying vec2 ftPosition;\n"
-                                  "void main() {\n"
-                                  "    ftPosition = fPosition;\n"
-                                  "    gl_Position = vPosition;\n"
-                                  "}";
+//const char *vertexSurfaceSource_2 = "attribute vec4 vPosition;\n"
+//                                  "attribute vec2 fPosition;\n"
+//                                  "varying vec2 ftPosition;\n"
+//                                  "void main() {\n"
+//                                  "    ftPosition = fPosition;\n"
+//                                  "    gl_Position = vPosition;\n"
+//                                  "}";
 
 
 // 片元
 // raw/gles_fragment_surface_shader.glsl
-const char *fragmentSurfaceSource = "precision mediump float;\n"
+const char *FRAGMENT_SURFACE_SOURCE = "precision mediump float;\n"
                                     "uniform sampler2D sTexture;\n"
                                     "varying vec2 ftPosition;\n"
                                     "void main() {\n"
@@ -43,7 +43,7 @@ const char *fragmentSurfaceSource = "precision mediump float;\n"
 
 // 绘制一个纹理 - 加入矩阵 - 顶点
 // raw/gles_vertex_shader_matrix_texture.glsl
-const char *vertexMatrix = "attribute vec4 vPosition;\n"
+const char *VERTEX_MATRIX_SOURCE = "attribute vec4 vPosition;\n"
                            "attribute vec2 fPosition;\n"
                            "varying vec2 ftPosition;\n"
                            "uniform mat4 uMatrix;\n"
