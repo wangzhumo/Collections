@@ -1,7 +1,7 @@
 //
 // Created by wangzhumo on 8/18/20.
 //
-
+#pragma once
 #ifndef COLLECTIONS_SHADER_UTILS_H
 #define COLLECTIONS_SHADER_UTILS_H
 
@@ -40,7 +40,7 @@ static GLuint createProgram(const char *vertexSource, const char *fragmentSource
     // 创建program
     GLuint programId = glCreateProgram();
     if (programId == 0) {
-        LOGE("createProgram programId = %d",programId);
+        LOGE("createProgram baseProgramId = %d",programId);
         return false;
     }
 
