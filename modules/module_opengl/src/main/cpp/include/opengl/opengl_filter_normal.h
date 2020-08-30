@@ -7,6 +7,7 @@
 
 
 #include "base_opengl.h"
+#include "../utils/shader_glsl.h"
 
 class OpenGLFilterNormal: public BaseOpenGl{
 

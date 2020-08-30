@@ -73,8 +73,8 @@ void OpenGlController::onSurfaceChange(int width, int height) {
     if (pEglThread != nullptr) {
         // 保存一下子
         if(baseOpenGl != nullptr){
-            baseOpenGl->surfaceWidth = width;
-            baseOpenGl->surfaceHeight = height;
+            baseOpenGl->baseSurfaceWidth = width;
+            baseOpenGl->baseSurfaceHeight = height;
         }
         pEglThread->onSurfaceChange(width, height);
 

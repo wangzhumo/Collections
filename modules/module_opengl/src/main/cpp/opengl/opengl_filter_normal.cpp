@@ -13,6 +13,9 @@ OpenGLFilterNormal::~OpenGLFilterNormal(){}
 
 
 void OpenGLFilterNormal::onSurfaceCreate() {
+    // 为base中声明的数据赋值
+    pBaseVertexSource = VERTEX_MATRIX_SOURCE;
+    LOGD("OpenGLFilterNormal pBaseVertexSource = %s",pBaseVertexSource);
 }
 
 void OpenGLFilterNormal::onSurfaceChange(int width, int height) {

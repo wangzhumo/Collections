@@ -10,7 +10,6 @@
 #include <android/native_window.h>
 #include <jni.h>
 #include "../egl/wzm_egl_thread.h"
-#include "../log/android_log_utils.h"
 #include "opengl_filter_normal.h"
 
 
