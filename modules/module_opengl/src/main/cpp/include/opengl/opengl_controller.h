@@ -3,7 +3,7 @@
 //
 // 这负责提供opengl的egl环境，控制固定的流程
 //
-
+#pragma once
 #ifndef COLLECTIONS_OPENGL_CONTROLLER_H
 #define COLLECTIONS_OPENGL_CONTROLLER_H
 

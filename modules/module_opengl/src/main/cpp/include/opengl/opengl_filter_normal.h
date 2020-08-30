@@ -1,7 +1,7 @@
 //
 // Created by 王诛魔 on 2020/8/28.
 //
-
+#pragma once
 #ifndef COLLECTIONS_OPENGL_FILTER_NORMAL_H
 #define COLLECTIONS_OPENGL_FILTER_NORMAL_H
 
@@ -10,6 +10,21 @@
 #include "../utils/shader_glsl.h"
 
 class OpenGLFilterNormal: public BaseOpenGl{
+
+public:
+    GLint vPosition = 0;
+    GLint fPosition = 0;
+    GLint samplerId = 0;
+    GLint uMatrix = 0;
+    GLuint textureId = 0;
+
+
+    int pixWidth = 0;
+    int pixHeight = 0;
+
+    void *pPixelsArr = nullptr;
+
+    float matrixArr[16];
 
 public:
     OpenGLFilterNormal();

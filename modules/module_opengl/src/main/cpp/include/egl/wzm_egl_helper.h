@@ -1,7 +1,7 @@
 //
 // Created by wangzhumo on 2020/8/7.
 //
-
+#pragma once
 #ifndef COLLECTIONS_WZM_EGL_HELPER_H
 #define COLLECTIONS_WZM_EGL_HELPER_H
 

@@ -3,7 +3,7 @@
 //
 // 作为使用opengl的基类，定义必须的参数
 //
-
+#pragma once
 #ifndef COLLECTIONS_BASE_OPENGL_H
 #define COLLECTIONS_BASE_OPENGL_H
 

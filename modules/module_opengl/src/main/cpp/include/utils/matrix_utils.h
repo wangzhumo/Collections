@@ -1,7 +1,7 @@
 //
 // Created by wangzhumo on 2020/8/25.
 //
-
+#pragma once
 #ifndef COLLECTIONS_MATRIX_UTILS_H
 #define COLLECTIONS_MATRIX_UTILS_H
 
