@@ -1,17 +1,16 @@
 #include <jni.h>
 #include <string>
+#include "include/log/android_log_utils.h"
 
 
 
-#include "include/opengl/opengl_controller.h"
+//#include "include/opengl/opengl_controller.h"
 
 
 int iwidth = 0;
 int iheight = 0;
 
 void *pixelsArr = nullptr;
-
-
 
 
 // 创建一个Surface - EGL 的环境
