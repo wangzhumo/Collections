@@ -8,8 +8,8 @@
 
 // 我们可以在构造方法中，创建两个数组
 BaseOpenGl::BaseOpenGl() {
-    vertexArr = new float[8];
-    surfaceArr = new float[8];
+    pBaseVertexArr = new float[8];
+    pBaseSurfaceArr = new float[8];
 
     const float VERTEX_ARR[] = {
             1, 1,
@@ -27,17 +27,17 @@ BaseOpenGl::BaseOpenGl() {
     };
 
     // 拷贝数据到顶点数组
-    memcpy(vertexArr,VERTEX_ARR, sizeof(VERTEX_ARR));
-    memcpy(surfaceArr,TEXTURE_TURN, sizeof(TEXTURE_TURN));
+    memcpy(pBaseVertexArr, VERTEX_ARR, sizeof(VERTEX_ARR));
+    memcpy(pBaseSurfaceArr, TEXTURE_TURN, sizeof(TEXTURE_TURN));
 }
 
 BaseOpenGl::~BaseOpenGl() {
-    delete [] vertexArr;
-    delete [] surfaceArr;
+    delete [] pBaseVertexArr;
+    delete [] pBaseSurfaceArr;
 
     // 释放之前的数组
-    vertexArr = nullptr;
-    surfaceArr = nullptr;
+    pBaseVertexArr = nullptr;
+    pBaseSurfaceArr = nullptr;
 }
 
 

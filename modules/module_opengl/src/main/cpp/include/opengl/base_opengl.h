@@ -10,24 +10,26 @@
 
 #include <GLES2/gl2.h>
 #include <cstring>
-
+#include "../utils/matrix_utils.h"
+#include "../utils/shader_utils.h"
+#include "../log/android_log_utils.h"
 
 class  BaseOpenGl{
 public:
     // surface的尺寸
-    int surfaceWidth;
-    int surfaceHeight;
+    int baseSurfaceWidth;
+    int baseSurfaceHeight;
 
     // vertex 以及 fragment 着色器的源码
-    char *vertexSource;
-    char *fragmentSource;
+    const char *pBaseVertexSource;
+    const char *pBaseFragmentSource;
 
     // 顶点以及片元的顶点坐标
-    float *vertexArr;
-    float *surfaceArr;
+    float *pBaseVertexArr;
+    float *pBaseSurfaceArr;
 
     // 一些glsl中的变量
-    GLuint programId;
+    GLuint baseProgramId;
 
 public:
     BaseOpenGl();
