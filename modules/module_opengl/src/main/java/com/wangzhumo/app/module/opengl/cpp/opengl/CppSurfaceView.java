@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.tencent.mars.xlog.CLog;
-
 
 /**
  * SurfaceView自定义，主要调用native的几个方法
@@ -18,6 +16,7 @@ public class CppSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
 
     private NativeOpenGl nativeOpenGl;
     private SurfaceHolder mHolder;
+    private SurfaceLifecycle lifecycle;
 
     public CppSurfaceView(Context context) {
         this(context,null);
@@ -32,6 +31,10 @@ public class CppSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         getHolder().addCallback(this);
     }
 
+    public void setLifecycle(SurfaceLifecycle lifecycle) {
+        this.lifecycle = lifecycle;
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         if (mHolder == null){
@@ -41,6 +44,9 @@ public class CppSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         if (nativeOpenGl != null){
             nativeOpenGl.surfaceCreate(holder.getSurface());
             Log.e(TAG,"surfaceCreated nativeOpenGl.surfaceCreate");
+            if (lifecycle != null) {
+                lifecycle.onCreate();
+            }
         }
     }
 
@@ -54,7 +60,10 @@ public class CppSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        if (nativeOpenGl != null){
+            Log.e(TAG,"surfaceChanged nativeOpenGl.surfaceChange");
+            nativeOpenGl.surfaceDestroy();
+        }
     }
 
     public void setNativeOpenGl(NativeOpenGl nativeOpenGl) {

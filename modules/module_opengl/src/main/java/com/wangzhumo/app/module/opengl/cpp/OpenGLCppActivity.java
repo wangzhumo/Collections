@@ -12,6 +12,7 @@ import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.cpp.opengl.CppSurfaceView;
 import com.wangzhumo.app.module.opengl.cpp.opengl.NativeOpenGl;
+import com.wangzhumo.app.module.opengl.cpp.opengl.SurfaceLifecycle;
 import com.wangzhumo.app.origin.BaseActivity;
 
 
@@ -38,9 +39,12 @@ public class OpenGLCppActivity extends BaseActivity {
         //native
         NativeOpenGl nativeOpenGl = new NativeOpenGl();
         surfaceView.setNativeOpenGl(nativeOpenGl);
-        nativeOpenGl.setImageData(width, height, getImageByte(city));
-
-
+        surfaceView.setLifecycle(new SurfaceLifecycle() {
+            @Override
+            public void onCreate() {
+                nativeOpenGl.setImageData(width, height, getImageByte(city));
+            }
+        });
     }
 
     public byte[] getImageByte(Bitmap city) {
