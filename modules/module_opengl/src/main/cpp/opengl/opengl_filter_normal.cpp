@@ -147,6 +147,8 @@ void OpenGLFilterNormal::onSurfaceDraw() {
 // 设置投影矩阵数据
 void OpenGLFilterNormal::setMatrix(int width, int height) {
     LOGD("OpenGLFilterNormal setMatrix width = %d ,height = %d", width, height);
+    initMatrix(matrixArr);
+
     float screenR = 1.0 * width / height;
     float sourceR = 1.0 * pixWidth / pixHeight;
 
@@ -161,6 +163,18 @@ void OpenGLFilterNormal::setMatrix(int width, int height) {
         float r = height / (1.0 * width / pixWidth * pixHeight);
         LOGD("OpenGLFilterNormal setMatrix 图片的高度缩放 r = %f", r);
         orthoM(-1,r,1,-r,matrixArr);
+    }
+}
+
+
+void OpenGLFilterNormal::setPixelsData(int width, int height,int len, void *pixArr) {
+    pixHeight = height;
+    pixWidth = width;
+    pPixelsArr=pixArr;
+
+    // 设置矩阵数据
+    if (baseSurfaceHeight > 0 && baseSurfaceWidth > 0){
+        setMatrix(baseSurfaceWidth,baseSurfaceHeight);
     }
 }
 

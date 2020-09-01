@@ -46,6 +46,9 @@ public:
 
     // 销毁资源
     virtual void onRelease();
+
+    // 设置图片的像素数据
+    virtual void setPixelsData(int width, int height, int len, void *pixArr);
 };
 
 

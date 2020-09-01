@@ -42,6 +42,9 @@ public:
 
     // 设置一个矩阵
     void setMatrix(int width,int height);
+
+    // 设置图片数据
+    void setPixelsData(int width, int height,int len, void *pixArr);
 };
 
 #endif //COLLECTIONS_OPENGL_FILTER_NORMAL_H

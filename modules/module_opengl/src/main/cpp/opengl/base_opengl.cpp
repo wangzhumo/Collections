@@ -57,3 +57,9 @@ void BaseOpenGl::onSurfaceDraw() {
 void BaseOpenGl::onRelease() {
 
 }
+
+void BaseOpenGl::setPixelsData(int width, int height, int len, void *pixArr) {
+
+}
+
+
