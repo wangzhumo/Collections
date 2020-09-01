@@ -30,7 +30,7 @@ void OpenGLFilterNormal::onSurfaceCreate() {
     samplerId = glGetUniformLocation(baseProgramId, "sTexture");  //2d纹理
     uMatrix = glGetUniformLocation(baseProgramId,"uMatrix");  //矩阵
 
-    // 创建一个原始的矩阵
+    // 创建一个原始的矩阵 - 单位矩阵
     initMatrix(matrixArr);
     // 给他旋转一些角度
     //rotateMatrix(90,matrixArr);
@@ -80,9 +80,88 @@ void OpenGLFilterNormal::onSurfaceCreate() {
 }
 
 void OpenGLFilterNormal::onSurfaceChange(int width, int height) {
+    glViewport(0, 0, width, height);
+    LOGD("OpenGLFilterNormal onSurfaceChange width = %d ,height = %d", width, height);
+    setMatrix(width, height);
 }
 
 void OpenGLFilterNormal::onSurfaceDraw() {
+    LOGD("OpenGLFilterNormal onSurfaceDrawCall");
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // 使用程序
+    glUseProgram(baseProgramId);
+
+    // 启用矩阵
+    // count 表示要传递几个矩阵过去.
+    // GL_FALSE 表示不需要交换行 与 列
+    glUniformMatrix4fv(uMatrix,1,GL_FALSE, matrixArr);
+
+    // 激活这个samplerId
+    glActiveTexture(GL_TEXTURE5);
+    glUniform1i(samplerId, 5);
+
+    // 绑定textureID
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
+    // 设置顶点数组可用 - 顶点坐标
+    glEnableVertexAttribArray(vPosition);
+    // 设置参数
+    // vPosition 参数的指向
+    // 2         每一个顶点由几个数据组成，这里（1,1）两个float 2
+    // GL_FLOAT  参数的数据类型
+    // false     是否归一化坐标
+    // 8         每一个顶点的长度   float 4 * 2 = 8
+    // vertexArr 要赋值的数值数组
+    glVertexAttribPointer(
+            vPosition,
+            2,
+            GL_FLOAT,
+            false,
+            8,
+           pBaseVertexArr
+    );
+
+
+    // 设置数组可用 - 给纹理坐标
+    glEnableVertexAttribArray(fPosition);
+    glVertexAttribPointer(
+            fPosition,
+            2,
+            GL_FLOAT,
+            false,
+            8,
+            pBaseSurfaceArr);
+
+
+    // 绘制这个三角形,共有3个点
+    //glDrawArrays(GL_TRIANGLES,0,6);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+
+    // 解除绑定textureID
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+// 设置投影矩阵数据
+void OpenGLFilterNormal::setMatrix(int width, int height) {
+    LOGD("OpenGLFilterNormal setMatrix width = %d ,height = %d", width, height);
+    float screenR = 1.0 * width / height;
+    float sourceR = 1.0 * pixWidth / pixHeight;
+
+    // 计算他们的比值
+    if (screenR > sourceR) {
+        // 图片的宽度的缩放
+        float r = width / (1.0 * height / pixHeight * pixWidth);
+        LOGD("OpenGLFilterNormal setMatrix 图片的宽度的缩放 r = %f", r);
+        orthoM(-r,1,r,-1,matrixArr);
+    }else{
+        // 图片的高度缩放
+        float r = height / (1.0 * width / pixWidth * pixHeight);
+        LOGD("OpenGLFilterNormal setMatrix 图片的高度缩放 r = %f", r);
+        orthoM(-1,r,1,-r,matrixArr);
+    }
 }
 
 

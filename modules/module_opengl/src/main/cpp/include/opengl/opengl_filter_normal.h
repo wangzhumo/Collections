@@ -39,6 +39,9 @@ public:
 
     // 开始绘制
     void onSurfaceDraw();
+
+    // 设置一个矩阵
+    void setMatrix(int width,int height);
 };
 
 #endif //COLLECTIONS_OPENGL_FILTER_NORMAL_H
