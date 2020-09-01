@@ -1,16 +1,8 @@
 #include <jni.h>
 #include <string>
-#include "include/log/android_log_utils.h"
-
-
-
 #include "include/opengl/opengl_controller.h"
 
-
-int iwidth = 0;
-int iheight = 0;
-
-void *pixelsArr = nullptr;
+OpenGlController * pGlController = nullptr;
 
 
 // 创建一个Surface - EGL 的环境
@@ -18,8 +10,12 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
         JNIEnv *env, jobject thiz, jobject surface) {
-    // 获取一个 ANativeWindow
-
+    // 获取一个 OpenGlController
+    if (pGlController == nullptr){
+        pGlController = new OpenGlController();
+    }
+    // 通知gl中的 create 事件触发
+    pGlController->onSurfaceCreate(env, surface);
 }
 
 
@@ -29,7 +25,9 @@ JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
         JNIEnv *env, jobject thiz, jint width, jint height) {
     // surfaceChange 的调用
-
+    if (pGlController != nullptr){
+        pGlController->onSurfaceChange(width,height);
+    }
 }
 
 // 外部传递过来的imageData
@@ -42,14 +40,25 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv
     jbyte *data = env->GetByteArrayElements(image_data, nullptr);
     int length = env->GetArrayLength(image_data);
     LOGD("setImageData length = %d", length);
-    // 开辟数据内存
-    pixelsArr = malloc(length);
-    memcpy(pixelsArr, data, length);
 
-    // 设置 w, h
-    iwidth = jwidth;
-    iheight = jheight;
+    if(pGlController != nullptr){
+        pGlController->setPixelsData(jwidth,jheight,length,data);
+    }
 
     // 回收空间 - 使用之前拷贝的数据即可
     env->ReleaseByteArrayElements(image_data, data, 0);
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIEnv *env,
+                                                                            jobject thiz) {
+    // 调用通知
+    if (pGlController != nullptr){
+        pGlController->onRelease();
+        // 回收自己的内存
+        delete pGlController;
+        pGlController = nullptr;
+    }
 }

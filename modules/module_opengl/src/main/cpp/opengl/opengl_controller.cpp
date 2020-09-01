@@ -2,14 +2,16 @@
 // Created by wangzhumo on 2020/8/28.
 //
 
+
+
 #include "../include/opengl/opengl_controller.h"
 
 
 void onSurfaceCreateCall(void *ctx) {
     auto *pGlController = static_cast<OpenGlController *>(ctx);
-    if (pGlController != nullptr && pGlController->baseOpenGl != nullptr){
+    if (pGlController != nullptr && pGlController->baseOpenGl != nullptr) {
         // 如果不为空,就可以使用
-        if (pGlController->baseOpenGl != nullptr){
+        if (pGlController->baseOpenGl != nullptr) {
             // 如果不为空,就可以调用到baseOpenGL中自己的具体实现
             pGlController->baseOpenGl->onSurfaceCreate();
         }
@@ -18,19 +20,19 @@ void onSurfaceCreateCall(void *ctx) {
 
 void onSurfaceChangeCall(int width, int height, void *ctx) {
     auto *pGlController = static_cast<OpenGlController *>(ctx);
-    if (pGlController != nullptr){
+    if (pGlController != nullptr) {
         // 如果不为空,就可以使用
-        if (pGlController->baseOpenGl != nullptr){
-            pGlController->baseOpenGl->onSurfaceChange(width,height);
+        if (pGlController->baseOpenGl != nullptr) {
+            pGlController->baseOpenGl->onSurfaceChange(width, height);
         }
     }
 }
 
 void onSurfaceDrawCall(void *ctx) {
     auto *pGlController = static_cast<OpenGlController *>(ctx);
-    if (pGlController != nullptr){
+    if (pGlController != nullptr) {
         // 如果不为空,就可以使用
-        if (pGlController->baseOpenGl != nullptr){
+        if (pGlController->baseOpenGl != nullptr) {
             pGlController->baseOpenGl->onSurfaceDraw();
         }
     }
@@ -72,7 +74,7 @@ void OpenGlController::onSurfaceChange(int width, int height) {
     // surfaceChange 的调用
     if (pEglThread != nullptr) {
         // 保存一下子
-        if(baseOpenGl != nullptr){
+        if (baseOpenGl != nullptr) {
             baseOpenGl->baseSurfaceWidth = width;
             baseOpenGl->baseSurfaceHeight = height;
         }
@@ -87,7 +89,7 @@ void OpenGlController::onRelease() {
     // 停止线程之前先
     pEglThread->release();
     //调用baseOpenGL的方法.
-    if (baseOpenGl != nullptr){
+    if (baseOpenGl != nullptr) {
         baseOpenGl->onRelease();
         delete baseOpenGl;
         baseOpenGl = nullptr;
@@ -98,5 +100,35 @@ void OpenGlController::onRelease() {
     pNativeWindow = nullptr;
 
 }
+
+
+// 数据被保存到自己的controller.
+void OpenGlController::setPixelsData(int width, int height, int len, void *pixArr) {
+    pixWidth = width;
+    pixHeight = height;
+
+    // 开辟数组
+    pixelArr = malloc(len);
+    // 拷贝
+    memcpy(pixelArr, pixArr, len);
+
+    // 刷新
+    if (baseOpenGl != nullptr) {
+        baseOpenGl->setPixelsData(width, height, len, pixelArr);
+    }
+    if (pEglThread != nullptr) {
+        pEglThread->notifyRender();
+    }
+}
+
+OpenGlController::OpenGlController() {
+
+}
+
+OpenGlController::~OpenGlController() {
+
+}
+
+
 
 

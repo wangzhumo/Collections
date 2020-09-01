@@ -9,6 +9,7 @@
 
 #include <android/native_window.h>
 #include <jni.h>
+#include <malloc.h>
 #include "../egl/wzm_egl_thread.h"
 #include "opengl_filter_normal.h"
 
@@ -20,6 +21,10 @@ public:
     ANativeWindow *pNativeWindow = nullptr;
     BaseOpenGl *baseOpenGl = nullptr;
 
+    int pixWidth;
+    int pixHeight;
+    void *pixelArr = nullptr;
+
 public:
     OpenGlController();
     ~OpenGlController();
@@ -30,6 +35,9 @@ public:
 
     // 销毁资源
     void onRelease();
+
+    // 设置图片的资源
+    void setPixelsData(int width,int height,int len,void *pixArr);
 };
 
 
