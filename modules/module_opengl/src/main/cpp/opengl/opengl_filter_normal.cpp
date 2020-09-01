@@ -93,6 +93,29 @@ void OpenGLFilterNormal::onSurfaceDraw() {
     // 使用程序
     glUseProgram(baseProgramId);
 
+    // 在onSurfaceCreate中，有可能数据还没有，有可能会遗失数据
+    // 所以,我们在这里重新调用一次
+    if (pPixelsArr != nullptr) {
+        // GLenum target,      目标
+        // GLint level,        层级?
+        // GLint internalformat,  格式
+        // GLsizei width, GLsizei height,   宽,高
+        // GLint border,
+        // GLenum format,
+        // GLenum type,
+        // const void *pixels
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
+                     pixWidth,
+                     pixHeight,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     pPixelsArr);
+        LOGD("OpenGLFilterNormal onSurfaceCreate glTexImage2D pixelsArr");
+    }
+
     // 启用矩阵
     // count 表示要传递几个矩阵过去.
     // GL_FALSE 表示不需要交换行 与 列
