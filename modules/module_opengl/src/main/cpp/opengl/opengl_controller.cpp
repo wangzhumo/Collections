@@ -38,6 +38,21 @@ void onSurfaceDrawCall(void *ctx) {
     }
 }
 
+void onSurfaceFilterCall(int width, int height, void *ctx){
+    auto *pGlController = static_cast<OpenGlController *>(ctx);
+    if (pGlController != nullptr) {
+        // 如果不为空,就可以使用
+        if (pGlController->baseOpenGl != nullptr) {
+            //1.销毁之前的filter
+            pGlController->baseOpenGl->onRelease();
+            pGlController->baseOpenGl = nullptr;
+        }
+        //2.创建新的filter.
+
+        //3.赋值
+    }
+}
+
 // 创建了EGL的环境， 启动线程 , 获取原生的数据
 // 为什么要用回调?
 // 内部的实现,都是流程代码,不会对业务有任何操作,所以可以更方便的替换
@@ -57,6 +72,8 @@ void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
     pEglThread->setChangeCallBack(onSurfaceChangeCall, this);
     // 1.3 draw_callback
     pEglThread->setDrawCallBack(onSurfaceDrawCall, this);
+    // 1.4 filter_callback
+    pEglThread->setFilterChangeCallBack(onSurfaceFilterCall,this);
 
     // 创建baseOpengl
     // 这里可以创建不同的BaseOpenGL达到更换渲染的

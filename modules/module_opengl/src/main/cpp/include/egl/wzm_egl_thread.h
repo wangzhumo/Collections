@@ -31,6 +31,7 @@ public:
     bool isChange = false;
     bool isExit = false;
     bool canStart = false;
+    bool isChangeFilter = false;
 
     int surfaceWidth = 0;
     int surfaceHeight = 0;
@@ -56,6 +57,14 @@ public:
     // 保持draw的参数
     void *onDrawCtx;
 
+    // 定义一个回调 切换filter
+    typedef void(*OnChangeFilter)(int width,int height, void *);
+    OnChangeFilter onChangeFilter;
+
+    // 保持filter的参数
+    void *onChangeFilterCtx;
+
+
     // 渲染的模式.
     int renderMode = OPENGL_RENDER_AUTO;
 
@@ -72,11 +81,15 @@ public:
 
     void onSurfaceChange(int width, int height);
 
+    void setSurfaceFilter();
+
     void setCreateCallBack(OnCreateCall onCreate,void *context);
 
     void setChangeCallBack(OnChangeCall onChange,void *context);
 
     void setDrawCallBack(OnDrawCall onDraw,void *context);
+
+    void setFilterChangeCallBack(OnChangeFilter onFilter,void *context);
 
     void setRenderMode(int mode);
 

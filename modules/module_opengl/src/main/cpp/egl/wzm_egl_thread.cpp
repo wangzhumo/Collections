@@ -44,6 +44,13 @@ void *eglThreadCallBack(void *context) {
                 // 告知执行完毕
                 wzmEglThread->canStart = true;
             }
+
+            // 这里切换ChangeFilter的逻辑，交给外部处理具体切换的东西
+            if (wzmEglThread->isChangeFilter){
+                wzmEglThread->isChangeFilter = false;
+                wzmEglThread->onChangeFilter(wzmEglThread->surfaceWidth,wzmEglThread->surfaceHeight,wzmEglThread->onChangeFilterCtx);
+            }
+
             // 这里就开始绘制 surfaceDraw
             if (wzmEglThread->canStart){
                 LOGD("eglThread draw");
@@ -97,6 +104,13 @@ void WzmEglThread::onSurfaceChange(int width, int height) {
     notifyRender();
 }
 
+// 切换filter
+void WzmEglThread::setSurfaceFilter() {
+    this->isChangeFilter = true;
+    this->notifyRender();
+}
+
+
 void WzmEglThread::setCreateCallBack(OnCreateCall onCreate, void *context) {
     this->onCreateCall = onCreate;
     this->onCreateCtx = context;
@@ -111,6 +125,11 @@ void WzmEglThread::setChangeCallBack(OnChangeCall onChange, void *context) {
 void WzmEglThread::setDrawCallBack(OnDrawCall drawCall, void *context) {
     this->onDrawCall = drawCall;
     this->onDrawCtx = context;
+}
+
+void WzmEglThread::setFilterChangeCallBack(WzmEglThread::OnChangeFilter onFilter, void *context) {
+    this->onChangeFilter = onFilter;
+    this->onChangeFilterCtx = context;
 }
 
 void WzmEglThread::setRenderMode(int mode) {
@@ -138,4 +157,7 @@ void WzmEglThread::release() {
     // 由于NativeWindow,这里只是引用,我们仅仅把指针去掉即可
     pNativeWindow = nullptr;
 }
+
+
+
 
