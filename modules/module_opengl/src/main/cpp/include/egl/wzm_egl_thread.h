@@ -81,7 +81,7 @@ public:
 
     void onSurfaceChange(int width, int height);
 
-    void setSurfaceFilter();
+    void onSurfaceChangeFilter();
 
     void setCreateCallBack(OnCreateCall onCreate,void *context);
 

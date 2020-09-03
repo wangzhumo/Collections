@@ -107,6 +107,16 @@ void OpenGlController::onSurfaceChange(int width, int height) {
     }
 }
 
+void OpenGlController::onSurfaceChangeFilter(jstring type) {
+    // SurfaceChangeFilter 的调用
+    // 保存要切换的filter类型。
+
+    if (pEglThread != nullptr) {
+        pEglThread->onSurfaceChangeFilter();
+    }
+}
+
+
 void OpenGlController::onRelease() {
     // 停止线程之前先
     pEglThread->release();
@@ -150,6 +160,7 @@ OpenGlController::OpenGlController() {
 OpenGlController::~OpenGlController() {
 
 }
+
 
 
 

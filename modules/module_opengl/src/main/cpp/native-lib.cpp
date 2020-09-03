@@ -37,7 +37,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChangeFilter
                                                                                  jobject thiz,
                                                                                  jstring type) {
     if (pGlController != nullptr){
-        
+        pGlController->onSurfaceChangeFilter(type);
     }
 }
 

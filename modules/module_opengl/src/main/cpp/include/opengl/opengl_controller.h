@@ -10,6 +10,7 @@
 #include <android/native_window.h>
 #include <jni.h>
 #include <malloc.h>
+#include <string>
 #include "../egl/wzm_egl_thread.h"
 #include "opengl_filter_normal.h"
 #include "opengl_filter_normal_copy.h"
@@ -25,6 +26,7 @@ public:
     int pixWidth;
     int pixHeight;
     void *pixelArr = nullptr;
+    string filterType;
 
 public:
     OpenGlController();
@@ -33,7 +35,7 @@ public:
     // 通过Jni传递过来的消息
     void onSurfaceCreate(JNIEnv *env,jobject surface);
     void onSurfaceChange(int width,int height);
-    void onSurfaceChangeFilter();
+    void onSurfaceChangeFilter(jstring type);
 
     // 销毁资源
     void onRelease();

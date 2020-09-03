@@ -105,7 +105,7 @@ void WzmEglThread::onSurfaceChange(int width, int height) {
 }
 
 // 切换filter
-void WzmEglThread::setSurfaceFilter() {
+void WzmEglThread::onSurfaceChangeFilter() {
     this->isChangeFilter = true;
     this->notifyRender();
 }
