@@ -30,6 +30,19 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
     }
 }
 
+// 切换不同的Filter使用
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChangeFilter(JNIEnv *env,
+                                                                                 jobject thiz,
+                                                                                 jstring type) {
+    if (pGlController != nullptr){
+        
+    }
+}
+
+
+
 // 外部传递过来的imageData
 extern "C"
 JNIEXPORT void JNICALL
@@ -50,6 +63,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv
 }
 
 
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIEnv *env,
@@ -62,3 +76,5 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
         pGlController = nullptr;
     }
 }
+
+

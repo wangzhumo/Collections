@@ -12,6 +12,7 @@
 #include <malloc.h>
 #include "../egl/wzm_egl_thread.h"
 #include "opengl_filter_normal.h"
+#include "opengl_filter_normal_copy.h"
 
 
 
@@ -32,6 +33,7 @@ public:
     // 通过Jni传递过来的消息
     void onSurfaceCreate(JNIEnv *env,jobject surface);
     void onSurfaceChange(int width,int height);
+    void onSurfaceChangeFilter();
 
     // 销毁资源
     void onRelease();

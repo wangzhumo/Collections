@@ -22,4 +22,6 @@ public class NativeOpenGl {
     public native void setImageData(int width,int height,byte[] imageData);
 
     public native void surfaceDestroy();
+
+    public native void surfaceChangeFilter(String type);
 }

@@ -38,6 +38,7 @@ void onSurfaceDrawCall(void *ctx) {
     }
 }
 
+// 这里可以添加参数，用于切换不同的滤镜
 void onSurfaceFilterCall(int width, int height, void *ctx){
     auto *pGlController = static_cast<OpenGlController *>(ctx);
     if (pGlController != nullptr) {
@@ -47,9 +48,13 @@ void onSurfaceFilterCall(int width, int height, void *ctx){
             pGlController->baseOpenGl->onRelease();
             pGlController->baseOpenGl = nullptr;
         }
-        //2.创建新的filter.
-
-        //3.赋值
+        //2.创建新的filter并赋值
+        pGlController->baseOpenGl = new OpenGLFilterNormalCopy();
+        //3.滤镜自己的生命周期
+        pGlController->baseOpenGl->onSurfaceCreate();
+        pGlController->baseOpenGl->onSurfaceChange(width,height);
+        //4.更新一下线程，调用render方法
+        pGlController->pEglThread->notifyRender();
     }
 }
 

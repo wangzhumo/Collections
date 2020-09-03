@@ -44,6 +44,16 @@ public:
                                           "}";
 
 
+    // 一个黑白的滤镜
+    // raw/gles_fragment_surface_shader.glsl
+    constexpr static const char *FRAGMENT_GRAY_SOURCE = "precision mediump float;\n"
+                                                           "uniform sampler2D sTexture;\n"
+                                                           "varying vec2 ftPosition;\n"
+                                                           "void main() {\n"
+                                                           "    gl_FragColor = texture2D(sTexture,ftPosition);\n"
+                                                           "}";
+
+
     // 绘制一个纹理 - 加入矩阵 - 顶点
     // raw/gles_vertex_shader_matrix_texture.glsl
     constexpr static const char *VERTEX_MATRIX_SOURCE = "attribute vec4 vPosition;\n"
