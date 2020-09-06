@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.wangzhumo.app.base.IRoute;
@@ -43,6 +44,19 @@ public class OpenGLCppActivity extends BaseActivity {
             @Override
             public void onCreate() {
                 nativeOpenGl.setImageData(width, height, getImageByte(city));
+            }
+
+            @Override
+            public void onChange(int width, int height) {
+
+            }
+        });
+
+        findViewById(R.id.bt_filter_change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 切换滤镜
+                nativeOpenGl.surfaceChangeFilter("gray");
             }
         });
     }
