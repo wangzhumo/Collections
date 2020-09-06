@@ -93,6 +93,13 @@ static void rotateMatrix(double angle,float *matrix){
 
 - 矩阵作用于顶点坐标，因此它准守的是的 `顶点坐标系`
 
+
+- 页面黑,只显示出刷新屏幕的颜色
+  1. 可能是顶点shader 以及 片元shader出问题
+  2. 可能是传入的height , width 有问题
+  3. 没有释放之前的program ，textureId 等等
+
+
 https://learnopengl-cn.github.io/01%20Getting%20started/07%20Transformations/#_10
 
 
