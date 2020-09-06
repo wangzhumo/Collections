@@ -26,7 +26,7 @@ public:
     int pixWidth;
     int pixHeight;
     void *pixelArr = nullptr;
-    string filterType;
+    std::string filterType;
 
 public:
     OpenGlController();
@@ -35,7 +35,7 @@ public:
     // 通过Jni传递过来的消息
     void onSurfaceCreate(JNIEnv *env,jobject surface);
     void onSurfaceChange(int width,int height);
-    void onSurfaceChangeFilter(jstring type);
+    void onSurfaceChangeFilter(std::string type);
 
     // 销毁资源
     void onRelease();
