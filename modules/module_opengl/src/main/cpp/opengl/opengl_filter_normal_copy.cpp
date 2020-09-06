@@ -2,6 +2,7 @@
 // Created by 王诛魔 on 2020/8/28.
 //
 
+
 #include "../include/opengl/opengl_filter_normal_copy.h"
 
 
@@ -183,10 +184,12 @@ void OpenGLFilterNormalCopy::setPixelsData(int width, int height, void *pixArr) 
 }
 
 void OpenGLFilterNormalCopy::onRelease() {
-    BaseOpenGl::onRelease();
     if (textureId > 0){
         glDeleteTextures(1,&textureId);
     }
+
+    BaseOpenGl::onRelease();
+
     // 移除图片资源
     if (pPixelsArr != nullptr){
         // 因为不是由它自己创建的图片资源，仅仅移除引用即可

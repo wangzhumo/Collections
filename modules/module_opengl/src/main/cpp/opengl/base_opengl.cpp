@@ -38,6 +38,10 @@ BaseOpenGl::~BaseOpenGl() {
     // 释放之前的数组
     pBaseVertexArr = nullptr;
     pBaseSurfaceArr = nullptr;
+
+    // 清空源码资源数组的引用
+    pBaseFragmentSource = nullptr;
+    pBaseVertexSource = nullptr;
 }
 
 
@@ -58,6 +62,7 @@ void BaseOpenGl::onSurfaceDraw() {
 
 void BaseOpenGl::onRelease() {
     LOGE("BaseOpenGl::onRelease");
+    // 这些东西也必须在egl的线程中释放，否则他也是不能释放的。
     if (baseProgramId > 0){
         glDeleteProgram(baseProgramId);
     }

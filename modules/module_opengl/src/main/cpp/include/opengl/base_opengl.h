@@ -13,6 +13,7 @@
 #include "../utils/matrix_utils.h"
 #include "../utils/shader_utils.h"
 #include "../log/android_log_utils.h"
+#include <cstdlib>
 
 class  BaseOpenGl{
 public:
