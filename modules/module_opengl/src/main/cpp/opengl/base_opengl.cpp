@@ -47,7 +47,9 @@ void BaseOpenGl::onSurfaceCreate() {
 }
 
 void BaseOpenGl::onSurfaceChange(int width, int height) {
-
+    LOGD("BaseOpenGl::onSurfaceChange  %d  %d",width,height);
+    baseSurfaceWidth = width;
+    baseSurfaceHeight = height;
 }
 
 void BaseOpenGl::onSurfaceDraw() {
@@ -55,10 +57,13 @@ void BaseOpenGl::onSurfaceDraw() {
 }
 
 void BaseOpenGl::onRelease() {
-
+    LOGE("BaseOpenGl::onRelease");
+    if (baseProgramId > 0){
+        glDeleteProgram(baseProgramId);
+    }
 }
 
-void BaseOpenGl::setPixelsData(int width, int height, int len, void *pixArr) {
+void BaseOpenGl::setPixelsData(int width, int height, void *pixArr) {
 
 }
 

@@ -6,4 +6,6 @@ package com.wangzhumo.app.module.opengl.cpp.opengl;
 public interface SurfaceLifecycle {
 
     void onCreate();
+
+    void onChange(int width,int height);
 }
