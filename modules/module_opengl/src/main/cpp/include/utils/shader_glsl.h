@@ -36,17 +36,19 @@ public:
 
     // 片元
     // raw/gles_fragment_surface_shader.glsl
-    constexpr static const char *FRAGMENT_SURFACE_SOURCE = "precision mediump float;\n"
-                                          "uniform sampler2D sTexture;\n"
-                                          "varying vec2 ftPosition;\n"
-                                          "void main() {\n"
-                                          "    gl_FragColor = texture2D(sTexture,ftPosition);\n"
-                                          "}";
+    constexpr static const char *FRAGMENT_GRAY_SOURCE = "precision mediump float;\n"
+                                                           "uniform sampler2D sTexture;\n"
+                                                           "varying vec2 ftPosition;\n"
+                                                           "void main() {\n"
+                                                           "    lowp vec4 textureColor = texture2D(sTexture,ftPosition);\n"
+                                                           "    float grayColor = textureColor.r * 0.2125 + textureColor.g * 0.7154 + textureColor.b * 0.0721;\n"
+                                                           "    gl_FragColor = vec4(grayColor,grayColor,grayColor,textureColor.w);\n"
+                                                           "}";
 
 
     // 一个黑白的滤镜
     // raw/gles_fragment_surface_shader.glsl
-    constexpr static const char *FRAGMENT_GRAY_SOURCE = "precision mediump float;\n"
+    constexpr static const char *FRAGMENT_SURFACE_SOURCE = "precision mediump float;\n"
                                                            "uniform sampler2D sTexture;\n"
                                                            "varying vec2 ftPosition;\n"
                                                            "void main() {\n"
@@ -61,8 +63,8 @@ public:
                                        "varying vec2 ftPosition;\n"
                                        "uniform mat4 uMatrix;\n"
                                        "void main() {\n"
-                                       "ftPosition = fPosition;\n"
-                                       "gl_Position = vPosition * uMatrix;\n"
+                                       "    ftPosition = fPosition;\n"
+                                       "    gl_Position = vPosition * uMatrix;\n"
                                        "}";
 
 
