@@ -31,6 +31,9 @@ public:
 
     // 一些glsl中的变量
     GLuint baseProgramId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
+
 
 public:
     BaseOpenGl();
@@ -45,11 +48,14 @@ public:
     // 开始绘制
     virtual void onSurfaceDraw();
 
-    // 销毁资源
+    // 销毁GL资源
     virtual void onRelease();
 
     // 设置图片的像素数据
     virtual void setPixelsData(int width, int height, void *pixArr);
+
+    // 销毁图片等资源数据
+    virtual void onDestroyResource();
 };
 
 

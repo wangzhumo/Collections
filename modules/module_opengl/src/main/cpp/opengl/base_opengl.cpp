@@ -63,12 +63,24 @@ void BaseOpenGl::onSurfaceDraw() {
 void BaseOpenGl::onRelease() {
     LOGE("BaseOpenGl::onRelease");
     // 这些东西也必须在egl的线程中释放，否则他也是不能释放的。
+    if (vertexShaderId > 0){
+        glDetachShader(baseProgramId,vertexShaderId);
+        glDeleteShader(vertexShaderId);
+    }
+    if (fragmentShaderId > 0){
+        glDetachShader(baseProgramId,fragmentShaderId);
+        glDeleteShader(fragmentShaderId);
+    }
     if (baseProgramId > 0){
         glDeleteProgram(baseProgramId);
     }
 }
 
 void BaseOpenGl::setPixelsData(int width, int height, void *pixArr) {
+
+}
+
+void BaseOpenGl::onDestroyResource() {
 
 }
 
