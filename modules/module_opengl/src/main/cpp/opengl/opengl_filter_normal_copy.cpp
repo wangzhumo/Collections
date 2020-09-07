@@ -22,8 +22,10 @@ void OpenGLFilterNormalCopy::onSurfaceCreate() {
     LOGD("OpenGLFilterNormalCopy onSurfaceCreate  pBaseFragmentSource = %s", pBaseFragmentSource);
 
     // 测试opengl初始化 shader
-    baseProgramId = createProgram(pBaseVertexSource, pBaseFragmentSource);
-    LOGD("OpenGLFilterNormalCopy onSurfaceCreate createProgram programId = %d", baseProgramId);
+    baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource, &vertexShaderId,
+                                       &fragmentShaderId);
+    LOGD("OpenGLFilterNormalCopy onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
+         baseProgramId, vertexShaderId, fragmentShaderId);
 
     // 获取参数
     vPosition = glGetAttribLocation(baseProgramId, "vPosition");  //顶点的坐标
@@ -59,7 +61,7 @@ void OpenGLFilterNormalCopy::onSurfaceCreate() {
 }
 
 void OpenGLFilterNormalCopy::onSurfaceChange(int width, int height) {
-    BaseOpenGl::onSurfaceChange(width,height);
+    BaseOpenGl::onSurfaceChange(width, height);
     glViewport(0, 0, width, height);
     setMatrix(width, height);
 }
@@ -103,7 +105,8 @@ void OpenGLFilterNormalCopy::onSurfaceDraw() {
                      GL_RGBA,
                      GL_UNSIGNED_BYTE,
                      pPixelsArr);
-        LOGD("OpenGLFilterNormalCopy onSurfaceDraw glTexImage2D pixelsArr pixWidth = %d  pixHeight = %d",pixWidth,pixHeight);
+        LOGD("OpenGLFilterNormalCopy onSurfaceDraw glTexImage2D pixelsArr pixWidth = %d  pixHeight = %d",
+             pixWidth, pixHeight);
     }
 
     // 设置顶点数组可用 - 顶点坐标
@@ -146,7 +149,6 @@ void OpenGLFilterNormalCopy::onSurfaceDraw() {
 }
 
 
-
 // 设置投影矩阵数据
 void OpenGLFilterNormalCopy::setMatrix(int width, int height) {
     LOGD("OpenGLFilterNormalCopy setMatrix width = %d ,height = %d,pixWidth = %d ,pixHeight = %d",
@@ -177,24 +179,28 @@ void OpenGLFilterNormalCopy::setPixelsData(int width, int height, void *pixArr) 
     pPixelsArr = pixArr;
 
     // 设置矩阵数据
-    LOGD("OpenGLFilterNormalCopy setPixelsData baseSurfaceWidth = %d baseSurfaceHeight = %d", baseSurfaceWidth,baseSurfaceHeight);
+    LOGD("OpenGLFilterNormalCopy setPixelsData baseSurfaceWidth = %d baseSurfaceHeight = %d",
+         baseSurfaceWidth, baseSurfaceHeight);
     if (baseSurfaceHeight > 0 && baseSurfaceWidth > 0) {
         setMatrix(baseSurfaceWidth, baseSurfaceHeight);
     }
 }
 
 void OpenGLFilterNormalCopy::onRelease() {
-    if (textureId > 0){
-        glDeleteTextures(1,&textureId);
+    LOGE("OpenGLFilterNormalCopy::onDestroyResource");
+    if (textureId > 0) {
+        glDeleteTextures(1, &textureId);
     }
-
     BaseOpenGl::onRelease();
+}
 
+
+void OpenGLFilterNormalCopy::onDestroyResource() {
+    LOGE("OpenGLFilterNormalCopy::onDestroyResource");
     // 移除图片资源
-    if (pPixelsArr != nullptr){
+    if (pPixelsArr != nullptr) {
         // 因为不是由它自己创建的图片资源，仅仅移除引用即可
         pPixelsArr = nullptr;
     }
 }
-
 

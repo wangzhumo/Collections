@@ -48,6 +48,8 @@ public:
     void setPixelsData(int width, int height, void *pixArr);
 
     void onRelease();
+
+    void onDestroyResource();
 };
 
 #endif //COLLECTIONS_OPENGL_FILTER_NORMAL_COPY_H

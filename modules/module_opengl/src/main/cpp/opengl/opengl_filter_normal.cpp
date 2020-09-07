@@ -22,8 +22,10 @@ void OpenGLFilterNormal::onSurfaceCreate() {
     LOGD("OpenGLFilterNormal onSurfaceCreate  pBaseFragmentSource = %s",pBaseFragmentSource);
 
     // 测试opengl初始化 shader
-    baseProgramId = createProgram(pBaseVertexSource, pBaseFragmentSource);
-    LOGD("OpenGLFilterNormal onSurfaceCreate createProgram programId = %d", baseProgramId);
+    baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource, &vertexShaderId,
+                                       &fragmentShaderId);
+    LOGD("OpenGLFilterNormalCopy onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
+         baseProgramId, vertexShaderId, fragmentShaderId);
 
     // 获取参数
     vPosition = glGetAttribLocation(baseProgramId, "vPosition");  //顶点的坐标
@@ -181,15 +183,21 @@ void OpenGLFilterNormal::setPixelsData(int width, int height, void *pixArr) {
     }
 }
 
+// 必须在EGL线程中调用
 void OpenGLFilterNormal::onRelease() {
+    LOGE("OpenGLFilterNormal::onRelease");
     if (textureId > 0){
         glDeleteTextures(1,&textureId);
     }
-
     BaseOpenGl::onRelease();
+}
 
+
+// 这个销毁不需要在EGL线程
+void OpenGLFilterNormal::onDestroyResource() {
+    LOGE("OpenGLFilterNormal::onDestroyResource");
     // 移除图片资源
-    if (pPixelsArr != nullptr){
+    if (pPixelsArr != nullptr) {
         // 因为不是由它自己创建的图片资源，仅仅移除引用即可
         pPixelsArr = nullptr;
     }
