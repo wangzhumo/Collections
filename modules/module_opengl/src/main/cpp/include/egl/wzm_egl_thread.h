@@ -65,6 +65,14 @@ public:
     void *onChangeFilterCtx;
 
 
+    // 定义一个回调 销毁资源
+    typedef void(*OnReleaseCall)(void *);
+    OnReleaseCall onReleaseCall;
+
+    // 保持filter的参数
+    void *onReleaseCtx;
+
+
     // 渲染的模式.
     int renderMode = OPENGL_RENDER_AUTO;
 
@@ -90,6 +98,8 @@ public:
     void setDrawCallBack(OnDrawCall onDraw,void *context);
 
     void setFilterChangeCallBack(OnChangeFilter onFilter,void *context);
+
+    void setReleaseCallBack(OnReleaseCall onRelease,void *context);
 
     void setRenderMode(int mode);
 

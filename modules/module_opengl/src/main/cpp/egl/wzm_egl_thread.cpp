@@ -74,6 +74,10 @@ void *eglThreadCallBack(void *context) {
 
 
             if (wzmEglThread->isExit){
+                // 回调给外部，自行销毁资源
+                wzmEglThread->onReleaseCall(wzmEglThread->onReleaseCtx);
+
+                // 销毁EGL
                 pEglHelper->release();
                 delete pEglHelper;
                 pEglHelper = nullptr;
@@ -136,6 +140,11 @@ void WzmEglThread::setRenderMode(int mode) {
     this->renderMode = mode;
 }
 
+void WzmEglThread::setReleaseCallBack(OnReleaseCall releaseCall,void *context) {
+    this->onReleaseCall = releaseCall;
+    this->onReleaseCtx = context;
+}
+
 void WzmEglThread::notifyRender() {
     // 加上锁
     pthread_mutex_lock(&pThreadMutex);
@@ -150,7 +159,7 @@ void WzmEglThread::release() {
     // 渲染一次,避免线程锁住无法更新的问题
     notifyRender();
 
-    // 去掉pEglThread
+    // 去掉pEglThread,会等待EGL线程销毁才继续执行
     pthread_join(pEglThread, nullptr);
     pEglThread = -1;
 

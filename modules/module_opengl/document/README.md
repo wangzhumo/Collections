@@ -8,8 +8,8 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
     ...
 
     // 测试opengl初始化 shader
-    int baseProgramId = createProgram(vertexSource,fragmentSource);
-    LOGD("createProgram baseProgramId = %d",baseProgramId);
+    int baseProgramId = loadShader2Program(vertexSource,fragmentSource);
+    LOGD("loadShader2Program baseProgramId = %d",baseProgramId);
 }
 
 ```
@@ -21,8 +21,8 @@ void onSurfaceCreateCall(void *) {
     LOGD("onSurfaceCreateCall");
 
     // 测试opengl初始化 shader
-    int baseProgramId = createProgram(vertexSource,fragmentSource);
-    LOGD("createProgram baseProgramId = %d",baseProgramId);
+    int baseProgramId = loadShader2Program(vertexSource,fragmentSource);
+    LOGD("loadShader2Program baseProgramId = %d",baseProgramId);
 }
 
 ```
