@@ -42,6 +42,7 @@ public:
 
     // 设置图片的资源
     void setPixelsData(int width,int height,int len,void *pixArr);
+
 };
 
 

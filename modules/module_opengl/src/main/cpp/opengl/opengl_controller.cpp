@@ -49,6 +49,9 @@ void onSurfaceFilterCall(int width, int height, void *ctx) {
         if (pGlController->baseOpenGl != nullptr) {
             //1.销毁之前的filter
             pGlController->baseOpenGl->onRelease();
+            //由于这里不会停止EGL线程（不是外部停止，不会调用jni中的onSurfaceRelease），
+            // 所以手动的调用一下onDestroyResource
+            pGlController->baseOpenGl->onDestroyResource();
             delete pGlController->baseOpenGl;
             pGlController->baseOpenGl = nullptr;
         }
@@ -66,6 +69,17 @@ void onSurfaceFilterCall(int width, int height, void *ctx) {
                                                  pGlController->pixelArr);
         //4.更新一下线程，调用render方法
         pGlController->pEglThread->notifyRender();
+    }
+}
+
+// 销毁，因为是egl中的回调，可以方便的销毁资源
+void onReleaseCall(void *ctx){
+    auto *pGlController = static_cast<OpenGlController *>(ctx);
+    if (pGlController != nullptr) {
+        // 如果不为空,就可以使用
+        if (pGlController->baseOpenGl != nullptr) {
+            pGlController->baseOpenGl->onRelease();
+        }
     }
 }
 
@@ -91,6 +105,8 @@ void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
     pEglThread->setDrawCallBack(onSurfaceDrawCall, this);
     // 1.4 filter_callback
     pEglThread->setFilterChangeCallBack(onSurfaceFilterCall, this);
+    // 1.5 release_callback
+    pEglThread->setReleaseCallBack(onReleaseCall,this);
 
     // 创建baseOpengl
     // 这里可以创建不同的BaseOpenGL达到更换渲染的
@@ -125,7 +141,7 @@ void OpenGlController::onRelease() {
     }
     //调用baseOpenGL的方法.
     if (baseOpenGl != nullptr) {
-        baseOpenGl->onRelease();
+        baseOpenGl->onDestroyResource();
         delete baseOpenGl;
         baseOpenGl = nullptr;
     }
