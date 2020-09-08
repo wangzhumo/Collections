@@ -23,11 +23,11 @@ import java.nio.ByteBuffer;
 public class OpenGLCppActivity extends BaseActivity {
 
     int[] imageResource = {
-      R.drawable.image_ash,
-      R.drawable.image_dva,
-      R.drawable.image_toba,
-      R.drawable.image_dva_2,
-      R.drawable.opengl_ic_city_night
+            R.drawable.image_ash,
+            R.drawable.image_dva,
+            R.drawable.image_toba,
+            R.drawable.image_dva_2,
+            R.drawable.opengl_ic_city_night
     };
 
     private int currentImageIndex = 0;
@@ -50,7 +50,7 @@ public class OpenGLCppActivity extends BaseActivity {
             @Override
             public void onCreate() {
                 Bitmap image = getBitmapByIndex();
-                Log.e("Bitmap Bitmap Bitmap "," width = " + image.getWidth() + " , height = " + image.getHeight());
+                Log.e("Bitmap Bitmap Bitmap ", " width = " + image.getWidth() + " , height = " + image.getHeight());
                 nativeOpenGl.setImageData(image.getWidth(), image.getHeight(), getImageByte(image));
                 image.recycle();
             }
@@ -73,7 +73,7 @@ public class OpenGLCppActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Bitmap image = getBitmapByIndex();
-                Log.e("Bitmap   "," width = " + image.getWidth() + " , height = " + image.getHeight());
+                Log.e("Bitmap   ", " width = " + image.getWidth() + " , height = " + image.getHeight());
                 nativeOpenGl.setImageData(image.getWidth(), image.getHeight(), getImageByte(image));
                 image.recycle();
             }
@@ -81,10 +81,10 @@ public class OpenGLCppActivity extends BaseActivity {
     }
 
 
-    public Bitmap getBitmapByIndex(){
-        int imageRes = imageResource[currentImageIndex%4];
+    public Bitmap getBitmapByIndex() {
+        int imageRes = imageResource[currentImageIndex % 5];
         currentImageIndex++;
-        return BitmapFactory.decodeResource(getResources(),imageRes);
+        return BitmapFactory.decodeResource(getResources(), imageRes);
     }
 
     public byte[] getImageByte(Bitmap city) {
