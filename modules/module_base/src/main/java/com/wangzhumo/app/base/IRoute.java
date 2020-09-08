@@ -40,7 +40,7 @@ public interface IRoute {
 
     interface CPPGLES{
         String CPP_GLES = "/cppglse/demo";
-
+        String CPP_YUV = "/cppglse/yuv";
     }
 
 
