@@ -55,6 +55,31 @@ public:
                                                            "    gl_FragColor = texture2D(sTexture,ftPosition);\n"
                                                            "}";
 
+    // YUV 的渲染
+    // raw/gles_fragment_yuv_shader.glsl
+    constexpr static const char *FRAGMENT_YUV_SOURCE = "precision mediump float;\n"
+                                                       "varying vec2 ftPosition;\n"
+                                                       "uniform lowp sampler2D sTextureY;\n"
+                                                       "uniform lowp sampler2D sTextureU;\n"
+                                                       "uniform lowp sampler2D sTextureV;\n"
+                                                       "vec4 YuvToRgb(vec2 uv) {\n"
+                                                       "    float y, u, v, r, g, b;\n"
+                                                       "    y = texture2D(sTextureY, uv).r;\n"
+                                                       "    u = texture2D(sTextureU, uv).r;\n"
+                                                       "    v = texture2D(sTextureV, uv).r;\n"
+                                                       "    u = u - 0.5;\n"
+                                                       "    v = v - 0.5;\n"
+                                                       "    r = y + 1.403 * v;\n"
+                                                       "    g = y - 0.344 * u - 0.714 * v;\n"
+                                                       "    b = y + 1.770 * u;\n"
+                                                       "    return vec4(r, g, b, 1.0);\n"
+                                                       "}\n"
+                                                       "\n"
+                                                       "void main(){\n"
+                                                       "   vec4 textureColor = YuvToRgb(ftPosition); \n"
+                                                       "   gl_FragColor = textureColor; \n"
+                                                       "}";
+
 
     // 绘制一个纹理 - 加入矩阵 - 顶点
     // raw/gles_vertex_shader_matrix_texture.glsl
