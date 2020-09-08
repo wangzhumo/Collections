@@ -70,7 +70,7 @@ void onSurfaceFilterCall(int width, int height, void *ctx) {
 }
 
 // 销毁，因为是egl中的回调，可以方便的销毁资源
-void onReleaseCall(void *ctx){
+void onReleaseCall(void *ctx) {
     auto *pGlController = static_cast<OpenGlController *>(ctx);
     if (pGlController != nullptr) {
         // 如果不为空,就可以使用
@@ -103,11 +103,11 @@ void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
     // 1.4 filter_callback
     pEglThread->setFilterChangeCallBack(onSurfaceFilterCall, this);
     // 1.5 release_callback
-    pEglThread->setReleaseCallBack(onReleaseCall,this);
+    pEglThread->setReleaseCallBack(onReleaseCall, this);
 
     // 创建baseOpengl
     // 这里可以创建不同的BaseOpenGL达到更换渲染的
-    baseOpenGl = new OpenGLFilterNormal();
+    baseOpenGl = new OpenGLFilterYuv();
 
     // 2.启动eglThread
     pEglThread->onSurfaceCreate(pNativeWindow);
@@ -132,7 +132,7 @@ void OpenGlController::onSurfaceChangeFilter(std::string type) {
 
 void OpenGlController::onRelease() {
     // 停止线程之前先
-    if (pEglThread != nullptr){
+    if (pEglThread != nullptr) {
         pEglThread->release();
     }
     //调用baseOpenGL的方法.
@@ -142,12 +142,12 @@ void OpenGlController::onRelease() {
         baseOpenGl = nullptr;
     }
     // 销毁Window资源
-    if (pNativeWindow != nullptr){
+    if (pNativeWindow != nullptr) {
         ANativeWindow_release(pNativeWindow);
         pNativeWindow = nullptr;
     }
     // 销毁图片的数组
-    if (pixelArr != nullptr){
+    if (pixelArr != nullptr) {
         free(pixelArr);
         pixelArr = nullptr;
     }
@@ -159,10 +159,10 @@ void OpenGlController::onRelease() {
 void OpenGlController::setPixelsData(int width, int height, int len, void *pixArr) {
     pixWidth = width;
     pixHeight = height;
-    LOGD("OpenGLController  setPixelsData pixWidth = %d  , pixHeight = %d",pixWidth, pixHeight);
+    LOGD("OpenGLController  setPixelsData pixWidth = %d  , pixHeight = %d", pixWidth, pixHeight);
     // 支持动态切换纹理
     void *tempPixAar = nullptr;
-    if (pixelArr != nullptr){
+    if (pixelArr != nullptr) {
         tempPixAar = pixelArr;
         pixelArr = nullptr;
     }
@@ -180,19 +180,26 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
         pEglThread->notifyRender();
     }
     // 完成后释放tempPixAar中的旧数据
-    if (tempPixAar != nullptr){
+    if (tempPixAar != nullptr) {
         free(tempPixAar);
         tempPixAar = nullptr;
     }
 }
 
-OpenGlController::OpenGlController() {
-
+void OpenGlController::updateYuvData(jbyte *dataY, jbyte *dataU, jbyte *dataV, jint width, jint height) {
+    if (baseOpenGl != nullptr) {
+        baseOpenGl->updateYuvData(dataY, dataU, dataU, width, height);
+    }
+    if (pEglThread != nullptr){
+        pEglThread->notifyRender();
+    }
 }
 
-OpenGlController::~OpenGlController() {
+OpenGlController::OpenGlController() = default;
 
-}
+OpenGlController::~OpenGlController() = default;
+
+
 
 
 

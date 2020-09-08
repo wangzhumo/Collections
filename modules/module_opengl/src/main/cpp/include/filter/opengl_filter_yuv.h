@@ -49,6 +49,7 @@ public:
 
     void onDestroyResource();
 
+    // 设置YUV的数据
     void updateYuvData(void *y,void *u,void *v,int width,int height);
 };
 

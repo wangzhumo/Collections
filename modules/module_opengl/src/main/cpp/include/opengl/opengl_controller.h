@@ -18,6 +18,8 @@
 #include "../egl/wzm_egl_thread.h"
 #include "../filter/opengl_filter_normal.h"
 #include "../filter/opengl_filter_normal_copy.h"
+#include "../filter/opengl_filter_yuv.h"
+#include "../utils/android_log_utils.h"
 
 
 class OpenGlController{
@@ -46,6 +48,8 @@ public:
     // 设置图片的资源
     void setPixelsData(int width,int height,int len,void *pixArr);
 
+    // 设置YUV的数据
+    void updateYuvData(jbyte *dataY, jbyte *dataU, jbyte *dataV, jint width, jint height);
 };
 
 #endif //COLLECTIONS_OPENGL_CONTROLLER_H

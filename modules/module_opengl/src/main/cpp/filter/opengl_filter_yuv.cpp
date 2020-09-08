@@ -62,20 +62,22 @@ void OpenGLFilterYuv::onSurfaceChange(int width, int height) {
 
 void OpenGLFilterYuv::setMatrix(int width, int height) {
     initMatrix(matrixArr);
-    float screenR = 1.0 * width / height;
-    float sourceR = 1.0 * yuvWidth / yuvHeight;
+    if (width > 0 && yuvWidth > 0){
+        float screenR = 1.0 * width / height;
+        float sourceR = 1.0 * yuvWidth / yuvHeight;
 
-    // 计算他们的比值
-    if (screenR > sourceR) {
-        // 图片的宽度的缩放
-        float r = width / (1.0 * height / yuvHeight * yuvWidth);
-        LOGD("OpenGLFilterYuv setMatrix YUV宽度的缩放 r = %f", r);
-        orthoM(-r, 1, r, -1, matrixArr);
-    } else {
-        // 图片的高度缩放
-        float r = height / (1.0 * width / yuvWidth * yuvHeight);
-        LOGD("OpenGLFilterYuv setMatrix YUV高度缩放 r = %f", r);
-        orthoM(-1, r, 1, -r, matrixArr);
+        // 计算他们的比值
+        if (screenR > sourceR) {
+            // 图片的宽度的缩放
+            float r = width / (1.0 * height / yuvHeight * yuvWidth);
+            LOGD("OpenGLFilterYuv setMatrix YUV宽度的缩放 r = %f", r);
+            orthoM(-r, 1, r, -1, matrixArr);
+        } else {
+            // 图片的高度缩放
+            float r = height / (1.0 * width / yuvWidth * yuvHeight);
+            LOGD("OpenGLFilterYuv setMatrix YUV高度缩放 r = %f", r);
+            orthoM(-1, r, 1, -r, matrixArr);
+        }
     }
 }
 
@@ -197,8 +199,8 @@ void OpenGLFilterYuv::updateYuvData(void *y, void *u, void *v, int width, int he
 
         // 赋值
         memcpy(pDataY, y, dataSize);
-        memcpy(pDataU, y, dataSize / 2);
-        memcpy(pDataV, y, dataSize / 2);
+        memcpy(pDataU, y, dataSize / 4);
+        memcpy(pDataV, y, dataSize / 4);
     }
 }
 
