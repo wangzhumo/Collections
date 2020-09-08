@@ -41,7 +41,8 @@ class OpenGLActivity : BaseActivity() ,OnItemActionListener{
 
     private fun create() : List<ActivityItem>{
         return mutableListOf(
-            ActivityItem("OpenGL Cpp","Cpp中使用opengl", IRoute.CPPGLES.CPP_GLES)
+            ActivityItem("OpenGL Cpp","Cpp中使用opengl", IRoute.CPPGLES.CPP_GLES),
+            ActivityItem("OpenGL YUV","Cpp中使用opengl渲染YUV视频", IRoute.CPPGLES.CPP_YUV)
         )
 
 //        return mutableListOf(
