@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NDK=/home/wangzhumo/Library/Android/android-ndk-r20b
+NDK=C\:\\Develop\\Android\\android-ndk-r20b
 
 function ndk_stack_logcat() {
     adb logcat | $NDK/ndk-stack -sym build/intermediates/cmake/debug/obj/armeabi-v7a
