@@ -30,7 +30,7 @@ find_library(log-lib log)
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
-set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/log ${INCLUDE_DIR}/utils  ${INCLUDE_DIR}/opengl)
+set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/utils  ${INCLUDE_DIR}/opengl)
 include_directories(${INCLUDES})
 
 

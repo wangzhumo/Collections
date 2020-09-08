@@ -6,7 +6,7 @@
 #define COLLECTIONS_SHADER_UTILS_H
 
 #include <GLES2/gl2.h>
-#include "../log/android_log_utils.h"
+#include "android_log_utils.h"
 
 
 

@@ -2,10 +2,7 @@
 // Created by wangzhumo on 2020/8/7.
 //
 
-
 #include "../include/egl/wzm_egl_helper.h"
-
-
 
 
 // 给参数赋值 - 初始化

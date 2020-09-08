@@ -1,7 +1,8 @@
 //
 // Created by wangzhumo on 2020/8/28.
 //
-// 作为使用opengl的基类，定义必须的参数
+// 作为使用opengl的基类，定义必须的参数,以及固定的渲染流程方法
+// 内部保存了program,shader,source,屏幕尺寸,渲染的数据等等
 //
 #pragma once
 #ifndef COLLECTIONS_BASE_OPENGL_H
@@ -12,7 +13,7 @@
 #include <cstring>
 #include "../utils/matrix_utils.h"
 #include "../utils/shader_utils.h"
-#include "../log/android_log_utils.h"
+#include "../utils/android_log_utils.h"
 #include <cstdlib>
 
 class  BaseOpenGl{

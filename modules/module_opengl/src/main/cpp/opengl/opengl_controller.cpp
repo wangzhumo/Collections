@@ -1,12 +1,9 @@
 //
 // Created by wangzhumo on 2020/8/28.
 //
-
-
+//
 
 #include "../include/opengl/opengl_controller.h"
-
-
 
 
 void onSurfaceCreateCall(void *ctx) {

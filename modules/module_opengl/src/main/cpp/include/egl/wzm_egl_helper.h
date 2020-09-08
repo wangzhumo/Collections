@@ -1,13 +1,15 @@
 //
 // Created by wangzhumo on 2020/8/7.
 //
+// 几个比较固定的EGL操作,用Helper封装起来.
+
 #pragma once
 #ifndef COLLECTIONS_WZM_EGL_HELPER_H
 #define COLLECTIONS_WZM_EGL_HELPER_H
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
-#include "../log/android_log_utils.h"
+#include "../utils/android_log_utils.h"
 
 class WzmEglHelper {
 

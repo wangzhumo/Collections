@@ -1,5 +1,9 @@
 //
 // Created by wangzhumo on 2020/8/15.
+// EGL的线程模型.
+// 控制整个渲染流程,驱动渲染不断的进行
+//
+// 内部的几个回调,主要是为了使用EGL线程的环境,因为GL的操作必须在EGL环境中进行
 //
 #pragma once
 #ifndef COLLECTIONS_WZM_EGL_THREAD_H
@@ -12,7 +16,7 @@
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
 #include "wzm_egl_helper.h"
-#include "../log/android_log_utils.h"
+#include "../utils/android_log_utils.h"
 
 // 自动的每秒60帧
 #define OPENGL_RENDER_AUTO 1

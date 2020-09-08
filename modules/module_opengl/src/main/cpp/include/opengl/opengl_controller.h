@@ -1,7 +1,10 @@
 //
 // Created by wangzhumo on 2020/8/28.
 //
-// 这负责提供opengl的egl环境，控制固定的流程
+// OpenGL的控制类
+// 用途 : 提供openGL的egl环境，控制固定的流程
+// 持有 : EGLThread  ->  内部拥有EGL的环境,并且线程中一直执行循环
+// 持有 : BaseOpenGl ->  不同的Filter实现,可以通过更换baseOpenGl达到更换滤镜的效果
 //
 #pragma once
 #ifndef COLLECTIONS_OPENGL_CONTROLLER_H
@@ -14,8 +17,6 @@
 #include "../egl/wzm_egl_thread.h"
 #include "opengl_filter_normal.h"
 #include "opengl_filter_normal_copy.h"
-#include <iostream>
-
 
 
 class OpenGlController{
