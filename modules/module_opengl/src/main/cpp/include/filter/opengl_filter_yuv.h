@@ -16,7 +16,7 @@ public:
     GLint sampler_u = 0;
     GLint sampler_v = 0;
     GLint uMatrix = 0;
-    float textureIds[3]{};
+    GLuint textureIds[3];
 
 
     int yuvWidth = 0;
@@ -43,6 +43,9 @@ public:
     void onSurfaceDraw();
 
     void onRelease();
+
+    // 设置一个矩阵
+    void setMatrix(int width,int height);
 
     void onDestroyResource();
 
