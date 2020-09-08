@@ -76,14 +76,3 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
         pGlController = nullptr;
     }
 }
-
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_changeImageData(JNIEnv *env,
-                                                                             jobject thiz,
-                                                                             jint width,
-                                                                             jint height,
-                                                                             jbyteArray image_data) {
-
-}

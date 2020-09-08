@@ -14,6 +14,7 @@
 #include "../egl/wzm_egl_thread.h"
 #include "opengl_filter_normal.h"
 #include "opengl_filter_normal_copy.h"
+#include <iostream>
 
 
 

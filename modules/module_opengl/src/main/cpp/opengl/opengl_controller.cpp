@@ -6,7 +6,7 @@
 
 #include "../include/opengl/opengl_controller.h"
 
-#include <utility>
+
 
 
 void onSurfaceCreateCall(void *ctx) {
@@ -165,12 +165,10 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
     pixHeight = height;
     LOGD("OpenGLController  setPixelsData pixWidth = %d  , pixHeight = %d",pixWidth, pixHeight);
     // 支持动态切换纹理
-    //void *tempPixAar = nullptr;
+    void *tempPixAar = nullptr;
     if (pixelArr != nullptr){
-//        tempPixAar = pixelArr;
-        free(pixArr);
+        tempPixAar = pixelArr;
         pixelArr = nullptr;
-        //LOGE("OpenGlController::setPixelsData tempPixAar = %p  pixelArr = %p",tempPixAar,pixArr);
     }
 
     // 开辟数组,设置新的数据进来
@@ -186,9 +184,10 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
         pEglThread->notifyRender();
     }
     // 完成后释放tempPixAar中的旧数据
-//    if (tempPixAar != nullptr){
-//        free(tempPixAar);
-//    }
+    if (tempPixAar != nullptr){
+        free(tempPixAar);
+        tempPixAar = nullptr;
+    }
 }
 
 OpenGlController::OpenGlController() {

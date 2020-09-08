@@ -82,7 +82,7 @@ public class OpenGLCppActivity extends BaseActivity {
 
 
     public Bitmap getBitmapByIndex(){
-        int imageRes = imageResource[currentImageIndex/5];
+        int imageRes = imageResource[currentImageIndex%4];
         currentImageIndex++;
         return BitmapFactory.decodeResource(getResources(),imageRes);
     }
