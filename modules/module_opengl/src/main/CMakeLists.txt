@@ -12,10 +12,11 @@ aux_source_directory(cpp SRC_DIR)
 aux_source_directory(cpp/egl SRC_EGL)
 aux_source_directory(cpp/utils SRC_UTILS)
 aux_source_directory(cpp/opengl SRC_OPENGL)
+aux_source_directory(cpp/filter SRC_FILTER)
 
 
 # Set all source
-set(ALL_SOURCE ${SRC_DIR} ${SRC_EGL} ${SRC_UTILS} ${SRC_OPENGL})
+set(ALL_SOURCE ${SRC_DIR} ${SRC_EGL} ${SRC_UTILS} ${SRC_OPENGL} ${SRC_FILTER})
 
 add_library(
         opengl-cpp
@@ -30,7 +31,7 @@ find_library(log-lib log)
 # Include dir
 # ${EVENT_INCLUDE_DIR}
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/main/cpp/include)
-set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/utils  ${INCLUDE_DIR}/opengl)
+set(INCLUDES  ${INCLUDE_DIR}/egl ${INCLUDE_DIR}/filter ${INCLUDE_DIR}/utils ${INCLUDE_DIR}/opengl)
 include_directories(${INCLUDES})
 
 

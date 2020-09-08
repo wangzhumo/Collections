@@ -2,15 +2,11 @@
 // Created by wangzhumo on 9/8/20.
 //
 
-#include "../include/opengl/opengl_filter_yuv.h"
+#include "../include/filter/opengl_filter_yuv.h"
 
-OpenGLFilterYuv::OpenGLFilterYuv() {
+OpenGLFilterYuv::OpenGLFilterYuv() = default;
 
-}
-
-OpenGLFilterYuv::~OpenGLFilterYuv() {
-
-}
+OpenGLFilterYuv::~OpenGLFilterYuv() = default;
 
 void OpenGLFilterYuv::onSurfaceCreate() {
     LOGD("OpenGLFilterYuv onSurfaceCreate");
@@ -34,21 +30,11 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     sampler_v = glGetUniformLocation(baseProgramId, "sTextureV");  //2d纹理
     uMatrix = glGetUniformLocation(baseProgramId,"uMatrix");  //矩阵
 
-    // 创建一个原始的矩阵 - 单位矩阵
-    //initMatrix(matrixArr);
-    // 给他旋转一些角度
-    //rotateMatrix(90,matrixArr);
-    // 缩放
-    //scaleMatrix(1.5,matrixArr);
-    // 平移
-    //translateMatrix(0.5,0,matrixArr);
-    // 修改投影矩阵
-    //orthoM(-1,1,1,-1,matrixArr);
 
     // 创建一个texture，并且赋值到 textureId
-    glGenTextures(1, &textureId);
+    //glGenTextures(1, &textureIds);
     // 绑定纹理
-    glBindTexture(GL_TEXTURE_2D, textureId);
+    //glBindTexture(GL_TEXTURE_2D, textureId);
 
     // 设置环绕方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

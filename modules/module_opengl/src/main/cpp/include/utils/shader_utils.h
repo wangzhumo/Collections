@@ -9,7 +9,6 @@
 #include "android_log_utils.h"
 
 
-
 static void checkGlError(const char* operation){
 
     for (GLint error = glGetError(); error; error = glGetError()){

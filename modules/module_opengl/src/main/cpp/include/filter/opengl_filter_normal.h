@@ -2,15 +2,14 @@
 // Created by 王诛魔 on 2020/8/28.
 //
 #pragma once
-#ifndef COLLECTIONS_OPENGL_FILTER_NORMAL_COPY_H
-#define COLLECTIONS_OPENGL_FILTER_NORMAL_COPY_H
+#ifndef COLLECTIONS_OPENGL_FILTER_NORMAL_H
+#define COLLECTIONS_OPENGL_FILTER_NORMAL_H
 
 
-#include "base_opengl.h"
+#include "../opengl/base_opengl.h"
 #include "../utils/shader_glsl.h"
 
-// 测试filterChange方法
-class OpenGLFilterNormalCopy: public BaseOpenGl{
+class OpenGLFilterNormal: public BaseOpenGl{
 
 public:
     GLint vPosition = 0;
@@ -25,11 +24,11 @@ public:
 
     void *pPixelsArr = nullptr;
 
-    float matrixArr[16];
+    float matrixArr[16]{};
 
 public:
-    OpenGLFilterNormalCopy();
-    ~OpenGLFilterNormalCopy();
+    OpenGLFilterNormal();
+    ~OpenGLFilterNormal();
 
 
     // 需要实现一个onCreate
@@ -52,4 +51,4 @@ public:
     void onDestroyResource();
 };
 
-#endif //COLLECTIONS_OPENGL_FILTER_NORMAL_COPY_H
+#endif //COLLECTIONS_OPENGL_FILTER_NORMAL_H

@@ -3,13 +3,13 @@
 //
 
 
-#include "../include/opengl/opengl_filter_normal.h"
+#include "../include/filter/opengl_filter_normal.h"
 
 
 // 使用父类的构造即可,不需要实现.
-OpenGLFilterNormal::OpenGLFilterNormal(){}
+OpenGLFilterNormal::OpenGLFilterNormal()= default;
 
-OpenGLFilterNormal::~OpenGLFilterNormal(){}
+OpenGLFilterNormal::~OpenGLFilterNormal()= default;
 
 
 

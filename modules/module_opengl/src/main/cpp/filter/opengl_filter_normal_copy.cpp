@@ -3,13 +3,13 @@
 //
 
 
-#include "../include/opengl/opengl_filter_normal_copy.h"
+#include "../include/filter/opengl_filter_normal_copy.h"
 
 
 // 使用父类的构造即可,不需要实现.
-OpenGLFilterNormalCopy::OpenGLFilterNormalCopy() {}
+OpenGLFilterNormalCopy::OpenGLFilterNormalCopy() = default;
 
-OpenGLFilterNormalCopy::~OpenGLFilterNormalCopy() {}
+OpenGLFilterNormalCopy::~OpenGLFilterNormalCopy() = default;
 
 
 void OpenGLFilterNormalCopy::onSurfaceCreate() {

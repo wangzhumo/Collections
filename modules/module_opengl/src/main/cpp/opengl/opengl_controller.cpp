@@ -126,8 +126,7 @@ void OpenGlController::onSurfaceChangeFilter(std::string type) {
     if (pEglThread != nullptr) {
         pEglThread->onSurfaceChangeFilter();
     }
-    filterType = type;
-    LOGD("onSurfaceChangeFilter filterType = %s", &filterType);
+    filterType = &type;
 }
 
 

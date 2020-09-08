@@ -5,7 +5,7 @@
 #ifndef COLLECTIONS_OPENGL_FILTER_YUV_H
 #define COLLECTIONS_OPENGL_FILTER_YUV_H
 
-#include "base_opengl.h"
+#include "../opengl/base_opengl.h"
 #include "../utils/shader_glsl.h"
 
 class OpenGLFilterYuv: public BaseOpenGl{
@@ -16,7 +16,7 @@ public:
     GLint sampler_u = 0;
     GLint sampler_v = 0;
     GLint uMatrix = 0;
-    float textureIds[3];
+    float textureIds[3]{};
 
 
     int yuvWidth = 0;
@@ -26,7 +26,7 @@ public:
     void *pDataU = nullptr;
     void *pDataV = nullptr;
 
-    float matrixArr[16];
+    float matrixArr[16]{};
 
 
 public:

@@ -10,13 +10,14 @@
 #ifndef COLLECTIONS_OPENGL_CONTROLLER_H
 #define COLLECTIONS_OPENGL_CONTROLLER_H
 
-#include <android/native_window.h>
+
 #include <jni.h>
 #include <malloc.h>
 #include <string>
+#include <android/native_window.h>
 #include "../egl/wzm_egl_thread.h"
-#include "opengl_filter_normal.h"
-#include "opengl_filter_normal_copy.h"
+#include "../filter/opengl_filter_normal.h"
+#include "../filter/opengl_filter_normal_copy.h"
 
 
 class OpenGlController{
@@ -28,7 +29,7 @@ public:
     int pixWidth;
     int pixHeight;
     void *pixelArr = nullptr;
-    std::string filterType;
+    std::string *filterType;
 
 public:
     OpenGlController();
@@ -46,6 +47,5 @@ public:
     void setPixelsData(int width,int height,int len,void *pixArr);
 
 };
-
 
 #endif //COLLECTIONS_OPENGL_CONTROLLER_H
