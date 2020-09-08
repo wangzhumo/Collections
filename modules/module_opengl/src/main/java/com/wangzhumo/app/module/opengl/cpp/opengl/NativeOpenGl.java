@@ -19,6 +19,7 @@ public class NativeOpenGl {
 
     //public native void surfaceDraw(int width,int height);
 
+    // 设置纹理数据 - 同时支持切换
     public native void setImageData(int width,int height,byte[] imageData);
 
     public native void surfaceDestroy();

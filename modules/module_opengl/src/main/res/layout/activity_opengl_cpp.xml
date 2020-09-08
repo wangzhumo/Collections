@@ -10,17 +10,33 @@
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_filter_change"
+        app:layout_constraintBottom_toTopOf="@+id/filter_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/bt_filter_change"
+    <LinearLayout
+        android:id="@+id/filter_container"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="切换Filter"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/bt_filter_change"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="切换Filter" />
+
+        <Button
+            android:id="@+id/bt_texture_change"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="切换Texture" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

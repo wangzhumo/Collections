@@ -164,7 +164,16 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
     pixWidth = width;
     pixHeight = height;
     LOGD("OpenGLController  setPixelsData pixWidth = %d  , pixHeight = %d",pixWidth, pixHeight);
-    // 开辟数组
+    // 支持动态切换纹理
+    //void *tempPixAar = nullptr;
+    if (pixelArr != nullptr){
+//        tempPixAar = pixelArr;
+        free(pixArr);
+        pixelArr = nullptr;
+        //LOGE("OpenGlController::setPixelsData tempPixAar = %p  pixelArr = %p",tempPixAar,pixArr);
+    }
+
+    // 开辟数组,设置新的数据进来
     pixelArr = malloc(len);
     // 拷贝
     memcpy(pixelArr, pixArr, len);
@@ -176,6 +185,10 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
     if (pEglThread != nullptr) {
         pEglThread->notifyRender();
     }
+    // 完成后释放tempPixAar中的旧数据
+//    if (tempPixAar != nullptr){
+//        free(tempPixAar);
+//    }
 }
 
 OpenGlController::OpenGlController() {
