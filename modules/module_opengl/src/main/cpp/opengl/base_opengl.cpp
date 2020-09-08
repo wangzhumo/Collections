@@ -6,7 +6,6 @@
 #include "../include/opengl/base_opengl.h"
 
 
-
 // 我们可以在构造方法中，创建两个数组
 BaseOpenGl::BaseOpenGl() {
     pBaseVertexArr = new float[8];

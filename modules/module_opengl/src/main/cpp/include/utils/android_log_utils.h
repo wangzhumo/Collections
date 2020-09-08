@@ -5,7 +5,7 @@
 #ifndef COLLECTIONS_ANDROID_LOG_UTILS_H
 #define COLLECTIONS_ANDROID_LOG_UTILS_H
 
-#include "../../../../../../../../../Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
+#include <android/log.h>
 
 #define TAG "cpp-opengl" // 这个是自定义的LOG的标识
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,TAG ,__VA_ARGS__) // 定义LOGD类型
