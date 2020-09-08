@@ -12,13 +12,14 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     LOGD("OpenGLFilterYuv onSurfaceCreate");
     // 为base中声明的数据赋值
     pBaseVertexSource = GLSLConst::VERTEX_MATRIX_SOURCE;
-    LOGD("OpenGLFilterYuv onSurfaceCreate OpenGLFilterNormal pBaseVertexSource = %s",pBaseVertexSource);
+    LOGD("OpenGLFilterYuv onSurfaceCreate OpenGLFilterNormal pBaseVertexSource = %s",
+         pBaseVertexSource);
     pBaseFragmentSource = GLSLConst::FRAGMENT_YUV_SOURCE;
-    LOGD("OpenGLFilterYuv onSurfaceCreate  pBaseFragmentSource = %s",pBaseFragmentSource);
+    LOGD("OpenGLFilterYuv onSurfaceCreate  pBaseFragmentSource = %s", pBaseFragmentSource);
 
     // 测试opengl初始化 shader
-    baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource, &vertexShaderId,
-                                       &fragmentShaderId);
+    baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource,
+                                       &vertexShaderId, &fragmentShaderId);
     LOGD("OpenGLFilterNormalCopy onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
          baseProgramId, vertexShaderId, fragmentShaderId);
 
@@ -28,7 +29,7 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     sampler_y = glGetUniformLocation(baseProgramId, "sTextureY");  //2d纹理
     sampler_u = glGetUniformLocation(baseProgramId, "sTextureU");  //2d纹理
     sampler_v = glGetUniformLocation(baseProgramId, "sTextureV");  //2d纹理
-    uMatrix = glGetUniformLocation(baseProgramId,"uMatrix");  //矩阵
+    uMatrix = glGetUniformLocation(baseProgramId, "uMatrix");  //矩阵
 
 
     // 创建一个texture，并且赋值到 textureId
