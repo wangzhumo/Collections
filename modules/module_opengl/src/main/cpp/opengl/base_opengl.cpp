@@ -84,4 +84,8 @@ void BaseOpenGl::onDestroyResource() {
 
 }
 
+void BaseOpenGl::updateYuvData(void *y, void *u, void *v, int width, int height) {
+
+}
+
 

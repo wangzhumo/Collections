@@ -56,6 +56,9 @@ public:
 
     // 销毁图片等资源数据
     virtual void onDestroyResource();
+
+    // 设置YUV的数据源
+    virtual void updateYuvData(void *y,void *u,void *v,int width,int height);
 };
 
 
