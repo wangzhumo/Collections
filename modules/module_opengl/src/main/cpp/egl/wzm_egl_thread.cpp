@@ -28,7 +28,7 @@ void *eglThreadCallBack(void *context) {
         while (true) {
             // 处理 surfaceCreate
             if (wzmEglThread->isCreate) {
-                LOGE("elgThread call surfaceCreate");
+                LOGE("OpenGL elgThread call surfaceCreate");
                 wzmEglThread->isCreate = false;
                 pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
                 // 回调给外部.
@@ -37,7 +37,7 @@ void *eglThreadCallBack(void *context) {
             }
             // 在这里处理 surfaceChange 的事件
             if (wzmEglThread->isChange) {
-                LOGE("eglThread call surfaceChange");
+                LOGE("OpenGL elgThread  call surfaceChange");
                 wzmEglThread->isChange = false;
                 // 这里执行回调.
                 wzmEglThread->onChangeCall(wzmEglThread->surfaceWidth,wzmEglThread->surfaceHeight,wzmEglThread->onChangeCtx);
@@ -48,12 +48,13 @@ void *eglThreadCallBack(void *context) {
             // 这里切换ChangeFilter的逻辑，交给外部处理具体切换的东西
             if (wzmEglThread->isChangeFilter){
                 wzmEglThread->isChangeFilter = false;
+                LOGE("OpenGL elgThread  call onChangeFilter");
                 wzmEglThread->onChangeFilter(wzmEglThread->surfaceWidth,wzmEglThread->surfaceHeight,wzmEglThread->onChangeFilterCtx);
             }
 
             // 这里就开始绘制 surfaceDraw
             if (wzmEglThread->canStart){
-                LOGD("eglThread draw");
+                LOGD("OpenGL eglThread onDrawCall");
                 // 这里执行回调.
                 wzmEglThread->onDrawCall(wzmEglThread->onDrawCtx);
                 pEglHelper->swapBuffers();
@@ -75,6 +76,7 @@ void *eglThreadCallBack(void *context) {
 
             if (wzmEglThread->isExit){
                 // 回调给外部，自行销毁资源
+                LOGD("OpenGL eglThread onReleaseCall");
                 wzmEglThread->onReleaseCall(wzmEglThread->onReleaseCtx);
 
                 // 销毁EGL
@@ -96,6 +98,7 @@ void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
         // 设置窗口
         pNativeWindow = windowType;
         // 如果 == -1,说明没有创建过,开始创建
+        LOGD("OpenGL eglThread onSurfaceCreate");
         pEglThread = pthread_create(&pEglThread, nullptr, eglThreadCallBack, this);
     }
 }
@@ -105,6 +108,7 @@ void WzmEglThread::onSurfaceChange(int width, int height) {
     surfaceWidth = width;
     surfaceHeight = height;
     // 渲染一次,避免线程锁住无法更新的问题
+    LOGD("OpenGL eglThread onSurfaceChange");
     notifyRender();
 }
 
@@ -156,6 +160,7 @@ void WzmEglThread::notifyRender() {
 
 void WzmEglThread::release() {
     this->isExit = true;
+    LOGD("OpenGL eglThread release");
     // 渲染一次,避免线程锁住无法更新的问题
     notifyRender();
 

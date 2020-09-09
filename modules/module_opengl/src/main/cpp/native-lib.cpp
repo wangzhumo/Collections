@@ -76,6 +76,8 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
         pGlController = nullptr;
     }
 }
+
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEnv *env,
@@ -87,15 +89,15 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
                                                                            jint height) {
     jbyte *dataY = env->GetByteArrayElements(data_y, nullptr);
     int lengthY = env->GetArrayLength(data_y);
-    LOGD("updateYuvData length = %d", lengthY);
+    LOGD("updateYuvData Y length = %d", lengthY);
 
-    jbyte *dataU = env->GetByteArrayElements(data_y, nullptr);
-    int lengthU = env->GetArrayLength(data_y);
-    LOGD("updateYuvData length = %d", lengthU);
+    jbyte *dataU = env->GetByteArrayElements(data_u, nullptr);
+    int lengthU = env->GetArrayLength(data_u);
+    LOGD("updateYuvData U length = %d", lengthU);
 
-    jbyte *dataV = env->GetByteArrayElements(data_y, nullptr);
-    int lengthV = env->GetArrayLength(data_y);
-    LOGD("updateYuvData length = %d", lengthV);
+    jbyte *dataV = env->GetByteArrayElements(data_v, nullptr);
+    int lengthV = env->GetArrayLength(data_v);
+    LOGD("updateYuvData V length = %d", lengthV);
 
     if(pGlController != nullptr){
         pGlController->updateYuvData(dataY,dataU,dataV,width,height);

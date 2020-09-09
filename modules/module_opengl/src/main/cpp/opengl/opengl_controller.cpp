@@ -188,7 +188,7 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
 
 void OpenGlController::updateYuvData(jbyte *dataY, jbyte *dataU, jbyte *dataV, jint width, jint height) {
     if (baseOpenGl != nullptr) {
-        baseOpenGl->updateYuvData(dataY, dataU, dataU, width, height);
+        baseOpenGl->updateYuvData(dataY, dataU, dataV, width, height);
     }
     if (pEglThread != nullptr){
         pEglThread->notifyRender();

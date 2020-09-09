@@ -2,6 +2,7 @@
 // Created by wangzhumo on 9/8/20.
 //
 
+#include <jni.h>
 #include "../include/filter/opengl_filter_yuv.h"
 
 OpenGLFilterYuv::OpenGLFilterYuv() = default;
@@ -9,18 +10,18 @@ OpenGLFilterYuv::OpenGLFilterYuv() = default;
 OpenGLFilterYuv::~OpenGLFilterYuv() = default;
 
 void OpenGLFilterYuv::onSurfaceCreate() {
-    LOGD("OpenGLFilterYuv onSurfaceCreate");
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate");
     // 为base中声明的数据赋值
     pBaseVertexSource = GLSLConst::VERTEX_MATRIX_SOURCE;
-    LOGD("OpenGLFilterYuv onSurfaceCreate OpenGLFilterNormal pBaseVertexSource = %s",
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate OpenGLFilterNormal pBaseVertexSource = %s",
          pBaseVertexSource);
     pBaseFragmentSource = GLSLConst::FRAGMENT_YUV_SOURCE;
-    LOGD("OpenGLFilterYuv onSurfaceCreate  pBaseFragmentSource = %s", pBaseFragmentSource);
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate  pBaseFragmentSource = %s", pBaseFragmentSource);
 
     // 测试opengl初始化 shader
     baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource,
                                        &vertexShaderId, &fragmentShaderId);
-    LOGD("OpenGLFilterYuv onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
          baseProgramId, vertexShaderId, fragmentShaderId);
 
     // 获取参数
@@ -30,6 +31,7 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     sampler_u = glGetUniformLocation(baseProgramId, "sTextureU");  //2d纹理
     sampler_v = glGetUniformLocation(baseProgramId, "sTextureV");  //2d纹理
     uMatrix = glGetUniformLocation(baseProgramId, "uMatrix");  //矩阵
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate vPosition = %d fPosition = %d sampler_y = %d sampler_u = %d sampler_v = %d uMatrix = %d",vPosition,fPosition,sampler_y,sampler_u,sampler_v,uMatrix);
 
     // 创建三个texture，并且赋值到 textureIds
     glGenTextures(3, textureIds);
@@ -70,19 +72,20 @@ void OpenGLFilterYuv::setMatrix(int width, int height) {
         if (screenR > sourceR) {
             // 图片的宽度的缩放
             float r = width / (1.0 * height / yuvHeight * yuvWidth);
-            LOGD("OpenGLFilterYuv setMatrix YUV宽度的缩放 r = %f", r);
+            LOGD("OpenGL OpenGLFilterYuv setMatrix YUV宽度的缩放 r = %f", r);
             orthoM(-r, 1, r, -1, matrixArr);
         } else {
             // 图片的高度缩放
             float r = height / (1.0 * width / yuvWidth * yuvHeight);
-            LOGD("OpenGLFilterYuv setMatrix YUV高度缩放 r = %f", r);
+            LOGD("OpenGL OpenGLFilterYuv setMatrix YUV高度缩放 r = %f", r);
             orthoM(-1, r, 1, -r, matrixArr);
         }
     }
 }
 
+
 void OpenGLFilterYuv::onSurfaceDraw() {
-    LOGD("OpenGLFilterNormalCopy onSurfaceDrawCall");
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall");
     glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -118,44 +121,47 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             8,
             pBaseSurfaceArr);
 
+
+    LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall yuvHeight = %d, yuvWidth = %d",yuvHeight,yuvWidth);
     if (yuvHeight > 0 && yuvWidth > 0) {
+        //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataY length = %d",getArrayLen(pDataY));
         if (pDataY != nullptr) {
             // 激活这个samplerId - 0
             glActiveTexture(GL_TEXTURE0);
-
             // 绑定textureID
             glBindTexture(GL_TEXTURE_2D, textureIds[0]);
             // 设置纹理数据
+            LOGE("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataY = %p",pDataY);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, yuvWidth, yuvHeight,
                          0, GL_RGBA, GL_UNSIGNED_BYTE, pDataY);
             // 把sampler_y 绑定数据到 0 这个纹理上
             glUniform1i(sampler_y, 0);
         }
+        //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataU length = %d",getArrayLen(pDataU));
         if (pDataU != nullptr) {
             // Y的数据量 * 1/4  =  U数据量 = 宽度 * 高度 * 1/4
             // 1/2宽度 * 1/2高度 = U数据量
 
             // 激活这个samplerId - 0
             glActiveTexture(GL_TEXTURE1);
-
             // 绑定textureID
             glBindTexture(GL_TEXTURE_2D, textureIds[1]);
             // 设置纹理数据
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, yuvWidth / 2, yuvHeight / 2,
                          0, GL_RGBA, GL_UNSIGNED_BYTE, pDataU);
-            // 把sampler_y 绑定数据到 0 这个纹理上
+            // 把sampler_y 绑定数据到 1 这个纹理上
             glUniform1i(sampler_u, 1);
         }
+        //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataV length = %d",getArrayLen(pDataV));
         if (pDataV != nullptr) {
             // 激活这个samplerId - 0
             glActiveTexture(GL_TEXTURE2);
-
             // 绑定textureID
             glBindTexture(GL_TEXTURE_2D, textureIds[2]);
             // 设置纹理数据
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, yuvWidth / 2, yuvHeight / 2,
                          0, GL_RGBA, GL_UNSIGNED_BYTE, pDataV);
-            // 把sampler_y 绑定数据到 0 这个纹理上
+            // 把sampler_y 绑定数据到 2 这个纹理上
             glUniform1i(sampler_v, 2);
         }
 
@@ -171,8 +177,8 @@ void OpenGLFilterYuv::onSurfaceDraw() {
 
 void OpenGLFilterYuv::updateYuvData(void *y, void *u, void *v, int width, int height) {
     // 设置数据.
-    int dataSize = 0;
     if (width > 0 && height > 0) {
+        int dataSize = width * height;
         // 如果宽度、高度变化需要重新分配内存空间
         if (yuvWidth != width || yuvHeight != height) {
             yuvHeight = height;
@@ -195,12 +201,14 @@ void OpenGLFilterYuv::updateYuvData(void *y, void *u, void *v, int width, int he
             pDataY = malloc(dataSize);
             pDataU = malloc(dataSize / 4);
             pDataV = malloc(dataSize / 4);
+            // 尺寸变化,需要调用一下
+            setMatrix(baseSurfaceWidth,baseSurfaceHeight);
         }
 
         // 赋值
         memcpy(pDataY, y, dataSize);
-        memcpy(pDataU, y, dataSize / 4);
-        memcpy(pDataV, y, dataSize / 4);
+        memcpy(pDataU, u, dataSize / 4);
+        memcpy(pDataV, v, dataSize / 4);
     }
 }
 

@@ -3,16 +3,15 @@ package com.wangzhumo.app.module.opengl.cpp;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.wangzhumo.app.base.IRoute;
-import com.wangzhumo.app.module.opengl.R;
-import com.wangzhumo.app.module.opengl.cpp.opengl.CppSurfaceView;
 import com.wangzhumo.app.module.opengl.cpp.opengl.NativeOpenGl;
-import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.module.opengl.databinding.ActivityCppYuvBinding;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,40 +19,35 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Route(path = IRoute.CPPGLES.CPP_YUV)
-public class CppYuvActivity extends BaseActivity {
+public class CppYuvActivity extends AppCompatActivity {
 
-    private CppSurfaceView surfaceView;
-    private Button btStart;
     NativeOpenGl nativeOpenGl;
+    ActivityCppYuvBinding yuvBinding;
 
     private boolean isExitPlay = true;
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_cpp_yuv;
-    }
+
 
     @Override
-    protected void initViews(@Nullable Bundle savedInstanceState) {
-        super.initViews(savedInstanceState);
-        surfaceView = findViewById(R.id.surfaceView);
-        btStart = findViewById(R.id.bt_yuv_play);
-
-        // 创建 NativeOpenGl
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        yuvBinding = ActivityCppYuvBinding.inflate(getLayoutInflater());
+        setContentView(yuvBinding.getRoot());
         nativeOpenGl = new NativeOpenGl();
-        surfaceView.setNativeOpenGl(nativeOpenGl);
-
-        // 开始播放
-        btStart.setOnClickListener(new View.OnClickListener() {
+        yuvBinding.surfaceView.setNativeOpenGl(nativeOpenGl);
+        yuvBinding.btYuvPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isExitPlay) {
                     File voidFile = new File(getExternalFilesDir(""), "out.yuv");
-                    play(voidFile);
+                    if(voidFile.exists()){
+                        play(voidFile);
+                    }else{
+                        Toast.makeText(CppYuvActivity.this, "voidFile empty", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     stop();
                 }
-
             }
         });
     }
@@ -85,11 +79,12 @@ public class CppYuvActivity extends BaseActivity {
                         int ySize = fis.read(dataY);
                         int uSize = fis.read(dataU);
                         int vSize = fis.read(dataV);
-
                         // 设置到jni中
-                        if (ySize > 0 || uSize > 0 && vSize > 0) {
+                        if (ySize > 0 && uSize > 0 && vSize > 0) {
                             nativeOpenGl.updateYuvData(dataY, dataU, dataV, width, height);
                             Thread.sleep(40);
+                        }else{
+                            isExitPlay = true;
                         }
                     }
                 } catch (FileNotFoundException e) {

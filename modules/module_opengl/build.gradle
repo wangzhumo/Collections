@@ -52,6 +52,9 @@ android {
         }
     }
 
+    viewBinding {
+        enabled = true
+    }
 
     compileOptions {
         sourceCompatibility = JDK_VERSION

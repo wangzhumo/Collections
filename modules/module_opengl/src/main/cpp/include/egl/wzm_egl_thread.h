@@ -42,48 +42,48 @@ public:
 
     // 定义一个回调 surfaceCreate
     typedef void(*OnCreateCall)(void *);
-    OnCreateCall onCreateCall;
+    OnCreateCall onCreateCall{};
 
     // 保存create参数
-    void *onCreateCtx;
+    void *onCreateCtx{};
 
     // 定义一个回调 surfaceChange
     typedef void(*OnChangeCall)(int width,int height,void *);
-    OnChangeCall onChangeCall;
+    OnChangeCall onChangeCall{};
 
     // 保持change的参数
-    void *onChangeCtx;
+    void *onChangeCtx{};
 
     // 定义一个回调 surfaceDraw
     typedef void(*OnDrawCall)(void *);
-    OnDrawCall onDrawCall;
+    OnDrawCall onDrawCall{};
 
     // 保持draw的参数
-    void *onDrawCtx;
+    void *onDrawCtx{};
 
     // 定义一个回调 切换filter
     typedef void(*OnChangeFilter)(int width,int height, void *);
-    OnChangeFilter onChangeFilter;
+    OnChangeFilter onChangeFilter{};
 
     // 保持filter的参数
-    void *onChangeFilterCtx;
+    void *onChangeFilterCtx{};
 
 
     // 定义一个回调 销毁资源
     typedef void(*OnReleaseCall)(void *);
-    OnReleaseCall onReleaseCall;
+    OnReleaseCall onReleaseCall{};
 
     // 保持filter的参数
-    void *onReleaseCtx;
+    void *onReleaseCtx{};
 
 
     // 渲染的模式.
     int renderMode = OPENGL_RENDER_AUTO;
 
     // 添加一个线程锁,实现模式的切换功能
-    pthread_mutex_t pThreadMutex;
+    pthread_mutex_t pThreadMutex{};
     // 信号量
-    pthread_cond_t pThreadCond;
+    pthread_cond_t pThreadCond{};
 
 public:
     WzmEglThread();
