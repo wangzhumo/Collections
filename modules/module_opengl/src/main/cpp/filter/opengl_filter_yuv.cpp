@@ -27,10 +27,10 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     // 获取参数
     vPosition = glGetAttribLocation(baseProgramId, "vPosition");  //顶点的坐标
     fPosition = glGetAttribLocation(baseProgramId, "fPosition");  //这个纹理的坐标
+    uMatrix = glGetUniformLocation(baseProgramId, "uMatrix");     //矩阵
     sampler_y = glGetUniformLocation(baseProgramId, "sTextureY");  //2d纹理
     sampler_u = glGetUniformLocation(baseProgramId, "sTextureU");  //2d纹理
     sampler_v = glGetUniformLocation(baseProgramId, "sTextureV");  //2d纹理
-    uMatrix = glGetUniformLocation(baseProgramId, "uMatrix");  //矩阵
     LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate vPosition = %d fPosition = %d sampler_y = %d sampler_u = %d sampler_v = %d uMatrix = %d",vPosition,fPosition,sampler_y,sampler_u,sampler_v,uMatrix);
 
     // 创建三个texture，并且赋值到 textureIds
@@ -64,7 +64,7 @@ void OpenGLFilterYuv::onSurfaceChange(int width, int height) {
 
 void OpenGLFilterYuv::setMatrix(int width, int height) {
     initMatrix(matrixArr);
-    if (width > 0 && yuvWidth > 0){
+    if (yuvHeight > 0 && yuvWidth > 0){
         float screenR = 1.0 * width / height;
         float sourceR = 1.0 * yuvWidth / yuvHeight;
 

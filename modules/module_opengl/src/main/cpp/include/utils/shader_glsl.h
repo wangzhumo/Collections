@@ -10,14 +10,14 @@ class GLSLConst {
 public:
     // 简单的三角形绘制
     // 顶点着色器
-    constexpr static const char *VERTEX_SOURCE = "attribute vec4 vPosition;    \n"
-                                "void main(){                 \n"
+    constexpr static const char *VERTEX_SOURCE = "attribute vec4 vPosition;\n"
+                                "void main(){\n"
                                 "    gl_Position = vPosition; \n"
                                 "}";
 
     // 片着色器
-    constexpr static const char *FRAGMENT_SOURCE = "precision mediump float;              \n"
-                                  "void main(){                          \n"
+    constexpr static const char *FRAGMENT_SOURCE = "precision mediump float;\n"
+                                  "void main(){\n"
                                   "    gl_FragColor = vec4(0f,1f,0f,1f); \n"
                                   "}";
 
@@ -59,9 +59,9 @@ public:
     // raw/gles_fragment_yuv_shader.glsl
     constexpr static const char *FRAGMENT_YUV_SOURCE = "precision mediump float;\n"
                                                        "varying vec2 ftPosition;\n"
-                                                       "uniform lowp sampler2D sTextureY;\n"
-                                                       "uniform lowp sampler2D sTextureU;\n"
-                                                       "uniform lowp sampler2D sTextureV;\n"
+                                                       "uniform sampler2D sTextureY;\n"
+                                                       "uniform sampler2D sTextureU;\n"
+                                                       "uniform sampler2D sTextureV;\n"
                                                        "vec4 YuvToRgb(vec2 uv) {\n"
                                                        "    float y, u, v, r, g, b;\n"
                                                        "    y = texture2D(sTextureY, uv).r;\n"

@@ -23,6 +23,7 @@ void *eglThreadCallBack(void *context) {
     if (wzmEglThread != nullptr) {
         // 如果不为空,就在这里创建一个EGL的环境.
         auto *pEglHelper = new WzmEglHelper();
+        pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
         wzmEglThread->isExit = false;
         // 这里一个循环,用来处理数据
         while (true) {
@@ -30,7 +31,6 @@ void *eglThreadCallBack(void *context) {
             if (wzmEglThread->isCreate) {
                 LOGE("OpenGL elgThread call surfaceCreate");
                 wzmEglThread->isCreate = false;
-                pEglHelper->initEglEnv(wzmEglThread->pNativeWindow);
                 // 回调给外部.
                 wzmEglThread->onCreateCall(wzmEglThread->onCreateCtx);
 

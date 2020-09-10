@@ -116,6 +116,10 @@ void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
 void OpenGlController::onSurfaceChange(int width, int height) {
     // surfaceChange 的调用
     if (pEglThread != nullptr) {
+        if (baseOpenGl != nullptr){
+            baseOpenGl->baseSurfaceWidth = width;
+            baseOpenGl->baseSurfaceHeight = height;
+        }
         pEglThread->onSurfaceChange(width, height);
     }
 }

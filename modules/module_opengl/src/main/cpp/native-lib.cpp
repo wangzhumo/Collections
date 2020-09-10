@@ -57,7 +57,6 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv
     if(pGlController != nullptr){
         pGlController->setPixelsData(jwidth,jheight,length,data);
     }
-
     // 回收空间 - 使用之前拷贝的数据即可
     env->ReleaseByteArrayElements(image_data, data, 0);
 }
@@ -88,16 +87,16 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
                                                                            jint width,
                                                                            jint height) {
     jbyte *dataY = env->GetByteArrayElements(data_y, nullptr);
-    int lengthY = env->GetArrayLength(data_y);
-    LOGD("updateYuvData Y length = %d", lengthY);
+    //int lengthY = env->GetArrayLength(data_y);
+    //LOGD("updateYuvData Y length = %d", lengthY);
 
     jbyte *dataU = env->GetByteArrayElements(data_u, nullptr);
-    int lengthU = env->GetArrayLength(data_u);
-    LOGD("updateYuvData U length = %d", lengthU);
+    //int lengthU = env->GetArrayLength(data_u);
+    //LOGD("updateYuvData U length = %d", lengthU);
 
     jbyte *dataV = env->GetByteArrayElements(data_v, nullptr);
-    int lengthV = env->GetArrayLength(data_v);
-    LOGD("updateYuvData V length = %d", lengthV);
+    //int lengthV = env->GetArrayLength(data_v);
+    //LOGD("updateYuvData V length = %d", lengthV);
 
     if(pGlController != nullptr){
         pGlController->updateYuvData(dataY,dataU,dataV,width,height);
