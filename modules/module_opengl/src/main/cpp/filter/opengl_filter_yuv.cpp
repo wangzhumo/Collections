@@ -21,7 +21,7 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     // 测试opengl初始化 shader
     baseProgramId = loadShader2Program(pBaseVertexSource, pBaseFragmentSource,
                                        &vertexShaderId, &fragmentShaderId);
-    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
+    LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceCreate loadShader2Program programId = %d vertexShaderId = %d fragmentShaderId = %d",
          baseProgramId, vertexShaderId, fragmentShaderId);
 
     // 获取参数
@@ -31,7 +31,7 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     sampler_y = glGetUniformLocation(baseProgramId, "sTexture_y");  //2d纹理
     sampler_u = glGetUniformLocation(baseProgramId, "sTexture_u");  //2d纹理
     sampler_v = glGetUniformLocation(baseProgramId, "sTexture_v");  //2d纹理
-    LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate vPosition = %d fPosition = %d sampler_y = %d sampler_u = %d sampler_v = %d uMatrix = %d",vPosition,fPosition,sampler_y,sampler_u,sampler_v,uMatrix);
+    LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceCreate vPosition = %d fPosition = %d sampler_y = %d sampler_u = %d sampler_v = %d uMatrix = %d",vPosition,fPosition,sampler_y,sampler_u,sampler_v,uMatrix);
 
     // 创建三个texture，并且赋值到 textureIds
     glGenTextures(3, textureIds);
@@ -135,6 +135,7 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             // 设置纹理数据
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, yuvWidth, yuvHeight,
                          0, GL_RGBA, GL_UNSIGNED_BYTE, pDataY);
+
             LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 3");
             // 把sampler_y 绑定数据到 0 这个纹理上
             glUniform1i(sampler_y, 0);

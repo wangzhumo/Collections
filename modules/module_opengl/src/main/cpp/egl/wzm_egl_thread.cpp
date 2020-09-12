@@ -88,7 +88,8 @@ void *eglThreadCallBack(void *context) {
         }
     }
     //也可以调用这个
-    pthread_exit(&(wzmEglThread->pEglThread));
+    //pthread_exit(&(wzmEglThread->pEglThread));
+    return 0;
 }
 
 void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
