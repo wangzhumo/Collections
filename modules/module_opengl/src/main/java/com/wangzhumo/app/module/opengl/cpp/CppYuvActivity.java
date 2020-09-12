@@ -41,7 +41,7 @@ public class CppYuvActivity extends AppCompatActivity {
                 if (isExitPlay) {
                     File voidFile = new File(getExternalFilesDir(""), "out.yuv");
                     if(voidFile.exists()){
-                        play(voidFile);
+                        play();
                     }else{
                         Toast.makeText(CppYuvActivity.this, "voidFile empty", Toast.LENGTH_LONG).show();
                     }
@@ -96,6 +96,48 @@ public class CppYuvActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    public void play() {
+        if(isExitPlay) {
+            isExitPlay = false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int w = 1920;
+                    int h = 1080;
+                    try {
+                        File voidFile = new File(getExternalFilesDir(""), "out.yuv");
+                        fis = new FileInputStream(voidFile);
+                        byte[]y = new byte[w * h];
+                        byte[]u = new byte[w * h / 4];
+                        byte[]v = new byte[w * h / 4];
+
+                        while (true)
+                        {
+                            if(isExitPlay)
+                            {
+                                break;
+                            }
+                            int ysize = fis.read(y);
+                            int usize = fis.read(u);
+                            int vsize = fis.read(v);
+                            if(ysize > 0 && usize > 0 && vsize > 0)
+                            {
+                                nativeOpenGl.updateYuvData(y, u, v, w, h);
+                                Thread.sleep(10);
+                            }
+                            else
+                            {
+                                isExitPlay = true;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
     }
 
 

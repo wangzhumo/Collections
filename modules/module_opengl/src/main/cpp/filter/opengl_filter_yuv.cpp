@@ -142,7 +142,6 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 4");
         }
         LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End Y");
-        //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataU length = %d",getArrayLen(pDataU));
         if (pDataU != nullptr) {
             // Y的数据量 * 1/4  =  U数据量 = 宽度 * 高度 * 1/4
             // 1/2宽度 * 1/2高度 = U数据量
@@ -180,6 +179,7 @@ void OpenGLFilterYuv::onSurfaceDraw() {
         LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End");
     }
 }
+
 
 
 void OpenGLFilterYuv::updateYuvData(void *y, void *u, void *v, int width, int height) {

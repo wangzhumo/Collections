@@ -81,6 +81,22 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
     }
 }
 
+void print_bytes(const jbyte *bytes, size_t size){
+    LOGD("OpenGLCPP  native-lib  Start print");
+
+    size_t i;
+
+    printf("[ ");
+    LOGD("[ ");
+    for(i = 0; i < size; i++)
+    {
+        LOGD("%02x ", bytes[i]);
+    }
+    LOGD("]\n");
+
+    LOGD("OpenGLCPP  native-lib  Start print");
+}
+
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -93,10 +109,12 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
                                                                            jint height) {
 
     jbyte *dataY = env->GetByteArrayElements(data_y, nullptr);
+    //int size = env->GetArrayLength(data_y);
     jbyte *dataU = env->GetByteArrayElements(data_u, nullptr);
     jbyte *dataV = env->GetByteArrayElements(data_v, nullptr);
     LOGD("OpenGLCPP  native-lib  updateYuvData  y = %p, u = %p, v = %p",dataY,dataU,dataV);
 
+    //print_bytes(dataY,size);
     if(pGlController != nullptr){
         pGlController->updateYuvData(dataY,dataU,dataV,width,height);
     }
@@ -106,3 +124,4 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
     env->ReleaseByteArrayElements(data_u, dataU, 0);
     env->ReleaseByteArrayElements(data_v, dataV, 0);
 }
+
