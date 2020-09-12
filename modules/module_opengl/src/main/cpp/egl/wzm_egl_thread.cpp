@@ -98,7 +98,7 @@ void WzmEglThread::onSurfaceCreate(EGLNativeWindowType windowType) {
         // 设置窗口
         pNativeWindow = windowType;
         // 如果 == -1,说明没有创建过,开始创建
-        LOGD("OpenGL eglThread onSurfaceCreate");
+        LOGD("OpenGLCpp eglThread onSurfaceCreate");
         pEglThread = pthread_create(&pEglThread, nullptr, eglThreadCallBack, this);
     }
 }
@@ -108,7 +108,7 @@ void WzmEglThread::onSurfaceChange(int width, int height) {
     surfaceWidth = width;
     surfaceHeight = height;
     // 渲染一次,避免线程锁住无法更新的问题
-    LOGD("OpenGL eglThread onSurfaceChange");
+    LOGD("OpenGLCpp eglThread onSurfaceChange");
     notifyRender();
 }
 
@@ -160,14 +160,12 @@ void WzmEglThread::notifyRender() {
 
 void WzmEglThread::release() {
     this->isExit = true;
-    LOGD("OpenGL eglThread release");
+    LOGD("OpenGLCpp eglThread release");
     // 渲染一次,避免线程锁住无法更新的问题
     notifyRender();
-
     // 去掉pEglThread,会等待EGL线程销毁才继续执行
     pthread_join(pEglThread, nullptr);
     pEglThread = -1;
-
     // 由于NativeWindow,这里只是引用,我们仅仅把指针去掉即可
     pNativeWindow = nullptr;
 }

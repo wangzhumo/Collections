@@ -12,6 +12,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
         JNIEnv *env, jobject thiz, jobject surface) {
+    LOGD("OpenGLCPP  native-lib  surfaceCreate");
     // 获取一个 OpenGlController
     if (pGlController == nullptr){
         pGlController = new OpenGlController();
@@ -26,6 +27,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
         JNIEnv *env, jobject thiz, jint width, jint height) {
+    LOGD("OpenGLCPP  native-lib  surfaceChange");
     // surfaceChange 的调用
     if (pGlController != nullptr){
         pGlController->onSurfaceChange(width,height);
@@ -36,6 +38,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChangeFilter(JNIEnv *env,jobject thiz,jstring type) {
+    LOGD("OpenGLCPP  native-lib  surfaceChangeFilter");
     if (pGlController != nullptr){
         pGlController->onSurfaceChangeFilter(jstring2string(env,type));
     }
@@ -49,6 +52,7 @@ JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv *env, jobject thiz,
                                                                           jint jwidth, jint jheight,
                                                                           jbyteArray image_data) {
+    LOGD("OpenGLCPP  native-lib  setImageData");
     // 获取数据
     jbyte *data = env->GetByteArrayElements(image_data, nullptr);
     int length = env->GetArrayLength(image_data);
@@ -67,6 +71,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIEnv *env,
                                                                             jobject thiz) {
+    LOGD("OpenGLCPP  native-lib  surfaceDestroy");
     // 调用通知
     if (pGlController != nullptr){
         pGlController->onRelease();
@@ -86,17 +91,11 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
                                                                            jbyteArray data_v,
                                                                            jint width,
                                                                            jint height) {
+
     jbyte *dataY = env->GetByteArrayElements(data_y, nullptr);
-    //int lengthY = env->GetArrayLength(data_y);
-    //LOGD("updateYuvData Y length = %d", lengthY);
-
     jbyte *dataU = env->GetByteArrayElements(data_u, nullptr);
-    //int lengthU = env->GetArrayLength(data_u);
-    //LOGD("updateYuvData U length = %d", lengthU);
-
     jbyte *dataV = env->GetByteArrayElements(data_v, nullptr);
-    //int lengthV = env->GetArrayLength(data_v);
-    //LOGD("updateYuvData V length = %d", lengthV);
+    LOGD("OpenGLCPP  native-lib  updateYuvData  y = %p, u = %p, v = %p",dataY,dataU,dataV);
 
     if(pGlController != nullptr){
         pGlController->updateYuvData(dataY,dataU,dataV,width,height);

@@ -28,9 +28,9 @@ void OpenGLFilterYuv::onSurfaceCreate() {
     vPosition = glGetAttribLocation(baseProgramId, "vPosition");  //顶点的坐标
     fPosition = glGetAttribLocation(baseProgramId, "fPosition");  //这个纹理的坐标
     uMatrix = glGetUniformLocation(baseProgramId, "uMatrix");     //矩阵
-    sampler_y = glGetUniformLocation(baseProgramId, "sTextureY");  //2d纹理
-    sampler_u = glGetUniformLocation(baseProgramId, "sTextureU");  //2d纹理
-    sampler_v = glGetUniformLocation(baseProgramId, "sTextureV");  //2d纹理
+    sampler_y = glGetUniformLocation(baseProgramId, "sTexture_y");  //2d纹理
+    sampler_u = glGetUniformLocation(baseProgramId, "sTexture_u");  //2d纹理
+    sampler_v = glGetUniformLocation(baseProgramId, "sTexture_v");  //2d纹理
     LOGD("OpenGL OpenGLFilterYuv onSurfaceCreate vPosition = %d fPosition = %d sampler_y = %d sampler_u = %d sampler_v = %d uMatrix = %d",vPosition,fPosition,sampler_y,sampler_u,sampler_v,uMatrix);
 
     // 创建三个texture，并且赋值到 textureIds
@@ -85,7 +85,6 @@ void OpenGLFilterYuv::setMatrix(int width, int height) {
 
 
 void OpenGLFilterYuv::onSurfaceDraw() {
-    LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall");
     glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -122,21 +121,26 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             pBaseSurfaceArr);
 
 
-    LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall yuvHeight = %d, yuvWidth = %d",yuvHeight,yuvWidth);
+    LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall yuvHeight = %d, yuvWidth = %d",yuvHeight,yuvWidth);
     if (yuvHeight > 0 && yuvWidth > 0) {
         //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataY length = %d",getArrayLen(pDataY));
+        LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y y = %p",pDataY);
         if (pDataY != nullptr) {
             // 激活这个samplerId - 0
             glActiveTexture(GL_TEXTURE0);
+            LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 1");
             // 绑定textureID
             glBindTexture(GL_TEXTURE_2D, textureIds[0]);
+            LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 2");
             // 设置纹理数据
-            LOGE("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataY = %p",pDataY);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, yuvWidth, yuvHeight,
                          0, GL_RGBA, GL_UNSIGNED_BYTE, pDataY);
+            LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 3");
             // 把sampler_y 绑定数据到 0 这个纹理上
             glUniform1i(sampler_y, 0);
+            LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall Start Y 4");
         }
+        LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End Y");
         //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataU length = %d",getArrayLen(pDataU));
         if (pDataU != nullptr) {
             // Y的数据量 * 1/4  =  U数据量 = 宽度 * 高度 * 1/4
@@ -152,6 +156,7 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             // 把sampler_y 绑定数据到 1 这个纹理上
             glUniform1i(sampler_u, 1);
         }
+        LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End U");
         //LOGD("OpenGL OpenGLFilterYuv onSurfaceDrawCall pDataV length = %d",getArrayLen(pDataV));
         if (pDataV != nullptr) {
             // 激活这个samplerId - 0
@@ -164,13 +169,14 @@ void OpenGLFilterYuv::onSurfaceDraw() {
             // 把sampler_y 绑定数据到 2 这个纹理上
             glUniform1i(sampler_v, 2);
         }
-
+        LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End V");
         // 绘制这个三角形,共有3个点
         //glDrawArrays(GL_TRIANGLES,0,6);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         // 解除绑定textureID
         glBindTexture(GL_TEXTURE_2D, 0);
+        LOGD("OpenGLCPP OpenGLFilterYuv onSurfaceDrawCall End");
     }
 }
 
@@ -206,9 +212,11 @@ void OpenGLFilterYuv::updateYuvData(void *y, void *u, void *v, int width, int he
         }
 
         // 赋值
+
         memcpy(pDataY, y, dataSize);
         memcpy(pDataU, u, dataSize / 4);
         memcpy(pDataV, v, dataSize / 4);
+        LOGD("OpenGLCPP  OpenGLFilterYuv::updateYuvData  y = %p, u = %p, v = %p , dataSize = %d",pDataY,pDataU,pDataV,dataSize);
     }
 }
 

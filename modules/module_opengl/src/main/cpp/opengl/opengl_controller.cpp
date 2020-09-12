@@ -8,7 +8,7 @@
 
 void onSurfaceCreateCall(void *ctx) {
     auto *pGlController = static_cast<OpenGlController *>(ctx);
-    if (pGlController != nullptr && pGlController->baseOpenGl != nullptr) {
+    if (pGlController != nullptr) {
         // 如果不为空,就可以使用
         if (pGlController->baseOpenGl != nullptr) {
             // 如果不为空,就可以调用到baseOpenGL中自己的具体实现
@@ -85,6 +85,7 @@ void onReleaseCall(void *ctx) {
 // 内部的实现,都是流程代码,不会对业务有任何操作,所以可以更方便的替换
 void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
     // 获取一个 ANativeWindow
+    LOGD("OpenGLCPP OpenGlController::onCreateSurface");
     pNativeWindow = ANativeWindow_fromSurface(env, surface);
     if (pNativeWindow == nullptr) {
         LOGE("ANativeWindow_fromSurface pNativeWindow = nullptr");
@@ -116,6 +117,7 @@ void OpenGlController::onSurfaceCreate(JNIEnv *env, jobject surface) {
 void OpenGlController::onSurfaceChange(int width, int height) {
     // surfaceChange 的调用
     if (pEglThread != nullptr) {
+        LOGE("OpenGLCPP OpenGlController::onChangeSurface surfaceWidth = %d surfaceHeight = %d", width, height);
         if (baseOpenGl != nullptr){
             baseOpenGl->baseSurfaceWidth = width;
             baseOpenGl->baseSurfaceHeight = height;
@@ -191,6 +193,7 @@ void OpenGlController::setPixelsData(int width, int height, int len, void *pixAr
 }
 
 void OpenGlController::updateYuvData(jbyte *dataY, jbyte *dataU, jbyte *dataV, jint width, jint height) {
+    LOGD("OpenGLCPP OpenGlController::setYuvData y = %p u = %p v = %p , width = %d height = %d", dataY, dataU,dataV,width,height);
     if (baseOpenGl != nullptr) {
         baseOpenGl->updateYuvData(dataY, dataU, dataV, width, height);
     }
