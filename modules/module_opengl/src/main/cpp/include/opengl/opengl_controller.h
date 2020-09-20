@@ -28,10 +28,10 @@ public:
     ANativeWindow *pNativeWindow = nullptr;
     BaseOpenGl *baseOpenGl = nullptr;
 
-    int pixWidth{};
-    int pixHeight{};
+    int pixWidth;
+    int pixHeight;
     void *pixelArr = nullptr;
-    std::string *filterType{};
+    std::string *filterType;
 
 public:
     OpenGlController();
