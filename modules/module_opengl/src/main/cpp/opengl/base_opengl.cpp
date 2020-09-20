@@ -11,19 +11,33 @@ BaseOpenGl::BaseOpenGl() {
     pBaseVertexArr = new float[8];
     pBaseSurfaceArr = new float[8];
 
+//    const float VERTEX_ARR[] = {
+//            1, 1,
+//            -1, 1,
+//            1, -1,
+//            -1, -1
+//    };
+
     const float VERTEX_ARR[] = {
-            1, 1,
-            -1, 1,
-            1, -1,
-            -1, -1
+            1,-1,
+            1,1,
+            -1,-1,
+            -1,1
     };
 
     // 翻转这个图片
+//    const float TEXTURE_TURN[] = {
+//            0.0f, 0.0f,//左下角
+//            1.0f, 0.0f,//右下角
+//            0.0f, 1.0f,//左上角
+//            1.0f, 1.0f,//右上角
+//    };
+
     const float TEXTURE_TURN[] = {
-            0.0f, 0.0f,//左下角
-            1.0f, 0.0f,//右下角
-            0.0f, 1.0f,//左上角
-            1.0f, 1.0f,//右上角
+            1,1,
+            1,0,
+            0,1,
+            0,0
     };
 
     // 拷贝数据到顶点数组
