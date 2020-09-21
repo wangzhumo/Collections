@@ -109,3 +109,5 @@ https://github.com/DomyZhang/OpenGLES_FilterDemo
 
 
 - 尝试解决问题 - 准备重写一次
+
+- Filter重新写，BUG仍然在，下一步准备重写一下Controller
