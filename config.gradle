@@ -3,90 +3,70 @@
  */
 ext.deps = [:]
 def versions = [:]
-    //support & arch
-    versions.archCore = "1.1.1"
-    versions.navigation = "1.1.1"
-    versions.lifecycle = "1.1.1"
-    versions.room = "1.1.1"
-    versions.paging = "1.0.1"
-    versions.support = "28.0.0"
-    versions.androidx = "1.0.0"
-    versions.constraint = "1.1.3"
-
-	//flutter
-	versions.flutter = "1.0"
-
     //jetpack
     versions.workVersion = "1.0.0"
+    versions.lifecycle = "2.0.0"
 
     //glide
-    versions.glide = "4.6.1"
-    versions.glideTransfor = "3.3.0"
+    versions.glide = "4.9.0"
+    versions.glideTransfor = "4.1.0"
 
     //rxjava
-    versions.rxJava = "2.2.8"
+    versions.rxJava = "2.2.3"
     versions.rxKotlin = "2.2.0"
-    versions.rxAndroid = "2.1.1"
+    versions.rxAndroid = "2.1.0"
     versions.rxRelay = "2.0.0"
     versions.rxBinding = "2.0.0"
 
     //http
-    versions.okhttp = "3.11.0"
-    versions.retrofit = "2.3.0"
+    versions.okhttp = "4.9.0"
+    versions.retrofit = "2.9.0"
     versions.gson = "2.8.5"
 
     //classpath
-    versions.gradle = '3.6.1'
-
-    versions.objectbox = "1.4.1"
-    versions.butterknife = "9.0.0"
-    versions.walle = "1.1.6"
+    versions.gradle = '4.0.0'
+    versions.butterknife = "10.2.3"
+    versions.walle = "1.1.7"
 
     //kotlin
-    versions.kotlin = "1.3.61"
-    versions.ktCoroutines = "0.21.1"
-    versions.kotlinBind = "3.1.3"
+    versions.kotlin = "1.4.0"
 
     //arouter
     versions.arouterApi = "1.5.0"
     versions.arouterCompiler = "1.2.2"
+    versions.arouterRegister = "1.0.2"
 
     //view
-    versions.dialogs = "0.9.6.0"
-    versions.barLibVersion = "2.3.0"
-    versions.fragment = "1.0.2"
-    versions.indicator = "1.5.0"
-    versions.multiType = "4.2.0"
+    versions.fragment = "1.3.6"
+    versions.indicator = "1.7.0"
+    versions.multiType = "3.4.4"
     versions.wheelPicker = "1.5.5"
     versions.waveViwe = "v1.0.3"
     versions.banner = "1.4.10"
     versions.kprogress = "1.0.2"
 
+
     //net
     versions.stetho = "1.5.0"
     versions.socket = "0.8.3"
-    versions.agentWeb = "3.1.0"
+
+    //view
+    versions.lottie = "3.5.0"
 
     //media
-    versions.ijkplayer = "0.8.8"
-    versions.jiaoZi = "6.2.9"
     versions.gpuImage = "2.4.10"
-    versions.lottie = "2.7.0"
+    versions.camerax = "1.0.0-beta12"
 
     //other
     versions.klogVersion = "1.6.0"
     versions.eventbus = "3.0.0"
     versions.rxpermiss = "0.10.2"
-    versions.dagger = "2.13"
-    versions.voiceline = "1.0.6"
-    versions.bottomBar = "1.0.4"
     versions.pingpp = "2.1.16"
     versions.update = "3.1.2"
-    versions.auto_server = "1.0-rc6"
+    versions.auto_server = "1.0.0"
 
     //leak memory checked
     versions.leakcanary="1.6.1"
-    versions.logan="1.2.1"
 
     def deps = [:]
 def rxLib = [:]
@@ -101,32 +81,6 @@ def rxLib = [:]
     rxLib.rxRelay = "com.jakewharton.rxrelay2:rxrelay:$versions.rxRelay"
     deps.rxLibs = rxLib
 
-def support = [:]
-    support.annotations = "com.android.support:support-annotations:$versions.support"
-    support.appCompat = 'androidx.appcompat:appcompat:1.0.0'
-    support.recyclerview = 'androidx.recyclerview:recyclerview:1.0.0'
-    support.cardview = "com.android.support:cardview-v7:$versions.support"
-    support.design = 'com.google.android.material:material:1.0.0'
-    support.v4 = "com.android.support:support-v4:$versions.support"
-    support.v4Compat = "com.android.support:support-compat:$versions.support"
-    support.coreUtils = "com.android.support:support-core-utils:$versions.support"
-    support.emoji = "com.android.support:support-emoji:$versions.support"
-    deps.support = support
-
-def androidx = [:]
-    androidx.annotations = "androidx.annotation:annotation:$versions.androidx"
-    androidx.appCompat = "androidx.appcompat:appcompat:$versions.androidx"
-    androidx.recyclerview = "androidx.recyclerview:recyclerview:$versions.androidx"
-    androidx.cardview = "androidx.cardview:cardview:$versions.androidx"
-    androidx.design = "com.google.android.material:material:1.0.0"
-    androidx.v4 = "androidx.legacy:legacy-support-v4:$versions.androidx"
-    androidx.core = "androidx.core:core:$versions.androidx"
-    androidx.coreKtx = "androidx.core:core-ktx:$versions.androidx"
-    androidx.dynamicanimation = "androidx.dynamicanimation:dynamicanimation:$versions.androidx"
-    androidx.constraint = 'androidx.constraintlayout:constraintlayout:1.1.3'
-    androidx.camera_core = 'androidx.camera:camera-core:1.0.0-alpha04'
-    androidx.camera_camera2 = 'androidx.camera:camera-camera2:1.0.0-alpha04'
-    deps.androidx = androidx
 
 def glide = [:]
     glide.glide = "com.github.bumptech.glide:glide:$versions.glide"
@@ -135,12 +89,44 @@ def glide = [:]
     glide.transformations = "jp.wasabeef:glide-transformations:$versions.glideTransfor"
     deps.glide = glide
 
+def fresco = [:]
+    fresco.fresco = "com.facebook.fresco:fresco:1.13.0"
+    fresco.webp = "com.facebook.fresco:webpsupport:1.13.0"
+    fresco.animated_webp = "com.facebook.fresco:animated-webp:1.13.0"
+    fresco.animated_gif = "com.facebook.fresco:animated-gif:1.13.0"
+    deps.fresco = fresco
+
 def leakCanary=[:]
     leakCanary.leakCanaryNoOp="com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
     leakCanary.leakCanary="com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
     leakCanary.leakCanarySupportFragment="com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
     //for debug
     deps.leakCanary=leakCanary
+
+def androidx=[:]
+    androidx.annotations = "androidx.annotation:annotation:1.1.0"
+    androidx.fragment = "androidx.fragment:fragment:1.2.4"
+    androidx.appcompat = "androidx.appcompat:appcompat:1.2.0"
+    androidx.constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0"
+    androidx.coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+    androidx.drawerlayout = "androidx.drawerlayout:drawerlayout:1.0.0"
+    androidx.cardview = "androidx.cardview:cardview:1.0.0"
+    androidx.recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
+    androidx.multidex = "androidx.multidex:multidex:2.0.1"
+    androidx.swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    androidx.legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
+    androidx.dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
+    deps.androidx=androidx
+
+def google=[:]
+    google.design = "com.google.android.material:material:1.0.0"
+    google.flexbox = "com.google.android:flexbox:1.0.0"
+    deps.google=google
+
+def media=[:]
+    media.camera_core = "androidx.camera:camera-core:${versions.camerax}"
+    media.camera_camera2 = "androidx.camera:camera-camera2:${versions.camerax}"
+    deps.media=media
 
 def stethos = [:]
     stethos.stetho = "com.facebook.stetho:stetho:$versions.stetho"
@@ -163,6 +149,7 @@ def retrofit = [:]
 def arouter = [:]
     arouter.arouterApi = "com.alibaba:arouter-api:$versions.arouterApi"
     arouter.compiler = "com.alibaba:arouter-compiler:$versions.arouterCompiler"
+    arouter.register = "com.alibaba:arouter-register:$versions.arouterRegister"
     deps.arouter = arouter
 
 def butterknife = [:]
@@ -171,18 +158,17 @@ def butterknife = [:]
     deps.butterLib = butterknife
 
 def jetpack = [:]
-    jetpack.workManager = "android.arch.work:work-runtime:$versions.workVersion"
-    jetpack.rxWorkManager = "android.arch.work:work-rxjava2:$versions.workVersion"
+    jetpack.workManager = 'androidx.work:work-runtime:2.0.1'
+    jetpack.rxWorkManager = 'androidx.work:work-rxjava2:2.0.1'
+    jetpack.lifecycle  = "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle"
+    jetpack.lifecycle_compiler  = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    jetpack.lifecycle_jave8  = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
+    jetpack.lifecycle_live  = "androidx.lifecycle:lifecycle-livedata:$versions.lifecycle"
+    jetpack.lifecycle_extensions  = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
     deps.jetpack = jetpack
 
-def flutter = [:]
-    flutter.debug = "com.inyuapp.mobile.flutter_module:flutter_debug:$versions.flutter"
-	flutter.profile = "com.inyuapp.mobile.flutter_module:flutter_profile:$versions.flutter"
-	flutter.release = "com.inyuapp.mobile.flutter_module:flutter_release:$versions.flutter"
-	deps.flutter = flutter
-
 def pay = [:]
-    pay.weChat = "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1"
+    pay.weChat = "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6"
     pay.aliPay = "com.pingxx:pingpp-alipay:2.1.16"
     deps.payLib = pay
 
@@ -192,40 +178,35 @@ def pay = [:]
     deps.kotlinNoarg = "org.jetbrains.kotlin:kotlin-noarg:$versions.kotlin"
     deps.kotlinAllopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
     deps.wallePlugin = "com.meituan.android.walle:plugin:$versions.walle"
-    deps.sensorsPlugin="com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.1"
+    deps.sensorsPlugin="com.sensorsdata.analytics.android:android-gradle-plugin2:3.2.9"
+    deps.realmPlugin = "io.realm:realm-gradle-plugin:5.8.0"
+    deps.spotBugPlugin = "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0"
+    deps.errorPronePlugin = "net.ltgt.gradle:gradle-errorprone-plugin:0.0.13"
 
     //kotlin
     deps.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
 
     //view
+    // change
     deps.magicIndicator = "com.github.hackware1993:MagicIndicator:$versions.indicator"
-    deps.multiType = "com.drakeet.multitype:multitype:$versions.multiType"
+    deps.fragmentation = "me.yokeyword:fragmentationx:1.0.2"
+
+    deps.multiType = "me.drakeet.multitype:multitype:$versions.multiType"
     deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
-    deps.kprogress = "com.kaopiz:kprogresshud:$versions.kprogress"
-    deps.banner = "com.youth.banner:banner:$versions.banner"
-    deps.waveLineView = "com.github.Jay-Goo:WaveLineView:$versions.waveViwe"
-    deps.wheelPicker = "com.github.gzu-liyujiang.AndroidPicker:WheelPicker:$versions.wheelPicker"
-    deps.fragmentation = "me.yokeyword:fragmentationx:$versions.fragment"
-    deps.flowlayout = "com.hyman:flowlayout-lib:1.1.2"
-    deps.frameAnim = "com.yuyashuai.android:silkyanimation:1.1.6"
-    deps.immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0-beta07"
+    deps.immersionbar = 'com.gyf.immersionbar:immersionbar:3.0.0'
 
     //media
     deps.gpuImage = "org.wysaid:gpuimage-plus:$versions.gpuImage"
     deps.jiaoziPlayer = "cn.jzvd:jiaozivideoplayer:$versions.jiaoZi"
 
     //network
-    deps.qiniu = "com.qiniu:qiniu-android-sdk:7.3.+"
     deps.gson = "com.google.code.gson:gson:$versions.gson"
-    deps.agentWeb = "com.just.agentweb:agentweb:$versions.agentWeb"
 
     //test
     deps.junit="junit:junit:4.12"
 
     //android system & other
-    deps.multidex = "com.android.support:multidex:1.0.2"
-    deps.jpush = "cn.jiguang.sdk:jpush:3.1.5"
-    deps.jcore = "cn.jiguang.sdk:jcore:1.2.3"
+    deps.multidex = "androidx.support:multidex:2.0.1"
     deps.butterKnife = "com.jakewharton:butterknife-gradle-plugin:$versions.butterknife"
     deps.eventBus = "org.greenrobot:eventbus:$versions.eventbus"
     deps.rxPermission = "com.github.tbruyelle:rxpermissions:$versions.rxpermiss"
@@ -243,47 +224,55 @@ def pay = [:]
     deps.PhotoView = "com.github.chrisbanes:PhotoView:2.1.2"
     deps.tinypinyin = "com.github.promeg:tinypinyin:1.0.0"
 
-    deps.bugly = "com.tencent.bugly:crashreport:2.8.6"
-    deps.bugly_native = "com.tencent.bugly:nativecrashreport:3.6.0"
+    deps.bugly = "com.tencent.bugly:crashreport:3.2.3"
+    deps.bugly_native = "com.tencent.bugly:nativecrashreport:2.8.6"
+    deps.bugly_upgrade = "com.tencent.bugly:crashreport_upgrade:1.3.8"
+    deps.tinker = "com.tencent.tinker:tinker-android-lib:1.9.9"
     deps.hidekeyboard = "com.yinglan.keyboard:hidekeyboard:1.2.0"
     deps.imagezoom = "it.sephiroth.android.library.imagezoom:library:1.0.4"
     deps.photoview = "com.github.chrisbanes:PhotoView:2.1.4"
     deps.audio_visualizer = "com.chibde:audiovisualizer:2.1.0"
     deps.keyboardvisibilityevent = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.2.0"
     deps.huawei_verifier = 'com.llew.huawei:verifier:1.1.1'
-    deps.marqueeview = 'com.sunfusheng:marqueeview:1.3.3'
     deps.LikeButton = 'com.github.jd-alexander:LikeButton:0.2.3'
+    deps.SwitchButton = 'com.kyleduo.switchbutton:library:2.0.0'
+    deps.frameanimation = 'com.yuyashuai.frameanimation:frameanimation:2.0.4'
+    deps.blockcanary = 'com.github.markzhai:blockcanary-android:1.5.0'
+    deps.emoji ='com.vdurmont:emoji-java:4.0.0'
+    deps.basePopup = "com.github.razerdp:BasePopup:2.2.1"
+    deps.svga="com.github.yyued:SVGAPlayer-Android:2.5.3"
+    deps.danmu="com.anbetter:danmukulight:1.0.1"
+    deps.gridPager="com.github.mtjsoft:GridPager:v2.1.0"
+    deps.lru="com.jakewharton:disklrucache:2.0.2"
+    deps.refresh="com.scwang.smart:refresh-layout-kernel:2.0.1"
+    deps.refresh_google_style="com.scwang.smart:refresh-header-material:2.0.1"
     deps.logger = 'com.orhanobut:logger:2.2.0'
     deps.epoxy = 'com.airbnb.android:epoxy:3.7.0'
     deps.epoxy_processor = 'com.airbnb.android:epoxy-processor:3.7.0'
     deps.auto_server = "com.google.auto.service:auto-service:$versions.auto_server"
     deps.auto_server_annotations = "com.google.auto.service:auto-service-annotations:$versions.auto_server"
 
-ext.deps = deps
+def nativeLib = [:]
+    nativeLib.opuslib = 'top.oply.opuslib:opuslib:1.0.2'
+    deps.nativeLib = nativeLib
 
-def objectbox = [:]
-    objectbox.classpath = "io.objectbox:objectbox-gradle-plugin:2.2.0"
-    objectbox.java="io.objectbox:objectbox-java:2.2.0"
-    objectbox.debugJava="io.objectbox:objectbox-android-objectbrowser:2.2.0"
-    objectbox.rxjava="io.objectbox:objectbox-rxjava:2.2.0"
-    deps.objectbox = objectbox
+
+ext.deps = deps
 
 
 def buildVersions = [:]
-    buildVersions.minSDK = 18
+    buildVersions.minSDK = 19
     buildVersions.targetSDK = 26
-    buildVersions.compileSDK = 28
-    buildVersions.buildTools = "28.0.3"
+    buildVersions.compileSDK = 30
+    buildVersions.buildTools = "28.0.0"
     ext.buildVersion = buildVersions
 
 static def addRepos(RepositoryHandler handler) {
-//    handler.maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-	handler.maven { url '/Users/wangzhumo/Private/flutter_module/build/host/outputs/repo'  }
-    handler.maven { url 'http://download.flutter.io'}
     handler.google()
     handler.mavenCentral()
     handler.jcenter()
-    handler.maven{ url 'https://jitpack.io' }
+    handler.maven { url 'https://jitpack.io' }
+    handler.maven { url 'https://dl.bintray.com/zouyuhan/maven' }
 }
 
 ext.addRepos = this.&addRepos

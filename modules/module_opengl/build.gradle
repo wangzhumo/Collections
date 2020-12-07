@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -74,14 +76,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":modules:module_base")
     implementation project(':frameworks:library_media')
-    implementation deps.androidx.constraint
-    implementation deps.androidx.appCompat
-    implementation(deps.androidx.camera_core) {
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.appcompat
+    implementation(deps.media.camera_core) {
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
     }
-    implementation(deps.androidx.camera_camera2) {
+    implementation(deps.media.camera_camera2) {
         exclude group: 'androidx.core', module: 'core'
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'

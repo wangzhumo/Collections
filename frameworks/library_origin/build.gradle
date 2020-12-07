@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -45,10 +47,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.androidx.appCompat
+    api deps.androidx.appcompat
     api deps.androidx.recyclerview
-    api deps.androidx.design
-    api deps.androidx.constraint
+    api deps.google.design
+    api deps.androidx.constraintlayout
     api deps.multiType
     api deps.immersionbar
     api deps.fragmentation
