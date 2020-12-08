@@ -67,5 +67,5 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.dynamicanimation
     kapt deps.arouter.compiler
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 }

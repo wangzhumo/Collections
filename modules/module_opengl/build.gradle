@@ -20,7 +20,7 @@ android {
                 abiFilters 'armeabi-v7a'
             }
 
-            ndk{
+            ndk {
                 abiFilters "armeabi-v7a"
             }
         }
@@ -41,8 +41,8 @@ android {
     }
 
 
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
@@ -54,8 +54,8 @@ android {
         }
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 
     compileOptions {

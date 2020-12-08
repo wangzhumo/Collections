@@ -13,16 +13,6 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 1
         versionName VERSION_NAME
-
-//        externalNativeBuild {
-//            cmake {
-//                cppFlags "-std=c++11"
-//            }
-//        }
-
-//        ndk {
-//            abiFilters "armeabi-v7a"
-//        }
     }
 
     buildTypes {
@@ -35,11 +25,6 @@ android {
         }
     }
 
-//    externalNativeBuild {
-//        cmake {
-//            path "src/main/cpp/CMakeLists.txt"
-//        }
-//    }
 
     compileOptions {
         sourceCompatibility = JDK_VERSION
@@ -71,6 +56,7 @@ dependencies {
         exclude group: 'androidx.annotation', module: 'annotation'
         exclude group: 'androidx.versionedparcelable', module: 'versionedparcelable'
     }
+    implementation deps.media.camera_extensions
     implementation 'com.shuyu:GSYVideoPlayer:7.1.1'
     kapt deps.arouter.compiler
     kapt deps.auto_server
