@@ -12,10 +12,12 @@ class OpenGLFilterYuv: public BaseOpenGl{
 public:
     GLint vPosition = 0;
     GLint fPosition = 0;
+    GLint uMatrix = 0;
+
     GLint sampler_y = 0;
     GLint sampler_u = 0;
     GLint sampler_v = 0;
-    GLint uMatrix = 0;
+
     GLuint textureIds[3];
 
 
@@ -26,7 +28,7 @@ public:
     void *pDataU = nullptr;
     void *pDataV = nullptr;
 
-    float matrixArr[16]{};
+    float matrixArr[16];
 
 
 public:
@@ -47,6 +49,7 @@ public:
     // 设置一个矩阵
     void setMatrix(int width,int height);
 
+    // 銷毀資源數據
     void onDestroyResource();
 
     // 设置YUV的数据

@@ -24,7 +24,7 @@ public:
 
     void *pPixelsArr = nullptr;
 
-    float matrixArr[16]{};
+    float matrixArr[16];
 
 public:
     OpenGLFilterNormal();

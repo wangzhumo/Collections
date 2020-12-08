@@ -51,8 +51,8 @@ static GLuint loadShader2Program(const char *vertexSource, const char *fragmentS
     // 链接
     glLinkProgram(program_Id);
 
-    vertexShader = &vertex_Shader;
-    fragmentShader = &fragment_Shader;
+    *vertexShader = vertex_Shader;
+    *fragmentShader = fragment_Shader;
     return program_Id;
 }
 

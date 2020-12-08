@@ -39,7 +39,7 @@ class BaseModuleAppDelegate : AppDelegate {
         AppUtils.init(application)
         initARouter(application)
         initLogger()
-        initBugly(application)
+        //initBugly(application)
         initXLog(application)
         //initLocalXLog()
     }
