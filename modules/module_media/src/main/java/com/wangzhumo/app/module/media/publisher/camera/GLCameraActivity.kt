@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.media.publisher.camera
 
 import android.os.Bundle
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
@@ -16,9 +17,8 @@ import kotlinx.android.synthetic.main.activity_glcamera.*
  * 相机预览
  */
 @Route(path = IRoute.MEDIA.CAMERA_SHOW)
-class GLCameraActivity : BaseActivity() {
+class GLCameraActivity<ActivityGlcameraBinding : ViewBinding> : BaseActivity<ActivityGlcameraBinding>() {
 
-    override fun getLayoutId(): Int = R.layout.activity_glcamera
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)

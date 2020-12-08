@@ -36,6 +36,9 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
 
     compileOptions {
         sourceCompatibility = "1.8"
@@ -58,10 +61,10 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":modules:module_base")
-    implementation project(":modules:module_media")
-    implementation project(":modules:module_webrtc")
-    implementation project(":modules:module_playground")
-    implementation project(":modules:module_opengl")
+    //implementation project(":modules:module_media")
+    //implementation project(":modules:module_webrtc")
+    //implementation project(":modules:module_playground")
+    //implementation project(":modules:module_opengl")
     implementation deps.stdlib
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat

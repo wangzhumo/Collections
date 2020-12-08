@@ -5,6 +5,7 @@ buildscript {
     dependencies {
         classpath deps.kotlinPlugin
         classpath deps.gradlePlugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 
 }

@@ -1,8 +1,7 @@
-package com.wangzhumo.app
+package com.wangzhumo.app.playground
 
-import androidx.fragment.app.FragmentManager
+import androidx.viewbinding.ViewBinding
 import com.wangzhumo.app.origin.BaseFragment
-import com.wangzhumo.app.playground.R
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -10,7 +9,7 @@ import com.wangzhumo.app.playground.R
  * @author 王诛魔 2019-05-24  21:23
  */
 
-abstract class BaseAnimFragment : BaseFragment() {
+abstract class BaseAnimFragment<VB : ViewBinding> : BaseFragment<VB>() {
 
 
     fun dismiss() {

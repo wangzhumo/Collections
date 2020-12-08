@@ -1,5 +1,6 @@
 package com.wangzhumo.app.module.opengl.image
 
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.R
@@ -15,8 +16,7 @@ import kotlinx.android.synthetic.main.activity_glimage.*
  * 显示一个图片纹理到OpenGL
  */
 @Route(path = IRoute.OPENGL.IMAGE_TEXTURE)
-class GLImageActivity : BaseActivity() {
-    override fun getLayoutId(): Int = R.layout.activity_glimage
+class GLImageActivity<ActivityGlimageBinding : ViewBinding> : BaseActivity<ActivityGlimageBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()

@@ -1,4 +1,4 @@
-package com.wangzhumo.app
+package com.wangzhumo.app.playground
 
 import android.os.Bundle
 import androidx.dynamicanimation.animation.SpringAnimation
@@ -6,8 +6,8 @@ import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import androidx.viewbinding.ViewBinding
 import com.wangzhumo.app.origin.utils.DensityUtils
-import com.wangzhumo.app.playground.R
 import kotlinx.android.synthetic.main.killer_view_area_success.*
 
 /**
@@ -15,19 +15,19 @@ import kotlinx.android.synthetic.main.killer_view_area_success.*
  *
  * @author 王诛魔 2019-05-26  11:31
  */
-class AllSingFailDialog : BaseAnimFragment(){
+class AllSingFailDialog<KillerViewAreaSuccessBinding : ViewBinding> : BaseAnimFragment<KillerViewAreaSuccessBinding>(){
 
     var dampingProgress: Float = 0.4F
     var stiffnessProgress: Float = 600F
 
 
-    override fun getLayoutId(): Int = R.layout.killer_view_area_success
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bt_start.setOnClickListener {
             startAnim(dampingProgress, stiffnessProgress)
         }
+
 
         stiffness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

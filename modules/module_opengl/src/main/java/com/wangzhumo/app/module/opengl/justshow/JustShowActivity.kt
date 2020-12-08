@@ -5,6 +5,7 @@ import android.opengl.GLES20
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.mdeia.gles.EGLCore
@@ -15,10 +16,9 @@ import com.wangzhumo.app.origin.BaseActivity
 import kotlinx.android.synthetic.main.activity_just_show.*
 
 @Route(path = IRoute.OPENGL.JUST_SHOW)
-class JustShowActivity : BaseActivity() ,SurfaceHolder.Callback {
+class JustShowActivity<ActivityJustShowBinding : ViewBinding> : BaseActivity<ActivityJustShowBinding>() ,SurfaceHolder.Callback {
 
 
-    override fun getLayoutId(): Int = R.layout.activity_just_show
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)

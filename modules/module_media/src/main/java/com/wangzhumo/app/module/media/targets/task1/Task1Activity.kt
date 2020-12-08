@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.base.IRoute
@@ -26,13 +27,12 @@ import kotlinx.android.synthetic.main.activity_task1.*
  *    3.绘制图片  lockCanvas
  */
 @Route(path = IRoute.MEDIA_TASK_1)
-class Task1Activity : BaseActivity(), SurfaceHolder.Callback {
+class Task1Activity<ActivityTask1Binding : ViewBinding> : BaseActivity<ActivityTask1Binding>(), SurfaceHolder.Callback {
 
     val TAG = "Task1Activity"
     var srcRect = Rect()
     var dstRect = Rect()
 
-    override fun getLayoutId(): Int = R.layout.activity_task1
 
     private lateinit var mBitmapOrigin: Bitmap
     lateinit var mSurfaceHolder: SurfaceHolder

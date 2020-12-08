@@ -1,4 +1,4 @@
-package com.wangzhumo.app
+package com.wangzhumo.app.playground
 
 import android.os.Bundle
 import androidx.dynamicanimation.animation.SpringAnimation
@@ -6,8 +6,8 @@ import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import androidx.viewbinding.ViewBinding
 import com.wangzhumo.app.origin.utils.DensityUtils
-import com.wangzhumo.app.playground.R
 import kotlinx.android.synthetic.main.fragment_blank.*
 
 
@@ -15,12 +15,11 @@ import kotlinx.android.synthetic.main.fragment_blank.*
  * A simple [Fragment] subclass.
  *
  */
-public class BlankFragment : BaseAnimFragment() {
+public class BlankFragment<FragmentBlankBinding : ViewBinding> : BaseAnimFragment<FragmentBlankBinding>() {
 
     var dampingProgress: Float = SpringForce.DAMPING_RATIO_NO_BOUNCY
     var stiffnessProgress: Float = SpringForce.STIFFNESS_VERY_LOW
 
-    override fun getLayoutId(): Int = R.layout.fragment_blank
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

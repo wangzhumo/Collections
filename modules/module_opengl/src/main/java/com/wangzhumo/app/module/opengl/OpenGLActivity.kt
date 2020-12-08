@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.opengl
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.drakeet.multitype.MultiTypeAdapter
@@ -21,9 +22,7 @@ import kotlinx.android.synthetic.main.activity_open_gl.*
  * OpenGL Module的ListActivity
  */
 @Route(path = IRoute.OPENGL_LIST)
-class OpenGLActivity : BaseActivity() ,OnItemActionListener{
-    override fun getLayoutId(): Int = R.layout.activity_open_gl
-
+class OpenGLActivity<ActivityOpenGlBinding : ViewBinding> : BaseActivity<ActivityOpenGlBinding>() ,OnItemActionListener{
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)

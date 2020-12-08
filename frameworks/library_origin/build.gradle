@@ -36,6 +36,9 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
 
     compileOptions {
         sourceCompatibility = JDK_VERSION

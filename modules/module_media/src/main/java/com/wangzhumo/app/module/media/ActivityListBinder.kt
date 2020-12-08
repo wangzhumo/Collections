@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewBinder
+import androidx.recyclerview.widget.RecyclerView
 import com.wangzhumo.app.module.media.model.ActivityItem
 import com.wangzhumo.app.widget.rv.OnItemActionListener
 

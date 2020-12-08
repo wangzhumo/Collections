@@ -34,7 +34,7 @@ public class WebRtcActivity extends BaseActivity implements View.OnClickListener
     public Button mButtonJoin;
 
     @Override
-    protected int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_web_rtc;
     }
 

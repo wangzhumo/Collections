@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.viewbinding.ViewBinding;
+
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -42,7 +44,7 @@ import java.util.List;
  * 实现通话的地方
  */
 @Route(path = IRoute.WEBRTC_CALL)
-public class RtcCallActivity extends BaseActivity implements SignalEventListener {
+public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends BaseActivity<ActivityRtcCallBinding> implements SignalEventListener {
 
     private static final String TAG = "RtcCall";
 
@@ -82,10 +84,6 @@ public class RtcCallActivity extends BaseActivity implements SignalEventListener
     @Autowired(name = "roomName")
     public String roomName;
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_rtc_call;
-    }
 
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {

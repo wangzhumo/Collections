@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
@@ -31,10 +32,9 @@ import java.nio.ByteBuffer
  * @author 王诛魔 2019-11-26  19:41
  */
 @Route(path = IRoute.MEDIA_TASK_4)
-class Task4Activity : BaseActivity() {
+class Task4Activity<ActivityTask4Binding : ViewBinding> : BaseActivity<ActivityTask4Binding>() {
 
 
-    override fun getLayoutId(): Int = R.layout.activity_task4
     val stringBuffer = StringBuffer()
     var lines = 0
     //准备写入的文件

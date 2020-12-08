@@ -1,13 +1,16 @@
 package com.wangzhumo.app.origin;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -16,13 +19,13 @@ import me.yokeyword.fragmentation.SupportFragment;
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2019/3/29  2:41 PM
- *
+ * <p>
  * Fragment的基类
  * 1.CompositeDisposable
  * 2.可见状态
  * 3.加载View/加载Data
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFragment<VB> {
 
 
     /**
@@ -30,24 +33,14 @@ public abstract class BaseFragment extends Fragment {
      */
     public CompositeDisposable mDisposable;
 
-    /**
-     * 根布局
-     */
-    private View mView;
-
-    /**
-     * 是否已经展示过
-     */
-    private boolean isShowed = false;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(getLayoutId(), container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
         //加载View资源
         initViews();
-        return mView;
+        return contentView;
     }
 
     @Override
@@ -57,47 +50,6 @@ public abstract class BaseFragment extends Fragment {
         initData();
     }
 
-//    @Override
-//    public void onSupportVisible() {
-//        super.onSupportVisible();
-//        if (!isShowed) {
-//            //第一次可见
-//            onFirstVisible();
-//            isShowed = true;
-//        } else {
-//            //每次可见
-//            onFragmentVisible();
-//        }
-//    }
-
-//    @Override
-//    public void onSupportInvisible() {
-//        super.onSupportInvisible();
-//        onFragmentInvisible();
-//    }
-
-//    /**
-//     * Fragment不可见
-//     */
-//    protected void onFragmentInvisible() {
-//
-//    }
-
-//
-//    /**
-//     * Fragment可见 (当onFirstVisible()调用时,不会调用)
-//     */
-//    protected void onFragmentVisible() {
-//
-//    }
-//
-//    /**
-//     * Fragment不可见
-//     */
-//    protected void onFirstVisible() {
-//
-//    }
-//
 
     /**
      * 设置View资源
@@ -112,14 +64,6 @@ public abstract class BaseFragment extends Fragment {
     protected void initData() {
 
     }
-
-    /**
-     * 设置资源ID
-     *
-     * @return layoutID
-     */
-    protected abstract int getLayoutId();
-
 
     /**
      * 加入管理器

@@ -30,6 +30,11 @@ android {
         sourceCompatibility = JDK_VERSION
         targetCompatibility = JDK_VERSION
     }
+
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 kapt {

@@ -2,9 +2,11 @@ package com.wangzhumo.app.origin;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -16,12 +18,14 @@ import me.yokeyword.fragmentation.SupportActivity;
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
  * @author 王诛魔 2019/3/29  2:21 PM
- *
- *  Activity的基类
- *  1.CompositeDisposable
- *  2.加载View/加载Data
+ * <p>
+ * Activity的基类
+ * 1.CompositeDisposable
+ * 2.加载ViewBinding
+ * 3.加载Data
+ * 4.生命周期
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingActivity<VB> {
 
     /**
      * 收集Dis
@@ -37,11 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getLayoutId() == 0) {
-            throw new IllegalArgumentException("layoutResID is empty");
-        }
         this.mContext = this;
-        setContentView(getLayoutId());
         initStatusBar();
         //此时可以加载View / 设置data
         initViews(savedInstanceState);
@@ -59,6 +59,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 设置资源ID
+     *
+     * @return layoutID
+     */
+    public  @LayoutRes int getLayoutId(){
+        return 0;
+    }
+
+
+    /**
      * 加载数据
      *
      * @param savedInstanceState Bundle
@@ -67,12 +77,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * 设置资源ID
-     *
-     * @return layoutID
-     */
-    protected abstract @LayoutRes int getLayoutId();
 
     /**
      * setContentView 之前

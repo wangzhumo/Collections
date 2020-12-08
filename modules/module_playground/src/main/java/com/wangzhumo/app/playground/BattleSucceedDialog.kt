@@ -1,4 +1,4 @@
-package com.wangzhumo.app
+package com.wangzhumo.app.playground
 
 import android.os.Bundle
 import androidx.dynamicanimation.animation.SpringAnimation
@@ -6,13 +6,8 @@ import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import androidx.viewbinding.ViewBinding
 import com.wangzhumo.app.origin.utils.DensityUtils
-import com.wangzhumo.app.playground.R
-import kotlinx.android.synthetic.main.fragment_blank.bt_start
-import kotlinx.android.synthetic.main.fragment_blank.damping_ratio
-import kotlinx.android.synthetic.main.fragment_blank.stiffness
-import kotlinx.android.synthetic.main.fragment_blank.tv_damping
-import kotlinx.android.synthetic.main.fragment_blank.tv_stiffness
 import kotlinx.android.synthetic.main.killer_dialog_battle_succeed.*
 
 /**
@@ -21,13 +16,11 @@ import kotlinx.android.synthetic.main.killer_dialog_battle_succeed.*
  * @author 王诛魔 2019-05-24  21:28
  */
 
-class BattleSucceedDialog : BaseAnimFragment(){
+class BattleSucceedDialog<KillerDialogBattleSucceedBinding : ViewBinding> : BaseAnimFragment<KillerDialogBattleSucceedBinding>(){
 
     var dampingProgress: Float = SpringForce.DAMPING_RATIO_HIGH_BOUNCY
     var stiffnessProgress: Float = SpringForce.STIFFNESS_MEDIUM
 
-
-    override fun getLayoutId(): Int = R.layout.killer_dialog_battle_succeed
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

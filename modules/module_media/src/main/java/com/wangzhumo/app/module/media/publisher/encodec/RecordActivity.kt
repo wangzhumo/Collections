@@ -4,6 +4,7 @@ import android.media.MediaFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
@@ -19,11 +20,10 @@ import java.io.File
  * 录制的 Activity
  */
 @Route(path = IRoute.MEDIA.CAMERA_RECORD)
-class RecordActivity : BaseActivity() {
+class RecordActivity<ActivityRecordBinding : ViewBinding> : BaseActivity<ActivityRecordBinding>() {
 
     var recordMediaCodec: RecordMediaCodec? = null
 
-    override fun getLayoutId(): Int = R.layout.activity_record
 
 
     override fun initViews(savedInstanceState: Bundle?) {

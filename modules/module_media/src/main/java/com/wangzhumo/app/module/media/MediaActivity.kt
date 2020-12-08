@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.media
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -21,28 +22,25 @@ import kotlinx.android.synthetic.main.activity_media_main.*
  * CPP TEST
  */
 @Route(path = IRoute.MEDIA_MAIN)
-class MediaActivity : BaseActivity() , OnItemActionListener {
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_media_main
-    }
+class MediaActivity<ActivityMediaMainBinding : ViewBinding> :
+    BaseActivity<ActivityMediaMainBinding>(), OnItemActionListener {
 
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(OffsetItemDecoration(this,5,0,5,0))
+        recyclerView.addItemDecoration(OffsetItemDecoration(this, 5, 0, 5, 0))
         val mAdapter = MultiTypeAdapter()
         val itemData = create()
 
-        mAdapter.register(ActivityItem::class,ActivityListBinder(this))
+        mAdapter.register(ActivityItem::class, ActivityListBinder(this))
         recyclerView.adapter = mAdapter
         mAdapter.items = itemData
         mAdapter.notifyDataSetChanged()
 
     }
 
-    private fun create() : List<ActivityItem>{
+    private fun create(): List<ActivityItem> {
         return mutableListOf(
             ActivityItem(
                 "Camera GL",

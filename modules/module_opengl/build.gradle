@@ -62,7 +62,6 @@ android {
         sourceCompatibility = JDK_VERSION
         targetCompatibility = JDK_VERSION
     }
-
 }
 
 kapt {

@@ -3,6 +3,7 @@ package com.wangzhumo.app.module.media.targets.task2
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
@@ -22,13 +23,12 @@ import java.lang.StringBuilder
  *
  */
 @Route(path = IRoute.MEDIA_TASK_2)
-class Task2Activity : BaseActivity() , AudioRecordHelper.onRecordListener{
+class Task2Activity<ActivityTask2Binding : ViewBinding> : BaseActivity<ActivityTask2Binding>() , AudioRecordHelper.onRecordListener{
 
     val TAG = "Task2Activity"
     lateinit var file :File
     val sb = StringBuilder()
 
-    override fun getLayoutId(): Int = R.layout.activity_task2
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)

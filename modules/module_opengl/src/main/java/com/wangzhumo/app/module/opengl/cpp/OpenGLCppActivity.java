@@ -1,6 +1,7 @@
 package com.wangzhumo.app.module.opengl.cpp;
 
 import androidx.annotation.Nullable;
+import androidx.viewbinding.ViewBinding;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +21,7 @@ import com.wangzhumo.app.origin.BaseActivity;
 import java.nio.ByteBuffer;
 
 @Route(path = IRoute.CPPGLES.CPP_GLES)
-public class OpenGLCppActivity extends BaseActivity {
+public class OpenGLCppActivity<ActivityOpenglCppBinding extends ViewBinding> extends BaseActivity<ActivityOpenglCppBinding> {
 
     int[] imageResource = {
             R.drawable.image_ash,
@@ -32,10 +33,6 @@ public class OpenGLCppActivity extends BaseActivity {
 
     private int currentImageIndex = 0;
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_opengl_cpp;
-    }
 
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {

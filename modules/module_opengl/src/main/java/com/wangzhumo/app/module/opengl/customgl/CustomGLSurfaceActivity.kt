@@ -2,6 +2,7 @@ package com.wangzhumo.app.module.opengl.customgl
 
 import android.opengl.GLES20
 import android.os.Bundle
+import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.mdeia.CustomGLSurfaceView
@@ -18,9 +19,8 @@ import kotlinx.android.synthetic.main.activity_custom_glsurface.*
  * 使用自定义的GLSurfaceView
  */
 @Route(path = IRoute.OPENGL.CUSTOM_GL_SURFACE)
-class CustomGLSurfaceActivity : BaseActivity() {
+class CustomGLSurfaceActivity<ActivityCustomGlsurfaceBinding : ViewBinding?> : BaseActivity<ActivityCustomGlsurfaceBinding>() {
 
-    override fun getLayoutId(): Int = R.layout.activity_custom_glsurface
 
 
     override fun initData(savedInstanceState: Bundle?) {
