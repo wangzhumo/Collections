@@ -18,6 +18,7 @@ public class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
 
+        // 获取权限
 
         vBinding.btMedia.setOnClickListener {
             ARouter.getInstance()

@@ -29,24 +29,8 @@ class APP : Application(), ViewModelStoreOwner {
         mAppViewModelStore = ViewModelStore()
         Log.d("AppDelegate", "Application - onCreate")
         AppDelegateFactory.getInstance().startLoadAppDelegate(this)
-
-        initFlutter(this);
     }
 
-    private fun initFlutter(app: APP) {
-//        // Instantiate a FlutterEngine.
-//        val flutterEngine = FlutterEngine(app)
-//
-//        // Start executing Dart code to pre-warm the FlutterEngine.
-//        flutterEngine.getDartExecutor().executeDartEntrypoint(
-//            DartExecutor.DartEntrypoint.createDefault()
-//        )
-//
-//        // Cache the FlutterEngine to be used by FlutterActivity.
-//        FlutterEngineCache
-//            .getInstance()
-//            .put("engine_id", flutterEngine);
-    }
 
     override fun getViewModelStore(): ViewModelStore {
         return mAppViewModelStore;

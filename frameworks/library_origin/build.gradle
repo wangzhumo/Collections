@@ -63,6 +63,7 @@ dependencies {
     api deps.rxLibs.rxJava
     api deps.rxLibs.rxAndroid
     api deps.xLog
+    api deps.rxPermission
     api deps.bugly
     api deps.bugly_native
     api deps.auto_server_annotations

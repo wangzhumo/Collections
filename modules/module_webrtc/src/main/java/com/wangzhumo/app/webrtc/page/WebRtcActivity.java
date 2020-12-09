@@ -13,13 +13,13 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.wangzhumo.app.webrtc.databinding.ActivityWebRtcBinding;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 
 /**

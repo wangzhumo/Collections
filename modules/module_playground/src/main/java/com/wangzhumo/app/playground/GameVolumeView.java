@@ -5,13 +5,14 @@ import android.graphics.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
