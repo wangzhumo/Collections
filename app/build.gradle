@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -79,6 +80,8 @@ dependencies {
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat
     implementation deps.androidx.dynamicanimation
+    implementation deps.google.hilt
     kapt deps.arouter.compiler
+    kapt deps.google.hilt_compiler
     testImplementation 'junit:junit:4.13.1'
 }

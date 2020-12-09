@@ -3,9 +3,9 @@ buildscript {
     apply from: "config.gradle"
     addRepos(repositories)
     dependencies {
-        classpath deps.kotlinPlugin
-        classpath deps.gradlePlugin
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath deps.classPath.gradlePlugin
+        classpath deps.classPath.kotlinPlugin
+        classpath deps.classPath.hiltPlugin
     }
 
 }

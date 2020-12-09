@@ -1,8 +1,11 @@
 package com.wangzhumo.app.func
 
 import android.app.Application
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.delegate.AppDelegateFactory
+import dagger.hilt.android.HiltAndroidApp
 
 //import io.flutter.embedding.engine.FlutterEngine
 //import io.flutter.embedding.engine.FlutterEngineCache
@@ -16,12 +19,15 @@ import com.wangzhumo.app.base.delegate.AppDelegateFactory
  *
  * Application
  */
+@HiltAndroidApp
+class APP : Application(), ViewModelStoreOwner {
 
-class APP : Application() {
+    private lateinit var mAppViewModelStore: ViewModelStore
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("AppDelegate","Application - onCreate")
+        mAppViewModelStore = ViewModelStore()
+        Log.d("AppDelegate", "Application - onCreate")
         AppDelegateFactory.getInstance().startLoadAppDelegate(this)
 
         initFlutter(this);
@@ -40,6 +46,10 @@ class APP : Application() {
 //        FlutterEngineCache
 //            .getInstance()
 //            .put("engine_id", flutterEngine);
+    }
+
+    override fun getViewModelStore(): ViewModelStore {
+        return mAppViewModelStore;
     }
 
 }

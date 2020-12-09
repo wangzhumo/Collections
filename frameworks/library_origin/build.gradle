@@ -53,6 +53,7 @@ dependencies {
     api deps.androidx.appcompat
     api deps.androidx.recyclerview
     api deps.google.design
+    api deps.google.hilt
     api deps.androidx.constraintlayout
     api deps.multiType
     api deps.immersionbar
