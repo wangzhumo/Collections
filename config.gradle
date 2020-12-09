@@ -69,12 +69,14 @@ def versions = [:]
     //leak memory checked
     versions.leakcanary="1.6.1"
 
-    def deps = [:]
+def deps = [:]
 def rxLib = [:]
     rxLib.rxJava = "io.reactivex.rxjava3:rxjava:$versions.rxJava"
     rxLib.rxKotlin = "io.reactivex.rxjava3:rxkotlin:$versions.rxKotlin"
     rxLib.rxAndroid = "io.reactivex.rxjava3:rxandroid:$versions.rxAndroid"
     rxLib.rxBinding = "com.jakewharton.rxbinding4:rxbinding:$versions.rxBinding"
+    rxLib.rxBindingCore = "com.jakewharton.rxbinding4:rxbinding-core:$versions.rxBinding"
+    rxLib.rxBindingCompat = "com.jakewharton.rxbinding4:rxbinding-appcompat:$versions.rxBinding"
     rxLib.rxRelay = "com.jakewharton.rxrelay3:rxrelay:$versions.rxRelay"
     deps.rxLibs = rxLib
 

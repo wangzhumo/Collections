@@ -1,13 +1,12 @@
 package com.wangzhumo.app.module.opengl.cpp;
 
-import androidx.annotation.Nullable;
-import androidx.viewbinding.ViewBinding;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.wangzhumo.app.base.IRoute;
@@ -15,13 +14,13 @@ import com.wangzhumo.app.module.opengl.R;
 import com.wangzhumo.app.module.opengl.cpp.opengl.CppSurfaceView;
 import com.wangzhumo.app.module.opengl.cpp.opengl.NativeOpenGl;
 import com.wangzhumo.app.module.opengl.cpp.opengl.SurfaceLifecycle;
+import com.wangzhumo.app.module.opengl.databinding.ActivityOpenglCppBinding;
 import com.wangzhumo.app.origin.BaseActivity;
-
 
 import java.nio.ByteBuffer;
 
 @Route(path = IRoute.CPPGLES.CPP_GLES)
-public class OpenGLCppActivity<ActivityOpenglCppBinding extends ViewBinding> extends BaseActivity<ActivityOpenglCppBinding> {
+public class OpenGLCppActivity extends BaseActivity<ActivityOpenglCppBinding> {
 
     int[] imageResource = {
             R.drawable.image_ash,
@@ -38,7 +37,7 @@ public class OpenGLCppActivity<ActivityOpenglCppBinding extends ViewBinding> ext
     protected void initViews(@Nullable Bundle savedInstanceState) {
         super.initViews(savedInstanceState);
         // find view
-        CppSurfaceView surfaceView = findViewById(R.id.surfaceView);
+        CppSurfaceView surfaceView = vBinding.surfaceView;
 
         //native
         NativeOpenGl nativeOpenGl = new NativeOpenGl();
@@ -58,7 +57,7 @@ public class OpenGLCppActivity<ActivityOpenglCppBinding extends ViewBinding> ext
             }
         });
 
-        findViewById(R.id.bt_filter_change).setOnClickListener(new View.OnClickListener() {
+        vBinding.btFilterChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 切换滤镜
@@ -66,7 +65,7 @@ public class OpenGLCppActivity<ActivityOpenglCppBinding extends ViewBinding> ext
             }
         });
 
-        findViewById(R.id.bt_texture_change).setOnClickListener(new View.OnClickListener() {
+        vBinding.btTextureChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bitmap image = getBitmapByIndex();

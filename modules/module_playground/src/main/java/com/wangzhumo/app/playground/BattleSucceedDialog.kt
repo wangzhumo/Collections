@@ -1,11 +1,12 @@
 package com.wangzhumo.app.playground
 
 import android.os.Bundle
-import androidx.dynamicanimation.animation.SpringAnimation
-import androidx.dynamicanimation.animation.SpringForce
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
+import com.jakewharton.rxbinding4.view.clicks
 import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.playground.databinding.KillerDialogBattleSucceedBinding
 
@@ -26,13 +27,11 @@ class BattleSucceedDialog : BaseAnimFragment<KillerDialogBattleSucceedBinding>()
         vBinding.btStart.setOnClickListener {
             startAnim(dampingProgress, stiffnessProgress)
         }
-
         vBinding.stiffness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 stiffnessProgress = (seekBar?.progress)?.toFloat()!!
@@ -48,6 +47,7 @@ class BattleSucceedDialog : BaseAnimFragment<KillerDialogBattleSucceedBinding>()
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
 
+
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 dampingProgress = (seekBar?.progress)?.div(10F)!!
                 Log.e("Progress", "damping = $dampingProgress")
@@ -62,7 +62,6 @@ class BattleSucceedDialog : BaseAnimFragment<KillerDialogBattleSucceedBinding>()
         val force = SpringForce(0f)
             .setDampingRatio(damping)
             .setStiffness(stiffness)
-
         val animationRed = SpringAnimation(vBinding.imageBlue, SpringAnimation.TRANSLATION_X)
             .setSpring(force)
             .setStartValue(-DensityUtils.dp2px(context, 225F).toFloat())

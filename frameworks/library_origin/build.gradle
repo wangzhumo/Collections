@@ -64,6 +64,9 @@ dependencies {
     api deps.rxLibs.rxAndroid
     api deps.xLog
     api deps.rxPermission
+    api deps.rxLibs.rxBinding
+    api deps.rxLibs.rxBindingCore
+    api deps.rxLibs.rxBindingCompat
     api deps.bugly
     api deps.bugly_native
     api deps.auto_server_annotations

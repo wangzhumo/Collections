@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.jakewharton.rxbinding4.view.RxView;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;

@@ -54,6 +54,6 @@ dependencies {
     implementation deps.androidx.dynamicanimation
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat
-    implementation project(":modules:module_base")
+    implementation project(path: ':modules:module_base')
     kapt deps.arouter.compiler
 }
