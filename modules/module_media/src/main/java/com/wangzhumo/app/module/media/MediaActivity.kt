@@ -2,17 +2,16 @@ package com.wangzhumo.app.module.media
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewbinding.ViewBinding
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
+import com.wangzhumo.app.module.media.databinding.ActivityMediaMainBinding
 import com.wangzhumo.app.module.media.model.ActivityItem
 import com.wangzhumo.app.origin.BaseActivity
 import com.wangzhumo.app.widget.rv.OffsetItemDecoration
 import com.wangzhumo.app.widget.rv.OnItemActionListener
-import kotlinx.android.synthetic.main.activity_media_main.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -22,19 +21,18 @@ import kotlinx.android.synthetic.main.activity_media_main.*
  * CPP TEST
  */
 @Route(path = IRoute.MEDIA_MAIN)
-class MediaActivity<ActivityMediaMainBinding : ViewBinding> :
-    BaseActivity<ActivityMediaMainBinding>(), OnItemActionListener {
+class MediaActivity : BaseActivity<ActivityMediaMainBinding>(), OnItemActionListener {
 
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(OffsetItemDecoration(this, 5, 0, 5, 0))
+        vBinding.recyclerView.layoutManager = LinearLayoutManager(this)
+        vBinding.recyclerView.addItemDecoration(OffsetItemDecoration(this, 5, 0, 5, 0))
         val mAdapter = MultiTypeAdapter()
         val itemData = create()
 
         mAdapter.register(ActivityItem::class, ActivityListBinder(this))
-        recyclerView.adapter = mAdapter
+        vBinding.recyclerView.adapter = mAdapter
         mAdapter.items = itemData
         mAdapter.notifyDataSetChanged()
 

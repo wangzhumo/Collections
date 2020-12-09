@@ -2,32 +2,35 @@ package com.wangzhumo.app.webrtc.page;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewbinding.ViewBinding;
 
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.orhanobut.logger.Logger;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
-import com.wangzhumo.app.webrtc.R;
+import com.wangzhumo.app.webrtc.databinding.ActivityRtcCallBinding;
 import com.wangzhumo.app.webrtc.func.*;
 import com.wangzhumo.app.webrtc.func.CameraVideoCapturer;
 import com.wangzhumo.app.webrtc.signal.SignalEventListener;
 import com.wangzhumo.app.webrtc.signal.SignalType;
 import com.wangzhumo.app.webrtc.signal.Signaling;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+
 import org.json.JSONObject;
 import org.webrtc.*;
 
@@ -44,7 +47,7 @@ import java.util.List;
  * 实现通话的地方
  */
 @Route(path = IRoute.WEBRTC_CALL)
-public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends BaseActivity<ActivityRtcCallBinding> implements SignalEventListener {
+public class RtcCallActivity extends BaseActivity<ActivityRtcCallBinding> implements SignalEventListener {
 
     private static final String TAG = "RtcCall";
 
@@ -88,13 +91,13 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {
         ARouter.getInstance().inject(RtcCallActivity.this);
-        mLocalSurfaceRenderer = findViewById(R.id.local_surface);
-        mRemoteSurfaceRenderer = findViewById(R.id.remote_surface);
+        mLocalSurfaceRenderer = vBinding.localSurface;
+        mRemoteSurfaceRenderer = vBinding.remoteSurface;
         mRemoteSurfaceRenderer.setVisibility(View.GONE);
 
-        mLogTextView = findViewById(R.id.log_textview);
+        mLogTextView = vBinding.logTextview;
         mLogTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
-        mBtHangup = findViewById(R.id.bt_hangup);
+        mBtHangup = vBinding.btHangup;
         mBtHangup.setOnClickListener(v -> onClickHangup());
         //初始化一些变量
         mRootEglBase = EglBase.create();
@@ -103,7 +106,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
         initStreamRenderer(mRootEglBase);
 
         /*Create PeerConnectionFactory*/
-        mPeerFactory = createPeerFactory(mRootEglBase,this);
+        mPeerFactory = createPeerFactory(mRootEglBase, this);
         //打开日志
         //NOTE: this _must_ happen while PeerConnectionFactory is alive!
         Logging.enableLogToDebugOutput(Logging.Severity.LS_VERBOSE);
@@ -121,8 +124,8 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
     @Override
     protected void onResume() {
         super.onResume();
-        if (mVideoCapturer != null){
-            mVideoCapturer.startCapture(mVideoConfig.getWidth(),mVideoConfig.getHeight(),mVideoConfig.getFps());
+        if (mVideoCapturer != null) {
+            mVideoCapturer.startCapture(mVideoConfig.getWidth(), mVideoConfig.getHeight(), mVideoConfig.getFps());
         }
     }
 
@@ -130,11 +133,11 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
     protected void onPause() {
         super.onPause();
         try {
-            if (mVideoCapturer != null){
+            if (mVideoCapturer != null) {
                 mVideoCapturer.stopCapture();
             }
         } catch (InterruptedException e) {
-            Logger.e(e,"VideoCapturer#stopCapture");
+            Logger.e(e, "VideoCapturer#stopCapture");
         }
     }
 
@@ -207,11 +210,11 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
     /**
      * 创建一个PeerConnectionFactory
      *
-     * @param rootEglBase  EglBase
-     * @param context ctx
+     * @param rootEglBase EglBase
+     * @param context     ctx
      * @return PeerConnectionFactory
      */
-    private PeerConnectionFactory createPeerFactory(EglBase rootEglBase,Context context) {
+    private PeerConnectionFactory createPeerFactory(EglBase rootEglBase, Context context) {
         final VideoDecoderFactory videoDecoderFactory = new DefaultVideoDecoderFactory(
                 rootEglBase.getEglBaseContext());
 
@@ -223,8 +226,8 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
 
         //PeerConnectionFactory  进行初始化,
         PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(
-                        context.getApplicationContext()
-                )
+                context.getApplicationContext()
+        )
                 .setEnableInternalTracer(true) //打开内部日志追踪迹
                 .createInitializationOptions());
 
@@ -424,12 +427,12 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
         SessionDescription description = new SessionDescription(
                 SessionDescription.Type.OFFER,
                 message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(){
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter() {
             @Override
             public void onSetFailure(String s) {
                 super.onSetFailure(s);
-                addLocalLogCat("onRemoteOfferReceived 设置setRemoteDescription失败"+s);
-                Logger.e("设置setRemoteDescription失败"+s);
+                addLocalLogCat("onRemoteOfferReceived 设置setRemoteDescription失败" + s);
+                Logger.e("设置setRemoteDescription失败" + s);
             }
 
             @Override
@@ -457,7 +460,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
         addLocalLogCat("收到对面的Answer,加入到 setRemoteDescription");
         Logger.json(message.toString());
         SessionDescription description = new SessionDescription(SessionDescription.Type.ANSWER, message.optString("sdp"));
-        mPeerConnect.setRemoteDescription(new SdpObserverAdapter(){
+        mPeerConnect.setRemoteDescription(new SdpObserverAdapter() {
             @Override
             public void onSetSuccess() {
                 super.onSetSuccess();
@@ -468,7 +471,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
             @Override
             public void onSetFailure(String s) {
                 super.onSetFailure(s);
-                Logger.e("设置setRemoteDescription失败"+s);
+                Logger.e("设置setRemoteDescription失败" + s);
                 addLocalLogCat("设置setRemoteDescription失败" + s);
             }
         }, description);
@@ -484,7 +487,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
             Logger.d("onSignalingChange", signalingState);
-            addLocalLogCat("onSignalingChange 修改为 : "  + signalingState.name());
+            addLocalLogCat("onSignalingChange 修改为 : " + signalingState.name());
         }
 
         @Override
@@ -582,7 +585,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
         addLocalLogCat("local user joined!");
         mState = CallState.JOINED;
         //创建PeerConnecting
-        if (mPeerConnect == null){
+        if (mPeerConnect == null) {
             Logger.d("加入频道成功,生成一个PeerConnection");
             addLocalLogCat("加入频道成功,生成一个PeerConnection");
             mPeerConnect = createPeerConnection(mVideoTrack, mAudioTrack);
@@ -615,7 +618,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
     public void onRemoteUserLeave(@NonNull String room, @NonNull String uid) {
         addLocalLogCat(String.format("onRemoteUserLeave : %s 离开了房间 %s", uid, room));
         mState = CallState.JOINED_UNBIND;
-        if (mPeerConnect != null){
+        if (mPeerConnect != null) {
             mPeerConnect.close();
             mPeerConnect = null;
         }
@@ -660,7 +663,7 @@ public class RtcCallActivity<ActivityRtcCallBinding extends ViewBinding> extends
 
     @Override
     public void onSend(String type) {
-        addLocalLogCat(String.format("Send Message : %s",type));
+        addLocalLogCat(String.format("Send Message : %s", type));
     }
 
     public void addDisposable(Disposable disposable) {

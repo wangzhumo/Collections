@@ -5,25 +5,23 @@ import android.opengl.GLES20
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.mdeia.gles.EGLCore
 import com.wangzhumo.app.mdeia.gles.WindowSurface
-import com.wangzhumo.app.origin.utils.DensityUtils
-import com.wangzhumo.app.module.opengl.R
+import com.wangzhumo.app.module.opengl.databinding.ActivityJustShowBinding
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_just_show.*
+import com.wangzhumo.app.origin.utils.DensityUtils
 
 @Route(path = IRoute.OPENGL.JUST_SHOW)
-class JustShowActivity<ActivityJustShowBinding : ViewBinding> : BaseActivity<ActivityJustShowBinding>() ,SurfaceHolder.Callback {
+class JustShowActivity : BaseActivity<ActivityJustShowBinding>() ,SurfaceHolder.Callback {
 
 
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        val holder = surfaceView.holder
-        surfaceView.setZOrderOnTop(true)
+        val holder = vBinding.surfaceView.holder
+        vBinding.surfaceView.setZOrderOnTop(true)
         holder.setFormat(PixelFormat.TRANSLUCENT)
         holder.addCallback(this)
     }

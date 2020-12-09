@@ -25,9 +25,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         profile {
             initWith debug
         }
+
     }
 
     android {
@@ -38,6 +43,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+    }
+
+
+    viewBinding {
+        enabled = true
     }
 
     compileOptions {
@@ -61,10 +71,10 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":modules:module_base")
-    //implementation project(":modules:module_media")
-    //implementation project(":modules:module_webrtc")
-    //implementation project(":modules:module_playground")
-    //implementation project(":modules:module_opengl")
+    implementation project(":modules:module_media")
+    implementation project(":modules:module_webrtc")
+    implementation project(":modules:module_playground")
+    implementation project(":modules:module_opengl")
     implementation deps.stdlib
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat

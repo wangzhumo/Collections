@@ -1,13 +1,12 @@
 package com.wangzhumo.app.playground
 
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_fream_layout.*
+import com.wangzhumo.app.playground.databinding.ActivityFreamLayoutBinding
 
 
 @Route(path = IRoute.FRAME_ACTIVITY)
-public class FrameLayoutActivity<ActivityFreamLayoutBinding : ViewBinding?> : BaseActivity<ActivityFreamLayoutBinding>() {
+public class FrameLayoutActivity : BaseActivity<ActivityFreamLayoutBinding>() {
 
 }

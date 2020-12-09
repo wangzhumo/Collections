@@ -13,13 +13,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.databinding.ActivityTask4Binding
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_task4.*
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URISyntaxException
@@ -32,7 +30,7 @@ import java.nio.ByteBuffer
  * @author 王诛魔 2019-11-26  19:41
  */
 @Route(path = IRoute.MEDIA_TASK_4)
-class Task4Activity<ActivityTask4Binding : ViewBinding> : BaseActivity<ActivityTask4Binding>() {
+class Task4Activity : BaseActivity<ActivityTask4Binding>() {
 
 
     val stringBuffer = StringBuffer()
@@ -42,7 +40,7 @@ class Task4Activity<ActivityTask4Binding : ViewBinding> : BaseActivity<ActivityT
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        button_choose.setOnClickListener {
+        vBinding.buttonChoose.setOnClickListener {
             showFileChooser()
         }
     }
@@ -255,7 +253,7 @@ class Task4Activity<ActivityTask4Binding : ViewBinding> : BaseActivity<ActivityT
         )
         lines++
         stringBuffer.append("[$lines].").append(log).append("\n")
-        textView.text = stringBuffer.toString()
+        vBinding.textView.text = stringBuffer.toString()
     }
 
 

@@ -6,33 +6,27 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.origin.BaseActivity
-//import io.flutter.embedding.android.FlutterActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.wangzhumo.app.databinding.ActivityMainBinding
 
 
 @Route(path = IRoute.APP_MAIN)
-class MainActivity : BaseActivity() {
+public class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val TAG = "MainActivity"
 
-    override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-//        bt_flutter.setOnClickListener {
-//            startActivity(
-//                FlutterActivity.createDefaultIntent(this)
-//            )
-//        }
 
-        bt_media.setOnClickListener {
+
+        vBinding.btMedia.setOnClickListener {
             ARouter.getInstance()
                 .build(IRoute.MEDIA_MAIN)
                 .navigation()
             finish()
         }
 
-        bt_opengl.setOnClickListener {
+        vBinding.btOpengl.setOnClickListener {
             ARouter.getInstance()
                 .build(IRoute.OPENGL_LIST)
                 .navigation()

@@ -1,18 +1,16 @@
 package com.wangzhumo.app.module.opengl
 
 import android.os.Bundle
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
+import com.wangzhumo.app.module.opengl.databinding.ActivityOpenGlBinding
 import com.wangzhumo.app.module.opengl.module.ActivityItem
 import com.wangzhumo.app.origin.BaseActivity
 import com.wangzhumo.app.widget.rv.OffsetItemDecoration
 import com.wangzhumo.app.widget.rv.OnItemActionListener
-import kotlinx.android.synthetic.main.activity_open_gl.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -22,17 +20,17 @@ import kotlinx.android.synthetic.main.activity_open_gl.*
  * OpenGL Module的ListActivity
  */
 @Route(path = IRoute.OPENGL_LIST)
-class OpenGLActivity<ActivityOpenGlBinding : ViewBinding> : BaseActivity<ActivityOpenGlBinding>() ,OnItemActionListener{
+class OpenGLActivity : BaseActivity<ActivityOpenGlBinding>() ,OnItemActionListener{
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(OffsetItemDecoration(this,5,0,5,0))
+        vBinding.recyclerView.layoutManager = LinearLayoutManager(this)
+        vBinding.recyclerView.addItemDecoration(OffsetItemDecoration(this,5,0,5,0))
         val mAdapter = MultiTypeAdapter()
         val itemData = create()
 
         mAdapter.register(ActivityItem::class,ActivityListBinder(this))
-        recyclerView.adapter = mAdapter
+        vBinding.recyclerView.adapter = mAdapter
         mAdapter.items = itemData
         mAdapter.notifyDataSetChanged()
     }

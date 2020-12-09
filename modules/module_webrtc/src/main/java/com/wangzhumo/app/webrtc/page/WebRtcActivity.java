@@ -2,18 +2,22 @@ package com.wangzhumo.app.webrtc.page;
 
 import android.Manifest;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.wangzhumo.app.webrtc.databinding.ActivityWebRtcBinding;
 import com.wangzhumo.app.base.IRoute;
 import com.wangzhumo.app.origin.BaseActivity;
-import com.wangzhumo.app.webrtc.R;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -26,24 +30,19 @@ import io.reactivex.functions.Consumer;
  * 入口
  */
 @Route(path = IRoute.WEBRTC_MAIN)
-public class WebRtcActivity extends BaseActivity implements View.OnClickListener {
+public class WebRtcActivity extends BaseActivity<ActivityWebRtcBinding> implements View.OnClickListener {
 
 
     public AppCompatEditText mWebrtcAddress;
     public AppCompatEditText mWebrtcRoomName;
     public Button mButtonJoin;
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_web_rtc;
-    }
-
 
     @Override
     protected void initViews(@Nullable Bundle savedInstanceState) {
-        mWebrtcAddress = findViewById(R.id.webrtc_address);
-        mWebrtcRoomName = findViewById(R.id.webrtc_room_name);
-        mButtonJoin = findViewById(R.id.button_join);
+        mWebrtcAddress = vBinding.webrtcAddress;
+        mWebrtcRoomName = vBinding.webrtcRoomName;
+        mButtonJoin = vBinding.buttonJoin;
         mButtonJoin.setOnClickListener(this);
     }
 

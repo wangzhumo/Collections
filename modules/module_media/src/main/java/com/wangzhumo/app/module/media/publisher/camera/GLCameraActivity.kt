@@ -1,12 +1,10 @@
 package com.wangzhumo.app.module.media.publisher.camera
 
 import android.os.Bundle
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.databinding.ActivityGlcameraBinding
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_glcamera.*
 
 
 /**
@@ -17,13 +15,13 @@ import kotlinx.android.synthetic.main.activity_glcamera.*
  * 相机预览
  */
 @Route(path = IRoute.MEDIA.CAMERA_SHOW)
-class GLCameraActivity<ActivityGlcameraBinding : ViewBinding> : BaseActivity<ActivityGlcameraBinding>() {
+class GLCameraActivity : BaseActivity<ActivityGlcameraBinding>() {
 
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        gl_camera_bt.setOnClickListener {
-            gl_surfaceView.switchCamera()
+        vBinding.glCameraBt.setOnClickListener {
+            vBinding.glSurfaceView.switchCamera()
         }
 
     }
@@ -31,7 +29,7 @@ class GLCameraActivity<ActivityGlcameraBinding : ViewBinding> : BaseActivity<Act
 
     override fun onDestroy() {
         super.onDestroy()
-        gl_surfaceView.release()
+        vBinding.glSurfaceView.release()
     }
 
 }

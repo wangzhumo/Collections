@@ -3,12 +3,10 @@ package com.wangzhumo.app.module.media.targets.task2
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import androidx.viewbinding.ViewBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
-import com.wangzhumo.app.module.media.R
+import com.wangzhumo.app.module.media.databinding.ActivityTask2Binding
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_task2.*
 import java.io.File
 import java.lang.StringBuilder
 
@@ -23,32 +21,32 @@ import java.lang.StringBuilder
  *
  */
 @Route(path = IRoute.MEDIA_TASK_2)
-class Task2Activity<ActivityTask2Binding : ViewBinding> : BaseActivity<ActivityTask2Binding>() , AudioRecordHelper.onRecordListener{
+class Task2Activity : BaseActivity<ActivityTask2Binding>(), AudioRecordHelper.onRecordListener {
 
     val TAG = "Task2Activity"
-    lateinit var file :File
+    lateinit var file: File
     val sb = StringBuilder()
 
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        button_record.setOnClickListener {
-            if (TextUtils.equals(button_record.text, "Record")) {
-                button_record.text = "Stop"
+        vBinding.buttonRecord.setOnClickListener {
+            if (TextUtils.equals(vBinding.buttonRecord.text, "Record")) {
+                vBinding.buttonRecord.text = "Stop"
                 startRecord()
             } else {
-                button_record.text = "Record"
+                vBinding.buttonRecord.text = "Record"
                 stopRecord()
             }
         }
 
-        button_play.setOnClickListener {
-            if (TextUtils.equals(button_play.text, "Play")) {
-                button_play.text = "Stop"
-                Log.e(TAG,"StartPlay File = " + file.absoluteFile)
+        vBinding.buttonPlay.setOnClickListener {
+            if (TextUtils.equals(vBinding.buttonPlay.text, "Play")) {
+                vBinding.buttonPlay.text = "Stop"
+                Log.e(TAG, "StartPlay File = " + file.absoluteFile)
                 AudioTrackHelper.getInstance().startPlay(file)
             } else {
-                button_play.text = "Play"
+                vBinding.buttonPlay.text = "Play"
                 AudioTrackHelper.getInstance().stopPlay()
             }
         }
@@ -87,7 +85,7 @@ class Task2Activity<ActivityTask2Binding : ViewBinding> : BaseActivity<ActivityT
         sb.append("\n")
         AudioRecordHelper.getInstance().covertPcm2Wav()
         this.runOnUiThread {
-            record_path.text = sb.toString()
+            vBinding.recordPath.text = sb.toString()
         }
         Log.e(TAG, "AudioRecordHelper -----onRecorded----- pcm = " + pcm.absoluteFile)
     }
@@ -97,7 +95,7 @@ class Task2Activity<ActivityTask2Binding : ViewBinding> : BaseActivity<ActivityT
         sb.append(wav.absolutePath)
         sb.append("\n")
         this.runOnUiThread {
-            record_path.text = sb.toString()
+            vBinding.recordPath.text = sb.toString()
         }
         Log.e(TAG, "AudioRecordHelper -----onWavFile----- wav = " + wav.absoluteFile)
     }

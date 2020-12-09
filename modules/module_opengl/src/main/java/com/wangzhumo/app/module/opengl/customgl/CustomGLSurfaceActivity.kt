@@ -7,9 +7,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.mdeia.CustomGLSurfaceView
 import com.wangzhumo.app.mdeia.gles.IGLRenderer
-import com.wangzhumo.app.module.opengl.R
+import com.wangzhumo.app.module.opengl.databinding.ActivityCustomGlsurfaceBinding
 import com.wangzhumo.app.origin.BaseActivity
-import kotlinx.android.synthetic.main.activity_custom_glsurface.*
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -19,15 +18,14 @@ import kotlinx.android.synthetic.main.activity_custom_glsurface.*
  * 使用自定义的GLSurfaceView
  */
 @Route(path = IRoute.OPENGL.CUSTOM_GL_SURFACE)
-class CustomGLSurfaceActivity<ActivityCustomGlsurfaceBinding : ViewBinding?> : BaseActivity<ActivityCustomGlsurfaceBinding>() {
-
+class CustomGLSurfaceActivity : BaseActivity<ActivityCustomGlsurfaceBinding>() {
 
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        custom_surface.setZOrderOnTop(true)
-        custom_surface.setRenderer(MyRenderer())
-        custom_surface.setRenderMode(CustomGLSurfaceView.RENDERMODE_CONTINUOUSLY)
+        vBinding.customSurface.setZOrderOnTop(true)
+        vBinding.customSurface.setRenderer(MyRenderer())
+        vBinding.customSurface.setRenderMode(CustomGLSurfaceView.RENDERMODE_CONTINUOUSLY)
     }
 
 
@@ -37,11 +35,11 @@ class CustomGLSurfaceActivity<ActivityCustomGlsurfaceBinding : ViewBinding?> : B
         }
 
         override fun onSurfaceChange(width: Int, height: Int) {
-            GLES20.glViewport(0,0,width, height)
+            GLES20.glViewport(0, 0, width, height)
         }
 
         override fun drawFrame() {
-            GLES20.glClearColor(0F,0F,1F,0.3F)
+            GLES20.glClearColor(0F, 0F, 1F, 0.3F)
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         }
 
