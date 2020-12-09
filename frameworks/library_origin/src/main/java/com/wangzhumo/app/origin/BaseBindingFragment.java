@@ -33,7 +33,7 @@ abstract class BaseBindingFragment<VB extends ViewBinding> extends SupportFragme
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (contentView == null) {
-            contentView = ViewBindingCreator.create(vBinding.getClass(), inflater, container);
+            contentView = ViewBindingCreator.create(getClass(), inflater, container);
         }
         return contentView;
     }

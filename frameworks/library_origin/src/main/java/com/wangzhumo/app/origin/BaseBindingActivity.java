@@ -21,7 +21,7 @@ abstract class BaseBindingActivity<VB extends ViewBinding> extends SupportActivi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vBinding = ViewBindingCreator.create(vBinding.getClass(), getLayoutInflater(), null);
+        vBinding = ViewBindingCreator.create(getClass(), getLayoutInflater(), null);
         setContentView(vBinding.getRoot());
     }
 }

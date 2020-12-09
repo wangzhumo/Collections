@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @IntDef({AudioState.DISABLE, AudioState.INIT,
         AudioState.RECORDING,AudioState.PLAYING})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface AudioState {
     int DISABLE = 0;
     int INIT = 1;
