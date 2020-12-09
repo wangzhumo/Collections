@@ -76,6 +76,7 @@ dependencies {
     implementation project(":modules:module_webrtc")
     implementation project(":modules:module_playground")
     implementation project(":modules:module_opengl")
+    implementation project(":flutter")
     implementation deps.stdlib
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat

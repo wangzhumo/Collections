@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.delegate.AppDelegateFactory
 import dagger.hilt.android.HiltAndroidApp
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 //import io.flutter.embedding.engine.FlutterEngine
 //import io.flutter.embedding.engine.FlutterEngineCache
@@ -26,11 +29,27 @@ class APP : Application(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
+        initFlutter(this);
         mAppViewModelStore = ViewModelStore()
         Log.d("AppDelegate", "Application - onCreate")
         AppDelegateFactory.getInstance().startLoadAppDelegate(this)
     }
 
+    private fun initFlutter(app: APP) {
+        Log.d("AppDelegate", "Application - initFlutter")
+        // Instantiate a FlutterEngine.
+        val flutterEngine = FlutterEngine(app)
+
+        // Start executing Dart code to pre-warm the FlutterEngine.
+        flutterEngine.dartExecutor.executeDartEntrypoint(
+            DartExecutor.DartEntrypoint.createDefault()
+        )
+
+        // Cache the FlutterEngine to be used by FlutterActivity.
+        FlutterEngineCache
+            .getInstance()
+            .put("wangzhumo_engine", flutterEngine);
+    }
 
     override fun getViewModelStore(): ViewModelStore {
         return mAppViewModelStore;

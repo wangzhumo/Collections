@@ -4,7 +4,7 @@
 #include "include/utils/jni_utils.h"
 
 
-OpenGlController * pGlController = nullptr;
+OpenGlController *pGlController = nullptr;
 
 
 // 创建一个Surface - EGL 的环境
@@ -14,7 +14,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceCreate(
         JNIEnv *env, jobject thiz, jobject surface) {
     LOGD("OpenGLCPP  native-lib  surfaceCreate");
     // 获取一个 OpenGlController
-    if (pGlController == nullptr){
+    if (pGlController == nullptr) {
         pGlController = new OpenGlController();
     }
     // 通知gl中的 create 事件触发
@@ -29,18 +29,20 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChange(
         JNIEnv *env, jobject thiz, jint width, jint height) {
     LOGD("OpenGLCPP  native-lib  surfaceChange");
     // surfaceChange 的调用
-    if (pGlController != nullptr){
-        pGlController->onSurfaceChange(width,height);
+    if (pGlController != nullptr) {
+        pGlController->onSurfaceChange(width, height);
     }
 }
 
 // 切换不同的Filter使用
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChangeFilter(JNIEnv *env,jobject thiz,jstring type) {
+Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceChangeFilter(JNIEnv *env,
+                                                                                 jobject thiz,
+                                                                                 jstring type) {
     LOGD("OpenGLCPP  native-lib  surfaceChangeFilter");
-    if (pGlController != nullptr){
-        pGlController->onSurfaceChangeFilter(jstring2string(env,type));
+    if (pGlController != nullptr) {
+        pGlController->onSurfaceChangeFilter(jstring2string(env, type));
     }
 }
 
@@ -58,8 +60,8 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_setImageData(JNIEnv
     int length = env->GetArrayLength(image_data);
     LOGD("setImageData length = %d", length);
 
-    if(pGlController != nullptr){
-        pGlController->setPixelsData(jwidth,jheight,length,data);
+    if (pGlController != nullptr) {
+        pGlController->setPixelsData(jwidth, jheight, length, data);
     }
     // 回收空间 - 使用之前拷贝的数据即可
     env->ReleaseByteArrayElements(image_data, data, 0);
@@ -73,7 +75,7 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
                                                                             jobject thiz) {
     LOGD("OpenGLCPP  native-lib  surfaceDestroy");
     // 调用通知
-    if (pGlController != nullptr){
+    if (pGlController != nullptr) {
         pGlController->onRelease();
         // 回收自己的内存
         delete pGlController;
@@ -81,15 +83,14 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_surfaceDestroy(JNIE
     }
 }
 
-void print_bytes(const jbyte *bytes, size_t size){
+void print_bytes(const jbyte *bytes, size_t size) {
     LOGD("OpenGLCPP  native-lib  Start print");
 
     size_t i;
 
     printf("[ ");
     LOGD("[ ");
-    for(i = 0; i < size; i++)
-    {
+    for (i = 0; i < size; i++) {
         LOGD("%02x ", bytes[i]);
     }
     LOGD("]\n");
@@ -112,11 +113,11 @@ Java_com_wangzhumo_app_module_opengl_cpp_opengl_NativeOpenGl_updateYuvData(JNIEn
     //int size = env->GetArrayLength(data_y);
     jbyte *dataU = env->GetByteArrayElements(data_u, nullptr);
     jbyte *dataV = env->GetByteArrayElements(data_v, nullptr);
-    LOGD("OpenGLCPP  native-lib  updateYuvData  y = %p, u = %p, v = %p",dataY,dataU,dataV);
+    LOGD("OpenGLCPP  native-lib  updateYuvData  y = %p, u = %p, v = %p", dataY, dataU, dataV);
 
     //print_bytes(dataY,size);
-    if(pGlController != nullptr){
-        pGlController->updateYuvData(dataY,dataU,dataV,width,height);
+    if (pGlController != nullptr) {
+        pGlController->updateYuvData(dataY, dataU, dataV, width, height);
     }
 
     // 回收空间 - 使用之前拷贝的数据即可

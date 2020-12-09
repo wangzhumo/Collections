@@ -1,5 +1,6 @@
 include ':app'
 
+
 include ':frameworks:library_origin',
         ':frameworks:library_xlog',
         ':frameworks:library_widget',
@@ -10,3 +11,10 @@ include ':modules:module_base',
         ':modules:module_webrtc',
         ':modules:module_playground',
         ':modules:module_opengl'
+
+
+setBinding(new Binding([gradle: this]))
+evaluate(new File(settingsDir.parentFile,
+        "Collections/flutter/flutter_module/.android/include_flutter.groovy"
+))
+
