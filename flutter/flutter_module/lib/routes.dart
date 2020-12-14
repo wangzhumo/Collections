@@ -11,4 +11,6 @@ class Routers {
   static final Map<String, PageCreator> _pages = {
     Routes.home: (_) => Container(),
   };
+
+  static final AbstractRoutes routes = PageRoutes(pages: _pages);
 }

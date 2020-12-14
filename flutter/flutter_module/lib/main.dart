@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_module/routes.dart';
 import 'package:flutter_origin/origin_service.dart';
 
 void main() {
@@ -18,6 +19,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    ///配置路由
+    Application.router = Routers.routes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
         darkTheme: defaultTheme,
         theme: defaultTheme,
         debugShowCheckedModeBanner: false,
-        home: Container(),
+        home: Container(
+          color: Colors.amber,
+        ),
         onGenerateRoute: (RouteSettings settings) {
           return Application.generateRoute(settings);
         });
