@@ -3,9 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_module/routes.dart';
 import 'package:flutter_origin/origin_service.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
+
+import 'pages/splash/splash_page.dart';
 
 void main() {
-  runApp(MyApp());
+  /// 基于文件的Store
+  final LocalStorage localStorage = LocalStorage("wangzhumo");
+
+  ///初始化Theme
+  final AppThemeProvider themeProvider = AppThemeProvider.init(localStorage);
+
+  runApp(MyApp(themeProvider));
 
   SystemUiOverlayStyle systemUIOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -19,19 +29,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp() {
-    ///配置路由
+  ///初始化Theme
+  final AppThemeProvider themeProvider;
+
+  MyApp(this.themeProvider) {
+    /// 配置路由
     Application.router = Routers.routes;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: themeProvider),
+      ],
+      child: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -48,11 +60,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    //SA.init(context, width: 375, height: 812, allowSystemFontScale: false);
     var defaultTheme = Theme.of(context).copyWith(
         platform: TargetPlatform.iOS,
         highlightColor: Colors.transparent,
         splashFactory: const NoSplashFactory());
-
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     return MaterialApp(
         builder: (context, child) {
           return ScrollConfiguration(
@@ -63,8 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
         darkTheme: defaultTheme,
         theme: defaultTheme,
         debugShowCheckedModeBanner: false,
-        home: Container(
-          color: Colors.amber,
+        home: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: themeProvider.theme().getSystemUiOverlay(),
+          child: Scaffold(
+            backgroundColor: themeProvider.bgColor,
+            body: SplashPage(),
+          ),
         ),
         onGenerateRoute: (RouteSettings settings) {
           return Application.generateRoute(settings);

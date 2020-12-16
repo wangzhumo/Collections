@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_module/pages/splash/splash_page.dart';
 import 'package:flutter_origin/origin_service.dart';
 
 ///
@@ -9,7 +10,8 @@ import 'package:flutter_origin/origin_service.dart';
 class Routers {
   //Routes.main: MainPage(),
   static final Map<String, PageCreator> _pages = {
-    Routes.home: (_) => Container(),
+    Routes.mainSplash: (_) => SplashPage(),
+    Routes.main: (_) => Container(),
   };
 
   static final AbstractRoutes routes = PageRoutes(pages: _pages);
