@@ -1,11 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.wangzhumo.app.playground">
+    package="com.wangzhumo.app.playground">
 
     <application>
-        <activity
-                android:name="com.wangzhumo.app.playground.FrameLayoutActivity">
-        </activity>
+        <activity android:name=".InYuSocketActivity"></activity>
+        <activity android:name=".FrameLayoutActivity"></activity>
     </application>
+
 </manifest>
-
-

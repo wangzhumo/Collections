@@ -45,6 +45,7 @@ public interface IRoute {
 
 
     String FRAME_ACTIVITY = "/activity/framelayout";
+    String SOCKET_ACTIVITY = "/activity/socket";
 
 
 }
