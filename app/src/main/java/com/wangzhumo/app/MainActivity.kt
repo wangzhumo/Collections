@@ -18,12 +18,13 @@ public class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        startActivity(
-            FlutterActivity
-                .withCachedEngine("wangzhumo_engine")
-                .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
-                .build(this)
-        )
+//        startActivity(
+//            FlutterActivity
+//                .withCachedEngine("wangzhumo_engine")
+//                .backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
+//                .build(this)
+//        )
+        ARouter.getInstance().build(IRoute.SOCKET_ACTIVITY).navigation()
         vBinding.root.postDelayed({ this@MainActivity.finish() }, 500)
 //        vBinding.btMedia.clicks()
 //            .subscribeOn(AndroidSchedulers.mainThread())
