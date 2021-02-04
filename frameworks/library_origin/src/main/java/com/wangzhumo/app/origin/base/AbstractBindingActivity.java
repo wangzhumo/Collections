@@ -1,6 +1,7 @@
 package com.wangzhumo.app.origin.base;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
@@ -25,6 +26,8 @@ public abstract class AbstractBindingActivity<VB extends ViewBinding> extends Su
      */
     protected VB vBinding;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +37,6 @@ public abstract class AbstractBindingActivity<VB extends ViewBinding> extends Su
         vBinding = ViewBindingCreator.create(getClass(), getLayoutInflater(), null);
         setContentView(vBinding.getRoot());
     }
-
 
     /**
      * setContentView 之前设置状态栏

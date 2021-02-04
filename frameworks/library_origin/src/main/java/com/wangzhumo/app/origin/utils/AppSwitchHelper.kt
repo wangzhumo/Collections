@@ -22,6 +22,7 @@ class AppSwitchHelper private constructor() {
      */
     fun register(application: Application) {
         hideObserve.value = false
+        activityStartCount = 0
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
     }
 
@@ -32,9 +33,8 @@ class AppSwitchHelper private constructor() {
 
     private val activityLifecycleCallbacks: Application.ActivityLifecycleCallbacks =
         object : Application.ActivityLifecycleCallbacks {
-            //打开的Activity数量统计
-            private var activityStartCount = 0
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {}
+
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
             override fun onActivityStarted(activity: Activity) {
                 activityStartCount++
                 //数值从0变到1说明是从后台切到前台
@@ -72,5 +72,9 @@ class AppSwitchHelper private constructor() {
         @JvmStatic
         val hideObserve = MutableLiveData<Boolean>()
 
+        /**
+         * 打开的Activity数量统计
+         */
+        private var activityStartCount = 0
     }
 }

@@ -23,6 +23,6 @@
 
     <style name="MainTheme" parent="@style/AppTheme.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>

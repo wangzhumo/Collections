@@ -14,8 +14,8 @@ abstract class BaseAnimFragment<VB : ViewBinding> : BaseBindingFragment<VB>() {
 
     fun dismiss() {
         try {
-            if (fragmentManager != null && !fragmentManager!!.isDestroyed) {
-                fragmentManager!!
+            if (childFragmentManager != null && childFragmentManager.isDestroyed) {
+                childFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(this.enterAnim(), this.exitAnim())
                     .remove(this)

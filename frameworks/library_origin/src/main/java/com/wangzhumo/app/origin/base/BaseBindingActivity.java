@@ -61,7 +61,7 @@ public abstract class BaseBindingActivity<VB extends ViewBinding> extends Abstra
      *
      * @param savedInstanceState Bundle
      */
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 

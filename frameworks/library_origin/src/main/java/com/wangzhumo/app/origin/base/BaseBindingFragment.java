@@ -1,5 +1,7 @@
 package com.wangzhumo.app.origin.base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,8 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Abstra
      */
     protected CompositeDisposable mDisposable;
 
+    protected Context mContext;
+
 
     @Nullable
     @Override
@@ -47,6 +51,12 @@ public abstract class BaseBindingFragment<VB extends ViewBinding> extends Abstra
         initData(savedInstanceState);
     }
 
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext = activity;
+    }
 
     /**
      * 设置View资源

@@ -40,8 +40,8 @@ class BaseModuleAppDelegate : AppDelegate {
         initARouter(application)
         initLogger()
         //initBugly(application)
-        initXLog(application)
-        //initLocalXLog()
+        //initXLog(application)
+        initLocalXLog()
     }
 
 

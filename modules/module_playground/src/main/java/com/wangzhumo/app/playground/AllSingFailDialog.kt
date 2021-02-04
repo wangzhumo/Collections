@@ -68,10 +68,10 @@ class AllSingFailDialog : BaseAnimFragment<KillerViewAreaSuccessBinding>() {
 
         val animationBg = SpringAnimation(vBinding.killerBg, SpringAnimation.TRANSLATION_X)
             .setSpring(force)
-            .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
+            .setStartValue(DensityUtils.dp2px(mContext, 225F).toFloat())
         val animationText = SpringAnimation(vBinding.killerText, SpringAnimation.TRANSLATION_X)
             .setSpring(force2)
-            .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
+            .setStartValue(DensityUtils.dp2px(mContext, 225F).toFloat())
         animationBg.start()
         animationText.start()
     }

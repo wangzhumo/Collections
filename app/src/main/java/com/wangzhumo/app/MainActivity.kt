@@ -22,8 +22,6 @@ public class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
-        ARouter.getInstance().build(IRoute.SOCKET_ACTIVITY).navigation()
-        vBinding.root.postDelayed({ this@MainActivity.finish() }, 500)
         vBinding.btMedia.clicks()
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {

@@ -65,7 +65,7 @@ public class BlankFragment : BaseAnimFragment<FragmentBlankBinding>() {
 
         val animation = SpringAnimation(vBinding.rootLayout, SpringAnimation.TRANSLATION_X)
             .setSpring(force)
-            .setStartValue(DensityUtils.dp2px(context, 225F).toFloat())
+            .setStartValue(DensityUtils.dp2px(mContext, 225F).toFloat())
         animation.start()
         //animation.addEndListener { dynamicAnimation, b, v, v1 -> dismiss() }
     }
