@@ -15,12 +15,12 @@ import com.wangzhumo.app.module.opengl.cpp.opengl.CppSurfaceView;
 import com.wangzhumo.app.module.opengl.cpp.opengl.NativeOpenGl;
 import com.wangzhumo.app.module.opengl.cpp.opengl.SurfaceLifecycle;
 import com.wangzhumo.app.module.opengl.databinding.ActivityOpenglCppBinding;
-import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.origin.base.BaseBindingActivity;
 
 import java.nio.ByteBuffer;
 
 @Route(path = IRoute.CPPGLES.CPP_GLES)
-public class OpenGLCppActivity extends BaseActivity<ActivityOpenglCppBinding> {
+public class OpenGLCppActivity extends BaseBindingActivity<ActivityOpenglCppBinding> {
 
     int[] imageResource = {
             R.drawable.image_ash,

@@ -1,14 +1,13 @@
-package com.wangzhumo.app.origin;
+package com.wangzhumo.app.origin.base;
 
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
 import com.gyf.immersionbar.ImmersionBar;
-import com.jakewharton.rxbinding4.view.RxView;
+import com.wangzhumo.app.origin.utils.AppManager;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -24,7 +23,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * 3.加载Data
  * 4.生命周期
  */
-public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingActivity<VB> {
+public abstract class BaseBindingActivity<VB extends ViewBinding> extends AbstractBindingActivity<VB> {
 
     /**
      * 收集Dis
@@ -40,8 +39,8 @@ public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingAc
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppManager.getInstance().addActivity(this);
         this.mContext = this;
-        initStatusBar();
         //此时可以加载View / 设置data
         initViews(savedInstanceState);
         initData(savedInstanceState);
@@ -58,16 +57,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingAc
     }
 
     /**
-     * 设置资源ID
-     *
-     * @return layoutID
-     */
-    public  @LayoutRes int getLayoutId(){
-        return 0;
-    }
-
-
-    /**
      * 加载数据
      *
      * @param savedInstanceState Bundle
@@ -80,6 +69,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingAc
     /**
      * setContentView 之前
      */
+    @Override
     public void initStatusBar() {
         //在BaseActivity里初始化
         ImmersionBar.with(this)
@@ -98,6 +88,9 @@ public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingAc
         if (mDisposable == null) {
             mDisposable = new CompositeDisposable();
         }
+        if (disposable == null){
+            return;
+        }
         mDisposable.add(disposable);
     }
 
@@ -109,6 +102,8 @@ public abstract class BaseActivity<VB extends ViewBinding> extends BaseBindingAc
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+        // 移除自己
+        AppManager.getInstance().removeActivity(this);
     }
 
 }

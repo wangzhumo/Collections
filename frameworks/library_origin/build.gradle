@@ -50,8 +50,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api deps.androidx.multidex
     api deps.androidx.appcompat
     api deps.androidx.recyclerview
+    api deps.androidx.legacyV4
     api deps.google.design
     api deps.google.hilt
     api deps.androidx.constraintlayout

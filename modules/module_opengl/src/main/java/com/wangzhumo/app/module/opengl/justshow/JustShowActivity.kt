@@ -10,11 +10,11 @@ import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.mdeia.gles.EGLCore
 import com.wangzhumo.app.mdeia.gles.WindowSurface
 import com.wangzhumo.app.module.opengl.databinding.ActivityJustShowBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import com.wangzhumo.app.origin.utils.DensityUtils
 
 @Route(path = IRoute.OPENGL.JUST_SHOW)
-class JustShowActivity : BaseActivity<ActivityJustShowBinding>() ,SurfaceHolder.Callback {
+class JustShowActivity : BaseBindingActivity<ActivityJustShowBinding>() ,SurfaceHolder.Callback {
 
 
 

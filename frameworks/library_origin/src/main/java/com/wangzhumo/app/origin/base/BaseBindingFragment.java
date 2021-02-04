@@ -1,4 +1,4 @@
-package com.wangzhumo.app.origin;
+package com.wangzhumo.app.origin.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,13 +22,13 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * 2.可见状态
  * 3.加载View/加载Data
  */
-public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFragment<VB> {
+public abstract class BaseBindingFragment<VB extends ViewBinding> extends AbstractBindingFragment<VB> {
 
 
     /**
      * 收集Dis
      */
-    public CompositeDisposable mDisposable;
+    protected CompositeDisposable mDisposable;
 
 
     @Nullable
@@ -36,7 +36,7 @@ public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFr
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         //加载View资源
-        initViews();
+        initViews(contentView);
         return contentView;
     }
 
@@ -44,21 +44,21 @@ public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFr
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //可以加载资源
-        initData();
+        initData(savedInstanceState);
     }
 
 
     /**
      * 设置View资源
      */
-    protected void initViews() {
+    protected void initViews(View rootView) {
 
     }
 
     /**
      * 加载数据
      */
-    protected void initData() {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
 
@@ -71,6 +71,9 @@ public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFr
         if (mDisposable == null) {
             mDisposable = new CompositeDisposable();
         }
+        if (disposable == null){
+            return;
+        }
         mDisposable.add(disposable);
     }
 
@@ -80,7 +83,7 @@ public abstract class BaseFragment<VB extends ViewBinding> extends BaseBindingFr
         super.onDestroyView();
         //网络资源
         if (mDisposable != null) {
-            mDisposable.dispose();
+            mDisposable.clear();
         }
     }
 }

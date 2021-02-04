@@ -10,7 +10,7 @@ import com.wangzhumo.app.origin.utils.DensityUtils
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.R
 import com.wangzhumo.app.module.media.databinding.ActivityTask1Binding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 
 
 /**
@@ -26,7 +26,7 @@ import com.wangzhumo.app.origin.BaseActivity
  *    3.绘制图片  lockCanvas
  */
 @Route(path = IRoute.MEDIA_TASK_1)
-class Task1Activity: BaseActivity<ActivityTask1Binding>(), SurfaceHolder.Callback {
+class Task1Activity: BaseBindingActivity<ActivityTask1Binding>(), SurfaceHolder.Callback {
 
     val TAG = "Task1Activity"
     var srcRect = Rect()

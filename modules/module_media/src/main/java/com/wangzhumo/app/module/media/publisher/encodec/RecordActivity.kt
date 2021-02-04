@@ -6,7 +6,7 @@ import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.databinding.ActivityRecordBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import java.io.File
 
 /**
@@ -17,7 +17,7 @@ import java.io.File
  * 录制的 Activity
  */
 @Route(path = IRoute.MEDIA.CAMERA_RECORD)
-class RecordActivity : BaseActivity<ActivityRecordBinding>() {
+class RecordActivity : BaseBindingActivity<ActivityRecordBinding>() {
 
     var recordMediaCodec: RecordMediaCodec? = null
 

@@ -16,7 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.wangzhumo.app.webrtc.databinding.ActivityWebRtcBinding;
 import com.wangzhumo.app.base.IRoute;
-import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.origin.base.BaseBindingActivity;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -30,7 +30,7 @@ import io.reactivex.rxjava3.functions.Consumer;
  * 入口
  */
 @Route(path = IRoute.WEBRTC_MAIN)
-public class WebRtcActivity extends BaseActivity<ActivityWebRtcBinding> implements View.OnClickListener {
+public class WebRtcActivity extends BaseBindingActivity<ActivityWebRtcBinding> implements View.OnClickListener {
 
 
     public AppCompatEditText mWebrtcAddress;

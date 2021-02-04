@@ -34,7 +34,7 @@ def versions = [:]
 
     //arouter
     versions.arouterApi = "1.5.1"
-    versions.arouterCompiler = "1.5.1"
+    versions.arouterCompiler = "1.2.2"
     versions.arouterRegister = "1.0.2"
 
     //view
@@ -43,9 +43,9 @@ def versions = [:]
     versions.multiType = "4.2.0"
     versions.wheelPicker = "1.5.5"
     versions.waveViwe = "v1.0.3"
-    versions.banner = "1.4.10"
+    versions.banner = "2.1.0"
     versions.kprogress = "1.0.2"
-
+    versions.popup = "2.2.11"
 
     //net
     versions.stetho = "1.5.0"
@@ -115,6 +115,9 @@ def androidx=[:]
     androidx.swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     androidx.legacyV4 = "androidx.legacy:legacy-support-v4:1.0.0"
     androidx.dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
+    androidx.slidingpanelayout = "androidx.slidingpanelayout:slidingpanelayout:1.1.0"
+    androidx.palette = "androidx.palette:palette:1.0.0"
+    androidx.material = "com.google.android.material:material:1.0.0"
     deps.androidx=androidx
 
 def google=[:]
@@ -221,6 +224,8 @@ def pay = [:]
     deps.voiceline = "com.carlos.voiceline:mylibrary:$versions.voiceline"
     deps.PhotoView = "com.github.chrisbanes:PhotoView:2.1.2"
     deps.tinypinyin = "com.github.promeg:tinypinyin:1.0.0"
+    deps.popup = "com.github.razerdp:BasePopup:$versions.popup"
+
 
     deps.bugly = "com.tencent.bugly:crashreport:2.8.6"
     deps.bugly_native = "com.tencent.bugly:nativecrashreport:3.6.0"

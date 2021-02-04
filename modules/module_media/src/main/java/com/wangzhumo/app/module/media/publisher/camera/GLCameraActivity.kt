@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.databinding.ActivityGlcameraBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 
 
 /**
@@ -15,7 +15,7 @@ import com.wangzhumo.app.origin.BaseActivity
  * 相机预览
  */
 @Route(path = IRoute.MEDIA.CAMERA_SHOW)
-class GLCameraActivity : BaseActivity<ActivityGlcameraBinding>() {
+class GLCameraActivity : BaseBindingActivity<ActivityGlcameraBinding>() {
 
 
     override fun initViews(savedInstanceState: Bundle?) {

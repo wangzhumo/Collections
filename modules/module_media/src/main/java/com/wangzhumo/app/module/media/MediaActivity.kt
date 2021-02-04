@@ -9,7 +9,7 @@ import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.databinding.ActivityMediaMainBinding
 import com.wangzhumo.app.module.media.model.ActivityItem
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import com.wangzhumo.app.widget.rv.OffsetItemDecoration
 import com.wangzhumo.app.widget.rv.OnItemActionListener
 
@@ -21,7 +21,7 @@ import com.wangzhumo.app.widget.rv.OnItemActionListener
  * CPP TEST
  */
 @Route(path = IRoute.MEDIA_MAIN)
-class MediaActivity : BaseActivity<ActivityMediaMainBinding>(), OnItemActionListener {
+class MediaActivity : BaseBindingActivity<ActivityMediaMainBinding>(), OnItemActionListener {
 
 
     override fun initViews(savedInstanceState: Bundle?) {

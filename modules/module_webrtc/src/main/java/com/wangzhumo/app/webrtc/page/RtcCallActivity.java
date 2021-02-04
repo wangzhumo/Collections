@@ -17,7 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.orhanobut.logger.Logger;
 import com.wangzhumo.app.base.IRoute;
-import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.origin.base.BaseBindingActivity;
 import com.wangzhumo.app.webrtc.databinding.ActivityRtcCallBinding;
 import com.wangzhumo.app.webrtc.func.*;
 import com.wangzhumo.app.webrtc.func.CameraVideoCapturer;
@@ -47,7 +47,7 @@ import java.util.List;
  * 实现通话的地方
  */
 @Route(path = IRoute.WEBRTC_CALL)
-public class RtcCallActivity extends BaseActivity<ActivityRtcCallBinding> implements SignalEventListener {
+public class RtcCallActivity extends BaseBindingActivity<ActivityRtcCallBinding> implements SignalEventListener {
 
     private static final String TAG = "RtcCall";
 

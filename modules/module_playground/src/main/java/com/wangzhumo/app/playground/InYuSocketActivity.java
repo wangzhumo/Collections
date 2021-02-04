@@ -7,9 +7,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.tencent.bugly.crashreport.common.info.AppInfo;
 import com.wangzhumo.app.base.IRoute;
-import com.wangzhumo.app.origin.BaseActivity;
+import com.wangzhumo.app.origin.base.BaseBindingActivity;
 import com.wangzhumo.app.playground.databinding.ActivityInYuSocketBinding;
 import com.wangzhumo.app.playground.netty.ByteChannelHandler;
 
@@ -34,7 +33,7 @@ import io.netty.handler.codec.bytes.ByteArrayEncoder;
  * 模拟一下Socket
  */
 @Route(path = IRoute.SOCKET_ACTIVITY)
-public class InYuSocketActivity extends BaseActivity<ActivityInYuSocketBinding> {
+public class InYuSocketActivity extends BaseBindingActivity<ActivityInYuSocketBinding> {
 
     private static final int TIMEOUT_TIME = 5;
 

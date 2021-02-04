@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.databinding.ActivityGlfboMultiBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import com.wangzhumo.app.origin.utils.DensityUtils
 
 
@@ -18,7 +18,7 @@ import com.wangzhumo.app.origin.utils.DensityUtils
  * 显示一个图片纹理到OpenGL
  */
 @Route(path = IRoute.OPENGL.IMAGE_TEXTURE_MULTI)
-class GLFboMultiActivity : BaseActivity<ActivityGlfboMultiBinding>() {
+class GLFboMultiActivity : BaseBindingActivity<ActivityGlfboMultiBinding>() {
 
 
     override fun initData(savedInstanceState: Bundle?) {

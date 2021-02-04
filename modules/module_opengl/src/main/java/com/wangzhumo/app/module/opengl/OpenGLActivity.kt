@@ -8,7 +8,7 @@ import com.drakeet.multitype.MultiTypeAdapter
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.databinding.ActivityOpenGlBinding
 import com.wangzhumo.app.module.opengl.module.ActivityItem
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import com.wangzhumo.app.widget.rv.OffsetItemDecoration
 import com.wangzhumo.app.widget.rv.OnItemActionListener
 
@@ -20,7 +20,7 @@ import com.wangzhumo.app.widget.rv.OnItemActionListener
  * OpenGL Module的ListActivity
  */
 @Route(path = IRoute.OPENGL_LIST)
-class OpenGLActivity : BaseActivity<ActivityOpenGlBinding>() ,OnItemActionListener{
+class OpenGLActivity : BaseBindingActivity<ActivityOpenGlBinding>() ,OnItemActionListener{
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)

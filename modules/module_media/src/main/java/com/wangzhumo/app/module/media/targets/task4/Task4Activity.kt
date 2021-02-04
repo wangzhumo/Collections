@@ -17,7 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.tencent.mars.xlog.Log
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.media.databinding.ActivityTask4Binding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URISyntaxException
@@ -30,7 +30,7 @@ import java.nio.ByteBuffer
  * @author 王诛魔 2019-11-26  19:41
  */
 @Route(path = IRoute.MEDIA_TASK_4)
-class Task4Activity : BaseActivity<ActivityTask4Binding>() {
+class Task4Activity : BaseBindingActivity<ActivityTask4Binding>() {
 
 
     val stringBuffer = StringBuffer()

@@ -3,7 +3,7 @@ package com.wangzhumo.app.module.opengl.image
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.wangzhumo.app.base.IRoute
 import com.wangzhumo.app.module.opengl.databinding.ActivityGlimageBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 
 
 /**
@@ -14,7 +14,7 @@ import com.wangzhumo.app.origin.BaseActivity
  * 显示一个图片纹理到OpenGL
  */
 @Route(path = IRoute.OPENGL.IMAGE_TEXTURE)
-class GLImageActivity : BaseActivity<ActivityGlimageBinding>() {
+class GLImageActivity : BaseBindingActivity<ActivityGlimageBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()

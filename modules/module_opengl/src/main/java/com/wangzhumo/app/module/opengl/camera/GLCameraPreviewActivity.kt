@@ -2,7 +2,7 @@ package com.wangzhumo.app.module.opengl.camera
 
 import android.os.Bundle
 import com.wangzhumo.app.module.opengl.databinding.ActivityGlcameraPreviewBinding
-import com.wangzhumo.app.origin.BaseActivity
+import com.wangzhumo.app.origin.base.BaseBindingActivity
 
 
 /**
@@ -12,7 +12,7 @@ import com.wangzhumo.app.origin.BaseActivity
  *
  * 使用OpenGL 预览相机
  */
-class GLCameraPreviewActivity : BaseActivity<ActivityGlcameraPreviewBinding>() {
+class GLCameraPreviewActivity : BaseBindingActivity<ActivityGlcameraPreviewBinding>() {
 
 
     override fun initViews(savedInstanceState: Bundle?) {

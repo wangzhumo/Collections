@@ -1,19 +1,11 @@
 package com.wangzhumo.app.func
 
-import android.app.Application
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import com.tencent.mars.xlog.Log
+import android.util.Log
 import com.wangzhumo.app.base.delegate.AppDelegateFactory
-import dagger.hilt.android.HiltAndroidApp
+import com.wangzhumo.app.origin.base.BaseApp
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
-
-//import io.flutter.embedding.engine.FlutterEngine
-//import io.flutter.embedding.engine.FlutterEngineCache
-//import io.flutter.embedding.engine.dart.DartExecutor
-
 
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
@@ -22,15 +14,11 @@ import io.flutter.embedding.engine.dart.DartExecutor
  *
  * Application
  */
-@HiltAndroidApp
-class APP : Application(), ViewModelStoreOwner {
-
-    private lateinit var mAppViewModelStore: ViewModelStore
+class APP : BaseApp() {
 
     override fun onCreate() {
         super.onCreate()
         initFlutter(this);
-        mAppViewModelStore = ViewModelStore()
         Log.d("AppDelegate", "Application - onCreate")
         AppDelegateFactory.getInstance().startLoadAppDelegate(this)
     }
@@ -50,9 +38,4 @@ class APP : Application(), ViewModelStoreOwner {
             .getInstance()
             .put("wangzhumo_engine", flutterEngine);
     }
-
-    override fun getViewModelStore(): ViewModelStore {
-        return mAppViewModelStore;
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.wangzhumo.app.origin;
+package com.wangzhumo.app.origin.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  *
  * @author 王诛魔 12/8/20  8:31 PM
  */
-abstract class BaseBindingFragment<VB extends ViewBinding> extends SupportFragment {
+public abstract class AbstractBindingFragment<VB extends ViewBinding> extends SupportFragment {
     /**
      * 页面布局View
      */
@@ -32,8 +32,11 @@ abstract class BaseBindingFragment<VB extends ViewBinding> extends SupportFragme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (contentView == null) {
-            contentView = ViewBindingCreator.create(getClass(), inflater, container);
+        if (vBinding == null) {
+            vBinding = ViewBindingCreator.create(getClass(), inflater, container);
+        }
+        if (contentView == null){
+            contentView = vBinding.getRoot();
         }
         return contentView;
     }
