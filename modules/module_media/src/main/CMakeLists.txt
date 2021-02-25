@@ -28,7 +28,7 @@ add_library(
         SHARED
 
         # 源文件的路径，可以有多个，最终这个源文件将被编译并打包进native-lib库
-        opengl-learn.cpp)
+        cpp/opengl-learn.cpp)
 
 
 # 查找一个库，并设置到路径变量中去

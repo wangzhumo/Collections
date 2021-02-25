@@ -60,7 +60,11 @@ public class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
                     Toast.makeText(this, "请授权", Toast.LENGTH_LONG).show()
                 }
             }
-
+        vBinding.btPlayground.setOnClickListener {
+            ARouter.getInstance()
+                .build(IRoute.FRAME_ACTIVITY)
+                .navigation()
+        }
     }
 
 
