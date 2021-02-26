@@ -47,7 +47,12 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
     /**
      * 边距预留的大小
      */
-    private int offsetSize = 20;
+    private int offsetSize = 0;
+
+    /**
+     * 6个圆点偏移的位置
+     */
+    private int offsetPoint = 0;
 
     /**
      * 图片资源.
@@ -111,8 +116,6 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
         imageDes = new Rect();
         mPaint = new Paint();
         mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(9);
-        mPaint.setStrokeWidth(4);
         mPaint.setStyle(Paint.Style.FILL);
         if (res == 0) {
             res = R.mipmap.widget_bg_turntable_prize;
@@ -153,7 +156,7 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
             drawPointLight(canvas, currentIndex);
         }
         // 绘制背景上的点
-        drawBackgroundPoint(canvas, currentIndex);
+        drawBackgroundPoint(canvas);
     }
 
 
@@ -165,7 +168,7 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
     private void drawBackground(Canvas canvas) {
         canvas.drawBitmap(bitmap, imageIn, imageDes, mPaint);
         int round = 270;
-        int currentRadius = imageDes.width() / 2 - 15;
+        int currentRadius = imageDes.width() / 2 - radius / 2 - offsetPoint;
         for (int i = 0; i < 6; i++) {
             points[i].x = (int) (imageDes.centerX() + currentRadius * Math.cos(Math.toRadians(round)));
             points[i].y = (int) (imageDes.centerY() + currentRadius * Math.sin(Math.toRadians(round)));
@@ -178,18 +181,17 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
      * 绘制背景上的点
      *
      * @param canvas 画布
-     * @param ignore 不需要绘制的那个点
      */
-    private void drawBackgroundPoint(Canvas canvas, int ignore) {
+    private void drawBackgroundPoint(Canvas canvas) {
         // 绘制6个点
         for (int i = 0; i < 6; i++) {
             mPaint.setColor(colors[i]);
-            canvas.drawCircle((float) points[i].x, (float) points[i].y, 15, mPaint);
+            canvas.drawCircle((float) points[i].x, (float) points[i].y, radius, mPaint);
         }
         mPaint.setColor(Color.WHITE);
         mPaint.setMaskFilter(blurMaskFilter);
         for (int i = 0; i < 6; i++) {
-            canvas.drawCircle((float) points[i].x, (float) points[i].y,8, mPaint);
+            canvas.drawCircle((float) points[i].x, (float) points[i].y, radius / 2F, mPaint);
         }
         mPaint.setMaskFilter(null);
     }
@@ -202,10 +204,10 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
      */
     private void drawPointLight(Canvas canvas, int index) {
         if (index == -1 || disableSharkFlag) return;
-        Shader mShader = new RadialGradient((float) points[index].x, (float) points[index].y, 30, new int[]{colors[index], Color.TRANSPARENT}, null, Shader.TileMode.CLAMP);
+        Shader mShader = new RadialGradient((float) points[index].x, (float) points[index].y, radius * 3, new int[]{colors[index], Color.TRANSPARENT}, null, Shader.TileMode.CLAMP);
         mPaint.setColor(colors[index]);
         mPaint.setShader(mShader);
-        canvas.drawCircle((float) points[index].x, (float) points[index].y, 30, mPaint);
+        canvas.drawCircle((float) points[index].x, (float) points[index].y, radius * 3, mPaint);
         mPaint.setShader(null);
     }
 
@@ -234,22 +236,56 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
         animator.start();
     }
 
+    /**
+     * 背景的圆半径
+     *
+     * @param radius 背景上的6个圆半径
+     */
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
+    /**
+     * 设置每一个点的间隔时间
+     *
+     * @param duration ms
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public void setOffsetSize(int offsetSize) {
+    /**
+     * 设置背景圆与View的边距
+     *
+     * @param offsetSize 边距
+     */
+    public void setOffset(int offsetSize) {
         this.offsetSize = offsetSize;
     }
 
+    /**
+     * 设置背景6个圆的偏移
+     *
+     * @param offsetPoint 偏移
+     */
+    public void setPointOffset(int offsetPoint) {
+        this.offsetPoint = offsetPoint;
+    }
+
+    /**
+     * 背景圆的图片
+     *
+     * @param res res
+     */
     public void setRes(int res) {
         this.res = res;
     }
 
+    /**
+     * 外圈的圆，旋转多少次
+     *
+     * @param count count
+     */
     public void setCount(int count) {
         this.count = count;
     }
@@ -258,10 +294,8 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
     public void onAnimationUpdate(ValueAnimator animation) {
         int value = (int) animation.getAnimatedValue();
         value %= 6;
-        Log.e("onAnimationUpdate", "value = " + value);
         if (currentIndex != value) {
             currentIndex = value;
-            Log.e("onAnimationUpdate", "currentIndex = " + currentIndex);
             postInvalidate();
         }
     }
