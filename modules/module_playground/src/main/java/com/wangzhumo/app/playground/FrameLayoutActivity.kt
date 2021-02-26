@@ -12,8 +12,11 @@ public class FrameLayoutActivity : BaseBindingActivity<ActivityFreamLayoutBindin
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
+        vBinding.turnView.setCount(5)
+        vBinding.turnView.setDuration(60)
+        vBinding.turnView.setRes(R.mipmap.widget_bg_turntable_prize)
         vBinding.animateToStart.setOnClickListener {
-            vBinding.turnView.startShark()
+            vBinding.turnView.startSharkAnim()
         }
     }
 }

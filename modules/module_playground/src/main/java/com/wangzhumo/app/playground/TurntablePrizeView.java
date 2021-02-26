@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,17 +15,22 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.wangzhumo.app.playground.R;
+
+
 /**
  * If you have any questions, you can contact by email {wangzhumoo@gmail.com}
  *
- * @author 王诛魔 2/25/21  5:13 PM
+ * @author 王诛魔 2/26/21  10:17 AM
+ * <p>
+ * 夺宝的动画View
  */
 public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUpdateListener {
-
     /**
      * 半径大小
      */
@@ -48,7 +54,6 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
      */
     private int res;
 
-
     /**
      * 6个点对应的颜色
      */
@@ -59,21 +64,30 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
      */
     private final Point[] points = new Point[6];
 
+    /**
+     * 是否显示闪动的动画
+     */
+    private boolean disableSharkFlag = true;
 
-    private boolean diableSharkFlag = true;
+    /**
+     * 当前闪动的动画
+     */
+    private int currentIndex = -1;
 
-
-    private int currentIndex =  -1;
-
-
+    /**
+     * View的资源
+     */
     private Rect rootRect;
     private Rect imageIn;
     private Rect imageDes;
     private Paint mPaint;
-
     private Bitmap bitmap;
+    private final BlurMaskFilter blurMaskFilter = new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL);
 
-    private boolean drawImage;
+    /**
+     * 闪动的动画
+     */
+    private ValueAnimator animator;
 
     public TurntablePrizeView(Context context) {
         super(context);
@@ -100,8 +114,9 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
         mPaint.setTextSize(9);
         mPaint.setStrokeWidth(4);
         mPaint.setStyle(Paint.Style.FILL);
-        drawImage = false;
-        res = R.mipmap.widget_bg_turntable_prize;
+        if (res == 0) {
+            res = R.mipmap.widget_bg_turntable_prize;
+        }
         // 获取图片
         bitmap = BitmapFactory.decodeResource(getResources(), res);
         // 设置
@@ -133,16 +148,19 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
         super.onDraw(canvas);
         // 绘制背景图
         drawBackground(canvas);
-        // 绘制缺少的那个点
-        drawPointLight(canvas, currentIndex);
+        if (!disableSharkFlag) {
+            // 绘制缺少的那个点
+            drawPointLight(canvas, currentIndex);
+        }
         // 绘制背景上的点
-        drawBackgroundPoint(canvas,currentIndex);
+        drawBackgroundPoint(canvas, currentIndex);
     }
 
 
     /**
      * 绘制背景,计算点
-     * @param canvas   画布
+     *
+     * @param canvas 画布
      */
     private void drawBackground(Canvas canvas) {
         canvas.drawBitmap(bitmap, imageIn, imageDes, mPaint);
@@ -158,61 +176,111 @@ public class TurntablePrizeView extends View implements ValueAnimator.AnimatorUp
 
     /**
      * 绘制背景上的点
-     * @param canvas   画布
-     * @param ignore   不需要绘制的那个点
+     *
+     * @param canvas 画布
+     * @param ignore 不需要绘制的那个点
      */
-    private void drawBackgroundPoint(Canvas canvas,int ignore) {
+    private void drawBackgroundPoint(Canvas canvas, int ignore) {
         // 绘制6个点
-        mPaint.setShader(null);
         for (int i = 0; i < 6; i++) {
             mPaint.setColor(colors[i]);
             canvas.drawCircle((float) points[i].x, (float) points[i].y, 15, mPaint);
         }
+        mPaint.setColor(Color.WHITE);
+        mPaint.setMaskFilter(blurMaskFilter);
+        for (int i = 0; i < 6; i++) {
+            canvas.drawCircle((float) points[i].x, (float) points[i].y,8, mPaint);
+        }
+        mPaint.setMaskFilter(null);
     }
 
     /**
      * 需要绘制的那个点
-     * @param canvas   画布
-     * @param index    index
+     *
+     * @param canvas 画布
+     * @param index  index
      */
     private void drawPointLight(Canvas canvas, int index) {
-        if (index == -1 || diableSharkFlag) return;
-        Shader mShader = new RadialGradient((float) points[index].x,(float) points[index].y,30,new int[] {colors[index],Color.TRANSPARENT},null,Shader.TileMode.CLAMP);
+        if (index == -1 || disableSharkFlag) return;
+        Shader mShader = new RadialGradient((float) points[index].x, (float) points[index].y, 30, new int[]{colors[index], Color.TRANSPARENT}, null, Shader.TileMode.CLAMP);
         mPaint.setColor(colors[index]);
         mPaint.setShader(mShader);
         canvas.drawCircle((float) points[index].x, (float) points[index].y, 30, mPaint);
+        mPaint.setShader(null);
     }
 
 
     /**
      * 开始闪
      */
-    public void startShark(){
-        if (!diableSharkFlag) return;
-        diableSharkFlag = false;
-        ValueAnimator animator = ValueAnimator.ofInt(0,6);
-        animator.setDuration(3000);
+    public void startSharkAnim() {
+        if (!disableSharkFlag) return;
+        disableSharkFlag = false;
+        if (animator == null) {
+            animator = ValueAnimator.ofInt(0, 6);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    animator.removeAllUpdateListeners();
+                    currentIndex = -1;
+                    disableSharkFlag = true;
+                }
+            });
+        }
         animator.addUpdateListener(this);
-        animator.setRepeatCount(6);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                animator.removeAllUpdateListeners();
-                currentIndex = -1;
-                diableSharkFlag = true;
-            }
-        });
+        animator.setDuration(duration * 6);
+        animator.setRepeatCount(count);
         animator.start();
     }
 
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setOffsetSize(int offsetSize) {
+        this.offsetSize = offsetSize;
+    }
+
+    public void setRes(int res) {
+        this.res = res;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
-        int value  = (int) animation.getAnimatedValue();
-        if (currentIndex != value){
+        int value = (int) animation.getAnimatedValue();
+        value %= 6;
+        Log.e("onAnimationUpdate", "value = " + value);
+        if (currentIndex != value) {
             currentIndex = value;
+            Log.e("onAnimationUpdate", "currentIndex = " + currentIndex);
             postInvalidate();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        // 删除这个动画
+        if (animator != null) {
+            animator.removeAllListeners();
+            animator.removeUpdateListener(this);
+            animator.cancel();
+        }
+        try {
+            if (!bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
