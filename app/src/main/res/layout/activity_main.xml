@@ -8,6 +8,16 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/bt_anr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ANR"
+        app:layout_constraintBottom_toTopOf="@+id/bt_opengl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
         android:id="@+id/bt_media"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

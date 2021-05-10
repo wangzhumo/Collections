@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:applyMotionScene="true"
+    app:showPaths="false"
+    app:layoutDescription="@xml/speech_view_date_succeed_scene">
+
+
+    <ImageView
+        android:id="@+id/speech_heart"
+        android:layout_width="175dp"
+        android:layout_height="158dp"
+        android:visibility="gone"
+        android:src="@mipmap/speech_bg_date_mode_succeed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/speech_heart_1"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:visibility="gone"
+        android:src="@mipmap/speech_bg_heart_1"
+        android:layout_marginTop="35dp"
+        app:layout_constraintEnd_toEndOf="@+id/speech_heart"
+        app:layout_constraintStart_toStartOf="@+id/speech_heart"
+        app:layout_constraintTop_toTopOf="@+id/speech_heart" />
+
+    <ImageView
+        android:id="@+id/speech_heart_2"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:visibility="gone"
+        android:src="@mipmap/speech_bg_heart_2"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintEnd_toEndOf="@+id/speech_heart"
+        app:layout_constraintStart_toStartOf="@+id/speech_heart"
+        app:layout_constraintTop_toTopOf="@+id/speech_heart" />
+
+    <ImageView
+        android:id="@+id/speech_heart_3"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:visibility="gone"
+        android:src="@mipmap/speech_bg_heart_3"
+        android:layout_marginStart="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/speech_heart"
+        app:layout_constraintEnd_toEndOf="@+id/speech_heart"
+        app:layout_constraintStart_toStartOf="@+id/speech_heart"
+        app:layout_constraintTop_toTopOf="@+id/speech_heart" />
+
+
+    <ImageView
+        android:id="@+id/speech_date_target"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="60dp"
+        android:src="@mipmap/widget_ic_atm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/speech_date_buyer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="60dp"
+        android:src="@mipmap/widget_ic_bird"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

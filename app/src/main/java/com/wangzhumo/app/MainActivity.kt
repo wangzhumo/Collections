@@ -1,6 +1,7 @@
 package com.wangzhumo.app
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -22,6 +23,12 @@ public class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
 
     override fun initViews(savedInstanceState: Bundle?) {
         super.initViews(savedInstanceState)
+        vBinding.btAnr.clicks()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                startActivity(Intent(this,SecondActivity::class.java))
+            }
+
         vBinding.btMedia.clicks()
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {

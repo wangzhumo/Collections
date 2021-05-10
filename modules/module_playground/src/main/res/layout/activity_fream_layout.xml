@@ -8,17 +8,10 @@
     tools:context=".FrameLayoutActivity">
 
 
-    <com.wangzhumo.app.playground.TurntablePrizeView
-        android:id="@+id/turnView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@color/white_30"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.wangzhumo.app.playground.TurntablePrizeView>
+    <com.wangzhumo.app.playground.DateModeSucceedView
+        android:id="@+id/speechSucceed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <Button
         android:id="@+id/animateToStart"

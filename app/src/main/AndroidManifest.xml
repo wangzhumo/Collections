@@ -33,7 +33,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <!-- 配置APP ID -->
+        <activity android:name=".ThirdlyActivity"></activity>
+        <activity android:name=".SecondActivity" /> <!-- 配置APP ID -->
         <meta-data
             android:name="BUGLY_APPID"
             android:value="962f4d00a2" /> <!-- 配置APP版本号 -->
@@ -66,8 +67,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
