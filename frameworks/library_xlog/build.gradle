@@ -2,15 +2,15 @@ apply plugin: 'com.android.library'
 apply from: 'upload_nexus.gradle'
 
 android {
-    compileSdkVersion 30
-
+    COMPILE_SDK_VERSION as int
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 1
-        versionName "1.0"
+        versionName VERSION_NAME
     }
+
 
     buildTypes {
         release {
