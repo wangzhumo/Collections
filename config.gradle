@@ -30,7 +30,7 @@ def versions = [:]
     versions.walle = "1.1.7"
 
     //kotlin
-    versions.kotlin = "1.3.72"
+    versions.kotlin = "1.5.0"
 
     //arouter
     versions.arouterApi = "1.5.1"
@@ -68,6 +68,7 @@ def versions = [:]
 
     //leak memory checked
     versions.leakcanary="1.6.1"
+    versions.coreKtx = "1.3.2"
 
 def deps = [:]
 def rxLib = [:]
@@ -119,6 +120,13 @@ def androidx=[:]
     androidx.palette = "androidx.palette:palette:1.0.0"
     androidx.material = "com.google.android.material:material:1.3.0"
     deps.androidx=androidx
+
+def kotlinx = [:]
+    kotlinx.coreKtx = "androidx.core:core-ktx:$versions.coreKtx"
+    kotlinx.stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    kotlinx.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin"
+    deps.kotlinx = kotlinx
+
 
 def google=[:]
     google.design = "com.google.android.material:material:1.3.0"

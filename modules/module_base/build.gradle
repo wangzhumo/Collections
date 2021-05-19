@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
 }
 
@@ -37,6 +36,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(path: ':frameworks:library_widget')
     api project(path: ':frameworks:library_origin')
+    api project(path: ':frameworks:library_utils')
     kapt deps.auto_server
 }
 
