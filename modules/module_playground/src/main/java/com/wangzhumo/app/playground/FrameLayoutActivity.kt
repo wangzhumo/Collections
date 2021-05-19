@@ -13,9 +13,14 @@ public class FrameLayoutActivity : BaseBindingActivity<ActivityFreamLayoutBindin
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
+        vBinding.root.setLeftEdgeSize(DensityUtils.dp2px(this , 200F))
 
-        vBinding.animateToStart.setOnClickListener {
-            vBinding.speechSucceed.startMotionAnim()
-        }
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+
+
+
     }
 }

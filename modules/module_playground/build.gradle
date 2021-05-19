@@ -50,6 +50,8 @@ dependencies {
     implementation deps.androidx.dynamicanimation
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.appcompat
+    implementation deps.androidx.drawerlayout
+    implementation deps.google.design
     implementation project(path: ':modules:module_base')
     kapt deps.arouter.compiler
     // https://mvnrepository.com/artifact/io.netty/netty-all
